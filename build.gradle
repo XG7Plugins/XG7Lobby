@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
 
-    compileOnly "org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT"
+    compileOnly files("D:\\buildTools\\spigot-1.16.1.jar")
 
     compileOnly files("D:\\XG7Plugins\\plugins\\XG7Plugins\\XG7Plugins\\build\\libs\\XG7Plugins-1.1.jar")
     compileOnly 'org.projectlombok:lombok:1.18.34'

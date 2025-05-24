@@ -23,15 +23,7 @@ repositories {
 }
 
 dependencies {
-
-    compileOnly files("D:\\buildTools\\spigot-1.16.1.jar")
-
-    compileOnly files("D:\\XG7Plugins\\plugins\\XG7Plugins\\XG7Plugins\\build\\libs\\XG7Plugins-1.1.jar")
-    compileOnly 'org.projectlombok:lombok:1.18.34'
-
-    compileOnly "me.clip:placeholderapi:2.11.6"
-
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    compileOnly ':XG7Plugins'
 }
 
 def targetJavaVersion = 8
@@ -54,6 +46,10 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.shadowJar {
     archiveFileName.set("${project.name}-${project.version}.jar")
+}
+
+tasks.build {
+    dependsOn(shadowJar)
 }
 
 processResources {

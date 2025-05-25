@@ -105,7 +105,7 @@
 
 #[GAMEMODE] change the game mode of the player
 
-#<center:CHAT> Centers your text according to Minecraft's default chat size
+#[CENTER:CHAT] Centers your text according to Minecraft's default chat size
 #It is an approximate centering according to the pixels of each letter in the game
 
 #[PERMISSION] Only do the action if you have permission
@@ -158,7 +158,7 @@ sql:
   additional-url-args: "characterEncoding=utf8"
 
 ##################################################################
-#                         LOBBY EVENTS                           #
+#                         LOBBY CONFIGS                          #
 ##################################################################
 
 lobby-teleport-cooldown:
@@ -167,63 +167,66 @@ lobby-teleport-cooldown:
 
   after-teleport: "5s"
 
-on-join:
-  tp-to-lobby: true
-
-  heal: true
-  clear-inventory: true
-
-  run-events-when-return-to-the-world: true
-
-  send-join-message: true
-  send-join-message-only-on-lobby: false
-
-  events:
-    - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
-    - "[MESSAGE] <center:CHAT> &8-------------------&7**&8-------------------"
-    - "[MESSAGE] <center:CHAT> lang:[lobby.on-join-events.title] &f%player_name%"
-    - "[MESSAGE]  "
-    - "[MESSAGE] <center:CHAT> &aSite: &fwww.website.com"
-    - "[MESSAGE] <center:CHAT> &4YT: &fwww.youtube.com"
-    - "[MESSAGE]  "
-    - "[MESSAGE] <center:CHAT> lang:[lobby.on-join-events.message1]"
-    - "[MESSAGE] <center:CHAT> &8-------------------&7**&8-------------------"
-    - "[SOUND] ENTITY_EXPERIENCE_ORB_PICKUP, 10.0, 0.0"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #FFFF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #00FFFF, true, true, 1"
-    - "[OPEN] [NO_PERMISSION: xg7lobby.admin] profile"
-    - "[COMMAND] [PERMISSION: xg7lobby.command.help] 7l help"
-
-on-first-join:
-  enabled: true
-  send-first-join-message: true
-  events:
-    - "[TITLE] &bWelcome, &f%player_name%"
-    - "[MESSAGE] <center:CHAT> &8-------------------&7**&8-------------------"
-    - "[MESSAGE] <center:CHAT> &bWelcome for the first time! &f%player_name%"
-    - "[MESSAGE]  "
-    - "[MESSAGE] <center:CHAT> &aSite: &fwww.website.com"
-    - "[MESSAGE] <center:CHAT> &4YT: &fwww.youtube.com"
-    - "[MESSAGE]  "
-    - "[MESSAGE] <center:CHAT> &5&oPlugin made by DaviXG7"
-    - "[MESSAGE] <center:CHAT> &8-------------------&7**&8-------------------"
-    - "[SOUND] ENTITY_PLAYER_LEVELUP, 10.0, 0.0"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #FFFF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #00FFFF, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #FF00FF, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #FFFF00, true, true, 1"
-    - "[OPEN] [NO_PERMISSION: xg7lobby.admin] profile"
-    - "[COMMAND] [PERMISSION: xg7lobby.command.help] 7l help"
-
-
 effects-task-delay: 5s
 
 effects:
   - "JUMP_BOOST, 2"
   - "SPEED, 2"
   - "NIGHT_VISION, 1"
+
+##################################################################
+#                         PLAYER CONFIGS                         #
+##################################################################
+
+hearts: 1
+
+hunger: 10
+food-change: false
+
+interact-with-blocks: false
+break-block: false
+place-block: false
+
+drop-item: false
+pickup-item: false
+
+take-damage: false
+attack: false
+
+cancel-death-by-void: true
+
+cancel-portal-teleport: true
+
+##################################################################
+#                          WORLD CONFIGS                         #
+##################################################################
+
+world-task-delay: 10s
+
+weather-cycle: false
+
+storm: false
+
+#Define the day cycle on lobby world
+day-cycle: false
+
+#12:00
+#12 PM
+time: "12:30"
+
+#Define if mobs will spawn in the lobby
+spawn-mobs: false
+
+#Define if the leaves will fall in the lobby
+leaves-decay: false
+
+#Define whether blocks will burn in the lobby
+burn-blocks: false
+
+block-spread: false
+
+#Cancel explosions
+cancel-explosions: true
 
 ##################################################################
 #                         MULTI JUMPS                            #
@@ -258,98 +261,6 @@ launchpad:
   power: 3
   height: 1
 
-
-##################################################################
-#                        PLAYER DEFAULTS                         #
-##################################################################
-
-hearts: 1
-
-hunger: 10
-food-change: false
-
-interact-with-blocks: false
-break-block: false
-place-block: false
-
-drop-item: false
-pickup-item: false
-
-take-damage: false
-attack: false
-
-cancel-death-by-void: true
-
-cancel-portal-teleport: true
-
-##################################################################
-#                         WORLD DEFAULTS                         #
-##################################################################
-
-world-task-delay: 10s
-
-weather-cycle: false
-
-storm: false
-
-#Define the day cycle on lobby world
-day-cycle: false
-
-#12:00
-#12 PM
-time: "12:30"
-
-#Define if mobs will spawn in the lobby
-spawn-mobs: false
-
-#Define if the leaves will fall in the lobby
-leaves-decay: false
-
-#Define whether blocks will burn in the lobby
-burn-blocks: false
-
-block-spread: false
-
-#Cancel explosions
-cancel-explosions: true
-
-##################################################################
-#                         AUTO BROADCAST                         #
-##################################################################
-
-auto-broadcast:
-
-  enabled: true
-
-  #Cooldown
-  cooldown: 3m
-
-  broadcast-only-in-the-lobby: false
-
-  #Make the announcement random
-  random: false
-
-  sound: "ENTITY_EXPERIENCE_ORB_PICKUP, 5.0, 0.0"
-
-  advertisements:
-    #Create your announcement
-    #You can send in actionbars
-    - ad:
-      - "<center:CHAT> &8-------------------&7**&8-------------------"
-      - "<center:CHAT> &e&lANNOUNCEMENT:"
-      - "<center:CHAT> &9This plugin was made by &bDaviXG7"
-      - "<center:CHAT> &8-------------------&7**&8-------------------"
-    - ad:
-      - "<center:CHAT> &8-------------------&7**&8-------------------"
-      - "<center:CHAT> &e&lANNOUNCEMENT:"
-      - "<center:CHAT> &aRate XG7Lobby in &e5 &bstars!"
-      - "<center:CHAT> &8-------------------&7**&8-------------------"
-    - ad:
-      - "<center:CHAT> &8-------------------&7**&8-------------------"
-      - "<center:CHAT> &e&lANNOUNCEMENT:"
-      - "<center:CHAT> &fVisit our website: &bhttps://xg7plugins.com"
-      - "<center:CHAT> &8-------------------&7**&8-------------------"
-
 ##################################################################
 #                             MOTD                               #
 ##################################################################
@@ -362,129 +273,8 @@ motd:
   max-players: 9999
 
   text:
-    - "<center:MOTD> &9XG7&3Lob&bby&r"
-    - "<center:MOTD> &5&oMade by DaviXG7"
-
-##################################################################
-#                           SCORES                               #
-##################################################################
-
-scoreboard:
-
-  enabled: true
-
-  #Update time
-  update-time: 500ms
-
-  #Define the title of the scoreboard
-  title:
-    - "&9XG7Lobby"
-    - "&3XG7Lobby"
-    - "&bXG7Lobby"
-    - "&9XG7&3Lob&bby"
-    - "&1XG7Lobby"
-    - "&9XG7&3Lob&bby"
-    - "&9XG7&3Lob&bby"
-
-  #Define the lines of the scoreboard
-  #Max len 64 characters
-  lines:
-    - ""
-    - "lang:[scoreboard.player-info]"
-    - "  lang:[scoreboard.name]"
-    - "  lang:[scoreboard.rank]"
-    - ""
-    - "lang:[scoreboard.global-pvp]"
-    - "  lang:[scoreboard.kills]"
-    - "  lang:[scoreboard.deaths]"
-    - ""
-    - "lang:[scoreboard.players-online]"
-    - "lang:[scoreboard.players-in-pvp]"
-    - ""
-    - "&8www.example.com"
-
-health-display:
-
-  enabled: true
-
-  suffix: "&c❤"
-
-tablist:
-  enabled: true
-
-  update-time: 500ms
-
-  #You can use the placeholders:
-  custom-player-prefix: "&8[%luckperms_prefix%&8]&r "
-  custom-player-suffix: " &8[&9XG7&3Lo&bbby&8]&r"
-
-  headers:
-
-    - state:
-      - "&9XG7Lobby"
-    - state:
-      - "&3XG7Lobby"
-    - state:
-      - "&bXG7Lobby"
-    - state:
-      - "&3XG7Lobby"
-    - state:
-      - "&9XG7Lobby"
-
-  footers:
-    - state:
-        - "&5&oMade by DaviXG7"
-        - "&8www.example.com"
-    - state:
-        - "&3&oMade by DaviXG7"
-        - "&8www.example.com"
-
-bossbar:
-  enabled: true
-
-  update-time: 500ms
-
-  title:
-    - "&9XG7Lobby"
-    - "&3XG7Lobby"
-    - "&bXG7Lobby"
-    - "&3XG7Lobby"
-    - "&9XG7Lobby"
-
-  progress: 100
-
-  #1.9+
-  color: "BLUE"
-  style: "SOLID"
-
-  #This is a public bossbar
-  #Don't support placeholders
-  #+1.9
-  public: false
-
-actionbar:
-  enabled: false
-
-  update-time: 500ms
-
-  text:
-    - "&9XG7Lobby"
-    - "&3XG7Lobby"
-    - "&bXG7Lobby"
-    - "&3XG7Lobby"
-    - "&9XG7Lobby"
-
-xp-bar:
-  enabled: true
-
-  update-time: 1s
-
-  levels:
-    - "7, 0.2"
-    - "7, 0.4"
-    - "7, 0.6"
-    - "7, 0.8"
-    - "7, 1.0"
+    - "[CENTER:MOTD] &9XG7&3Lob&bby&r"
+    - "[CENTER:MOTD] &5&oMade by DaviXG7"
 
 ##################################################################
 #                          MODERATION                            #
@@ -538,40 +328,6 @@ warn-ban-by-ip: false
 
 lock-chat-only-on-lobby: false
 
-custom-commands-enabled: true
-
-custom-commands:
-
-  clear-chat:
-    name: "clearchat"
-    aliases: ["cc"]
-    permission: "xg7lobby.command.clearchat"
-    description: "Clear the chat"
-    syntax: "/clearchat"
-    actions:
-      - "[CLEAR_CHAT] "
-
-  discord:
-    name: "discord"
-    permission: ""
-    description: "Join our Discord"
-    aliases: ["dc"]
-    syntax: "/discord"
-    actions:
-      - "[MESSAGE]  "
-      - "[MESSAGE] <center:CHAT> &9Join our Discord: &bhttps://discord.gg/jfrn8w92kF"
-      - "[MESSAGE]  "
-
-  site:
-    name: "site"
-    permission: ""
-    description: "Visit our website"
-    syntax: "/site"
-    actions:
-      - "[MESSAGE]  "
-      - "[MESSAGE] <center:CHAT> &9Visit our website: &bhttps://example.com"
-      - "[MESSAGE]  "
-
 anti-swearing:
   enabled: true
 
@@ -587,7 +343,6 @@ anti-swearing:
   tolerance-warn-level: 1
 
   time-for-decrement-tolerance: 1m
-
 
 
 block-commands:
@@ -632,59 +387,4 @@ anti-spam:
 
   spam-warn-level: 2
 
-##################################################################
-#                          PVP SYSTEM                            #
-##################################################################
-
-global-pvp:
-
-  disable-cooldown: 5s
-
-  enabled: true
-
-  hide-players-not-in-pvp: true
-
-  disable-multi-jumps: true
-
-  disable-launchpad: true
-
-  combat-log-remove: 20s
-
-  send-kill-message-only-in-pvp: false
-
-  on-enter-pvp:
-    heal: true
-    clear-inventory: true
-
-    actions:
-      - "[OPEN] pvp"
-      - "[EQUIP] HELMET, DIAMOND_HELMET"
-      - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"
-      - "[EQUIP] LEGGINGS, DIAMOND_LEGGINGS"
-      - "[EQUIP] BOOTS, DIAMOND_BOOTS"
-      - "[EQUIP] OFFHAND, GOLDEN_APPLE"
-      - "[BROADCAST] &f%player_name% joined the PvP!"
-
-  on-leave-pvp:
-    heal: true
-    clear-inventory: true
-
-    dont-move: true
-
-    actions:
-      - "[BROADCAST] &f%player_name% left the PvP!"
-
-  commands-blocked:
-    - "/lobby"
-    - "/spawn"
-    - "/hub"
-    - "/warp"
-    - "/fly"
-    - "/gm"
-    - "/gamemode"
-    - "/tp"
-    - "/home"
-    - "/back"
-
-
-config-version: 2
+config-version: 3

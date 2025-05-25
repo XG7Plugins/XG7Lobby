@@ -1,0 +1,41 @@
+enabled: true
+
+disable-cooldown: 5s
+hide-players-not-in-pvp: true
+disable-multi-jumps: true
+disable-launchpad: true
+combat-log-remove: 20s
+send-kill-message-only-in-pvp: false
+
+on-enter-pvp:
+  heal: true
+  clear-inventory: true
+actions:
+    - "[OPEN] pvp"
+    - "[EQUIP] HELMET, DIAMOND_HELMET"
+    - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"
+    - "[EQUIP] LEGGINGS, DIAMOND_LEGGINGS"
+    - "[EQUIP] BOOTS, DIAMOND_BOOTS"
+    - "[EQUIP] OFFHAND, GOLDEN_APPLE"
+    - "[BROADCAST] &f%player_name% joined the PvP!"
+  
+on-leave-pvp:
+  heal: true
+  clear-inventory: true
+  dont-move: true
+  actions:
+    - "[BROADCAST] &f%player_name% left the PvP!"
+  
+commands-blocked:
+    - "/lobby"
+    - "/spawn"
+    - "/hub"
+    - "/warp"
+    - "/fly"
+    - "/gm"
+    - "/gamemode"
+    - "/tp"
+    - "/home"
+    - "/back"
+
+config-version: 1

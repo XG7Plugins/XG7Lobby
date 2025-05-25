@@ -1,0 +1,35 @@
+enabled: true
+
+custom-commands:
+
+  clear-chat:
+    name: "clearchat"
+    aliases: ["cc"]
+    permission: "xg7lobby.command.clearchat"
+    description: "Clear the chat"
+    syntax: "/clearchat"
+    actions:
+      - "[CLEAR_CHAT] "
+
+  discord:
+    name: "discord"
+    permission: ""
+    description: "Join our Discord"
+    aliases: ["dc"]
+    syntax: "/discord"
+    actions:
+      - "[MESSAGE]  "
+      - "[MESSAGE] [CENTER:CHAT] &9Join our Discord: &bhttps://discord.gg/jfrn8w92kF"
+      - "[MESSAGE]  "
+
+  site:
+    name: "site"
+    permission: ""
+    description: "Visit our website"
+    syntax: "/site"
+    actions:
+      - "[MESSAGE]  "
+      - "[MESSAGE] [CENTER:CHAT] &9Visit our website: &bhttps://example.com"
+      - "[MESSAGE]  "
+
+config-version: 1

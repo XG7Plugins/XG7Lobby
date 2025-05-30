@@ -207,7 +207,7 @@ weather-cycle: false
 
 storm: false
 
-#Define the day cycle on lobby world
+#Define the day cycle on a lobby world
 day-cycle: false
 
 #12:00

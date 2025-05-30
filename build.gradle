@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+
 }
 
 group = 'com.xg7plugins'
@@ -9,7 +10,7 @@ version = '2.1'
 repositories {
     mavenCentral()
     maven {
-        name = "spigotmc-repo"
+        name = "spigot-repo"
         url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
     maven {
@@ -23,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly ':XG7Plugins'
+    compileOnly project(":Core")
 }
 
 def targetJavaVersion = 8

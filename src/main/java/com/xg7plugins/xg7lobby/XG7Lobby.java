@@ -2,7 +2,19 @@ package com.xg7plugins.xg7lobby;
 
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.boot.PluginSetup;
+import com.xg7plugins.commands.setup.Command;
+import com.xg7plugins.data.dao.DAO;
+import com.xg7plugins.data.database.entity.Entity;
+import com.xg7plugins.dependencies.Dependency;
+import com.xg7plugins.events.Listener;
+import com.xg7plugins.events.PacketListener;
+import com.xg7plugins.tasks.Task;
+import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
+import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerDAO;
 import lombok.Getter;
+
+import java.util.Collections;
+import java.util.List;
 
 @Getter
 @PluginSetup(
@@ -27,6 +39,12 @@ import lombok.Getter;
 public final class XG7Lobby extends Plugin {
 
     @Override
+    public void onLoad() {
+        this.environmentConfig = new XG7LobbyConfig();
+        super.onLoad();
+    }
+
+    @Override
     public void onEnable() {
 
     }
@@ -34,6 +52,36 @@ public final class XG7Lobby extends Plugin {
 
     public static XG7Lobby getInstance() {
         return getPlugin(XG7Lobby.class);
+    }
+
+    @Override
+    public Class<? extends Entity<?,?>>[] loadEntities() {
+        return new Class[]{LobbyPlayer.class};
+    }
+
+    @Override
+    public List<DAO<?,?>> loadDAOs() {
+        return Collections.singletonList(new LobbyPlayerDAO());
+    }
+
+    @Override
+    public List<Command> loadCommands() {
+        return null;
+    }
+
+    @Override
+    public List<Listener> loadEvents() {
+        return null;
+    }
+
+    @Override
+    public List<PacketListener> loadPacketEvents() {
+        return null;
+    }
+
+    @Override
+    public List<Task> loadRepeatingTasks() {
+        return null;
     }
 
     @Override

@@ -10,7 +10,7 @@ send-kill-message-only-in-pvp: false
 on-enter-pvp:
   heal: true
   clear-inventory: true
-actions:
+  actions:
     - "[OPEN] pvp"
     - "[EQUIP] HELMET, DIAMOND_HELMET"
     - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"

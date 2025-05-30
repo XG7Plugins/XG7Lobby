@@ -1,7 +1,6 @@
 package com.xg7plugins.xg7lobby;
 
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.playerdata.PlayerDataDAO;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerDAO;
 

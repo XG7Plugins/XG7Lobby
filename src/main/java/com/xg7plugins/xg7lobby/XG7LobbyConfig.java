@@ -8,6 +8,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class XG7LobbyConfig extends EnvironmentConfig {
 
-    boolean isChatLocked;
+    private boolean isChatLocked = false;
 
 }

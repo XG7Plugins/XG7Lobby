@@ -9,10 +9,13 @@ import com.xg7plugins.dependencies.Dependency;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
 import com.xg7plugins.tasks.Task;
+import com.xg7plugins.xg7lobby.lobby.location.LobbyLocationDAO;
+import com.xg7plugins.xg7lobby.lobby.location.LobbyManager;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerDAO;
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +50,8 @@ public final class XG7Lobby extends Plugin {
     @Override
     public void onEnable() {
 
+        managerRegistry.registerManager(new LobbyManager());
+
     }
 
 
@@ -61,7 +66,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<DAO<?,?>> loadDAOs() {
-        return Collections.singletonList(new LobbyPlayerDAO());
+        return Arrays.asList(new LobbyPlayerDAO(), new LobbyLocationDAO());
     }
 
     @Override

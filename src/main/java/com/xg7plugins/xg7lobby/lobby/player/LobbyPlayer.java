@@ -1,9 +1,16 @@
 package com.xg7plugins.xg7lobby.lobby.player;
 
+import com.xg7plugins.XG7PluginsAPI;
+import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.database.entity.Column;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.utils.time.Time;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Data;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +19,7 @@ import java.util.UUID;
 @Data
 public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
-    private final UUID id;
+    private final UUID playerUUID;
     private boolean muted;
 
     @Column(name = "unmute_time")
@@ -28,14 +35,14 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     private int globalPVPKills;
     @Column(name = "global_pvp_deaths")
     private int globalPVPDeaths;
-    private final List<Warning> infractions = new ArrayList<>();
+    private final List<Infraction> infractions = new ArrayList<>();
 
-    public LobbyPlayer(UUID id) {
-        this.id = id;
+    public LobbyPlayer(UUID playerUUID) {
+        this.playerUUID = playerUUID;
     }
 
     private LobbyPlayer() {
-        id = null;
+        playerUUID = null;
     }
 
 
@@ -46,6 +53,34 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
     @Override
     public UUID getID() {
-        return id;
+        return playerUUID;
     }
+
+    public OfflinePlayer getOfflinePlayer() {
+        return Bukkit.getServer().getOfflinePlayer(playerUUID);
+    }
+    public Player getPlayer() {
+        return Bukkit.getServer().getPlayer(playerUUID);
+    }
+
+    public void fly() {
+        Player player = this.getPlayer();
+
+        if (player == null) return;
+
+        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
+
+
+        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)) return;
+
+        player.setAllowFlight(
+                flying || (
+                                (config.get("multi-jumps.enabled", Boolean.class).orElse(false) && player.hasPermission("xg7lobby.multi-jumps"))
+                                || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR
+                )
+        );
+        if (player.getAllowFlight()) player.setFlying(flying);
+
+    }
+
 }

@@ -87,7 +87,7 @@ lobby:
     on-error: "&cError al intentar eliminar la ubicación del lobby."
     on-success: "&aUbicación del lobby %id% eliminada con éxito."
 
-  on-teleporting-message: "<action> &7Teletransportándose al lobby en %seconds% segundos... ¡No te muevas!"
+  on-teleporting-message: "[ACTION] &7Teletransportándose al lobby en %seconds% segundos... ¡No te muevas!"
   teleport-cancelled: "&c¡Teletransporte cancelado!"
 
 messages:
@@ -95,7 +95,7 @@ messages:
   on-first-join: "&b%target%&7, &e¡ha entrado al juego por primera vez!"
   on-quit: "&b%target%&7, &e¡ha salido del juego!"
 
-multi-jump-left: "<action> &7Tienes &b%jumps% &7saltos restantes."
+multi-jump-left: "[ACTION] &7Tienes &b%jumps% &7saltos restantes."
 
 build-not-enabled: "&c¡Tienes la construcción desactivada! Usa /build para activarla."
 
@@ -132,7 +132,7 @@ pvp:
   on-death-with-killer: "&c%victim% ha sido asesinado por %killer%."
   on-death-without-killer: "&c%victim% ha muerto por %cause%."
   on-attack: "&cNo puedes atacar a este jugador. No está en modo PvP global."
-  pvp-disabling: "<action> &cTu PvP se está desactivando en %seconds% segundos. ¡No te muevas!"
+  pvp-disabling: "[ACTION] &cTu PvP se está desactivando en %seconds% segundos. ¡No te muevas!"
   disable-cancelled: "&c¡Desactivación de PvP cancelada!"
   pvp-command: "No puedes usar este comando en modo PvP global."
 

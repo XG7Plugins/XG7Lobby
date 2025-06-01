@@ -1,5 +1,7 @@
 setlobby: ["7lsetlobby", "7lsetl", "setlobby", "setl", "lobbyset", "lset", "lsetlobby", "lsetl"]
 lobby: ["7llobby", "7ll", "l", "lobby"]
+deletelobby: ["7ldeletelobby", "7ldl", "deletelobby"]
+lobbies: ["7llobbies", "7lls", "lobbies"]
 fly: ["7lfly", "7lf", "fly"]
 gamemode: ["gm", "7lgm"]
 build: ["7lbuild", "7lb", "build"]
@@ -18,7 +20,5 @@ execute: ["7lexecute", "7le", "execute"]
 pvp: ["7lpvp", "pvp"]
 warns: ["7lwarns", "7lw", "warns"]
 resetstats: ["7lresetstats", "7lrs", "resetstats"]
-deletelobby: ["7ldeletelobby", "7ldl", "deletelobby"]
-lobbies: ["7llobbies", "7lls", "lobbies"]
 
 config-version: 1.0

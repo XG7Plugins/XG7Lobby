@@ -29,7 +29,7 @@ items:
     amount: 1
     glow: true
     actions:
-      - "[COMMAND] lobby"
+      - "[PLAYER_COMMAND] lobby"
       - "[CLOSE] "
 
   hidePlayers:
@@ -69,7 +69,7 @@ items:
       glow: true
       actions:
         - "[CLOSE] "
-        - "[COMMAND] lang"
+        - "[PLAYER_COMMAND] lang"
 
 
 

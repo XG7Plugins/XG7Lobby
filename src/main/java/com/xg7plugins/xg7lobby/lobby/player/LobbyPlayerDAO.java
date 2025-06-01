@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public class LobbyPlayerDAO implements DAO<UUID, LobbyPlayer> {
 
-
     @Override
     public Plugin getPlugin() {
         return XG7Lobby.getInstance();
@@ -18,4 +17,5 @@ public class LobbyPlayerDAO implements DAO<UUID, LobbyPlayer> {
     public Class<LobbyPlayer> getEntityClass() {
         return LobbyPlayer.class;
     }
+
 }

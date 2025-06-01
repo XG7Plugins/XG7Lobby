@@ -9,10 +9,11 @@ commands:
     toggle-other-on: "&aFly mode enabled for %target%."
     toggle-other-off: "&cFly mode disabled for %target%."
 
-  gamemode:
-    invalid-gamemode: "&cInvalid gamemode. Use (0, s), (1, c), (2, a) or (3, sp)."
+  game-mode:
+    invalid-game-mode: "&cInvalid gamemode. Use (0, s), (1, c), (2, a) or (3, sp)."
     set: "&aGamemode set to %gamemode%."
     set-other: "&aGamemode set to %gamemode% for %target%."
+
   build:
     toggle-on: "&aBuild mode enabled."
     toggle-off: "&cBuild mode disabled."
@@ -80,7 +81,7 @@ lobby:
 
   on-set:
     on-error: "&cError while setting the lobby location. %error%"
-    on-success: "&aLobby location %id% set successfully on World: %world%, X: %x%, Y: %y%, Z: %z%, YAW: %yaw%, PITCH: %pitch%."
+    on-success: "&aLobby location &e%id% &aset successfully on &7World&b: &6%world&b, &6X&b: &6%x%&b, &6Y&b: &6%y%&b, &6Z&b: &6%z%&b, &6YAW&b: &6%yaw%&b, &6PITCH&b: &6%pitch%&b."
 
   on-teleport:
     on-error: "&cError while trying to teleport to the lobby."
@@ -100,7 +101,7 @@ lobby:
     on-error: "&cError while trying to delete the lobby location."
     on-success: "&aLobby location %id% deleted successfully."
 
-  on-teleporting-message: "<action> &7Teleporting to the lobby %seconds%s... Don't move!"
+  on-teleporting-message: "[ACTION] &7Teleporting to the lobby @SECONDS:%time%@s... Don't move!"
   teleport-cancelled: "&cTeleport cancelled!"
 
 messages:
@@ -111,7 +112,7 @@ messages:
   on-quit: "&b%target%&7, &eleave the game!"
 
 
-multi-jump-left: "<action> &7You have &b%jumps% &7jumps left."
+multi-jump-left: "[ACTION] &7You have &b%jumps% &7jumps left."
 
 build-not-enabled: "&cYou are with build disabled! Use /build to enable it."
 
@@ -159,7 +160,7 @@ pvp:
 
   on-attack: "&cYou can't attack this player. He is not in global PvP mode."
 
-  pvp-disabling: "<action> &cYour pvp is being disabled in %seconds% seconds. Dont move!"
+  pvp-disabling: "[ACTION] &cYour pvp is being disabled in %seconds% seconds. Dont move!"
   disable-cancelled: "&cPvP disabling cancelled!"
 
   pvp-command: "You can't use this command in global PvP mode."

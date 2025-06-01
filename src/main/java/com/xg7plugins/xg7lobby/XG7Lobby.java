@@ -5,18 +5,29 @@ import com.xg7plugins.boot.PluginSetup;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.data.dao.DAO;
 import com.xg7plugins.data.database.entity.Entity;
-import com.xg7plugins.dependencies.Dependency;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.Task;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyLocationDAO;
+import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
+import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
+import com.xg7plugins.xg7lobby.commands.lobby.Lobby;
+import com.xg7plugins.xg7lobby.commands.lobby.SetLobby;
+import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
+import com.xg7plugins.xg7lobby.configs.WorldConfigs;
+import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
+import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandEvent;
+import com.xg7plugins.xg7lobby.events.lobby_events.DefaultPlayerEvents;
+import com.xg7plugins.xg7lobby.events.lobby_events.DefaultWorldEvents;
+import com.xg7plugins.xg7lobby.events.lobby_events.LoginAndLogoutEvent;
+import com.xg7plugins.xg7lobby.inventories.default_menus.LobbiesMenu;
+import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.lobby.location.LobbyManager;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
-import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerDAO;
+import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerManager;
 import lombok.Getter;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -45,15 +56,24 @@ public final class XG7Lobby extends Plugin {
     public void onLoad() {
         this.environmentConfig = new XG7LobbyConfig();
         super.onLoad();
+        ((XG7LobbyConfig)environmentConfig).reloadConfigs();
     }
 
     @Override
     public void onEnable() {
 
-        managerRegistry.registerManager(new LobbyManager());
+        debug.loading("Loading managers...");
+
+        managerRegistry.registerManagers(
+                new LobbyPlayerManager(),
+                new LobbyManager()
+        );
+
+        XG7Menus menus = XG7Menus.getInstance();
+
+        menus.registerMenus(new LobbiesMenu());
 
     }
-
 
     public static XG7Lobby getInstance() {
         return getPlugin(XG7Lobby.class);
@@ -61,22 +81,22 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public Class<? extends Entity<?,?>>[] loadEntities() {
-        return new Class[]{LobbyPlayer.class};
+        return new Class[]{LobbyPlayer.class, LobbyLocation.class};
     }
 
     @Override
     public List<DAO<?,?>> loadDAOs() {
-        return Arrays.asList(new LobbyPlayerDAO(), new LobbyLocationDAO());
+        return Arrays.asList(XG7LobbyAPI.lobbyManager().getLobbyLocationDAO(), XG7LobbyAPI.lobbyPlayerManager().getLobbyPlayerDAO());
     }
 
     @Override
     public List<Command> loadCommands() {
-        return null;
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby());
     }
 
     @Override
     public List<Listener> loadEvents() {
-        return null;
+        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandEvent());
     }
 
     @Override

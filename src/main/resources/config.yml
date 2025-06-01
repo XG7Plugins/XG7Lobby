@@ -36,7 +36,7 @@
 # %xg7lobby_random_lobby_location%: Returns a random lobby location.
 # %xg7lobby_player_is_hiding%: Returns whether the player is hiding other players (true/false).
 # %xg7lobby_player_is_muted%: Returns whether the player is muted (true/false).
-# %xg7lobby_player_warns%: Returns the number of warnings the player has.
+# %xg7lobby_player_infractions%: Returns the number of warnings the player has.
 # %xg7lobby_player_time_for_unmute%: Returns the remaining time for the player to be unmuted (format: dd/MM/yyyy HH:mm:ss).
 # %xg7lobby_player_is_build_enabled%: Returns whether build mode is enabled for the player (true/false).
 # %xg7lobby_player_is_flying%: Returns whether fly mode is enabled for the player (true/false).
@@ -60,8 +60,8 @@
 #Ex.: [TITLE] &bWelcome!, Subtitle
 #[BROADCAST] Advertise to everyone.
 
-#[COMMAND] Make the player execute a command
-#[CONSOLE] Make console execute a command
+#[PLAYER_COMMAND] Make the player execute a command
+#[CONSOLE_COMMAND] Make console execute a command
 
 #[SOUND] play a sound
 #[SOUND] ENTITY_EXPERIENCE_ORB_PICKUP, (Volume) 10.0, (Pitch) 10.0"
@@ -112,7 +112,7 @@
 #[OPEN] 1 [PERMISSION: your.permission]
 #[OPEN] 1 [!PERMISSION: your.permission] (If you don't have permission)
 
-#<action> Send an action
+#[ACTION] Send an action
 
 #[PERMISSION] Only do the action if the condition is true
 #[OPEN] 1 [IF: %xg7lobby_players_hiding%]
@@ -187,8 +187,8 @@ interact-with-blocks: false
 break-block: false
 place-block: false
 
-drop-item: false
-pickup-item: false
+drop-items: false
+pickup-items: false
 
 take-damage: false
 attack: false
@@ -229,54 +229,6 @@ block-spread: false
 cancel-explosions: true
 
 ##################################################################
-#                         MULTI JUMPS                            #
-##################################################################
-
-multi-jumps:
-
-  limit: 3
-
-  enabled: true
-
-  sound: "ENTITY_BAT_TAKEOFF, 1.0, 1.0"
-
-  power: 2
-  height: 1
-
-  cooldown: 3s
-
-##################################################################
-#                           LAUNCHPAD                            #
-##################################################################
-
-launchpad:
-
-  enabled: true
-
-  sound: "ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0, 1.0"
-
-  top-block: "STONE_PRESSURE_PLATE"
-  bottom-block: "REDSTONE_BLOCK"
-
-  power: 3
-  height: 1
-
-##################################################################
-#                             MOTD                               #
-##################################################################
-
-#MOTD is the message that appears before
-#join the server!
-motd:
-  enabled: true
-
-  max-players: 9999
-
-  text:
-    - "[CENTER:MOTD] &9XG7&3Lob&bby&r"
-    - "[CENTER:MOTD] &5&oMade by DaviXG7"
-
-##################################################################
 #                          MODERATION                            #
 ##################################################################
 
@@ -285,7 +237,7 @@ mute-admin: false
 kick-admin: false
 ban-admin: false
 
-warn-levels:
+infraction-levels:
 
   - level: 1
     min-to-ban: 5
@@ -312,14 +264,14 @@ mute-warn-level: 2
 kick-warn-level: 3
 ban-warn-level: 3
 
-total-warns-to-ban: 10
-total-warns-to-mute: 2
-total-warns-to-kick: 5
+total-infractions-to-ban: 10
+total-infractions-to-mute: 2
+total-infractions-to-kick: 5
 
 #Put forever to infinite
-warn-time-to-unmute: "30m"
+infractions-time-to-unmute: "30m"
 
-warn-ban-by-ip: false
+infractions-ban-by-ip: false
 
 
 ##################################################################
@@ -386,5 +338,53 @@ anti-spam:
   unmute-delay: "30m"
 
   spam-warn-level: 2
+
+##################################################################
+#                         MULTI JUMPS                            #
+##################################################################
+
+multi-jumps:
+
+  limit: 3
+
+  enabled: true
+
+  sound: "ENTITY_BAT_TAKEOFF, 1.0, 1.0"
+
+  power: 2
+  height: 1
+
+  cooldown: 3s
+
+##################################################################
+#                           LAUNCHPAD                            #
+##################################################################
+
+launchpad:
+
+  enabled: true
+
+  sound: "ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0, 1.0"
+
+  top-block: "STONE_PRESSURE_PLATE"
+  bottom-block: "REDSTONE_BLOCK"
+
+  power: 3
+  height: 1
+
+##################################################################
+#                             MOTD                               #
+##################################################################
+
+#MOTD is the message that appears before
+#join the server!
+motd:
+  enabled: true
+
+  max-players: 9999
+
+  text:
+    - "[CENTER:MOTD] &9XG7&3Lob&bby&r"
+    - "[CENTER:MOTD] &5&oMade by DaviXG7"
 
 config-version: 3

@@ -38,7 +38,7 @@ public enum ActionType {
             "Sends a message to a player",
             "WRITABLE_BOOK",
             false,
-            (player, args) -> Text.detectLangsAndSend(player, XG7Lobby.getInstance(), args[0])
+            (player, args) -> Text.detectLangsAndSend(player, XG7Lobby.getInstance(), args[0]).join()
     ),
     BROADCAST(
             "[BROADCAST] message...",
@@ -68,15 +68,15 @@ public enum ActionType {
             true,
             (player, args) -> {
                 if (args.length == 1) {
-                    player.sendTitle(Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getPlainText(), "");
+                    player.sendTitle(Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getText(), "");
                     return;
                 }
                 if (args.length == 2) {
-                    player.sendTitle(Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getPlainText(), Text.detectLangs(player,XG7Lobby.getInstance(),args[1]).join().getPlainText());
+                    player.sendTitle(Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getText(), Text.detectLangs(player,XG7Lobby.getInstance(),args[1]).join().getText());
                     return;
                 }
                 if (args.length == 5) {
-                    player.sendTitle(args[0].equals("_") ? "" : Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getPlainText(), args[1].equals("_") ? "" : Text.detectLangs(player,XG7Lobby.getInstance(),args[1]).join().getPlainText(), Parser.INTEGER.convert(args[2]), Parser.INTEGER.convert(args[3]), Parser.INTEGER.convert(args[4]));
+                    player.sendTitle(args[0].equals("_") ? "" : Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getText(), args[1].equals("_") ? "" : Text.detectLangs(player,XG7Lobby.getInstance(),args[1]).join().getPlainText(), Parser.INTEGER.convert(args[2]), Parser.INTEGER.convert(args[3]), Parser.INTEGER.convert(args[4]));
                     return;
                 }
 
@@ -292,6 +292,19 @@ public enum ActionType {
                     throw new RuntimeException(e);
                 }
             }
+    ),
+    OPEN(
+            "[OPEN] menu_id",
+            "Open a custom inventory",
+            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZiOTJlYTJiZDlhNzdhZmJkM2YxNzAzODVhNTdjZGVkNzQ5YWIxNjAxODE0NTkzZTVkZTljYWQ5NTQ5NTkyYyJ9fX0=",
+            true, (player, args) -> {}
+    ),
+    CLOSE(
+            "[CLOSE] ",
+            "Close the inventory",
+            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWRjMzZjOWNiNTBhNTI3YWE1NTYwN2EwZGY3MTg1YWQyMGFhYmFhOTAzZThkOWFiZmM3ODI2MDcwNTU0MGRlZiJ9fX0=",
+            false,
+            (player, args) -> player.closeInventory()
     );
 
     private final String usage;

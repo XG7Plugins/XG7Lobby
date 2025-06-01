@@ -42,7 +42,7 @@ items:
     amount: 1
     glow: true
     actions:
-      - "[COMMAND] 7llobbies"
+      - "[PLAYER_COMMAND] 7llobbies"
 
   hidePlayers:
 

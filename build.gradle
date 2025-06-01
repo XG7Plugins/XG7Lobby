@@ -1,11 +1,10 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-
 }
 
 group = 'com.xg7plugins'
-version = '2.1'
+version = '2.2'
 
 repositories {
     mavenCentral()
@@ -25,6 +24,8 @@ repositories {
 
 dependencies {
     compileOnly project(":Core")
+
+    compileOnly "com.github.retrooper:packetevents-spigot:2.7.0"
 }
 
 def targetJavaVersion = 8

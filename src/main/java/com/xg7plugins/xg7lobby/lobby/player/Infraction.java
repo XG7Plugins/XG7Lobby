@@ -1,15 +1,13 @@
 package com.xg7plugins.xg7lobby.lobby.player;
 
-import com.xg7plugins.data.database.entity.Column;
-import com.xg7plugins.data.database.entity.Entity;
-import com.xg7plugins.data.database.entity.FKey;
-import com.xg7plugins.data.database.entity.Pkey;
+import com.xg7plugins.data.database.entity.*;
 import com.xg7plugins.utils.ShortUUID;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
+@Table(name = "infractions")
 public class Infraction implements Entity<String, Infraction> {
 
     @Pkey
@@ -40,4 +38,5 @@ public class Infraction implements Entity<String, Infraction> {
     public String getID() {
         return id;
     }
+
 }

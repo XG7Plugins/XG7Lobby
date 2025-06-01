@@ -1,6 +1,9 @@
 on-join:
   tp-to-lobby: true
 
+  #Put "random" for a random lobby
+  lobby-to-tp-id: "random"
+
   heal: true
   clear-inventory: true
 
@@ -23,14 +26,14 @@ on-join:
     - "[FIREWORK] BALL_LARGE, #FF0000, #FFFF00, true, true, 1"
     - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
     - "[FIREWORK] BALL_LARGE, #FF00FF, #00FFFF, true, true, 1"
-    - "[OPEN] [NO_PERMISSION: xg7lobby.admin] profile"
-    - "[COMMAND] [PERMISSION: xg7lobby.command.help] 7l help"
+    - "[OPEN] ?NO_PERMISSION: xg7lobby.admin? profile"
+    - "[PLAYER_COMMAND] ?PERMISSION: xg7lobby.command.help? 7l help"
 
 on-first-join:
   enabled: true
   send-first-join-message: true
   events:
-    - "[TITLE] &bWelcome, &f%player_name%"
+    - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
     - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
     - "[MESSAGE] [CENTER:CHAT] &bWelcome for the first time! &f%player_name%"
     - "[MESSAGE]  "
@@ -45,7 +48,15 @@ on-first-join:
     - "[FIREWORK] BALL_LARGE, #FF00FF, #00FFFF, true, true, 1"
     - "[FIREWORK] BALL_LARGE, #FF00FF, #FF00FF, true, true, 1"
     - "[FIREWORK] BALL_LARGE, #FF00FF, #FFFF00, true, true, 1"
-    - "[OPEN] [NO_PERMISSION: xg7lobby.admin] profile"
-    - "[COMMAND] [PERMISSION: xg7lobby.command.help] 7l help"
+    - "[OPEN] ?NO_PERMISSION: xg7lobby.admin? profile"
+    - "[PLAYER_COMMAND] ?PERMISSION: xg7lobby.command.help? 7l help"
+
+on-quit:
+  enabled: true
+
+  run-events-when-return-to-the-world: true
+
+  events:
+    - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
 
 config-version: 1

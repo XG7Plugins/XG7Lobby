@@ -24,7 +24,7 @@ items:
   #  amount: 1 <- Amount of the item
   #  glow: true <- If the item should glow
   #  actions: <- Actions of the item
-  #    - "[COMMAND] COMMAND"
+  #    - "[PLAYER_COMMAND] COMMAND"
   #    - "[CLOSE] "
 
   survival:

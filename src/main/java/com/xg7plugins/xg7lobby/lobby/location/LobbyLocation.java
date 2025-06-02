@@ -2,10 +2,10 @@ package com.xg7plugins.xg7lobby.lobby.location;
 
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.database.entity.Entity;
+import com.xg7plugins.data.database.entity.Pkey;
 import com.xg7plugins.data.database.entity.Table;
 import com.xg7plugins.server.ServerInfo;
 import com.xg7plugins.utils.location.Location;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.entity.Player;
 
@@ -16,6 +16,7 @@ import java.util.Objects;
 @Table(name = "lobbies")
 public class LobbyLocation implements Entity<String, LobbyLocation> {
 
+    @Pkey
     private final String id;
     private final Location location;
     private final ServerInfo serverInfo;

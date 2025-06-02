@@ -4,6 +4,7 @@ import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.database.entity.Column;
 import com.xg7plugins.data.database.entity.Entity;
+import com.xg7plugins.data.database.entity.Pkey;
 import com.xg7plugins.data.database.entity.Table;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @Table(name = "lobby_players")
 public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
+    @Pkey
     private final UUID playerUUID;
     private boolean muted;
 

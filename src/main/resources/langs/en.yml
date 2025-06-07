@@ -81,7 +81,7 @@ lobby:
 
   on-set:
     on-error: "&cError while setting the lobby location. %error%"
-    on-success: "&aLobby location &e%id% &aset successfully on &7World&b: &6%world&b, &6X&b: &6%x%&b, &6Y&b: &6%y%&b, &6Z&b: &6%z%&b, &6YAW&b: &6%yaw%&b, &6PITCH&b: &6%pitch%&b."
+    on-success: "&aLobby location &e%id% &aset successfully on &7World&b: &6%world%&b, &6X&b: &6%x%&b, &6Y&b: &6%y%&b, &6Z&b: &6%z%&b, &6YAW&b: &6%yaw%&b, &6PITCH&b: &6%pitch%&b."
 
   on-teleport:
     on-error: "&cError while trying to teleport to the lobby."

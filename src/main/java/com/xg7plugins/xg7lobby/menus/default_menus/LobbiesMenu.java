@@ -1,8 +1,9 @@
-package com.xg7plugins.xg7lobby.inventories.default_menus;
+package com.xg7plugins.xg7lobby.menus.default_menus;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.modules.xg7menus.Slot;
+import com.xg7plugins.modules.xg7menus.editor.InventoryEditor;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.holders.PagedMenuHolder;
@@ -17,7 +18,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class LobbiesMenu extends PagedMenu {
@@ -78,11 +78,14 @@ public class LobbiesMenu extends PagedMenu {
 
     @Override
     public List<Item> getItems(Player player) {
-        return Arrays.asList(
-                Item.from(XMaterial.ARROW).name("lang:[lobbies-menu.go-back]").slot(45),
-                Item.from(XMaterial.matchXMaterial("BARRIER").orElse(XMaterial.OAK_DOOR)).name("lang:[lobbies-menu.close]").slot(49),
-                Item.from(XMaterial.ARROW).name("lang:[lobbies-menu.go-next]").slot(53)
-        );
+
+        InventoryEditor editor = new InventoryEditor(getMenuConfigs());
+
+        editor.setItem(Slot.fromSlot(45), Item.from(XMaterial.ARROW).name("lang:[lobbies-menu.go-back]").slot(45));
+        editor.setItem(Slot.fromSlot(49), Item.from(XMaterial.matchXMaterial("BARRIER").orElse(XMaterial.OAK_DOOR)).name("lang:[lobbies-menu.close]").slot(49));
+        editor.setItem(Slot.fromSlot(53), Item.from(XMaterial.ARROW).name("lang:[lobbies-menu.go-next]").slot(53));
+
+        return editor.getItems();
     }
 
     @Override
@@ -129,7 +132,9 @@ public class LobbiesMenu extends PagedMenu {
                                 e.printStackTrace();
                                 return null;
                             })
-                            .thenRun(() -> Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.delete.on-success", Pair.of("id", lobbyLocation.getID())));
+                            .thenRun(() -> Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.delete.on-success", Pair.of("id", lobbyLocation.getID()))).join();
+                    
+                    refresh((PagedMenuHolder) event.getHolder());
 
                 }).join();
 

@@ -90,13 +90,13 @@
 #[BUNGEE] Teleport the player to another server
 #[BUNGEE] server-name
 
-#[OPEN] Opens an inventory
-#[CLOSE] Closes an inventory
-#[REFRESH] Refreshes the inventory
+#[OPEN_MENU] Opens an inventory
+#[CLOSE_MENU] Closes an inventory
+#[REFRESH_MENU] Refreshes the inventory
 #[SWAP] Swaps the item in the inventory
 #[SWAP] item-id
 #There in the selectors.yml file you can create an inventory
-#Mode of use: "[OPEN] (id)", "[CLOSE] "
+#Mode of use: "[OPEN_MENU] (id)", "[CLOSE_MENU] "
 
 #%player% returns the player's name (if you are not using PLACEHOLDER API)
 
@@ -109,14 +109,14 @@
 #It is an approximate centering according to the pixels of each letter in the game
 
 #[PERMISSION] Only do the action if you have permission
-#[OPEN] 1 [PERMISSION: your.permission]
-#[OPEN] 1 [!PERMISSION: your.permission] (If you don't have permission)
+#[OPEN_MENU] 1 [PERMISSION: your.permission]
+#[OPEN_MENU] 1 [!PERMISSION: your.permission] (If you don't have permission)
 
 #[ACTION] Send an action
 
 #[PERMISSION] Only do the action if the condition is true
-#[OPEN] 1 [IF: %xg7lobby_players_hiding%]
-#[OPEN] 1 [!IF: #%xg7lobby_players_hiding%] (If the condition is false)
+#[OPEN_MENU] 1 [IF: %xg7lobby_players_hiding%]
+#[OPEN_MENU] 1 [!IF: #%xg7lobby_players_hiding%] (If the condition is false)
 
 #Links:
 
@@ -133,11 +133,6 @@ enabled-worlds:
   - "lobby"
 
 debug-enabled: false
-
-menus-enabled: true
-
-main-selector-id: "selector"
-main-pvp-selector-id: "pvp"
 
 ##################################################################
 #                              SQL                               #
@@ -167,6 +162,13 @@ lobby-teleport-cooldown:
 
   after-teleport: "5s"
 
+build-system-enabled: true
+
+menus-enabled: true
+
+main-selector-id: "selector"
+main-pvp-selector-id: "pvp"
+
 effects-task-delay: 5s
 
 effects:
@@ -184,8 +186,8 @@ hunger: 10
 food-change: false
 
 interact-with-blocks: false
-break-block: false
-place-block: false
+break-blocks: false
+place-blocks: false
 
 drop-items: false
 pickup-items: false

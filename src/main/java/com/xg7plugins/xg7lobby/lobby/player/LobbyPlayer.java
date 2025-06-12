@@ -82,14 +82,17 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)) return;
 
-        player.setAllowFlight(
-                flying || (
+        player.setAllowFlight(flying || (
                                 (config.get("multi-jumps.enabled", Boolean.class).orElse(false) && player.hasPermission("xg7lobby.multi-jumps"))
                                 || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR
                 )
         );
         if (player.getAllowFlight()) player.setFlying(flying);
 
+    }
+
+    public boolean isBuildEnabled() {
+        return buildEnabled && Config.mainConfigOf(XG7Lobby.getInstance()).get("build-system-enabled", Boolean.class).orElse(false);
     }
 
     public void addInfraction(Infraction infraction) {

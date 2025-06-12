@@ -16,7 +16,7 @@ public class DefaultWorldEvents implements Listener {
     }
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "spawn-mobs")
+            isEnabled = @ConfigBoolean(configName = "config", path = "spawn-mobs", invert = true)
     )
     public void onMobSpawn(CreatureSpawnEvent event) {
         event.setCancelled(true);
@@ -24,7 +24,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "leaves-decay")
+            isEnabled = @ConfigBoolean(configName = "config", path = "leaves-decay", invert = true)
     )
     public void onLeavesDecay(LeavesDecayEvent event) {
         event.setCancelled(true);
@@ -32,7 +32,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "burn-blocks")
+            isEnabled = @ConfigBoolean(configName = "config", path = "burn-blocks", invert = true)
     )
     public void onBlockBurn(BlockBurnEvent event) {
         event.setCancelled(true);
@@ -40,7 +40,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "block-spread")
+            isEnabled = @ConfigBoolean(configName = "config", path = "block-spread", invert = true)
     )
     public void onBlockSpread(BlockSpreadEvent event) {
         event.setCancelled(true);
@@ -48,7 +48,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "cancel-explosions", invert = true)
+            isEnabled = @ConfigBoolean(configName = "config", path = "cancel-explosions")
     )
     public void onExplosion(ExplosionPrimeEvent event) {
         event.setCancelled(true);

@@ -6,7 +6,13 @@ import com.cryptomorin.xseries.XPotion;
 import com.cryptomorin.xseries.XSound;
 import com.cryptomorin.xseries.particles.XParticle;
 import com.xg7plugins.XG7PluginsAPI;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
 import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
+import com.xg7plugins.modules.xg7menus.menus.holders.BasicMenuHolder;
+import com.xg7plugins.modules.xg7menus.menus.holders.MenuHolder;
+import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
 import com.xg7plugins.server.MinecraftVersion;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;
@@ -14,11 +20,18 @@ import com.xg7plugins.utils.Parser;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -169,6 +182,24 @@ public enum ActionType {
                 }
             }
     ),
+    GAMEMODE(
+            "[GAMEMODE] gamemode",
+            "Sets the gamemode of a player",
+            "COMPASS",
+            true,
+            (player, args) -> {
+
+                String gamemode = args[0].toUpperCase();
+
+                try {
+                    Parser.INTEGER.convert(gamemode);
+                    player.setGameMode(GameMode.getByValue(Integer.parseInt(gamemode)));
+                    return;
+                } catch (Exception ignored) {
+                    player.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
+                }
+            }
+    ),
     PARTICLE(
             "[PARTICLE] particle, Optional:[amount, Optional:[offset x, offset y, offset z]]",
             "Displays a particle to the player",
@@ -278,6 +309,28 @@ public enum ActionType {
                 }
             }
     ),
+    LOBBY("[LOBBY] id",
+            "Teleport to a lobby",
+            "BLAZE_ROD",
+            true,
+            (player, args) -> {
+                if (args.length != 1) throw new ActionException("LOBBY", "Incorrectly amount of args: " + args.length + ". The right way to use is [LOBBY] lobbyId.");
+
+                String id = args[0];
+
+                if (id.equalsIgnoreCase("random")) {
+                    XG7LobbyAPI.requestRandomLobbyLocation().thenAccept(l -> {
+                        if (l == null) return;
+                        l.teleport(player);
+                    });
+                    return;
+                }
+
+                XG7LobbyAPI.requestLobbyLocation(args[0]).thenAccept(l -> {
+                    if (l == null) return;
+                    l.teleport(player);
+                });
+            }),
     BUNGEE(
             "[BUNGEE] server",
             "Connect to a bungee server",
@@ -293,18 +346,88 @@ public enum ActionType {
                 }
             }
     ),
-    OPEN(
-            "[OPEN] menu_id",
+    OPEN_MENU(
+            "[OPEN_MENU] menu_id",
             "Open a custom inventory",
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZiOTJlYTJiZDlhNzdhZmJkM2YxNzAzODVhNTdjZGVkNzQ5YWIxNjAxODE0NTkzZTVkZTljYWQ5NTQ5NTkyYyJ9fX0=",
-            true, (player, args) -> {}
+            true,
+            (player, args) -> {
+                if (args.length != 1)
+                    throw new ActionException("OPEN", "Incorrectly amount of args: " + args.length + ". The right way to use is [OPEN_MENU] menu_id.");
+
+                XG7LobbyAPI.customInventoryManager().openMenu(args[0], player);
+            }
     ),
-    CLOSE(
-            "[CLOSE] ",
+    CLOSE_MENU(
+            "[CLOSE_MENU] ",
             "Close the inventory",
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWRjMzZjOWNiNTBhNTI3YWE1NTYwN2EwZGY3MTg1YWQyMGFhYmFhOTAzZThkOWFiZmM3ODI2MDcwNTU0MGRlZiJ9fX0=",
             false,
             (player, args) -> player.closeInventory()
+    ),
+    REFRESH_MENU(
+            "[REFRESH_MENU] ",
+            "Refresh the menu",
+            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UwNzIzNTVhZmE2MTQyYmFmNTY2MGM5MDY4N2M4YzUwZGM2M2U1Nzc4MWRkYmNhNWNlM2YzNTU0ZDFlMzc1ZSJ9fX0=",
+            false,
+            (player, args) -> {
+                if (player.getOpenInventory().getTopInventory().getHolder() instanceof BasicMenuHolder) {
+                    BasicMenu.refresh((MenuHolder) player.getOpenInventory().getTopInventory().getHolder());
+                }
+                if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
+                    BasicMenu.refresh(XG7Menus.getPlayerMenuHolder(player.getUniqueId()));
+                }
+            }
+            ),
+    SWAP(
+            "[SWAP] itempath",
+            "swap a item on the inventory",
+            "EMERALD_BLOCK",
+            true,
+            ((player, args) -> {
+                if (args.length != 3) {
+                    throw new ActionException("SWAP", "Incorrectly amount of args: " + args.length + ". The right way to use is [SWAP] menuId, slot, itemPath.");
+                }
+
+                CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
+
+                LobbyInventory menu = inventoryManager.isGUI(args[0].substring(args[0].indexOf(":") + 1)) ? inventoryManager.getGUIByXG7MenusId(args[0]) : inventoryManager.getHotbarByXG7MenusId(args[0]);
+
+                if (menu == null) {
+                    throw new ActionException("SWAP", "The menu with id: " + args[0] + " doesn't exist.");
+                }
+
+                int slot = Parser.INTEGER.convert(args[1]);
+
+                if (menu instanceof LobbyGUI) {
+
+                    LobbyGUI lobbyGUI = (LobbyGUI) menu;
+
+                    LobbyItem item = lobbyGUI.items().get(args[2]);
+
+                    MenuHolder holder = (MenuHolder) player.getOpenInventory().getTopInventory().getHolder();
+
+                    if (item == null) {
+                        throw new ActionException("SWAP", "The item with path: " + args[1] + " doesn't exist in the menu with id: " + args[0]);
+                    }
+
+                    holder.getInventoryUpdater().setItem(com.xg7plugins.modules.xg7menus.Slot.fromSlot(slot), item.getItem());
+                    return;
+                }
+
+                LobbyHotbar lobbyHotbar = (LobbyHotbar) menu;
+
+                LobbyItem item = lobbyHotbar.items().get(args[2]);
+
+                PlayerMenuHolder holder = XG7Menus.getInstance().getPlayerMenuHolder(player.getUniqueId());
+
+                if (item == null) {
+                    throw new ActionException("SWAP", "The item with path: " + args[1] + " doesn't exist in the menu with id: " + args[0]);
+                }
+
+                holder.getInventoryUpdater().setItem(com.xg7plugins.modules.xg7menus.Slot.fromSlot(slot), item.getItem());
+            })
+
     );
 
     private final String usage;

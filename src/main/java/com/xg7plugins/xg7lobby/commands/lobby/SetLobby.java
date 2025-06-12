@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 )
 public class SetLobby implements Command {
 
-
+    @Override
     public void onCommand(CommandSender sender, CommandArgs args) {
 
         String id = ShortUUID.generateUUID(10);

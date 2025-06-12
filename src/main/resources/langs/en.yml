@@ -89,8 +89,8 @@ lobby:
     on-error-doesnt-exist-adm: "&cThe lobby location doesn't exist. Use /setlobby to set it."
     on-success: "&aTeleported to the lobby successfully."
     on-success-other: "&aTeleported %target% to the lobby successfully."
-    on-cooldown: "&cYou can't teleport to the lobby for another %seconds% seconds."
-    on-cooldown-other: "&cYou can't teleport to the lobby this player for another %seconds% seconds."
+    on-cooldown: "&cYou can't teleport to the lobby for another @SECONDS:%time%@ seconds."
+    on-cooldown-other: "&cYou can't teleport to the lobby this player for another @SECONDS:%time%@ seconds."
 
   on-join-events:
     title: "&bWelcome"
@@ -138,14 +138,14 @@ chat:
 
 
   same-message: "&cYou can't send the same message twice."
-  message-cooldown: "&cYou can't send messages for another %seconds% seconds."
+  message-cooldown: "&cYou can't send messages for another @SECONDS:%time%@ seconds."
   send-much-messages: "&cYou are sending messages too fast. Please slow down."
 
   prohibited-command: "&cCommand not found."
 
 menu-does-not-exist: "&cThis menu doesn't exist."
 
-selector-cooldown: "&cYou can't use the selector for another %seconds% seconds."
+selector-cooldown: "&cYou can't use the selector for another @SECONDS:%time%@ seconds."
 
 hide-players:
   show: "&aPlayers are now visible."
@@ -160,7 +160,7 @@ pvp:
 
   on-attack: "&cYou can't attack this player. He is not in global PvP mode."
 
-  pvp-disabling: "[ACTION] &cYour pvp is being disabled in %seconds% seconds. Dont move!"
+  pvp-disabling: "[ACTION] &cYour pvp is being disabled in @SECONDS:%time%@ seconds. Dont move!"
   disable-cancelled: "&cPvP disabling cancelled!"
 
   pvp-command: "You can't use this command in global PvP mode."

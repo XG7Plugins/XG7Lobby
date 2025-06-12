@@ -1,6 +1,3 @@
-type: SELECTOR
-
-#DON'T CHANGE THIS ID
 id: "pvp"
 
 cooldown-to-use: 0s
@@ -11,24 +8,22 @@ items:
     material: "DIAMOND_SWORD"
     name: "&aPvP Sword"
     amount: 1
-    glow: true
+    enchants:
+      - "DAMAGE_ALL, 1"
 
   bow:
     material: "BOW"
     name: "&aPvP Bow"
     amount: 1
-    glow: true
 
   arrow:
     material: "ARROW"
     name: "&aPvP Arrow"
     amount: 64
-    glow: true
 
 
 
-grid:
-  - ["sword", "bow", "arrow", "", "", "", "", "", ""]
+row: ["sword", "bow", "arrow", "", "", "", "", "", ""]
 
 
 config-version: 1.0

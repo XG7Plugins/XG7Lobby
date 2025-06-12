@@ -1,0 +1,50 @@
+package com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter;
+
+import com.xg7plugins.data.config.Config;
+import com.xg7plugins.data.config.ConfigTypeAdapter;
+import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.Pair;
+import com.xg7plugins.utils.text.Condition;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
+import org.bukkit.enchantments.Enchantment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
+    @Override
+    public LobbyItem fromConfig(Config config, String path, Object... optionalArgs) {
+
+        String material = config.get(path + ".material", String.class).orElse("AIR");
+        int amount = config.get(path + ".amount", Integer.class).orElse(1);
+        String name = config.get(path + ".name", String.class).orElse("No name");
+        List<String> lore = config.getList(path + ".lore", String.class).orElse(new ArrayList<>());
+        List<String> enchants = config.getList(path + ".enchants", String.class).orElse(new ArrayList<>());
+        List<String> actions = config.getList(path + ".actions", String.class).orElse(new ArrayList<>());
+
+        Item item = Item.from(material)
+                .amount(amount)
+                .name(name)
+                .lore(lore)
+                .setNBTTag("actions", actions);
+
+        for (String enchant : enchants) {
+            Enchantment enchantment = Enchantment.getByName(enchant.split(":")[0]);
+            if (enchantment == null) continue;
+            item.enchant(enchantment, Integer.parseInt(enchant.split(":")[1]));
+        }
+
+        Pair<Condition, String> condition = config.get(path + ".conditional", String.class)
+                .map(Condition::extractCondition)
+                .orElse(new Pair<>(Condition.IF, "true"));
+
+        String otherItemPath = config.get("if-false", String.class).orElse(null);
+
+        return new LobbyItem(item, condition, otherItemPath);
+    }
+
+    @Override
+    public Class<LobbyItem> getTargetType() {
+        return LobbyItem.class;
+    }
+}

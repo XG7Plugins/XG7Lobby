@@ -2,9 +2,6 @@
 #ID of the menu, must be unique
 id: "games"
 
-#Type of the menu, NORMAL or SELECTOR
-type: "NORMAL"
-
 #Title of the menu
 title: "&a&lGames"
 
@@ -25,7 +22,7 @@ items:
   #  glow: true <- If the item should glow
   #  actions: <- Actions of the item
   #    - "[PLAYER_COMMAND] COMMAND"
-  #    - "[CLOSE] "
+  #    - "[CLOSE_MENU] "
 
   survival:
 
@@ -34,10 +31,11 @@ items:
     lore:
       - "&7Click to join the survival server!"
     amount: 1
-    glow: true
+    enchants:
+      - "DURABILITY, 1"
     actions:
       - "[BUNGEE] survival"
-      - "[CLOSE] "
+      - "[CLOSE_MENU] "
 
   bedwars:
 
@@ -49,7 +47,7 @@ items:
       glow: true
       actions:
         - "[BUNGEE] bedwars"
-        - "[CLOSE] "
+        - "[CLOSE_MENU] "
 
 #Fill material of the menu
 fill-material: GRAY_STAINED_GLASS_PANE

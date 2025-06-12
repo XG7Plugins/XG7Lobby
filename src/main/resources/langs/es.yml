@@ -75,8 +75,8 @@ lobby:
     on-error-doesnt-exist-adm: "&cLa ubicación del lobby no existe. Usa /setlobby para establecerla."
     on-success: "&aTeletransportado al lobby con éxito."
     on-success-other: "&a%target% ha sido teletransportado al lobby con éxito."
-    on-cooldown: "&cNo puedes teletransportarte al lobby por otros %seconds% segundos."
-    on-cooldown-other: "&cNo puedes teletransportar a este jugador al lobby por otros %seconds% segundos."
+    on-cooldown: "&cNo puedes teletransportarte al lobby por otros @SECONDS:%time%@ segundos."
+    on-cooldown-other: "&cNo puedes teletransportar a este jugador al lobby por otros @SECONDS:%time%@ segundos."
 
   on-join-events:
     title: "&bBienvenido"
@@ -87,7 +87,7 @@ lobby:
     on-error: "&cError al intentar eliminar la ubicación del lobby."
     on-success: "&aUbicación del lobby %id% eliminada con éxito."
 
-  on-teleporting-message: "[ACTION] &7Teletransportándose al lobby en %seconds% segundos... ¡No te muevas!"
+  on-teleporting-message: "[ACTION] &7Teletransportándose al lobby en @SECONDS:%time%@ segundos... ¡No te muevas!"
   teleport-cancelled: "&c¡Teletransporte cancelado!"
 
 messages:
@@ -114,13 +114,13 @@ chat:
   swear: "&cNo puedes insultar en el chat."
   muted: "&cEstás silenciado. No puedes enviar mensajes por %time%."
   same-message: "&cNo puedes enviar el mismo mensaje dos veces."
-  message-cooldown: "&cNo puedes enviar mensajes por otros %seconds% segundos."
+  message-cooldown: "&cNo puedes enviar mensajes por otros @SECONDS:%time%@ segundos."
   send-much-messages: "&cEstás enviando mensajes demasiado rápido. Por favor, reduce la velocidad."
   prohibited-command: "&cComando no encontrado."
 
 menu-does-not-exist: "&cEste menú no existe."
 
-selector-cooldown: "&cNo puedes usar el selector por otros %seconds% segundos."
+selector-cooldown: "&cNo puedes usar el selector por otros @SECONDS:%time%@ segundos."
 
 hide-players:
   show: "&aLos jugadores ahora son visibles."
@@ -132,7 +132,7 @@ pvp:
   on-death-with-killer: "&c%victim% ha sido asesinado por %killer%."
   on-death-without-killer: "&c%victim% ha muerto por %cause%."
   on-attack: "&cNo puedes atacar a este jugador. No está en modo PvP global."
-  pvp-disabling: "[ACTION] &cTu PvP se está desactivando en %seconds% segundos. ¡No te muevas!"
+  pvp-disabling: "[ACTION] &cTu PvP se está desactivando en @SECONDS:%time%@ segundos. ¡No te muevas!"
   disable-cancelled: "&c¡Desactivación de PvP cancelada!"
   pvp-command: "No puedes usar este comando en modo PvP global."
 

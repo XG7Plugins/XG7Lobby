@@ -5,6 +5,7 @@ import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -15,6 +16,7 @@ import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerManager;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -119,6 +121,11 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         Config mainConfig = Config.mainConfigOf(XG7Lobby.getInstance());
 
+        if (mainConfig.get("menus-enabled", Boolean.class).orElse(true)) {
+            XG7LobbyAPI.customInventoryManager().openMenu(mainConfig.get("main-selector-id", String.class).orElse("selector"), player);
+        }
+
+
         XG7LobbyConfig lobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
         lobbyConfig.getPlayerConfigs().apply(player);
 
@@ -131,6 +138,10 @@ public class LoginAndLogoutEvent implements LobbyListener {
         Config config = Config.of("events", XG7Lobby.getInstance());
 
         player.closeInventory();
+        if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
+            PlayerMenuHolder holder = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
+            holder.getMenu().close(holder);
+        }
 
         if (player.getWorld() == newWorld || config.get("on-quit.run-events-when-return-to-the-world", Boolean.class).orElse(false)) {
             ActionsProcessor.process(config.getList("on-quit.events", String.class).orElse(Collections.emptyList()), player);

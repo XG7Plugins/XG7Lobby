@@ -18,6 +18,7 @@ permissions:
       xg7lobby.attack: true
       xg7lobby.chat.*: true
       xg7lobby.inv: true
+      xg7lobby.build: true
 
   xg7lobby.command.*:
     description: Permission to use all commands.
@@ -28,7 +29,6 @@ permissions:
       xg7lobby.command.lockchat: true
       xg7lobby.command.gamemode: true
       xg7lobby.command.gamemode-others: true
-      xg7lobby.command.build: true
       xg7lobby.command.build-other: true
       xg7lobby.command.lobby.*: true
       xg7lobby.command.warns: true

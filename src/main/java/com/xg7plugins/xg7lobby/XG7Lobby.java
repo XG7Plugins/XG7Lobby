@@ -1,8 +1,12 @@
 package com.xg7plugins.xg7lobby;
 
+import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.boot.PluginSetup;
+import com.xg7plugins.commands.core_commands.reload.ReloadCause;
 import com.xg7plugins.commands.setup.Command;
+import com.xg7plugins.data.config.Config;
+import com.xg7plugins.data.config.ConfigManager;
 import com.xg7plugins.data.dao.DAO;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
@@ -13,14 +17,21 @@ import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobby;
 import com.xg7plugins.xg7lobby.commands.lobby.SetLobby;
-import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
-import com.xg7plugins.xg7lobby.configs.WorldConfigs;
+import com.xg7plugins.xg7lobby.commands.toggle_commands.BuildCommand;
+import com.xg7plugins.xg7lobby.commands.toggle_commands.FlyCommand;
+import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
+import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
+import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
 import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
 import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandEvent;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.LoginAndLogoutEvent;
-import com.xg7plugins.xg7lobby.inventories.default_menus.LobbiesMenu;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyGUITypeAdapter;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyHotbarTypeAdapter;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyItemTypeAdapter;
+import com.xg7plugins.xg7lobby.menus.default_menus.LobbiesMenu;
 import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.lobby.location.LobbyManager;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
@@ -69,9 +80,37 @@ public final class XG7Lobby extends Plugin {
                 new LobbyManager()
         );
 
+        if (Config.mainConfigOf(this).get("menus-enabled", Boolean.class).orElse(false)) {
+            managerRegistry.registerManager(new CustomInventoryManager());
+        }
+
+        debug.loading("Loading menus...");
+
+        ConfigManager configManager = XG7PluginsAPI.configManager(this);
+
+        configManager.registerAdapter(new LobbyItemTypeAdapter());
+        configManager.registerAdapter(new LobbyGUITypeAdapter());
+        configManager.registerAdapter(new LobbyHotbarTypeAdapter());
+
+        XG7LobbyAPI.customInventoryManager().loadInventories();
+
         XG7Menus menus = XG7Menus.getInstance();
 
         menus.registerMenus(new LobbiesMenu());
+
+        debug.loading("Loading XG7Lobby enabled.");
+
+    }
+
+    @Override
+    public void onReload(ReloadCause cause) {
+
+        if (cause.equals("menus")) {
+            debug.loading("Reloading menus...");
+            CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
+            inventoryManager.reloadInventories();
+            debug.loading("Menus reloaded.");
+        }
 
     }
 
@@ -91,7 +130,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby());
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand());
     }
 
     @Override

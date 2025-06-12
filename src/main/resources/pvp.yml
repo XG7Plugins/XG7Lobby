@@ -11,7 +11,7 @@ on-enter-pvp:
   heal: true
   clear-inventory: true
   actions:
-    - "[OPEN] pvp"
+    - "[OPEN_MENU] pvp"
     - "[EQUIP] HELMET, DIAMOND_HELMET"
     - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"
     - "[EQUIP] LEGGINGS, DIAMOND_LEGGINGS"

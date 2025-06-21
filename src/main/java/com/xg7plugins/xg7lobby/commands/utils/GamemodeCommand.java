@@ -50,7 +50,7 @@ public class GamemodeCommand implements Command {
         boolean isOther = false;
 
         if (args.len() > 1) {
-            if (!sender.hasPermission("xg7lobby.command.gamemode-other")) {
+            if (!sender.hasPermission("xg7lobby.command.game-mode-other")) {
                 CommandMessages.NO_PERMISSION.send(sender);
                 return;
             }
@@ -61,7 +61,7 @@ public class GamemodeCommand implements Command {
         Mode mode = Mode.getMode(args.get(0, String.class));
 
         if (mode == null) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.gamemode.invalid-gamemode");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.game-mode.invalid-game-mode");
             return;
         }
 
@@ -85,8 +85,8 @@ public class GamemodeCommand implements Command {
         }
 
         OfflinePlayer finalTarget = target;
-        Text.sendTextFromLang(target.getPlayer(),XG7Lobby.getInstance(), "commands.gamemode.set", Pair.of("gamemode", mode.name().toLowerCase()));
-        if (isOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.gamemode.set-other", Pair.of("gamemode", mode.name().toLowerCase()));
+        Text.sendTextFromLang(target.getPlayer(),XG7Lobby.getInstance(), "commands.game-mode.set", Pair.of("gamemode", mode.name().toLowerCase()));
+        if (isOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.game-mode.set-other", Pair.of("gamemode", mode.name().toLowerCase()));
     }
 
     @Override

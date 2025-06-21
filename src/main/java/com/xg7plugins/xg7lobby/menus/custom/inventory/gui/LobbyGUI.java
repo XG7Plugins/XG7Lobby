@@ -15,6 +15,7 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,7 @@ public class LobbyGUI extends Menu implements LobbyInventory {
     private final HashMap<String, LobbyItem> items;
     private final HashMap<Integer, String> grid;
 
+    @Getter
     private final Config menuConfig;
 
     public LobbyGUI(Config menuConfig, String id, String title, int rows, @NotNull XMaterial fillItem, HashMap<String, LobbyItem> items, HashMap<Integer, String> grid) {

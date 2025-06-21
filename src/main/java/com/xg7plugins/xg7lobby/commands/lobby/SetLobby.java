@@ -70,16 +70,18 @@ public class SetLobby implements Command {
         LobbyManager lobbyManager = XG7LobbyAPI.lobbyManager();
 
         try {
-            lobbyManager.saveLobbyLocation(lobbyLocation);
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-set.on-success",
-                    Pair.of("id", id),
-                    Pair.of("world", location.getWorldName()),
-                    Pair.of("x", String.format("%.2f", location.getX())),
-                    Pair.of("y", String.format("%.2f", location.getY())),
-                    Pair.of("z", String.format("%.2f", location.getZ())),
-                    Pair.of("yaw", String.format("%.2f", location.getYaw())),
-                    Pair.of("pitch", String.format("%.2f", location.getPitch()))
-            );
+            String finalId = id;
+            lobbyManager.saveLobbyLocation(lobbyLocation).thenRun(() -> {
+                Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-set.on-success",
+                        Pair.of("id", finalId),
+                        Pair.of("world", location.getWorldName()),
+                        Pair.of("x", String.format("%.2f", location.getX())),
+                        Pair.of("y", String.format("%.2f", location.getY())),
+                        Pair.of("z", String.format("%.2f", location.getZ())),
+                        Pair.of("yaw", String.format("%.2f", location.getYaw())),
+                        Pair.of("pitch", String.format("%.2f", location.getPitch()))
+                );
+            });
         } catch (ExecutionException | InterruptedException e) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-set.on-error", Pair.of("error", e.getMessage()));
             throw new RuntimeException(e);

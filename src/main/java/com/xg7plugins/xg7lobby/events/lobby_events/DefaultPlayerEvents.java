@@ -8,6 +8,7 @@ import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigBoolean;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
+import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.server.MinecraftVersion;
 import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.utils.text.Text;
@@ -72,7 +73,12 @@ public class DefaultPlayerEvents implements Listener {
             priority = EventPriority.HIGH
     )
     public void onInteract(PlayerInteractEvent event) {
-        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+        MenuAction action = MenuAction.from(event.getAction());
+        if (action.isBlockInteract() && action.isLeftClick()) {
+            handleItemEvents(event, "player-prohibitions.break-blocks");
+            return;
+        }
+        if (!(action.isRightClick() && action.isBlockInteract())) return;
         handleItemEvents(event, "player-prohibitions.interact-with-blocks");
     }
 
@@ -103,7 +109,6 @@ public class DefaultPlayerEvents implements Listener {
     }
 
     private <T extends Event & Cancellable> void handleItemEvents(T event, String path) {
-
 
         Player player = ReflectionObject.of(event).getMethod("getPlayer").invoke();
 

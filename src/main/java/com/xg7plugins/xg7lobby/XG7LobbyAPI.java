@@ -25,6 +25,10 @@ public class XG7LobbyAPI {
     }
 
     public static CompletableFuture<LobbyPlayer> requestLobbyPlayer(UUID uuid) {
+        return lobbyPlayerManager().getPlayerAsync(uuid);
+    }
+
+    public static LobbyPlayer getLobbyPlayer(UUID uuid) {
         return lobbyPlayerManager().getPlayer(uuid);
     }
 

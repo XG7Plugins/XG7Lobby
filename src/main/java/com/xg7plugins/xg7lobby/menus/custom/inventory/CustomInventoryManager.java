@@ -9,6 +9,7 @@ import com.xg7plugins.modules.xg7menus.menus.menus.player.PlayerMenu;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
+import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.Hash;
 import org.bukkit.entity.Player;
@@ -21,8 +22,13 @@ public class CustomInventoryManager implements Manager {
 
     private final HashMap<String, LobbyInventory> inventories = new HashMap<>();
 
+    @Getter
+    private boolean enabled;
+
     public void loadInventories() {
         XG7Lobby lobby = XG7Lobby.getInstance();
+
+        enabled = Config.mainConfigOf(lobby).get("menus-enabled", Boolean.class).orElse(true);
 
         lobby.getDebug().loading("Loading custom inventories...");
 
@@ -132,6 +138,15 @@ public class CustomInventoryManager implements Manager {
         }
 
         lobbyInventory.getMenu().open(player);
+    }
+
+    public void closeAllMenus(Player player) {
+        if (!enabled) return;
+        player.closeInventory();
+        if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
+            PlayerMenuHolder holder = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
+            holder.getMenu().close(holder);
+        }
     }
 
     public List<String> getIds() {

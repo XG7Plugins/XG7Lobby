@@ -40,7 +40,14 @@ public class LoginAndLogoutEvent implements LobbyListener {
     @SneakyThrows
     @EventHandler
     public void onAsyncJoin(AsyncPlayerPreLoginEvent event) {
-        lobbyPlayerManager.savePlayer(new LobbyPlayer(event.getUniqueId()));
+        try {
+            boolean saved = lobbyPlayerManager.savePlayer(new LobbyPlayer(event.getUniqueId()));
+            if (!saved) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Error saving player data!");
+        } catch (Exception e) {
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Error saving player data!");
+            throw new RuntimeException(e);
+        }
+
     }
 
     @EventHandler
@@ -92,10 +99,9 @@ public class LoginAndLogoutEvent implements LobbyListener {
     public void onWorldJoin(Player player, World newWorld) {
         Config config = Config.of("events", XG7Lobby.getInstance());
 
-        LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
-
-        lobbyPlayerManager.getPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+        XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();
+
             lobbyPlayer.setHidingPlayers(lobbyPlayer.isHidingPlayers());
         });
 
@@ -121,10 +127,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         Config mainConfig = Config.mainConfigOf(XG7Lobby.getInstance());
 
-        if (mainConfig.get("menus-enabled", Boolean.class).orElse(true)) {
-            XG7LobbyAPI.customInventoryManager().openMenu(mainConfig.get("main-selector-id", String.class).orElse("selector"), player);
-        }
-
+        XG7LobbyAPI.customInventoryManager().openMenu(mainConfig.get("main-selector-id", String.class).orElse("selector"), player);
 
         XG7LobbyConfig lobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
         lobbyConfig.getPlayerConfigs().apply(player);
@@ -137,13 +140,9 @@ public class LoginAndLogoutEvent implements LobbyListener {
     public void onWorldLeave(Player player, World newWorld) {
         Config config = Config.of("events", XG7Lobby.getInstance());
 
-        player.closeInventory();
-        if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
-            PlayerMenuHolder holder = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
-            holder.getMenu().close(holder);
-        }
+        XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
 
-        if (player.getWorld() == newWorld || config.get("on-quit.run-events-when-return-to-the-world", Boolean.class).orElse(false)) {
+        if (player.getWorld().getUID().equals(newWorld.getUID()) || config.get("on-quit.run-events-when-return-to-the-world", Boolean.class).orElse(false)) {
             ActionsProcessor.process(config.getList("on-quit.events", String.class).orElse(Collections.emptyList()), player);
         }
 

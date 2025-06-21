@@ -28,19 +28,35 @@ public class LobbyPlayerManager implements Manager {
         this.lobbyPlayerDAO = new LobbyPlayerDAO();
     }
 
-    public CompletableFuture<Boolean> savePlayer(LobbyPlayer lobbyPlayer) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Boolean> savePlayerAsync(LobbyPlayer lobbyPlayer) {
+        return this.lobbyPlayerDAO.addAsync(lobbyPlayer);
+    }
+
+    public CompletableFuture<Boolean> deletePlayerAsync(LobbyPlayer lobbyPlayer) {
+        return this.lobbyPlayerDAO.deleteAsync(lobbyPlayer);
+    }
+
+    public CompletableFuture<Boolean> updatePlayerAsync(LobbyPlayer lobbyPlayer) {
+        return this.lobbyPlayerDAO.updateAsync(lobbyPlayer);
+    }
+
+    public CompletableFuture<LobbyPlayer> getPlayerAsync(UUID uuid) {
+        return this.lobbyPlayerDAO.getAsync(uuid);
+    }
+
+    public boolean savePlayer(LobbyPlayer lobbyPlayer) throws Exception {
         return this.lobbyPlayerDAO.add(lobbyPlayer);
     }
 
-    public CompletableFuture<Boolean> deletePlayer(LobbyPlayer lobbyPlayer) {
+    public boolean deletePlayer(LobbyPlayer lobbyPlayer) {
         return this.lobbyPlayerDAO.delete(lobbyPlayer);
     }
 
-    public CompletableFuture<Boolean> updatePlayer(LobbyPlayer lobbyPlayer) {
+    public boolean updatePlayer(LobbyPlayer lobbyPlayer) {
         return this.lobbyPlayerDAO.update(lobbyPlayer);
     }
 
-    public CompletableFuture<LobbyPlayer> getPlayer(UUID uuid) {
+    public LobbyPlayer getPlayer(UUID uuid) {
         return this.lobbyPlayerDAO.get(uuid);
     }
 
@@ -48,20 +64,17 @@ public class LobbyPlayerManager implements Manager {
         return XG7PluginsAPI.database().containsCachedEntity(XG7Lobby.getInstance(), id.toString()).join();
     }
 
-    public CompletableFuture<Void> addInfraction(Infraction infraction, UUID playerUUID) {
-        return CompletableFuture.runAsync(() -> {
+    public void addInfraction(Infraction infraction, UUID playerUUID) {
 
-            LobbyPlayer lobbyPlayer = getPlayer(playerUUID).join();
+        LobbyPlayer lobbyPlayer = getPlayer(playerUUID);
 
-            if (lobbyPlayer == null) return;
+        if (lobbyPlayer == null) return;
 
-            lobbyPlayer.addInfraction(infraction);
+        lobbyPlayer.addInfraction(infraction);
 
-            lobbyPlayer.applyInfractions();
+        lobbyPlayer.applyInfractions();
 
-            updatePlayer(lobbyPlayer).join();
-
-        });
+        updatePlayer(lobbyPlayer);
     }
 
     public void banPlayer(OfflinePlayer player, Time time, Text reason) {
@@ -98,6 +111,6 @@ public class LobbyPlayerManager implements Manager {
 
         if (player.getOfflinePlayer().isOnline()) reason.send(player.getPlayer());
 
-       updatePlayer(player).join();
+       updatePlayer(player);
     }
 }

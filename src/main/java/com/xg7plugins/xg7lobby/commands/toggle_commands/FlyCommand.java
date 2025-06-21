@@ -11,6 +11,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
         permission = "xg7lobby.command.fly",
         syntax = "/7lfly (player)",
         description = "Toggle fly mode",
+        isAsync = true,
         isInEnabledWorldOnly = true,
         pluginClass = XG7Lobby.class
 )
@@ -51,44 +53,39 @@ public class FlyCommand implements Command {
             target = args.get(0, OfflinePlayer.class);
             isOther = true;
         }
-        if (isOther) {
-            if (target == null || !target.hasPlayedBefore() || !target.isOnline()) {
-                CommandMessages.PLAYER_NOT_FOUND.send(sender);
-                return;
-            }
-
-            if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), target.getPlayer())) {
-                CommandMessages.DISABLED_WORLD.send(sender);
-                return;
-            }
+        if (isOther && target == null || !target.hasPlayedBefore() || !target.isOnline()) {
+            CommandMessages.PLAYER_NOT_FOUND.send(sender);
+            return;
+        }
+        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), target.getPlayer())) {
+            CommandMessages.DISABLED_WORLD.send(sender);
+            return;
         }
 
         boolean finalIsOther = isOther;
 
         OfflinePlayer finalTarget = target;
-        XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
-            boolean before = lobbyPlayer.isFlying();
 
-            lobbyPlayer.setFlying(!lobbyPlayer.isFlying());
+        LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
-            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer).exceptionally(throwable -> {
-                throwable.printStackTrace();
-                lobbyPlayer.setFlying(before);
-                XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
-                return null;
-            });
+        boolean before = lobbyPlayer.isBuildEnabled();
+
+        lobbyPlayer.setFlying(!lobbyPlayer.isFlying());
+
+        try {
+            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
 
             if (finalTarget.isOnline()) {
-                lobbyPlayer.fly();
-                Text.sendTextFromLang(lobbyPlayer.getPlayer(),XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-on" : "toggle-off"));
+                XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), lobbyPlayer::fly);
+                Text.sendTextFromLang(lobbyPlayer.getPlayer(),XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-on" : "toggle-off"));
             }
-            if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
-        }).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            return null;
-        });
+            if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
 
-
+        } catch (Exception e) {
+            lobbyPlayer.setFlying(before);
+            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+            throw  new RuntimeException(e);
+        }
     }
 
     @Override

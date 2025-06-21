@@ -16,6 +16,7 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
+    @Getter
     private final Config menuConfig;
 
     private final Time cooldown;

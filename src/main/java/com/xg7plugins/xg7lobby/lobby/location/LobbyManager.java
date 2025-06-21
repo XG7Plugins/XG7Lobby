@@ -21,23 +21,23 @@ public class LobbyManager implements Manager {
     }
 
     public CompletableFuture<Boolean> saveLobbyLocation(LobbyLocation lobbyLocation) throws ExecutionException, InterruptedException {
-        return this.lobbyLocationDAO.add(lobbyLocation);
+        return this.lobbyLocationDAO.addAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> deleteLobbyLocation(LobbyLocation lobbyLocation) {
-        return this.lobbyLocationDAO.delete(lobbyLocation);
+        return this.lobbyLocationDAO.deleteAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> updateLobbyLocation(LobbyLocation lobbyLocation) {
-        return this.lobbyLocationDAO.update(lobbyLocation);
+        return this.lobbyLocationDAO.updateAsync(lobbyLocation);
     }
 
     public CompletableFuture<List<LobbyLocation>> getAllLobbies() {
-        return this.lobbyLocationDAO.getAll();
+        return this.lobbyLocationDAO.getAllAsync();
     }
 
     public CompletableFuture<LobbyLocation> getLobbyLocation(String name) {
-        return this.lobbyLocationDAO.get(name);
+        return this.lobbyLocationDAO.getAsync(name);
     }
 
     public CompletableFuture<LobbyLocation> getRandomLobbyLocation() {
@@ -49,7 +49,7 @@ public class LobbyManager implements Manager {
 
             if (!cachedLocalLobbies.isEmpty()) return cachedLocalLobbies.get(new Random().nextInt(cachedLocalLobbies.size()));
 
-            List<LobbyLocation> lobbies = lobbyLocationDAO.getAll().join();
+            List<LobbyLocation> lobbies = lobbyLocationDAO.getAll();
 
             if (lobbies.isEmpty()) return null;
 

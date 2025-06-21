@@ -6,6 +6,8 @@ import com.xg7plugins.data.database.entity.Column;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.data.database.entity.Pkey;
 import com.xg7plugins.data.database.entity.Table;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -91,6 +93,22 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
     }
 
+    public void applyBuild() {
+        Player player = this.getPlayer();
+
+        if (player == null) return;
+
+        if (buildEnabled) {
+            XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
+            return;
+        }
+
+        Config mainConfig = Config.mainConfigOf(XG7Lobby.getInstance());
+
+        XG7LobbyAPI.customInventoryManager().openMenu(mainConfig.get("main-selector-id", String.class).orElse("selector"), player);
+
+    }
+
     public boolean isBuildEnabled() {
         return buildEnabled && Config.mainConfigOf(XG7Lobby.getInstance()).get("build-system-enabled", Boolean.class).orElse(false);
     }
@@ -144,5 +162,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         });
         
     }
+
+
 
 }

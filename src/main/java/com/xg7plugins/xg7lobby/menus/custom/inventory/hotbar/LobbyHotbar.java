@@ -1,18 +1,13 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
-import com.xg7plugins.modules.xg7menus.Slot;
-import com.xg7plugins.modules.xg7menus.editor.InventoryEditor;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
-import com.xg7plugins.modules.xg7menus.menus.menus.gui.menus.Menu;
 import com.xg7plugins.modules.xg7menus.menus.menus.player.PlayerMenu;
 import com.xg7plugins.modules.xg7menus.menus.menus.player.PlayerMenuConfigurations;
-import com.xg7plugins.tasks.CooldownManager;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Condition;
 import com.xg7plugins.utils.text.Text;
@@ -22,7 +17,6 @@ import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.menus.custom.inventory.gui;
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.modules.xg7menus.Slot;
-import com.xg7plugins.modules.xg7menus.editor.InventoryEditor;
+import com.xg7plugins.modules.xg7menus.editor.InventoryShaper;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
@@ -12,7 +12,6 @@ import com.xg7plugins.modules.xg7menus.menus.menus.gui.menus.Menu;
 import com.xg7plugins.utils.text.Condition;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
@@ -70,7 +69,7 @@ public class LobbyGUI extends Menu implements LobbyInventory {
 
     @Override
     public List<Item> getItems(Player player) {
-        InventoryEditor editor = new InventoryEditor(getMenuConfigs());
+        InventoryShaper editor = new InventoryShaper(getMenuConfigs());
 
         Item fillItem = Item.from(this.fillItem);
 

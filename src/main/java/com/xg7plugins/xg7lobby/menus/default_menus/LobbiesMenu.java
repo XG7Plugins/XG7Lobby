@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.menus.default_menus;
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.modules.xg7menus.Slot;
-import com.xg7plugins.modules.xg7menus.editor.InventoryEditor;
+import com.xg7plugins.modules.xg7menus.editor.InventoryShaper;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.holders.PagedMenuHolder;
@@ -17,7 +17,6 @@ import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LobbiesMenu extends PagedMenu {
@@ -79,7 +78,7 @@ public class LobbiesMenu extends PagedMenu {
     @Override
     public List<Item> getItems(Player player) {
 
-        InventoryEditor editor = new InventoryEditor(getMenuConfigs());
+        InventoryShaper editor = new InventoryShaper(getMenuConfigs());
 
         editor.setItem(Slot.fromSlot(45), Item.from(XMaterial.ARROW).name("lang:[lobbies-menu.go-back]").slot(45));
         editor.setItem(Slot.fromSlot(49), Item.from(XMaterial.matchXMaterial("BARRIER").orElse(XMaterial.OAK_DOOR)).name("lang:[lobbies-menu.close]").slot(49));

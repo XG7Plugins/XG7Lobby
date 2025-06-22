@@ -38,7 +38,7 @@ health-display:
 
   suffix: "&c❤"
 
-tablist:
+tab-list:
   enabled: true
 
   update-time: 500ms
@@ -68,7 +68,7 @@ tablist:
         - "&3&oMade by DaviXG7"
         - "&8www.example.com"
 
-bossbar:
+boss-bar:
   enabled: true
 
   update-time: 500ms

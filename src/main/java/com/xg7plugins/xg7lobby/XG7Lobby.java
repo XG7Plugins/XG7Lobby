@@ -11,6 +11,7 @@ import com.xg7plugins.data.dao.DAO;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
+import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.Task;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
@@ -23,6 +24,8 @@ import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
 import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
 import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
 import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
+import com.xg7plugins.xg7lobby.events.air_events.LaunchpadListener;
+import com.xg7plugins.xg7lobby.events.air_events.MultiJumpingListener;
 import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandEvent;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultWorldEvents;
@@ -36,8 +39,11 @@ import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.lobby.location.LobbyManager;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerManager;
+import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
+import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,7 +64,7 @@ import java.util.List;
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
         configs = {"ads", "custom-commands", "events", "pvp", "scores"},
-        reloadCauses = {"scores", "actions", "menus"}
+        reloadCauses = {"scores", "menus"}
 
 )
 public final class XG7Lobby extends Plugin {
@@ -73,38 +79,39 @@ public final class XG7Lobby extends Plugin {
     @Override
     public void onEnable() {
 
+        super.onEnable();
+
         debug.loading("Loading managers...");
 
         managerRegistry.registerManagers(
                 new LobbyPlayerManager(),
-                new LobbyManager()
+                new LobbyManager(),
+                new LobbyScoreManager()
         );
 
         if (Config.mainConfigOf(this).get("menus-enabled", Boolean.class).orElse(false)) {
             managerRegistry.registerManager(new CustomInventoryManager());
         }
 
+        debug.loading("Loading scores...");
+
+        loadScores();
+
         debug.loading("Loading menus...");
 
-        ConfigManager configManager = XG7PluginsAPI.configManager(this);
+        loadMenus();
 
-        configManager.registerAdapter(new LobbyItemTypeAdapter());
-        configManager.registerAdapter(new LobbyGUITypeAdapter());
-        configManager.registerAdapter(new LobbyHotbarTypeAdapter());
-
-        XG7LobbyAPI.customInventoryManager().loadInventories();
-
-        XG7Menus menus = XG7Menus.getInstance();
-
-        menus.registerMenus(new LobbiesMenu());
-
-        debug.loading("Loading XG7Lobby enabled.");
-
+        debug.loading("XG7Lobby enabled.");
     }
 
     @Override
     public void onReload(ReloadCause cause) {
-
+        if (cause.equals("scores")) {
+            debug.loading("Reloading scores...");
+            LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
+            lobbyScoreManager.reloadScores();
+            debug.loading("Scores reloaded.");
+        }
         if (cause.equals("menus")) {
             debug.loading("Reloading menus...");
             CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
@@ -135,7 +142,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Listener> loadEvents() {
-        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandEvent());
+        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandEvent(), new LaunchpadListener(), new MultiJumpingListener());
     }
 
     @Override
@@ -145,11 +152,38 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Task> loadRepeatingTasks() {
-        return null;
+
+        List<Task> tasks = new ArrayList<>();
+
+        if (Config.of("ads", this).get("enabled", Boolean.class).orElse(false)) {
+            tasks.add(new AutoBroadcastTask());
+        }
+
+        return tasks;
     }
 
     @Override
     public void loadHelp() {
+
+    }
+
+    public void loadMenus() {
+        ConfigManager configManager = XG7PluginsAPI.configManager(this);
+
+        configManager.registerAdapter(new LobbyItemTypeAdapter());
+        configManager.registerAdapter(new LobbyGUITypeAdapter());
+        configManager.registerAdapter(new LobbyHotbarTypeAdapter());
+
+        XG7LobbyAPI.customInventoryManager().loadInventories();
+
+        XG7Menus menus = XG7Menus.getInstance();
+
+        menus.registerMenus(new LobbiesMenu());
+    }
+
+    public void loadScores() {
+        LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
+        lobbyScoreManager.loadScores();
 
     }
 }

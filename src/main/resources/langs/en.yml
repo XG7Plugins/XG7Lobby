@@ -138,14 +138,14 @@ chat:
 
 
   same-message: "&cYou can't send the same message twice."
-  message-cooldown: "&cYou can't send messages for another @SECONDS:%time%@ seconds."
+  message-cooldown: "&cYou can't send messages for another @SECONDS: %time%@ seconds."
   send-much-messages: "&cYou are sending messages too fast. Please slow down."
 
   prohibited-command: "&cCommand not found."
 
 menu-does-not-exist: "&cThis menu doesn't exist."
 
-selector-cooldown: "&cYou can't use the selector for another @SECONDS:%time%@ seconds."
+selector-cooldown: "&cYou can't use the selector for another @SECONDS: %time%@ seconds."
 
 hide-players:
   show: "&aPlayers are now visible."

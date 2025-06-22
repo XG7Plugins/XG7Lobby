@@ -30,6 +30,8 @@ public class CustomInventoryManager implements Manager {
 
         enabled = Config.mainConfigOf(lobby).get("menus-enabled", Boolean.class).orElse(true);
 
+        if (!enabled) return;
+
         lobby.getDebug().loading("Loading custom inventories...");
 
         File folderFile = new File(lobby.getDataFolder(), "menus");

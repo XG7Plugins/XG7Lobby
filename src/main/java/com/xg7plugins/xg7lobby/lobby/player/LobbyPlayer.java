@@ -109,6 +109,26 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
     }
 
+    public void applyHide() {
+        Player player = this.getPlayer();
+        if (player == null) return;
+
+        List<Runnable> tasks = new ArrayList<>();
+
+        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)) return;
+        Bukkit.getOnlinePlayers().forEach(p -> {
+
+            LobbyPlayer otherPlayer = XG7LobbyAPI.getLobbyPlayer(playerUUID);
+
+            tasks.add(() -> {
+                if (hidingPlayers) player.hidePlayer(p);
+                else player.showPlayer(p);
+            });
+        });
+
+        XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> tasks.forEach(Runnable::run));
+    }
+
     public boolean isBuildEnabled() {
         return buildEnabled && Config.mainConfigOf(XG7Lobby.getInstance()).get("build-system-enabled", Boolean.class).orElse(false);
     }

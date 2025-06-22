@@ -20,6 +20,7 @@ import com.xg7plugins.xg7lobby.commands.lobby.Lobby;
 import com.xg7plugins.xg7lobby.commands.lobby.SetLobby;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.BuildCommand;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.FlyCommand;
+import com.xg7plugins.xg7lobby.commands.toggle_commands.VanishCommand;
 import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
 import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
 import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
@@ -137,7 +138,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand());
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand());
     }
 
     @Override

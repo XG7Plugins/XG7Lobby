@@ -102,7 +102,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();
 
-            lobbyPlayer.setHidingPlayers(lobbyPlayer.isHidingPlayers());
+            lobbyPlayer.applyHide();
         });
 
         if (player.getWorld() == newWorld || config.get("on-join.run-events-when-return-to-the-world", Boolean.class).orElse(false)) {

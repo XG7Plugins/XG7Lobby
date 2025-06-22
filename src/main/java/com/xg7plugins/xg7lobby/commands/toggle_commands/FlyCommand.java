@@ -84,7 +84,7 @@ public class FlyCommand implements Command {
         } catch (Exception e) {
             lobbyPlayer.setFlying(before);
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 

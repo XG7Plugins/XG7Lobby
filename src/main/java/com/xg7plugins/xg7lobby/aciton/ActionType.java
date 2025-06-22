@@ -428,7 +428,29 @@ public enum ActionType {
                 holder.getInventoryUpdater().setItem(com.xg7plugins.modules.xg7menus.Slot.fromSlot(slot), item.getItem());
             })
 
-    );
+    ),
+    HIDE_PLAYERS(
+            "[HIDE_PLAYERS] ",
+            "Hide the players on lobby",
+            "ENDER_PEARL",
+            false,
+            (player, args) -> {
+                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.setHidingPlayers(true);
+                    lobbyPlayer.applyHide();
+                });
+            }),
+    SHOW_PLAYERS(
+            "[SHOW_PLAYERS] ",
+            "Show the player on lobby",
+            "ENDER_EYE",
+            false,
+            (player, args) -> {
+                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.setHidingPlayers(false);
+                    lobbyPlayer.applyHide();
+                });
+            });
 
     private final String usage;
     private final String description;

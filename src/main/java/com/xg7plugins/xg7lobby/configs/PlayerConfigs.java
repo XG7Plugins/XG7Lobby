@@ -3,6 +3,7 @@ package com.xg7plugins.xg7lobby.configs;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -62,6 +63,7 @@ public class PlayerConfigs {
         player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
         player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+        Bukkit.getOnlinePlayers().forEach(player::showPlayer);
     }
 
 }

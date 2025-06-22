@@ -65,7 +65,7 @@ public class AutoBroadcastTask extends Task {
 
         int finalIndex = index;
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (broadcastOnlyInLobby && !XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)) return;
+            if (broadcastOnlyInLobby && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
             ((List<String>)ads.get(finalIndex).get("ad")).forEach(message -> Text.detectLangs(
                     player,

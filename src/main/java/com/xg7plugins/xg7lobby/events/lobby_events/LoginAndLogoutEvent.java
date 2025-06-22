@@ -1,11 +1,9 @@
 package com.xg7plugins.xg7lobby.events.lobby_events;
 
-import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -16,7 +14,6 @@ import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerManager;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -65,12 +62,12 @@ public class LoginAndLogoutEvent implements LobbyListener {
         if (sendJoinMessage) {
 
             Bukkit.getOnlinePlayers().forEach(p -> {
-                if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player) && messageOnlyInLobby) return;
-                Text.sendTextFromLang(p, XG7Lobby.getInstance(), firstJoinEnabled && !player.hasPlayedBefore() ? "messages.on-first-join" : "messages.on-join").join();
+                if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && messageOnlyInLobby) return;
+                Text.sendTextFromLang(p, XG7Lobby.getInstance(), firstJoinEnabled && !player.hasPlayedBefore() ? "messages.on-first-join" : "messages.on-join", Pair.of("target", player.getDisplayName()));
             });
         }
 
-        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)) return;
+        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
         onWorldJoin(player, player.getWorld());
     }
@@ -88,7 +85,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
         boolean messageOnlyInLobby = Config.of("events", XG7Lobby.getInstance()).get("on-join.send-join-message-only-on-lobby", Boolean.class).orElse(false);
 
         Bukkit.getOnlinePlayers().forEach(p -> {
-            if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player) && messageOnlyInLobby) return;
+            if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && messageOnlyInLobby) return;
             Text.sendTextFromLang(p, XG7Lobby.getInstance(), "messages.on-quit", Pair.of("target", player.getName())).join();
         });
 

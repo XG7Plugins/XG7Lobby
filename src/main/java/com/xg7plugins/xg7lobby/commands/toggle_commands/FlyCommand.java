@@ -57,7 +57,7 @@ public class FlyCommand implements Command {
             CommandMessages.PLAYER_NOT_FOUND.send(sender);
             return;
         }
-        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), target.getPlayer())) {
+        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), target.getPlayer())) {
             CommandMessages.DISABLED_WORLD.send(sender);
             return;
         }
@@ -91,7 +91,7 @@ public class FlyCommand implements Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         if (!sender.hasPermission("xg7lobby.command.fly-other")) return Collections.emptyList();
-        return Bukkit.getOnlinePlayers().stream().filter(player -> XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream().filter(player -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
     }
 
     @Override

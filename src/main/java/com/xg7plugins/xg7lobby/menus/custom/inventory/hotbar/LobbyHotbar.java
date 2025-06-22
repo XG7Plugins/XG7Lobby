@@ -87,7 +87,8 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
         if (clickedItem == null || clickedItem.getItemStack() == null || clickedItem.isAir()) return;
 
         if (XG7PluginsAPI.cooldowns().containsPlayer("selector-cooldown", event.getHolder().getPlayer())) {
-            Text.sendTextFromLang(event.getHolder().getPlayer(), XG7Lobby.getInstance(), "selector-cooldown", Pair.of("time", cooldown.getMilliseconds() + ""));
+            Text.sendTextFromLang(event.getHolder().getPlayer(), XG7Lobby.getInstance(), "selector-cooldown", Pair.of("time", XG7PluginsAPI.cooldowns().getReamingTime("selector-cooldown", event.getHolder().getPlayer()) + ""));
+            return;
         }
 
         List<String> actions = (List<String>) clickedItem.getTag("actions", List.class).orElse(Collections.emptyList()).stream().map(action -> {

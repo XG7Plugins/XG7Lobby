@@ -42,6 +42,8 @@ import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
+import com.xg7plugins.xg7lobby.tasks.EffectsTask;
+import com.xg7plugins.xg7lobby.tasks.WorldCyclesTask;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -107,6 +109,9 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public void onReload(ReloadCause cause) {
+
+        super.onReload(cause);
+
         if (cause.equals("scores")) {
             debug.loading("Reloading scores...");
             LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
@@ -120,6 +125,15 @@ public final class XG7Lobby extends Plugin {
             debug.loading("Menus reloaded.");
         }
 
+    }
+
+    @Override
+    public void onDisable() {
+
+        super.onDisable();
+
+        LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
+        lobbyScoreManager.unloadScores();
     }
 
     public static XG7Lobby getInstance() {
@@ -159,6 +173,8 @@ public final class XG7Lobby extends Plugin {
         if (Config.of("ads", this).get("enabled", Boolean.class).orElse(false)) {
             tasks.add(new AutoBroadcastTask());
         }
+        tasks.add(new EffectsTask());
+        tasks.add(new WorldCyclesTask());
 
         return tasks;
     }

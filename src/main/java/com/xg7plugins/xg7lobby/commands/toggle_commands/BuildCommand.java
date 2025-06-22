@@ -8,13 +8,9 @@ import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.utils.ShortUUID;
-import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyManager;
 import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -23,7 +19,6 @@ import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @CommandSetup(
@@ -62,7 +57,7 @@ public class BuildCommand implements Command {
             CommandMessages.PLAYER_NOT_FOUND.send(sender);
             return;
         }
-        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), target.getPlayer())) {
+        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), target.getPlayer())) {
             CommandMessages.DISABLED_WORLD.send(sender);
             return;
         }
@@ -96,7 +91,7 @@ public class BuildCommand implements Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         if (!sender.hasPermission("xg7lobby.command.build-other")) return Collections.emptyList();
-        return Bukkit.getOnlinePlayers().stream().filter(player -> XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream().filter(player -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
     }
 
     @Override

@@ -183,7 +183,9 @@ public class DefaultPlayerEvents implements Listener {
 
         User user = PacketEvents.getAPI().getPlayerManager().getUser(event.getPlayer());
 
-        if (event.getPlayer().getLocation().getY() < (user.getClientVersion().isNewerThan(ClientVersion.V_1_17) ? -70 : -6)) {
+        int layer = user.getClientVersion().isNewerThan(ClientVersion.V_1_17) && MinecraftVersion.isNewerOrEqual(17) ? -66 : -2;
+
+        if (event.getPlayer().getLocation().getY() < layer) {
             LobbyLocation location = XG7LobbyAPI.requestRandomLobbyLocation().join();
             if (location == null || location.getLocation() == null) {
                 XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation()));

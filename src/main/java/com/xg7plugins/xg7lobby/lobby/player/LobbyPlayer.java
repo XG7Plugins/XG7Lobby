@@ -6,14 +6,11 @@ import com.xg7plugins.data.database.entity.Column;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.data.database.entity.Pkey;
 import com.xg7plugins.data.database.entity.Table;
-import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import lombok.Data;
-import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
@@ -82,7 +79,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         Config config = Config.mainConfigOf(XG7Lobby.getInstance());
 
 
-        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)) return;
+        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
         player.setAllowFlight(flying || (
                                 (config.get("multi-jumps.enabled", Boolean.class).orElse(false) && player.hasPermission("xg7lobby.multi-jumps"))
@@ -115,16 +112,20 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         List<Runnable> tasks = new ArrayList<>();
 
-        if (!XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player)) return;
-        Bukkit.getOnlinePlayers().forEach(p -> {
+        Bukkit.getOnlinePlayers().stream()
+                .filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p))
+                .filter(p -> !p.getUniqueId().equals(player.getUniqueId()))
+                .forEach(p -> {
+                    LobbyPlayer otherPlayer = XG7LobbyAPI.getLobbyPlayer(p.getUniqueId());
 
-            LobbyPlayer otherPlayer = XG7LobbyAPI.getLobbyPlayer(playerUUID);
+                    tasks.add(() -> {
+                        if (hidingPlayers) player.hidePlayer(p);
+                        else player.showPlayer(p);
 
-            tasks.add(() -> {
-                if (hidingPlayers) player.hidePlayer(p);
-                else player.showPlayer(p);
-            });
-        });
+                        if (otherPlayer.isHidingPlayers()) p.hidePlayer(player);
+                        else p.showPlayer(player);
+                    });
+                });
 
         XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> tasks.forEach(Runnable::run));
     }

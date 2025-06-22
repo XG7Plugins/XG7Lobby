@@ -29,12 +29,12 @@ public class LobbyScoreManager implements Manager {
             if (!loader.getScoreConfig().isEnabled()) return;
             XG7PluginsAPI.taskManager().runTask(XG7PluginsAPI.taskManager().getRegisteredTask(XG7Plugins.getInstance(), "score-task"));
             XG7Scores.loadScores(loader.load());
-            Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), p)).forEach(XG7Scores.getInstance()::addPlayer);
+            Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Scores.getInstance()::addPlayer);
         });
     }
 
     public void unloadScores() {
-        Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), p)).forEach(XG7Scores.getInstance()::removePlayer);
+        Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Scores.getInstance()::removePlayer);
         lobbyScoreLoaders.forEach((loader) -> XG7Scores.unloadScore(loader.getScoreID()));
     }
 

@@ -18,7 +18,7 @@ public abstract class LobbyScoreLoader {
     @Getter
     protected String scoreID;
 
-    protected final Function<Player, Boolean> condition = player -> XG7PluginsAPI.isInWorldEnabled(XG7Lobby.getInstance(), player);
+    protected final Function<Player, Boolean> condition = player -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player);
 
     public abstract Score load();
 

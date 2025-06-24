@@ -6,7 +6,10 @@ import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
+import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -80,6 +83,9 @@ public class FlyCommand implements Command {
                 Text.sendTextFromLang(lobbyPlayer.getPlayer(),XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-on" : "toggle-off"));
             }
             if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
+
+            PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(lobbyPlayer.getPlayerUUID());
+            if (playerMenu != null) BasicMenu.refresh(playerMenu);
 
         } catch (Exception e) {
             lobbyPlayer.setFlying(before);

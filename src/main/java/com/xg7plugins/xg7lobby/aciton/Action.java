@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 public class Action {
 
     private final ActionType actionType;
-    private Pair<Condition, String> condition;
+    private final String conditionLine;
     private final String[] args;
 
     public void execute(Player player) {
-        if (condition != null && !condition.getFirst().apply(new Condition.ConditionPack(player,condition.getSecond()))) return;
+        if (conditionLine != null && Condition.processConditions(conditionLine, player).isEmpty()) return;
         actionType.execute(player, args);
     }
 }

@@ -108,7 +108,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
         if (lobbyItem == null) return null;
 
-        if (lobbyItem.getCondition().getFirst().apply(new Condition.ConditionPack(player, Text.format(lobbyItem.getCondition().getSecond()).textFor(player).getPlainText()))) {
+        if (!Condition.processConditions(lobbyItem.getConditionLine() + " Random_content", player).isEmpty()) {
             return lobbyItem;
         }
         if (lobbyItem.getOtherItemPath() == null) return null;

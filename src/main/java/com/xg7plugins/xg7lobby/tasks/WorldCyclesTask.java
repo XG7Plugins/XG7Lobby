@@ -54,7 +54,9 @@ public class WorldCyclesTask extends Task {
             if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, dayLightCycle);
             else world.setGameRuleValue("doDaylightCycle", String.valueOf(dayLightCycle));
 
-            if (!dayLightCycle) world.setTime(translateTimeToMinecraftTicks(time));
+            if (!dayLightCycle) {
+                world.setTime(translateTimeToMinecraftTicks(time));
+            }
 
             if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_WEATHER_CYCLE, weatherCycle);
             else world.setGameRuleValue("doWeatherCycle", String.valueOf(weatherCycle));
@@ -73,19 +75,16 @@ public class WorldCyclesTask extends Task {
         String input = timeInput.trim().toUpperCase().replaceAll("\\s+", " ");
 
         List<DateTimeFormatter> formatters = Arrays.asList(
-                // 24 horas
                 DateTimeFormatter.ofPattern("H:mm"),
                 DateTimeFormatter.ofPattern("HH:mm"),
                 DateTimeFormatter.ofPattern("H"),
                 DateTimeFormatter.ofPattern("HH"),
 
-                // 12 horas com ou sem espaço
                 DateTimeFormatter.ofPattern("h:mm a"),
                 DateTimeFormatter.ofPattern("hh:mm a"),
                 DateTimeFormatter.ofPattern("h a"),
                 DateTimeFormatter.ofPattern("hh a"),
 
-                // 12 horas sem minutos
                 DateTimeFormatter.ofPattern("ha"),
                 DateTimeFormatter.ofPattern("h:mma"),
                 DateTimeFormatter.ofPattern("hhmma"),
@@ -105,9 +104,14 @@ public class WorldCyclesTask extends Task {
 
         if (hours == null || minutes == null) throw new IllegalArgumentException("Invalid time format! Use 00:00 - 23:59 or 12 AM - 11:59 PM.");
 
-        int ticksFromHour = hours * 1000;
+        int adjustedHours = hours >= 6 ? hours - 6 : hours + 18;
+
+        int ticksFromHour = adjustedHours * 1000;
         int ticksFromMinute = (int) (minutes * (1000.0 / 60));
-        return ticksFromHour + ticksFromMinute;
+
+        long totalTicks = ticksFromHour + ticksFromMinute;
+
+        return totalTicks % 24000;
 
     }
 

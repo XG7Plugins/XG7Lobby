@@ -348,7 +348,7 @@ public enum ActionType {
     ),
     OPEN_MENU(
             "[OPEN_MENU] menu_id",
-            "Open a custom inventory",
+            "Opens a custom inventory",
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZiOTJlYTJiZDlhNzdhZmJkM2YxNzAzODVhNTdjZGVkNzQ5YWIxNjAxODE0NTkzZTVkZTljYWQ5NTQ5NTkyYyJ9fX0=",
             true,
             (player, args) -> {
@@ -360,14 +360,14 @@ public enum ActionType {
     ),
     CLOSE_MENU(
             "[CLOSE_MENU] ",
-            "Close the inventory",
+            "Closes the inventory",
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWRjMzZjOWNiNTBhNTI3YWE1NTYwN2EwZGY3MTg1YWQyMGFhYmFhOTAzZThkOWFiZmM3ODI2MDcwNTU0MGRlZiJ9fX0=",
             false,
             (player, args) -> player.closeInventory()
     ),
     REFRESH_MENU(
             "[REFRESH_MENU] ",
-            "Refresh the menu",
+            "Refreshs the menu",
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UwNzIzNTVhZmE2MTQyYmFmNTY2MGM5MDY4N2M4YzUwZGM2M2U1Nzc4MWRkYmNhNWNlM2YzNTU0ZDFlMzc1ZSJ9fX0=",
             false,
             (player, args) -> {
@@ -381,7 +381,7 @@ public enum ActionType {
             ),
     SWAP(
             "[SWAP] itempath",
-            "swap a item on the inventory",
+            "Swaps a item on the inventory",
             "EMERALD_BLOCK",
             true,
             ((player, args) -> {
@@ -431,7 +431,7 @@ public enum ActionType {
     ),
     HIDE_PLAYERS(
             "[HIDE_PLAYERS] ",
-            "Hide the players on lobby",
+            "Hides the players on lobby",
             "ENDER_PEARL",
             false,
             (player, args) -> {
@@ -442,7 +442,7 @@ public enum ActionType {
             }),
     SHOW_PLAYERS(
             "[SHOW_PLAYERS] ",
-            "Show the player on lobby",
+            "Shows the player on lobby",
             "ENDER_EYE",
             false,
             (player, args) -> {
@@ -450,7 +450,55 @@ public enum ActionType {
                     lobbyPlayer.setHidingPlayers(false);
                     lobbyPlayer.applyHide();
                 });
-            });
+            }),
+    FLY_ON(
+            "[FLY_ON] ",
+            "Enables the player flying on lobby",
+            "FEATHER",
+            false,
+            (player, args) -> {
+                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.setFlying(true);
+                    lobbyPlayer.fly();
+                });
+            }
+    ),
+    FLY_OFF(
+            "[FLY_FF] ",
+            "Disables the player flying on lobby",
+            "FEATHER",
+            false,
+            (player, args) -> {
+                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.setFlying(false);
+                    lobbyPlayer.fly();
+                });
+            }
+    ),
+    BUILD_ON(
+            "[BUILD_ON] ",
+            "Enables the player building on lobby",
+            "IRON_SHOVEL",
+            false,
+            (player, args) -> {
+                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.setBuildEnabled(true);
+                    lobbyPlayer.applyBuild();
+                });
+            }
+    ),
+    BUILD_OFF(
+            "[BUILD_FF] ",
+            "Disables the player building on lobby",
+            "IRON_SHOVEL",
+            false,
+            (player, args) -> {
+                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.setBuildEnabled(false);
+                    lobbyPlayer.applyBuild();
+                });
+            }
+    );
 
     private final String usage;
     private final String description;

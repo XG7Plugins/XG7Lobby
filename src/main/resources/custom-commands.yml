@@ -8,6 +8,7 @@ custom-commands:
     permission: "xg7lobby.command.clearchat"
     description: "Clear the chat"
     syntax: "/clearchat"
+
     actions:
       - "[CLEAR_CHAT] "
 

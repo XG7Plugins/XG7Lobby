@@ -14,6 +14,7 @@ import com.xg7plugins.events.PacketListener;
 import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.Task;
+import com.xg7plugins.xg7lobby.commands.custom_commands.CustomCommandManager;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobby;
@@ -67,7 +68,7 @@ import java.util.List;
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
         configs = {"ads", "custom-commands", "events", "pvp", "scores"},
-        reloadCauses = {"scores", "menus"}
+        reloadCauses = {"scores", "menus", "custom_commands"}
 
 )
 public final class XG7Lobby extends Plugin {
@@ -89,7 +90,8 @@ public final class XG7Lobby extends Plugin {
         managerRegistry.registerManagers(
                 new LobbyPlayerManager(),
                 new LobbyManager(),
-                new LobbyScoreManager()
+                new LobbyScoreManager(),
+                new CustomCommandManager()
         );
 
         if (Config.mainConfigOf(this).get("menus-enabled", Boolean.class).orElse(false)) {
@@ -103,6 +105,10 @@ public final class XG7Lobby extends Plugin {
         debug.loading("Loading menus...");
 
         loadMenus();
+
+        debug.loading("Loading custom commands...");
+
+        ManagerRegistry.get(this,  CustomCommandManager.class).registerCommands();
 
         debug.loading("XG7Lobby enabled.");
     }
@@ -123,6 +129,11 @@ public final class XG7Lobby extends Plugin {
             CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
             inventoryManager.reloadInventories();
             debug.loading("Menus reloaded.");
+        }
+        if (cause.equals("custom_commands")) {
+            debug.loading("Reloading custom commands...");
+            ManagerRegistry.get(this,  CustomCommandManager.class).reloadCommands();
+            debug.loading("Custom commands reloaded.");
         }
 
     }

@@ -12,7 +12,7 @@ import lombok.Data;
 public class LobbyItem {
 
     private final Item item;
-    private final Pair<Condition, String> condition;
+    private final String conditionLine;
     private final String otherItemPath;
 
 }

@@ -37,8 +37,6 @@ items:
     lore:
       - "&7Click to view the lobbies menu!"
     amount: 1
-    enchants:
-      - "DURABILITY, 1"
     actions:
       - "[PLAYER_COMMAND] 7llobbies"
 
@@ -46,7 +44,7 @@ items:
 
     material: LIME_DYE
 
-    conditional: "[IF_NOT: %xg7lobby_player_is_hiding%]"
+    conditional: "?IF_NOT: %xg7lobby_player_is_hiding%?"
     if-false: "showPlayers"
 
     name: "&aHide Players"
@@ -72,7 +70,53 @@ items:
       - "[SHOW_PLAYERS] "
       - "[SWAP] hidePlayers"
 
-row: ["games","profile","","","","","","hidePlayers","lobbies"]
+  enableFly:
+
+    conditional: "?PERMISSION: xg7lobby.command.fly? ?IF_NOT: %xg7lobby_player_is_flying%?"
+    if-false: "disableFly"
+
+    material: FEATHER
+    name: "&cEnable flight"
+    lore:
+      - "&7Click to &aenable&7!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[FLY_ON] "
+      - "[SWAP] disableFly"
+
+  disableFly:
+
+    conditional: "?PERMISSION: xg7lobby.command.fly?"
+
+    material: FEATHER
+    name: "&cDisable flight"
+    lore:
+      - "&7Click to &bdisable&7!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[FLY_OFF] "
+      - "[SWAP] enableFly"
+
+  enableBuild:
+
+    conditional: "?PERMISSION: xg7lobby.build? ?IF_NOT: %xg7lobby_player_is_build_enabled%?"
+
+    material: IRON_PICKAXE
+    name: "&aEnable build"
+    lore:
+      - "&7Click to &aenable&7!"
+    amount: 1
+    actions:
+      - "[BUILD_ON] "
+      - "[MESSAGE] &aBuild enabled!"
+      - "[SWAP] disableBuild"
+
+
+row: ["games","profile","","","enableFly","","enableBuild","hidePlayers","lobbies"]
 
 
 config-version: 1.0

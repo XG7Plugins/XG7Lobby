@@ -3,8 +3,6 @@ package com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigTypeAdapter;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.utils.Pair;
-import com.xg7plugins.utils.text.Condition;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import org.bukkit.enchantments.Enchantment;
 
@@ -29,18 +27,16 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
                 .setNBTTag("actions", actions);
 
         for (String enchant : enchants) {
-            Enchantment enchantment = Enchantment.getByName(enchant.split(":")[0]);
+            Enchantment enchantment = Enchantment.getByName(enchant.split(", ")[0]);
             if (enchantment == null) continue;
-            item.enchant(enchantment, Integer.parseInt(enchant.split(":")[1]));
+            item.enchant(enchantment, Integer.parseInt(enchant.split(", ")[1]));
         }
 
-        Pair<Condition, String> condition = config.get(path + ".conditional", String.class)
-                .map(Condition::extractCondition)
-                .orElse(new Pair<>(Condition.IF, "true"));
+        String conditionLine = config.get(path + ".conditional", String.class).orElse(null);
 
         String otherItemPath = config.get("if-false", String.class).orElse(null);
 
-        return new LobbyItem(item, condition, otherItemPath);
+        return new LobbyItem(item, conditionLine, otherItemPath);
     }
 
     @Override

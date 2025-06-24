@@ -35,7 +35,7 @@ public class LobbyHotbarTypeAdapter implements ConfigTypeAdapter<LobbyHotbar> {
 
         if (itemsSection != null) {
             for (String key : itemsSection.getKeys(false)) {
-                items.put(key, config.get("items." + key, LobbyItem.class).orElse(new LobbyItem(Item.air(), new Pair<>(Condition.IF, "true"), null)));
+                items.put(key, config.get("items." + key, LobbyItem.class).orElse(new LobbyItem(Item.air(), null, null)));
             }
         }
 

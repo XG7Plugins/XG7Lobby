@@ -76,7 +76,7 @@ items:
     if-false: "disableFly"
 
     material: FEATHER
-    name: "&cEnable flight"
+    name: "&aEnable flight"
     lore:
       - "&7Click to &aenable&7!"
     amount: 1
@@ -113,7 +113,6 @@ items:
     actions:
       - "[BUILD_ON] "
       - "[MESSAGE] &aBuild enabled!"
-      - "[SWAP] disableBuild"
 
 
 row: ["games","profile","","","enableFly","","enableBuild","hidePlayers","lobbies"]

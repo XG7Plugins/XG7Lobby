@@ -8,7 +8,7 @@ import com.xg7plugins.tasks.CooldownManager;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class LobbyCommandEvent implements Listener {
+public class LobbyCommandListener implements Listener {
 
     @Override
     public boolean isEnabled() {

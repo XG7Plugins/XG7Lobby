@@ -28,7 +28,7 @@ import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
 import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
 import com.xg7plugins.xg7lobby.events.air_events.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air_events.MultiJumpingListener;
-import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandEvent;
+import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandListener;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.LoginAndLogoutEvent;
@@ -168,7 +168,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Listener> loadEvents() {
-        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandEvent(), new LaunchpadListener(), new MultiJumpingListener());
+        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener());
     }
 
     @Override

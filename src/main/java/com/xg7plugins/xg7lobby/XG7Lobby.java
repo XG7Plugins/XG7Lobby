@@ -32,6 +32,7 @@ import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandListener;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.LoginAndLogoutEvent;
+import com.xg7plugins.xg7lobby.events.lobby_events.MOTDListener;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyGUITypeAdapter;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyHotbarTypeAdapter;
@@ -168,7 +169,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Listener> loadEvents() {
-        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener());
+        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener());
     }
 
     @Override

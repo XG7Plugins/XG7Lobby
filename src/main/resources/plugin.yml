@@ -15,6 +15,7 @@ permissions:
     default: op
     children:
       xg7lobby.command.*: true
+      xg7lobby.moderation.*: true
       xg7lobby.attack: true
       xg7lobby.chat.*: true
       xg7lobby.inv: true
@@ -31,12 +32,11 @@ permissions:
       xg7lobby.command.gamemode-others: true
       xg7lobby.command.build-other: true
       xg7lobby.command.lobby.*: true
-      xg7lobby.command.warns: true
-      xg7lobby.command.warns-other: true
+      xg7lobby.command.infractions: true
+      xg7lobby.command.infractions-other: true
       xg7lobby.command.resetstats: true
       xg7lobby.command.vanish: true
       xg7lobby.command.help: true
-      xg7lobby.command.moderation.*: true
 
   xg7lobby.command.lobby.*:
     description: Permission to use all lobby commands.
@@ -51,18 +51,25 @@ permissions:
       xg7lobby.command.lobby.see-lobbies: true
 
 
-  xg7lobby.command.moderation.*:
+  xg7lobby.moderation.*:
     description: Permission to use all moderation commands.
     default: op
     children:
-      xg7lobby.command.moderation.kick: true
-      xg7lobby.command.moderation.ban: true
-      xg7lobby.command.moderation.unban: true
-      xg7lobby.command.moderation.mute: true
-      xg7lobby.command.moderation.unmute: true
-      xg7lobby.command.moderation.tempban: true
-      xg7lobby.command.moderation.tempmute: true
-      xg7lobby.command.moderation.warn: true
+      xg7lobby.moderation.kick: true
+      xg7lobby.moderation.ban: true
+      xg7lobby.moderation.unban: true
+      xg7lobby.moderation.mute: true
+      xg7lobby.moderation.unmute: true
+      xg7lobby.moderation.tempban: true
+      xg7lobby.moderation.tempmute: true
+      xg7lobby.moderation.infraction.*: true
+
+  xg7lobby.moderation.infraction.*:
+    description: Infraction command
+    default: op
+    children:
+      xg7lobby.moderation.infraction.add: true
+      xg7lobby.moderation.infraction.remove: true
 
   xg7lobby.chat.*:
     description: Permission to use all chat restrictions.

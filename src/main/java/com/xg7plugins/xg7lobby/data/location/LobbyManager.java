@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.lobby.location;
+package com.xg7plugins.xg7lobby.data.location;
 
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.managers.Manager;

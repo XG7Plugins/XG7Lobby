@@ -1,12 +1,11 @@
 package com.xg7plugins.xg7lobby;
 
 import com.xg7plugins.managers.ManagerRegistry;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyManager;
-import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
-import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerManager;
+import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
+import com.xg7plugins.xg7lobby.data.location.LobbyManager;
+import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
+import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 

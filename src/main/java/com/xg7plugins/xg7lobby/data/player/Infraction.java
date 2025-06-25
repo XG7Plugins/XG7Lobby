@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.lobby.player;
+package com.xg7plugins.xg7lobby.data.player;
 
 import com.xg7plugins.data.database.entity.*;
 import com.xg7plugins.utils.ShortUUID;

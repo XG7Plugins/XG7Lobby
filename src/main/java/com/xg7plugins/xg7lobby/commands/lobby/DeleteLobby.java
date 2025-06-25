@@ -2,7 +2,6 @@ package com.xg7plugins.xg7lobby.commands.lobby;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -11,7 +10,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
+import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

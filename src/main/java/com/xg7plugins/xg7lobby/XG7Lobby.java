@@ -7,7 +7,7 @@ import com.xg7plugins.commands.core_commands.reload.ReloadCause;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigManager;
-import com.xg7plugins.data.dao.DAO;
+import com.xg7plugins.data.database.dao.DAO;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
@@ -38,10 +38,10 @@ import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyGUITypeAd
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyHotbarTypeAdapter;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyItemTypeAdapter;
 import com.xg7plugins.xg7lobby.menus.default_menus.LobbiesMenu;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyManager;
-import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
-import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayerManager;
+import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
+import com.xg7plugins.xg7lobby.data.location.LobbyManager;
+import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
+import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
 import com.xg7plugins.xg7lobby.tasks.EffectsTask;
@@ -68,7 +68,7 @@ import java.util.List;
         },
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
-        configs = {"ads", "custom-commands", "events", "pvp", "scores"},
+        configs = {"ads", "custom_commands", "events", "pvp", "scores"},
         reloadCauses = {"scores", "menus", "custom_commands"}
 
 )

@@ -1,23 +1,18 @@
-package com.xg7plugins.xg7lobby.lobby.player;
+package com.xg7plugins.xg7lobby.data.player;
 
-import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
 import com.xg7plugins.managers.Manager;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import lombok.Getter;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class LobbyPlayerManager implements Manager {
 
@@ -64,9 +59,9 @@ public class LobbyPlayerManager implements Manager {
         return XG7PluginsAPI.database().containsCachedEntity(XG7Lobby.getInstance(), id.toString()).join();
     }
 
-    public void addInfraction(Infraction infraction, UUID playerUUID) {
+    public void addInfraction(Infraction infraction) {
 
-        LobbyPlayer lobbyPlayer = getPlayer(playerUUID);
+        LobbyPlayer lobbyPlayer = getPlayer(infraction.getPlayerUUID());
 
         if (lobbyPlayer == null) return;
 

@@ -8,7 +8,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.lobby.player.LobbyPlayer;
+import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.event.player.PlayerMoveEvent;

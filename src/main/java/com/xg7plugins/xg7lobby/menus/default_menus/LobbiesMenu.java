@@ -13,7 +13,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.lobby.location.LobbyLocation;
+import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

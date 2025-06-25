@@ -22,7 +22,7 @@ public class CustomCommandManager implements Manager {
     private final HashMap<String, CustomCommand> commands = new HashMap<>();
 
     public void registerCommands() {
-        Config config = Config.of("custom-commands", XG7Lobby.getInstance());
+        Config config = Config.of("custom_commands", XG7Lobby.getInstance());
 
         if (!config.get("enabled", Boolean.class).orElse(false)) return;
 

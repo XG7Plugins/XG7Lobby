@@ -20,21 +20,22 @@ commands:
     toggle-other-on: "&aBuild mode enabled for %target%."
     toggle-other-off: "&cBuild mode disabled for %target%."
 
-  warn:
-    level-invalid: "&cInvalid warn level. Use a number between 1 and 3."
+  infraction:
+    level-invalid: "&cInvalid infraction level. Use a level registered on config."
 
     warn-admin: "&cYou can't warn an admin."
 
     invalid-id: "Invalid warn id!"
-    warn-not-found: "Warn not found!"
+    infraction-not-found: "Infraction not found!"
+
     on-pardon: "&aWarn with id %id% pardoned successfully."
 
     on-warn: "&cYou have been warned by an admin. Reason: %reason%."
     on-warn-sender: "&aPlayer %target% has been warned successfully by %reason%."
 
-    warn-ban: "&cYou have been banned for reaching the maximum number of warns.\n Reason: %reason%."
-    warn-mute: "&cYou have been muted for reaching the maximum number of warns.\n Reason: %reason%."
-    warn-kick: "&cYou have been kicked for reaching the maximum number of warns.\n Reason: %reason%."
+    on-ban: "&cYou have been banned for reaching the maximum number of warns.\n Reason: %reason%."
+    on-mute: "&cYou have been muted for reaching the maximum number of warns.\n Reason: %reason%."
+    on-kick: "&cYou have been kicked for reaching the maximum number of warns.\n Reason: %reason%."
 
   mute:
     already-muted: "&cThis player is already muted."

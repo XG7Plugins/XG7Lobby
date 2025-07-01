@@ -60,7 +60,7 @@ public class KickCommand implements Command {
 
         Config config = Config.mainConfigOf(XG7Lobby.getInstance());
 
-        if (target.hasPermission("xg7lobby.moderation.mute") && !config.get("kick-admin",Boolean.class).orElse(false)) {
+        if (target.hasPermission("xg7lobby.moderation.kick") && !config.get("kick-admin",Boolean.class).orElse(false)) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.kick-admin");
             return;
         }

@@ -55,7 +55,7 @@ public class BanIPCommand implements Command {
 
         Config config = Config.mainConfigOf(XG7Lobby.getInstance());
 
-        if (target.isOp() && !config.get("mute-admin",Boolean.class).orElse(false)) {
+        if (target.isOp() && !config.get("ban-admin",Boolean.class).orElse(false)) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.ban.ban-admin").thenAccept(text -> text.send(sender));
             return;
         }
@@ -74,7 +74,7 @@ public class BanIPCommand implements Command {
 
             Infraction infraction = new Infraction(target.getUniqueId(), warningLevel, reason);
 
-            lobbyPlayer.addInfraction(infraction);
+            lobbyPlayerManager.addInfraction(infraction);
         });
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.on-ban-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).getMilliseconds()) + ""), Pair.of("target", target.getName()));

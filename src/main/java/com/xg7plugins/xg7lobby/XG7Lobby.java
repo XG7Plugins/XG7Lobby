@@ -139,8 +139,13 @@ public final class XG7Lobby extends Plugin {
         }
         if (cause.equals("menus")) {
             debug.loading("Reloading menus...");
+
+            XG7Menus menus = XG7Menus.getInstance();
+            menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
+
             CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
             inventoryManager.reloadInventories();
+
             debug.loading("Menus reloaded.");
         }
         if (cause.equals("custom_commands")) {

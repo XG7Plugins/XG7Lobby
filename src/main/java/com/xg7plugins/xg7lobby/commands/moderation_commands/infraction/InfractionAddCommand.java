@@ -52,7 +52,7 @@ public class InfractionAddCommand implements Command {
         Config config = Config.mainConfigOf(XG7Lobby.getInstance());
 
 
-        if (player.getOfflinePlayer().isOnline() && player.getPlayer().hasPermission("xg7lobby.moderation.infraction.*") && !config.get("warn-admin", Boolean.class).orElse(false)) {
+        if (player.getOfflinePlayer().isOp() && !config.get("warn-admin", Boolean.class).orElse(false)) {
             Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.warn-admin");
             return;
         }

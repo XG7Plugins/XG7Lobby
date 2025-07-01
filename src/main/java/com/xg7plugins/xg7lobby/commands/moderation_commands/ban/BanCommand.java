@@ -57,21 +57,21 @@ public class BanCommand implements Command {
 
         Config config = Config.mainConfigOf(XG7Lobby.getInstance());
 
-        if (target.isOp() && !config.get("mute-admin",Boolean.class).orElse(false)) {
+        if (target.isOp() && !config.get("ban-admin",Boolean.class).orElse(false)) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.ban.ban-admin").thenAccept(text -> text.send(sender));
             return;
         }
 
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        lobbyPlayerManager.banPlayer(target, time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason));
+        lobbyPlayerManager.banPlayer(target, time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", (time.isZero() ? "forever" : String.valueOf(Time.getRemainingTime(time).getMilliseconds()))));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
             int warningLevel = config.get("ban-warning-level", Integer.class).orElse(2);
 
             Infraction infraction = new Infraction(target.getUniqueId(), warningLevel, reason);
 
-            lobbyPlayer.addInfraction(infraction);
+            lobbyPlayerManager.addInfraction(infraction);
         });
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.on-ban-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).getMilliseconds()) + ""), Pair.of("target", target.getName()));

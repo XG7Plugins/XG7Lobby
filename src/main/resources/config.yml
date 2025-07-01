@@ -262,7 +262,7 @@ anti-spam:
 
   unmute-delay: "30m"
 
-  spam-warn-level: 2
+  spam-warn-level: 1
 
 ##################################################################
 #                         MULTI JUMPS                            #

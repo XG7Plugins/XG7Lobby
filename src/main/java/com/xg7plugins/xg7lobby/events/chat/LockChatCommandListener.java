@@ -16,7 +16,7 @@ public class LockChatCommandListener implements Listener {
         return true;
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true)
     public void onChatWhenLock(AsyncPlayerChatEvent event) {
         XG7LobbyConfig xg7LobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
 

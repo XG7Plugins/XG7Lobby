@@ -3,6 +3,7 @@ package com.xg7plugins.xg7lobby.events.chat;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.Listener;
+import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
@@ -13,11 +14,9 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.tasks.AntiSpamTask;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class AntiSpamListener implements Listener {
@@ -31,7 +30,7 @@ public class AntiSpamListener implements Listener {
         return config.get("anti-spam.enabled", Boolean.class).orElse(false);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
@@ -61,7 +60,7 @@ public class AntiSpamListener implements Listener {
 
         if (config.get("anti-spam.spam-tolerance", Integer.class).orElse(0) <= 0) return;
 
-        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7PluginsAPI.taskManager().getTimerTask("anti-spam-tolerance");
+        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7PluginsAPI.taskManager().getTimerTask(XG7Lobby.getInstance().getName() + ":anti-spam-tolerance");
 
         antiSpamTask.incrementTolerance(player.getUniqueId());
 
@@ -70,6 +69,8 @@ public class AntiSpamListener implements Listener {
             LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(player.getUniqueId());
 
             LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
+
+            if (lobbyPlayer.isMuted()) return;
 
             lobbyPlayerManager.addInfraction(new Infraction(lobbyPlayer.getPlayerUUID(), config.get("anti-spam.spam-warn-level", Integer.class).orElse(0), "Spamming"));
 

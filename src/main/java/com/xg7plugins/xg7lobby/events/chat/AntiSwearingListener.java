@@ -19,7 +19,7 @@ public class AntiSwearingListener implements Listener {
         return true;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 

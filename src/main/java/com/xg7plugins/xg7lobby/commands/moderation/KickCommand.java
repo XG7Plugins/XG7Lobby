@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.moderation_commands;
+package com.xg7plugins.xg7lobby.commands.moderation;
 
 
 import com.cryptomorin.xseries.XMaterial;
@@ -11,7 +11,6 @@ import com.xg7plugins.data.config.Config;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;

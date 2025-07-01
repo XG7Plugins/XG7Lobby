@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.moderation_commands.ban;
+package com.xg7plugins.xg7lobby.commands.moderation.ban;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
@@ -16,21 +16,19 @@ import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.apache.logging.log4j.util.Strings;
-import org.bukkit.BanList;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
 
 @CommandSetup(
-        name = "banip",
-        description = "Bans a player by ip",
-        syntax = "/7lbanip <player> <time> (reason)",
+        name = "ban",
+        description = "Bans a player",
+        syntax = "/7lban <player> <time> (reason)",
         permission = "xg7lobby.moderation.ban",
         pluginClass = XG7Lobby.class
 )
-public class BanIPCommand implements Command {
+public class BanCommand implements Command {
 
     @Override
     public void onCommand(CommandSender sender, CommandArgs args) {
@@ -48,6 +46,7 @@ public class BanIPCommand implements Command {
         if (args.len() > 2) reason = Strings.join(Arrays.asList(Arrays.copyOfRange(args.getArgs(), 2, args.len())), ' ');
         else reason = "Banned by an admin";
 
+
         if (target.isBanned()) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.already-banned");
             return;
@@ -60,14 +59,9 @@ public class BanIPCommand implements Command {
             return;
         }
 
-        if (!target.isOnline()) {
-            CommandMessages.NOT_ONLINE.send(sender);
-            return;
-        }
-
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        lobbyPlayerManager.banIpPlayer(target.getPlayer(), time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", String.valueOf(time.getMilliseconds())));
+        lobbyPlayerManager.banPlayer(target, time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", (time.isZero() ? "forever" : String.valueOf(Time.getRemainingTime(time).getMilliseconds()))));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
             int warningLevel = config.get("ban-warning-level", Integer.class).orElse(2);

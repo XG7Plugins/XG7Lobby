@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.toggle_commands;
+package com.xg7plugins.xg7lobby.commands.toggle;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
@@ -10,6 +10,7 @@ import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -25,15 +26,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @CommandSetup(
-        name = "build",
-        permission = "xg7lobby.build",
-        syntax = "/7lbuild (player)",
-        description = "Toggle build mode",
-        isInEnabledWorldOnly = true,
+        name = "fly",
+        permission = "xg7lobby.command.fly",
+        syntax = "/7lfly (player)",
+        description = "Toggle fly mode",
         isAsync = true,
+        isInEnabledWorldOnly = true,
         pluginClass = XG7Lobby.class
 )
-public class BuildCommand implements Command {
+public class FlyCommand implements Command {
 
     @Override
     public void onCommand(CommandSender sender, CommandArgs args) {
@@ -49,7 +50,7 @@ public class BuildCommand implements Command {
         }
 
         if (args.len() > 0) {
-            if (!sender.hasPermission("xg7lobby.command.build-other")) {
+            if (!sender.hasPermission("xg7lobby.command.fly-other")) {
                 CommandMessages.NO_PERMISSION.send(sender);
                 return;
             }
@@ -73,35 +74,35 @@ public class BuildCommand implements Command {
 
         boolean before = lobbyPlayer.isBuildEnabled();
 
-        lobbyPlayer.setBuildEnabled(!lobbyPlayer.isBuildEnabled());
+        lobbyPlayer.setFlying(!lobbyPlayer.isFlying());
 
         try {
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
 
-            lobbyPlayer.applyBuild();
-
-            if (finalTarget.isOnline()) Text.sendTextFromLang(lobbyPlayer.getPlayer(),XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-on" : "toggle-off"));
-            if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
+            if (finalTarget.isOnline()) {
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::fly));
+                Text.sendTextFromLang(lobbyPlayer.getPlayer(),XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-on" : "toggle-off"));
+            }
+            if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
 
             PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(lobbyPlayer.getPlayerUUID());
             if (playerMenu != null) BasicMenu.refresh(playerMenu);
 
         } catch (Exception e) {
-            lobbyPlayer.setBuildEnabled(before);
+            lobbyPlayer.setFlying(before);
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
-
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
-        if (!sender.hasPermission("xg7lobby.command.build-other")) return Collections.emptyList();
+        if (!sender.hasPermission("xg7lobby.command.fly-other")) return Collections.emptyList();
         return Bukkit.getOnlinePlayers().stream().filter(player -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
     }
 
     @Override
     public Item getIcon() {
-        return Item.commandIcon(XMaterial.IRON_AXE, this);
+        return Item.commandIcon(XMaterial.FEATHER, this);
     }
 }

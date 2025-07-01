@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.custom_commands;
+package com.xg7plugins.xg7lobby.commands.custom;
 
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.managers.Manager;

@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.moderation_commands.infraction;
+package com.xg7plugins.xg7lobby.commands.moderation.infraction;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.commands.CommandMessages;

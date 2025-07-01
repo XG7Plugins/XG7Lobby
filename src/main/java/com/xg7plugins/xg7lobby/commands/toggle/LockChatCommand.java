@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.toggle_commands;
+package com.xg7plugins.xg7lobby.commands.toggle;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.commands.setup.Command;
@@ -9,8 +9,6 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
 import org.bukkit.command.CommandSender;
-
-import java.util.List;
 
 @CommandSetup(
         name = "lockchat",

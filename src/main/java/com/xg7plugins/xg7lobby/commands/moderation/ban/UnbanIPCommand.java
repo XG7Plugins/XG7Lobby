@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.moderation_commands.ban;
+package com.xg7plugins.xg7lobby.commands.moderation.ban;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.commands.CommandMessages;
@@ -11,7 +11,6 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.BanEntry;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;

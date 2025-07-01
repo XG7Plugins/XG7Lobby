@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.moderation_commands.infraction;
+package com.xg7plugins.xg7lobby.commands.moderation.infraction;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.commands.CommandMessages;
@@ -11,11 +11,8 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
-import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 @CommandSetup(
         name = "pardon",

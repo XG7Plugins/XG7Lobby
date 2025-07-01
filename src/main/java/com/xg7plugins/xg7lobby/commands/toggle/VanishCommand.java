@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.commands.toggle_commands;
+package com.xg7plugins.xg7lobby.commands.toggle;
 
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.commands.setup.Command;

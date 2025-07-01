@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.events.lobby_events;
+package com.xg7plugins.xg7lobby.events.lobby;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;

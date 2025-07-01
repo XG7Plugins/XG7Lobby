@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.events.lobby_events;
+package com.xg7plugins.xg7lobby.events.lobby;
 
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.Listener;
@@ -10,8 +10,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

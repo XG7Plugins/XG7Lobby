@@ -219,12 +219,7 @@ anti-swearing:
 
   dont-send-the-message: false
 
-  #Put -1 to disable infraction
-  words-tolerance: 5
-
-  tolerance-warn-level: 1
-
-  time-for-decrement-tolerance: 1m
+  anti-swear-only-on-lobby: false
 
 
 block-commands:
@@ -315,4 +310,4 @@ motd:
     - "[CENTER:MOTD] &9XG7&3Lob&bby&r"
     - "[CENTER:MOTD] &5&oMade by DaviXG7"
 
-config-version: 3
+config-version: 4

@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.events.command_events;
+package com.xg7plugins.xg7lobby.events.command;
 
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;

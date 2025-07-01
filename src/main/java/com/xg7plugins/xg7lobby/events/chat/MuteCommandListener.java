@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.events.command_events;
+package com.xg7plugins.xg7lobby.events.chat;
 
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
@@ -8,6 +8,7 @@ import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class MuteCommandListener implements Listener {
@@ -16,7 +17,7 @@ public class MuteCommandListener implements Listener {
         return true;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(event.getPlayer().getUniqueId());
 

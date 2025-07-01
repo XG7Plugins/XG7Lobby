@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.events.air_events;
+package com.xg7plugins.xg7lobby.events.air;
 
 import com.cryptomorin.xseries.XSound;
 import com.xg7plugins.data.config.Config;

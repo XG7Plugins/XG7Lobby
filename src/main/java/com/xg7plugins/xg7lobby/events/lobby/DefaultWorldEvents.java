@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.events.lobby_events;
+package com.xg7plugins.xg7lobby.events.lobby;
 
 import com.xg7plugins.data.config.ConfigBoolean;
 import com.xg7plugins.events.Listener;

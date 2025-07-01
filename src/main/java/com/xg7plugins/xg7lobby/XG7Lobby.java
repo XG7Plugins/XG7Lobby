@@ -13,7 +13,6 @@ import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
 import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.tasks.tasks.Task;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.xg7lobby.commands.custom_commands.CustomCommandManager;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
@@ -31,19 +30,23 @@ import com.xg7plugins.xg7lobby.commands.moderation_commands.mute.MuteCommand;
 import com.xg7plugins.xg7lobby.commands.moderation_commands.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.BuildCommand;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.FlyCommand;
+import com.xg7plugins.xg7lobby.commands.toggle_commands.LockChatCommand;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.VanishCommand;
 import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
 import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
 import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
 import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
-import com.xg7plugins.xg7lobby.events.air_events.LaunchpadListener;
-import com.xg7plugins.xg7lobby.events.air_events.MultiJumpingListener;
-import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandListener;
-import com.xg7plugins.xg7lobby.events.command_events.MuteCommandListener;
-import com.xg7plugins.xg7lobby.events.lobby_events.DefaultPlayerEvents;
-import com.xg7plugins.xg7lobby.events.lobby_events.DefaultWorldEvents;
-import com.xg7plugins.xg7lobby.events.lobby_events.LoginAndLogoutEvent;
-import com.xg7plugins.xg7lobby.events.lobby_events.MOTDListener;
+import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
+import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
+import com.xg7plugins.xg7lobby.events.chat.AntiSpamListener;
+import com.xg7plugins.xg7lobby.events.chat.AntiSwearingListener;
+import com.xg7plugins.xg7lobby.events.chat.LockChatCommandListener;
+import com.xg7plugins.xg7lobby.events.command.LobbyCommandListener;
+import com.xg7plugins.xg7lobby.events.chat.MuteCommandListener;
+import com.xg7plugins.xg7lobby.events.lobby.DefaultPlayerEvents;
+import com.xg7plugins.xg7lobby.events.lobby.DefaultWorldEvents;
+import com.xg7plugins.xg7lobby.events.lobby.LoginAndLogoutEvent;
+import com.xg7plugins.xg7lobby.events.lobby.MOTDListener;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyGUITypeAdapter;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyHotbarTypeAdapter;
@@ -55,6 +58,7 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
+import com.xg7plugins.xg7lobby.tasks.AntiSpamTask;
 import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
 import com.xg7plugins.xg7lobby.tasks.EffectsTask;
 import com.xg7plugins.xg7lobby.tasks.WorldCyclesTask;
@@ -181,12 +185,12 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand());
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand());
     }
 
     @Override
     public List<Listener> loadEvents() {
-        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener());
+        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener(), new MuteCommandListener());
     }
 
     @Override
@@ -202,6 +206,8 @@ public final class XG7Lobby extends Plugin {
         if (Config.of("ads", this).get("enabled", Boolean.class).orElse(false)) tasks.add(new AutoBroadcastTask());
         tasks.add(new EffectsTask());
         tasks.add(new WorldCyclesTask());
+        if (Config.mainConfigOf(this).get("anti-spam.enabled", Boolean.class).orElse(false)
+                        && Config.mainConfigOf(this).get("anti-spam.spam-tolerance", Integer.class).orElse(0) > 0) tasks.add(new AntiSpamTask());
 
         return tasks;
     }

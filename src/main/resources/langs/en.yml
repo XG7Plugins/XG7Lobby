@@ -25,7 +25,6 @@ commands:
 
     warn-admin: "&cYou can't warn an admin."
 
-    invalid-id: "Invalid warn id!"
     infraction-not-found: "Infraction not found!"
 
     on-pardon: "&aWarn with id %id% pardoned successfully."
@@ -42,8 +41,8 @@ commands:
 
     mute-admin: "&cYou can't mute an admin."
 
-    on-mute: "&cYou have been muted for %time%."
-    on-mute-sender: "&aPlayer %target% has been muted successfully for %time%."
+    on-mute: "&cYou have been muted for @DAYS_HOURS_MINUTES_SECONDS:%time%@."
+    on-mute-sender: "&aPlayer %target% has been muted successfully for @DAYS_HOURS_MINUTES_SECONDS:%time%@."
 
   unmute:
     not-muted: "&cThis player is not muted."
@@ -63,8 +62,8 @@ commands:
 
     ban-admin: "&cYou can't ban an admin."
 
-    on-ban: "&cYou have been banned for %time%. Reason: %reason%."
-    on-ban-sender: "&aPlayer %target% has been banned successfully for %time% by %reason%."
+    on-ban: "&cYou have been banned for @DAYS_HOURS_MINUTES_SECONDS:%time%@. Reason: %reason%."
+    on-ban-sender: "&aPlayer %target% has been banned successfully for @DAYS_HOURS_MINUTES_SECONDS:%time%@ by %reason%."
 
   unban:
     not-banned: "&cThis player is not banned."
@@ -135,7 +134,7 @@ chat:
   locked: "&cYou can't send messages. The chat is locked."
 
   swear: "&cYou can't swear in the chat."
-  muted: "&cYou are muted. You can't send messages for %time%."
+  muted: "&cYou are muted. You can't send messages for @DAYS_HOURS_MINUTES_SECONDS:%time%@."
 
 
   same-message: "&cYou can't send the same message twice."
@@ -192,7 +191,7 @@ warn-menu:
   go-next: "&aNext page"
   close: "&cClose"
 
-  id-message: "&7Click to copy the warn id %id%."
+  id-message: "<click:suggest_command:%id%>&7Click to copy the warn id %id%.</click>"
 
 lobbies-menu:
 

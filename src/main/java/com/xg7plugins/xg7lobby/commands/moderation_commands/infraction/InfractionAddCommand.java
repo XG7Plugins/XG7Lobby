@@ -13,15 +13,17 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
+import org.apache.logging.log4j.util.Strings;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 @CommandSetup(
         name = "add",
-        description = "Adds a infraction to a player",
+        description = "Adds an infraction to a player",
         syntax = "/7linfraction add <player> <infraction level> <reason>",
         pluginClass = XG7Lobby.class,
         isAsync = true
@@ -30,20 +32,15 @@ public class InfractionAddCommand implements Command {
     @Override
     public void onCommand(CommandSender sender, CommandArgs args) {
 
-        if (args.len() != 3) {
-            CommandMessages.SYNTAX_ERROR.send(sender);
+        if (args.len() < 3) {
+            CommandMessages.SYNTAX_ERROR.send(sender, getCommandConfigurations().syntax());
             return;
         }
 
         OfflinePlayer offlinePlayer = args.get(0,  OfflinePlayer.class);
 
-        if (!offlinePlayer.isOnline()) {
-            CommandMessages.NOT_ONLINE.send(sender);
-            return;
-        }
-
         int level = args.get(1, Integer.class);
-        String reason = args.get(2, String.class);
+        String reason = Strings.join(Arrays.asList(Arrays.copyOfRange(args.getArgs(), 2, args.len())), ' ');
 
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(offlinePlayer.getUniqueId());
 
@@ -55,13 +52,13 @@ public class InfractionAddCommand implements Command {
         Config config = Config.mainConfigOf(XG7Lobby.getInstance());
 
 
-        if (player.getPlayer().hasPermission("xg7lobby.moderation.infraction.*") && !config.get("warn-admin", Boolean.class).orElse(false)) {
+        if (player.getOfflinePlayer().isOnline() && player.getPlayer().hasPermission("xg7lobby.moderation.infraction.*") && !config.get("warn-admin", Boolean.class).orElse(false)) {
             Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.warn-admin");
             return;
         }
 
         if (config.getList("infraction-levels", Map.class).orElse(new ArrayList<>()).stream().noneMatch(map -> (int) map.get("level") == level)) {
-            Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.level-invalid");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.level-invalid");
             return;
         }
 
@@ -69,8 +66,8 @@ public class InfractionAddCommand implements Command {
 
         XG7LobbyAPI.lobbyPlayerManager().addInfraction(infraction);
 
-        Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-warn", Pair.of("reason", reason));
-        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.on-warn-sender", Pair.of("target", player.getPlayer().getName()), Pair.of("reason", reason));
+        if (offlinePlayer.isOnline()) Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-warn", Pair.of("reason", reason));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.on-warn-sender", Pair.of("target", player.getOfflinePlayer().getName()), Pair.of("reason", reason));
     }
 
     @Override

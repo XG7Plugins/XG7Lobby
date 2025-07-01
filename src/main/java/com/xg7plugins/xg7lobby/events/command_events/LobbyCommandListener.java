@@ -4,7 +4,7 @@ import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
-import com.xg7plugins.tasks.CooldownManager;
+import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.event.player.PlayerMoveEvent;
 

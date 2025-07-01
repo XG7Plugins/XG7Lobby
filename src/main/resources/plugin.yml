@@ -69,7 +69,7 @@ permissions:
     default: op
     children:
       xg7lobby.moderation.infraction.add: true
-      xg7lobby.moderation.infraction.remove: true
+      xg7lobby.moderation.infraction.pardon: true
 
   xg7lobby.chat.*:
     description: Permission to use all chat restrictions.

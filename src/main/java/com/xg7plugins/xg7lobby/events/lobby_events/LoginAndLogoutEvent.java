@@ -4,6 +4,7 @@ import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -96,12 +97,6 @@ public class LoginAndLogoutEvent implements LobbyListener {
     public void onWorldJoin(Player player, World newWorld) {
         Config config = Config.of("events", XG7Lobby.getInstance());
 
-        XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-            lobbyPlayer.fly();
-
-            lobbyPlayer.applyHide();
-        });
-
         if (player.getWorld() == newWorld || config.get("on-join.run-events-when-return-to-the-world", Boolean.class).orElse(false)) {
             ActionsProcessor.process(config.getList(config.get("on-first-join.enabled", Boolean.class).orElse(false) && !player.hasPlayedBefore() ? "on-first-join.events" : "on-join.events", String.class).orElse(Collections.emptyList()), player);
         }
@@ -117,7 +112,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
                     Text.sendTextFromLang(player,XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
                     return;
                 }
-                XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> lobby.teleport(player));
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(player)));
             });
 
         }
@@ -131,6 +126,13 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         if (config.get("on-join.heal", Boolean.class).orElse(true)) player.setHealth(player.getMaxHealth());
         if (config.get("on-join.clear-inventory", Boolean.class).orElse(true)) player.getInventory().clear();
+
+        XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+            lobbyPlayer.fly();
+            lobbyPlayer.applyBuild();
+            lobbyPlayer.applyHide();
+            lobbyPlayer.applyInfractions();
+        });
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.holders.PagedMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menus.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.menus.gui.menus.PagedMenu;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -117,10 +118,10 @@ public class LobbiesMenu extends PagedMenu {
                     if (lobbyLocation == null) return;
 
                     if (!player.hasPermission("xg7lobby.command.lobby-delete") || event.getMenuAction().isLeftClick()) {
-                        XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> {
+                        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
                             player.closeInventory();
                             lobbyLocation.teleport(player);
-                        });
+                        }));
                         return;
                     }
 
@@ -131,11 +132,12 @@ public class LobbiesMenu extends PagedMenu {
                                 e.printStackTrace();
                                 return null;
                             })
-                            .thenRun(() -> Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.delete.on-success", Pair.of("id", lobbyLocation.getID()))).join();
-                    
-                    refresh((PagedMenuHolder) event.getHolder());
+                            .thenRun(() -> {
+                                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.delete.on-success", Pair.of("id", lobbyLocation.getID()));
+                                refresh((PagedMenuHolder) event.getHolder());
+                            });
 
-                }).join();
+                });
 
         }    }
 }

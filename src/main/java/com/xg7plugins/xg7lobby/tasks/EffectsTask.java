@@ -3,8 +3,9 @@ package com.xg7plugins.xg7lobby.tasks;
 import com.cryptomorin.xseries.XPotion;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
-import com.xg7plugins.tasks.Task;
+import com.xg7plugins.tasks.tasks.Task;
 import com.xg7plugins.tasks.TaskState;
+import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.utils.Parser;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -14,11 +15,18 @@ import org.bukkit.potion.PotionEffect;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EffectsTask extends Task {
+public class EffectsTask extends TimerTask {
     private final List<PotionEffect> effects = new ArrayList<>();
 
     public EffectsTask() {
-        super(XG7Lobby.getInstance(), "effects", false, true, Config.mainConfigOf(XG7Lobby.getInstance()).getTime("effects-task-delay").orElse(Time.of(10)).getMilliseconds(), TaskState.RUNNING, null);
+        super(
+                XG7Lobby.getInstance(),
+                "effects",
+                0,
+                Config.mainConfigOf(XG7Lobby.getInstance()).getTime("effects-task-delay").orElse(Time.of(10)).getMilliseconds(),
+                TaskState.RUNNING,
+                false
+        );
 
         Config config = Config.mainConfigOf(XG7Lobby.getInstance());
 

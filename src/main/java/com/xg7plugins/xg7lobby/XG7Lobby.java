@@ -13,12 +13,22 @@ import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
 import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.tasks.Task;
+import com.xg7plugins.tasks.tasks.Task;
+import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.xg7lobby.commands.custom_commands.CustomCommandManager;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobby;
 import com.xg7plugins.xg7lobby.commands.lobby.SetLobby;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.infraction.InfractionsMenuCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.KickCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.ban.BanCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.ban.BanIPCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.ban.UnbanCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.ban.UnbanIPCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.infraction.InfractionCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.mute.MuteCommand;
+import com.xg7plugins.xg7lobby.commands.moderation_commands.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.BuildCommand;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.FlyCommand;
 import com.xg7plugins.xg7lobby.commands.toggle_commands.VanishCommand;
@@ -29,6 +39,7 @@ import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
 import com.xg7plugins.xg7lobby.events.air_events.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air_events.MultiJumpingListener;
 import com.xg7plugins.xg7lobby.events.command_events.LobbyCommandListener;
+import com.xg7plugins.xg7lobby.events.command_events.MuteCommandListener;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby_events.LoginAndLogoutEvent;
@@ -42,6 +53,7 @@ import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.location.LobbyManager;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
+import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
 import com.xg7plugins.xg7lobby.tasks.EffectsTask;
@@ -164,12 +176,12 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand());
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand());
     }
 
     @Override
     public List<Listener> loadEvents() {
-        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener());
+        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener());
     }
 
     @Override
@@ -178,13 +190,11 @@ public final class XG7Lobby extends Plugin {
     }
 
     @Override
-    public List<Task> loadRepeatingTasks() {
+    public List<TimerTask> loadRepeatingTasks() {
 
-        List<Task> tasks = new ArrayList<>();
+        List<TimerTask> tasks = new ArrayList<>();
 
-        if (Config.of("ads", this).get("enabled", Boolean.class).orElse(false)) {
-            tasks.add(new AutoBroadcastTask());
-        }
+        if (Config.of("ads", this).get("enabled", Boolean.class).orElse(false)) tasks.add(new AutoBroadcastTask());
         tasks.add(new EffectsTask());
         tasks.add(new WorldCyclesTask());
 
@@ -207,7 +217,7 @@ public final class XG7Lobby extends Plugin {
 
         XG7Menus menus = XG7Menus.getInstance();
 
-        menus.registerMenus(new LobbiesMenu());
+        menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
     }
 
     public void loadScores() {

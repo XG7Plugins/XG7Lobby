@@ -1,0 +1,55 @@
+package com.xg7plugins.xg7lobby.commands.moderation_commands.infraction;
+
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7PluginsAPI;
+import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.commands.setup.Command;
+import com.xg7plugins.commands.setup.CommandArgs;
+import com.xg7plugins.commands.setup.CommandSetup;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@CommandSetup(
+        name = "infractions",
+        description = "Open the infraction menu of a player",
+        syntax = "/7linfractions (player)",
+        permission = "xg7lobby.command.infractions",
+        isPlayerOnly = true,
+        pluginClass = XG7Lobby.class
+)
+public class InfractionsMenuCommand implements Command {
+    @Override
+    public void onCommand(CommandSender sender, CommandArgs args) {
+        Player player = (Player) sender;
+        OfflinePlayer target = args.len() == 0 ? player : args.get(0, OfflinePlayer.class);
+
+        if (!target.hasPlayedBefore() && !target.isOnline()) {
+            CommandMessages.PLAYER_NOT_FOUND.send(sender);
+            return;
+        }
+
+        InfractionsMenu infractionsMenu = XG7Menus.getInstance().getMenu(XG7Lobby.getInstance(), "warns-menu");
+
+        infractionsMenu.open(player, target);
+
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
+        return sender.hasPermission("xg7lobby.command.infractions-other") ? new ArrayList<>(XG7PluginsAPI.getAllPlayerNames()) : Collections.emptyList();
+    }
+
+    @Override
+    public Item getIcon() {
+        return Item.commandIcon(XMaterial.PAPER, this);
+    }
+}

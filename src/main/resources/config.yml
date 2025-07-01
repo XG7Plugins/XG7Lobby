@@ -174,7 +174,7 @@ infraction-levels:
     min-to-mute: 2
     min-to-kick: 3
 
-    menu-material: "GREEN_WOOL"
+    menu-material: "LIME_WOOL"
 
   - level: 2
     min-to-ban: 3
@@ -190,9 +190,9 @@ infraction-levels:
 
     menu-material: "RED_WOOL"
 
-mute-warn-level: 2
-kick-warn-level: 3
-ban-warn-level: 3
+mute-warning-level: 1
+kick-warning-level: 2
+ban-warning-level: 3
 
 total-infractions-to-ban: 10
 total-infractions-to-mute: 2

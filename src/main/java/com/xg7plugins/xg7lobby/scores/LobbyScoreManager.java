@@ -27,7 +27,7 @@ public class LobbyScoreManager implements Manager {
     public void loadScores() {
         lobbyScoreLoaders.forEach((loader) -> {
             if (!loader.getScoreConfig().isEnabled()) return;
-            XG7PluginsAPI.taskManager().runTask(XG7PluginsAPI.taskManager().getRegisteredTask(XG7Plugins.getInstance(), "score-task"));
+            XG7PluginsAPI.taskManager().runTimerTask(XG7PluginsAPI.taskManager().getRegisteredTimerTask(XG7Plugins.getInstance(), "score-task"));
             XG7Scores.loadScores(loader.load());
             Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Scores.getInstance()::addPlayer);
         });

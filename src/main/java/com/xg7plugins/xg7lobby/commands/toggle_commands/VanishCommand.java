@@ -8,6 +8,7 @@ import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
@@ -47,10 +48,10 @@ public class VanishCommand implements Command {
         PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(lobbyPlayer.getPlayerUUID());
         if (playerMenu != null) BasicMenu.refresh(playerMenu);
 
-        XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> {
+        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
             lobbyPlayer.applyHide();
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), lobbyPlayer.isHidingPlayers() ? "hide-players.hide" : "hide-players.show");
-        });
+        }));
 
     }
 

@@ -8,7 +8,8 @@ import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.tasks.CooldownManager;
+import com.xg7plugins.cooldowns.CooldownManager;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
@@ -101,7 +102,7 @@ public class Lobby implements Command {
             }
 
             if (finalTargetToTeleport.hasPermission("xg7lobby.command.lobby.bypass-cooldown") || finalTargetIsOther) {
-                XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport));
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport)));
                 return;
             }
 
@@ -126,7 +127,7 @@ public class Lobby implements Command {
                                     Text.fromLang(player,XG7Lobby.getInstance(), "lobby.teleport-cancelled").thenAccept(text -> text.send(player));
                                     return;
                                 }
-                                XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport));
+                                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport)));
                                 cooldownManager.addCooldown(finalTargetToTeleport, "lobby-cooldown-after", config.getTime("lobby-teleport-cooldown.after-teleport").orElse(Time.of(5)).getMilliseconds());
                             })
                     )

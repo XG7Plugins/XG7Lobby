@@ -25,7 +25,7 @@ public class CustomCommand {
 
     public CustomCommand(String path) {
 
-        Config config = Config.of("custom-commands", XG7Lobby.getInstance());
+        Config config = Config.of("custom_commands", XG7Lobby.getInstance());
 
         this.name = config.get("custom-commands." + path + ".name", String.class).orElseThrow(() -> new RuntimeException("This command don't have a name!"));
         this.syntax = config.get("custom-commands." + path + ".syntax", String.class).orElse("No syntax");

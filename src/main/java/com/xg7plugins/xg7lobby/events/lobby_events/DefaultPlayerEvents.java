@@ -10,6 +10,7 @@ import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.server.MinecraftVersion;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -186,11 +187,11 @@ public class DefaultPlayerEvents implements Listener {
         if (event.getPlayer().getLocation().getY() < layer) {
             LobbyLocation location = XG7LobbyAPI.requestRandomLobbyLocation().join();
             if (location == null || location.getLocation() == null) {
-                XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation()));
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation())));
                 return;
             }
 
-            XG7PluginsAPI.taskManager().runSyncTask(XG7Lobby.getInstance(), () -> location.teleport(event.getPlayer()));
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> location.teleport(event.getPlayer())));
         }
     }
 

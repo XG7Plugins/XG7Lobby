@@ -3,8 +3,9 @@ package com.xg7plugins.xg7lobby.tasks;
 import com.cryptomorin.xseries.XSound;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
-import com.xg7plugins.tasks.Task;
+import com.xg7plugins.tasks.tasks.Task;
 import com.xg7plugins.tasks.TaskState;
+import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AutoBroadcastTask extends Task {
+public class AutoBroadcastTask extends TimerTask {
 
     private final AtomicInteger index = new AtomicInteger(0);
 
@@ -32,7 +33,14 @@ public class AutoBroadcastTask extends Task {
     private final boolean random;
 
     public AutoBroadcastTask() {
-        super(XG7Lobby.getInstance(), "auto-broadcast", true, true, Config.of("ads", XG7Lobby.getInstance()).getTime("cooldown").orElse(Time.of(3, 0)).getMilliseconds(), TaskState.RUNNING, null);
+        super(
+                XG7Lobby.getInstance(),
+                "auto-broadcast",
+                0,
+                Config.of("ads", XG7Lobby.getInstance()).getTime("cooldown").orElse(Time.of(3, 0)).getMilliseconds(),
+                TaskState.RUNNING,
+                null
+        );
 
         Config config = Config.of("ads", XG7Lobby.getInstance());
 

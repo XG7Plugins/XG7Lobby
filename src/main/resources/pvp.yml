@@ -1,30 +1,34 @@
 enabled: true
 
-disable-cooldown: 5s
+leave-command-cooldown: 5s
 hide-players-not-in-pvp: true
 disable-multi-jumps: true
 disable-launchpad: true
+disable-lobby-effects: true
 combat-log-remove: 20s
-send-kill-message-only-in-pvp: false
+send-pvp-kill-message-for-all: false
 
-on-enter-pvp:
+on-join-pvp:
   heal: true
-  clear-inventory: true
   actions:
-    - "[OPEN_MENU] pvp"
     - "[EQUIP] HELMET, DIAMOND_HELMET"
     - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"
     - "[EQUIP] LEGGINGS, DIAMOND_LEGGINGS"
     - "[EQUIP] BOOTS, DIAMOND_BOOTS"
     - "[EQUIP] OFFHAND, GOLDEN_APPLE"
-    - "[BROADCAST] &f%player_name% joined the PvP!"
-  
+    - "[BROADCAST] &a%player_name% joined the PvP!"
+
+on-respawn:
+  actions: []
+
+on-kill:
+  actions: []
+
 on-leave-pvp:
   heal: true
-  clear-inventory: true
   dont-move: true
   actions:
-    - "[BROADCAST] &f%player_name% left the PvP!"
+    - "[BROADCAST] &c%player_name% left the PvP!"
   
 commands-blocked:
     - "/lobby"

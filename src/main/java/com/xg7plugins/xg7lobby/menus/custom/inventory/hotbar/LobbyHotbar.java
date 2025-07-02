@@ -100,7 +100,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
         ActionsProcessor.process(actions, event.getHolder().getPlayer());
 
-        XG7PluginsAPI.cooldowns().addCooldown(event.getHolder().getPlayer(), "selector-cooldown", cooldown.getMilliseconds());
+        if (!cooldown.isZero()) XG7PluginsAPI.cooldowns().addCooldown(event.getHolder().getPlayer(), "selector-cooldown", cooldown.getMilliseconds());
     }
 
     private LobbyItem getItem(Player player, String path) {

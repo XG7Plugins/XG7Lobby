@@ -152,11 +152,11 @@ hide-players:
   hide: "&cPlayers are now hidden."
 
 pvp:
-  on-enter: "&aYou are in global PvP mode."
+  on-join: "&aYou are in global PvP mode."
   on-leave: "&cYou are no longer in global PvP mode."
 
-  on-death-with-killer: "&c%victim% has killed by %killer%."
-  on-death-without-killer: "&c%victim% has died by %cause%."
+  on-death: "&c%victim% %cause%."
+  on-death-with-killer: "&c%victim% %cause% by %killer%."
 
   on-attack: "&cYou can't attack this player. He is not in global PvP mode."
 
@@ -164,6 +164,34 @@ pvp:
   disable-cancelled: "&cPvP disabling cancelled!"
 
   pvp-command: "You can't use this command in global PvP mode."
+
+  causes:
+    fall: "fell"
+    void: "fell into the void"
+    fire: "burned"
+    lava: "fell into lava"
+    drowning: "drowned"
+    explosion: "exploded"
+    projectile: "was shot"
+    melee: "was slain"
+    magic: "was killed by magic"
+    poison: "was poisoned"
+    starvation: "starved to death"
+    suffocation: "suffocated"
+    lightning: "was struck by lightning"
+    cactus: "was pricked to death"
+    freezing: "froze to death"
+    thorns: "was killed by thorns"
+    anvil: "was crushed by an anvil"
+    block_crushing: "was crushed by a block"
+    end_crystal: "was blown up by an end crystal"
+    fire_tick: "burned"
+    sweet_berry_bush: "was pricked to death"
+    dragon_breath: "was roasted by dragon breath"
+    wither: "withered away"
+    fall_out_of_world: "fell out of the world"
+    generic: "died"
+
 
 scoreboard:
   player-info: "&e&lPlayer&b:"

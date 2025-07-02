@@ -39,6 +39,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     private boolean buildEnabled;
     @Column(name = "fly_enabled")
     private boolean flying;
+
     @Column(name = "global_pvp_kills")
     private int globalPVPKills;
     @Column(name = "global_pvp_deaths")

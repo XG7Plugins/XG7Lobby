@@ -133,7 +133,6 @@ public class CustomInventoryManager implements Manager {
         if (!inventories.containsKey(id)) return;
         LobbyInventory lobbyInventory = inventories.get(id);
 
-
         if (lobbyInventory instanceof LobbyHotbar) {
             PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
             if (playerMenu != null) playerMenu.getMenu().close(playerMenu);

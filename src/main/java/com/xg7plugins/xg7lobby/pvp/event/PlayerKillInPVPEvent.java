@@ -16,8 +16,8 @@ public class PlayerKillInPVPEvent extends PVPEvent {
     private final Player victim;
     private final DeathCause killCause;
 
-    public PlayerKillInPVPEvent(@NotNull Player killer, Player victim, DeathCause killCause) {
-        super(killer);
+    public PlayerKillInPVPEvent(Player killer, @NotNull Player victim, DeathCause killCause) {
+        super(victim);
         this.killer = killer;
         this.victim = victim;
         this.killCause = killCause;

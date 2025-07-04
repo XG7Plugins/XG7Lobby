@@ -14,7 +14,7 @@ import java.util.Collections;
 
 public class LeavePVPHandler implements PVPHandler {
     @Override
-    public void handle(Player player) {
+    public void handle(Player player, Object... args) {
 
         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-leave");
 

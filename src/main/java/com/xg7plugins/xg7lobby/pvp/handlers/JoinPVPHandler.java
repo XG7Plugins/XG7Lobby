@@ -16,7 +16,7 @@ import java.util.List;
 public class JoinPVPHandler implements PVPHandler {
 
     @Override
-    public void handle(Player player) {
+    public void handle(Player player, Object... args) {
 
         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-join");
 

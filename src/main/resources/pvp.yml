@@ -18,10 +18,11 @@ on-join-pvp:
     - "[EQUIP] OFFHAND, GOLDEN_APPLE"
     - "[BROADCAST] &a%player_name% joined the PvP!"
 
-on-respawn:
-  actions: []
-
 on-kill:
+  killer-actions: []
+  victim-actions: []
+
+on-respawn:
   actions: []
 
 on-leave-pvp:

@@ -13,17 +13,22 @@ public class ActionsProcessor {
 
     private static final Pattern conditionPattern = Pattern.compile("\\((.*?)\\)");
 
-    public static void process(List<String> actions, Player player) {
+    public static void process(List<String> actions, Player player, Pair<String, String>... placeholders) {
         actions.forEach(action -> {
             try {
-                getActionOf(action).execute(player);
+                getActionOf(action, placeholders).execute(player);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public static Action getActionOf(String line) {
+    public static Action getActionOf(String line, Pair<String, String>... placeholders) {
+        if (placeholders != null && placeholders.length > 0) {
+            for (Pair<String, String> placeholder : placeholders) {
+                line = line.replace("%" + placeholder.getFirst() + "%", placeholder.getSecond());
+            }
+        }
         String action = line.split(" ")[0];
         line = line.substring(action.length() + 1);
 

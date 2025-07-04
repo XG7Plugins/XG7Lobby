@@ -8,6 +8,7 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
+import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +53,10 @@ public class XG7LobbyAPI {
     }
     public static LobbyHotbar getCustomHotbar(String id) {
         return customInventoryManager().getHotbar(id);
+    }
+
+    public static GlobalPVPManager globalPVPManager() {
+        return ManagerRegistry.get(XG7Lobby.getInstance(), GlobalPVPManager.class);
     }
 
 }

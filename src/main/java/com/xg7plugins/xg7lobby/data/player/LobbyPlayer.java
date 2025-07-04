@@ -44,6 +44,8 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     private int globalPVPKills;
     @Column(name = "global_pvp_deaths")
     private int globalPVPDeaths;
+    @Column(name = "global_pvp_kill_streak")
+    private int globalPVPKillStreak;
     private final List<Infraction> infractions = new ArrayList<>();
 
     public LobbyPlayer(UUID playerUUID) {

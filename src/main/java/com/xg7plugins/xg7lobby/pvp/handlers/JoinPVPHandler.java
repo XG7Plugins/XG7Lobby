@@ -7,15 +7,16 @@ import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
-import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
-import com.xg7plugins.xg7lobby.pvp.event.JoinPVPEvent;
+import com.xg7plugins.xg7lobby.events.LobbyListener;
+import com.xg7plugins.xg7lobby.pvp.event.PlayerJoinPVPEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
+public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
-public class JoinPVPHandler implements PVPHandler {
+    private final PVPConfigs pvpConfigs = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
 
     @Override
     public void handle(Player player, Object... args) {
@@ -38,10 +39,26 @@ public class JoinPVPHandler implements PVPHandler {
             XG7LobbyAPI.requestLobbyLocation(pvpConfigs.getPvpLobby()).thenAccept(l -> l.teleport(player));
         }
 
+        Bukkit.getOnlinePlayers().stream().filter(p -> !XG7LobbyAPI.isPlayerInPVP(p)).forEach(p -> applyPVPHiding(player, p));
         ActionsProcessor.process(config.getActions(), player);
 
-        Bukkit.getPluginManager().callEvent(new JoinPVPEvent(player));
+        Bukkit.getPluginManager().callEvent(new PlayerJoinPVPEvent(player));
 
     }
 
+    @Override
+    public boolean isEnabled() {
+        return pvpConfigs.isEnabled();
+    }
+
+    @Override
+    public void onWorldJoin(Player player, World newWorld) {
+        Bukkit.getOnlinePlayers().stream().filter(XG7LobbyAPI::isPlayerInPVP).forEach(p -> applyPVPHiding(p, player));
+    }
+
+    private void applyPVPHiding(Player player, Player other) {
+        if (!pvpConfigs.isHidePlayersNotInPvp()) return;
+        if (XG7LobbyAPI.isPlayerInPVP(other)) return;
+        player.hidePlayer(other);
+    }
 }

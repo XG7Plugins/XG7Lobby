@@ -1,6 +1,6 @@
 id: "selector"
 
-cooldown-to-use: 2s
+cooldown-to-use: "2s"
 
 items:
 

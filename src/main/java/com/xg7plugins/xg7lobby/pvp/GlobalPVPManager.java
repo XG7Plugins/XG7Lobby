@@ -6,16 +6,12 @@ import com.xg7plugins.xg7lobby.pvp.handlers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GlobalPVPManager implements Manager {
 
-    private final List<UUID> playersInPVP = new ArrayList<>();
+    private final Set<UUID> playersInPVP = new HashSet<>();
 
     private static final HashMap<Class<? extends PVPHandler>, PVPHandler> handlers = new HashMap<>();
 
@@ -33,7 +29,9 @@ public class GlobalPVPManager implements Manager {
     }
 
     public void removePlayer(Player player) {
+        if (!playersInPVP.contains(player.getUniqueId())) return;
         this.playersInPVP.remove(player.getUniqueId());
+        getHandler(LeavePVPHandler.class).handle(player);
     }
 
     public boolean isInPVP(Player player) {
@@ -48,7 +46,7 @@ public class GlobalPVPManager implements Manager {
         return playersInPVP.stream().map(Bukkit::getPlayer).collect(Collectors.toList());
     }
 
-    public List<Listener>  getAllListenersHandlers() {
+    public List<Listener> getAllListenersHandlers() {
         return handlers.values().stream().filter(h -> h instanceof Listener).map(h -> (Listener) h).collect(Collectors.toList());
     }
 

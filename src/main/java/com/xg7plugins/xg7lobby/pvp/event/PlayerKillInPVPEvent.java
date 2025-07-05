@@ -23,4 +23,8 @@ public class PlayerKillInPVPEvent extends PVPEvent {
         this.killCause = killCause;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
 }

@@ -8,4 +8,9 @@ public class PlayerRespawnInPVPEvent extends PVPEvent {
     public PlayerRespawnInPVPEvent(@NotNull Player who) {
         super(who);
     }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
 }

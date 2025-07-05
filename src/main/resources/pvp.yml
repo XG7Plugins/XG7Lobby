@@ -6,6 +6,8 @@ disable-multi-jumps: true
 disable-launchpad: true
 disable-lobby-effects: true
 combat-log-remove: 20s
+food-change: true
+drops-enabled: true
 
 pvp-lobby: "lobby1"
 
@@ -33,7 +35,6 @@ on-respawn:
   actions: []
 
 on-leave-pvp:
-  heal: true
   dont-move: true
   actions:
     - "[BROADCAST] &c%player_name% left the PvP!"

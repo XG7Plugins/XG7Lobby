@@ -19,7 +19,7 @@ public class LaunchpadListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return Config.of(XG7Plugins.getInstance(), LaunchpadConfigs.class).isEnabled();
+        return Config.of(XG7Lobby.getInstance(), LaunchpadConfigs.class).isEnabled();
     }
 
     @EventHandler(isOnlyInWorld = true)

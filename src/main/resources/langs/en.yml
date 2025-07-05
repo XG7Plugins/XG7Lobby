@@ -158,7 +158,8 @@ pvp:
   on-death: "&c%victim% %cause%."
   on-death-with-killer: "&c%victim% %cause% by %killer%."
 
-  on-attack: "&cYou can't attack this player. He is not in global PvP mode."
+  on-attack-in-pvp: "&cYou can't attack this player. He is not in global PvP mode."
+  on-attack-out-pvp: "&cYou can't attack. You are not in pvp mode!"
 
   pvp-disabling: "[ACTION] &cYour pvp is being disabled in @SECONDS:%time%@ seconds. Dont move!"
   disable-cancelled: "&cPvP disabling cancelled!"

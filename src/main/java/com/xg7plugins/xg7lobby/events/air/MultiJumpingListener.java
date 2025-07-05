@@ -33,7 +33,7 @@ public class MultiJumpingListener implements Listener {
     @EventHandler
     public void onToggleFlight(PlayerToggleFlightEvent event) {
 
-        MultiJumpsConfigs config = Config.of(XG7Plugins.getInstance(), MultiJumpsConfigs.class);
+        MultiJumpsConfigs config = Config.of(XG7Lobby.getInstance(), MultiJumpsConfigs.class);
 
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(event.getPlayer().getUniqueId());
 

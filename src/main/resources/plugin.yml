@@ -17,9 +17,11 @@ permissions:
       xg7lobby.command.*: true
       xg7lobby.moderation.*: true
       xg7lobby.attack: true
+      xg7lobby.pvp: true
       xg7lobby.chat.*: true
       xg7lobby.inv: true
       xg7lobby.build: true
+      xg7lobby.command_block_bypass: true
 
   xg7lobby.command.*:
     description: Permission to use all commands.

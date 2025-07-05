@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public abstract class PVPEvent extends PlayerEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
+    protected static final HandlerList HANDLERS = new HandlerList();
 
     public PVPEvent(@NotNull Player who) {
         super(who);

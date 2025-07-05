@@ -1,6 +1,6 @@
 id: "pvp"
 
-cooldown-to-use: 0s
+cooldown-to-use: "0s"
 
 items:
 

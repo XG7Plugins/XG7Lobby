@@ -30,10 +30,7 @@ import com.xg7plugins.xg7lobby.commands.moderation.ban.UnbanIPCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.infraction.InfractionCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.MuteCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.UnMuteCommand;
-import com.xg7plugins.xg7lobby.commands.toggle.BuildCommand;
-import com.xg7plugins.xg7lobby.commands.toggle.FlyCommand;
-import com.xg7plugins.xg7lobby.commands.toggle.LockChatCommand;
-import com.xg7plugins.xg7lobby.commands.toggle.VanishCommand;
+import com.xg7plugins.xg7lobby.commands.toggle.*;
 import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
 import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
 import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
@@ -43,8 +40,11 @@ import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
 import com.xg7plugins.xg7lobby.events.chat.AntiSpamListener;
 import com.xg7plugins.xg7lobby.events.chat.AntiSwearingListener;
 import com.xg7plugins.xg7lobby.events.chat.LockChatCommandListener;
+import com.xg7plugins.xg7lobby.events.command.BlockCommandsListener;
 import com.xg7plugins.xg7lobby.events.command.LobbyCommandListener;
 import com.xg7plugins.xg7lobby.events.chat.MuteCommandListener;
+import com.xg7plugins.xg7lobby.events.command.PVPBlockCommandsListener;
+import com.xg7plugins.xg7lobby.events.command.PVPCommandListener;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby.LoginAndLogoutEvent;
@@ -59,6 +59,8 @@ import com.xg7plugins.xg7lobby.data.location.LobbyManager;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
+import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
+import com.xg7plugins.xg7lobby.pvp.handlers.CombatLogHandler;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.AntiSpamTask;
 import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
@@ -118,7 +120,8 @@ public final class XG7Lobby extends Plugin {
                 new LobbyPlayerManager(),
                 new LobbyManager(),
                 new LobbyScoreManager(),
-                new CustomCommandManager()
+                new CustomCommandManager(),
+                Config.of(this, PVPConfigs.class).isEnabled() ? new GlobalPVPManager() : null
         );
 
         if (Config.of(this, MainConfigs.class).isMenusEnabled()) {
@@ -195,12 +198,22 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand());
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand());
     }
 
     @Override
     public List<Listener> loadEvents() {
-        return Arrays.asList(new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener());
+
+        List<Listener> listeners = new ArrayList<>(Arrays.asList(new PVPCommandListener(), new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(), new PVPBlockCommandsListener()));
+
+        GlobalPVPManager pvpManager = XG7LobbyAPI.globalPVPManager();
+
+        if (pvpManager != null) {
+            listeners.addAll(pvpManager.getAllListenersHandlers());
+            listeners.add(new CombatLogHandler());
+        }
+
+        return listeners;
     }
 
     @Override

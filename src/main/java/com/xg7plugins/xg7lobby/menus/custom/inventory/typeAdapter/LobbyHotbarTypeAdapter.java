@@ -35,7 +35,7 @@ public class LobbyHotbarTypeAdapter implements ConfigTypeAdapter<LobbyHotbar> {
             }
         }
 
-        return new LobbyHotbar(config, id, items, grid, config.getTime("cooldown").orElse(Time.of(2)));
+        return new LobbyHotbar(config, id, items, grid, config.getTime("cooldown-to-use").orElse(Time.of(2)));
 
     }
 

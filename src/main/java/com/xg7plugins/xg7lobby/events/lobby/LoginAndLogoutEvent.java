@@ -11,6 +11,7 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.configs.EventConfigs;
+import com.xg7plugins.xg7lobby.configs.MainConfigs;
 import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
@@ -120,16 +121,15 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         }
 
-        Config mainConfig = Config.mainConfigOf(XG7Lobby.getInstance());
+        if (joinConfig.isClearInventory()) player.getInventory().clear();
 
-        XG7LobbyAPI.customInventoryManager().openMenu(mainConfig.get("main-selector-id", String.class).orElse("selector"), player);
+        XG7LobbyAPI.customInventoryManager().openMenu(Config.of(XG7Lobby.getInstance(), MainConfigs.class).getMainSelectorId(), player);
 
         PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
 
         configs.apply(player);
 
         if (joinConfig.isHeal()) player.setHealth(player.getMaxHealth());
-        if (joinConfig.isClearInventory()) player.getInventory().clear();
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();

@@ -15,6 +15,9 @@ import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.MainConfigs;
+import com.xg7plugins.xg7lobby.configs.PVPConfigs;
+import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.entity.Player;
@@ -29,6 +32,8 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+
+import java.util.concurrent.CompletableFuture;
 
 public class DefaultPlayerEvents implements Listener {
     @Override
@@ -151,9 +156,26 @@ public class DefaultPlayerEvents implements Listener {
     public void onAttack(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
         if (!(event.getEntity() instanceof Player)) return;
-        if (event.getDamager().hasPermission("xg7lobby.attack")) return;
+
+        Player victim = (Player) event.getEntity();
+        Player damager = (Player) event.getDamager();
+
+        if (damager.hasPermission("xg7lobby.attack")) return;
+        if (XG7LobbyAPI.isPlayerInPVP(victim) && XG7LobbyAPI.isPlayerInPVP(damager)) return;
+
+        if (XG7LobbyAPI.isPlayerInPVP(damager) && !XG7LobbyAPI.isPlayerInPVP(victim)) {
+            event.setCancelled(true);
+            Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-in-pvp");
+            return;
+        }
+        if (!XG7LobbyAPI.isPlayerInPVP(damager) && damager.hasPermission("xg7lobby.pvp")) {
+            event.setCancelled(true);
+            Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-out-pvp");
+            return;
+        }
+
         event.setCancelled(true);
-        Text.sendTextFromLang(event.getDamager(), XG7Lobby.getInstance(), "player-prohibitions.attack");
+        Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "player-prohibitions.attack");
     }
 
     @EventHandler(
@@ -165,6 +187,7 @@ public class DefaultPlayerEvents implements Listener {
             )
     )
     public void onFoodChange(FoodLevelChangeEvent event) {
+        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity()) && Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isFoodChange()) return;
         event.setCancelled(true);
     }
 
@@ -177,7 +200,7 @@ public class DefaultPlayerEvents implements Listener {
     )
     public void voidCheck(PlayerMoveEvent event) {
 
-        //if pvp return
+        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
 
         User user = PacketEvents.getAPI().getPlayerManager().getUser(event.getPlayer());
 
@@ -204,22 +227,55 @@ public class DefaultPlayerEvents implements Listener {
     )
     public void onPortal(PlayerTeleportEvent event) {
         if (event.getTo() == null) return;
+        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) {
+            event.setCancelled(true);
+            return;
+        }
         event.setCancelled(!event.getFrom().getWorld().getEnvironment().equals(event.getTo().getWorld().getEnvironment()));
     }
 
     @EventHandler(isOnlyInWorld = true)
     public void onDeath(PlayerDeathEvent event) {
+        if (XG7LobbyAPI.isPlayerInPVP(event.getEntity()) && Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isDropsEnabled()) return;
         event.getDrops().clear();
     }
 
     @EventHandler(isOnlyInWorld = true, priority = EventPriority.LOW)
     public void onInventoryClick(InventoryClickEvent event) {
+        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getWhoClicked())) return;
         if (!event.getWhoClicked().hasPermission("xg7lobby.inv")) event.setCancelled(true);
     }
 
     @EventHandler(isOnlyInWorld = true)
     public void onRespawn(PlayerRespawnEvent event) {
-        //TODO
+        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+
+        Player player = event.getPlayer();
+
+        CompletableFuture<LobbyLocation> lobbyLocation = XG7LobbyAPI.requestRandomLobbyLocation();
+
+        lobbyLocation.thenAccept(lobby -> {
+            if (lobby.getLocation() == null) {
+                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
+                return;
+            }
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(player)));
+        });
+
+        XG7LobbyAPI.customInventoryManager().openMenu(Config.of(XG7Lobby.getInstance(), MainConfigs.class).getMainSelectorId(), player);
+
+        PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
+
+        configs.apply(player);
+
+        player.setHealth(player.getMaxHealth());
+
+        XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+            lobbyPlayer.fly();
+            lobbyPlayer.applyBuild();
+            lobbyPlayer.applyHide();
+        });
+
     }
 
 }

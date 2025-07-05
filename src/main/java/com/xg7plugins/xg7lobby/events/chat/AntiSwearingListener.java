@@ -25,7 +25,7 @@ public class AntiSwearingListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        ChatConfigs.AntiSwearing config = Config.of(XG7Plugins.getInstance(), ChatConfigs.AntiSwearing.class);
+        ChatConfigs.AntiSwearing config = Config.of(XG7Lobby.getInstance(), ChatConfigs.AntiSwearing.class);
 
         if (player.hasPermission("xg7lobby.chat.swear")) return;
 

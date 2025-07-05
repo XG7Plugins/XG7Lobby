@@ -13,6 +13,7 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.apache.logging.log4j.util.Strings;
@@ -33,7 +34,7 @@ public class BanIPCommand implements Command {
     @Override
     public void onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() < 2) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandConfigurations().syntax());
+            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
             return;
         }
 
@@ -51,9 +52,9 @@ public class BanIPCommand implements Command {
             return;
         }
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
+        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
 
-        if (target.isOp() && !config.get("ban-admin",Boolean.class).orElse(false)) {
+        if (target.isOp() && !config.isBanAdmin()) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.ban.ban-admin").thenAccept(text -> text.send(sender));
             return;
         }
@@ -68,9 +69,8 @@ public class BanIPCommand implements Command {
         lobbyPlayerManager.banIpPlayer(target.getPlayer(), time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", String.valueOf(time.getMilliseconds())));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
-            int warningLevel = config.get("ban-warning-level", Integer.class).orElse(2);
 
-            Infraction infraction = new Infraction(target.getUniqueId(), warningLevel, reason);
+            Infraction infraction = new Infraction(target.getUniqueId(), config.getBanWarningLevel(), reason);
 
             lobbyPlayerManager.addInfraction(infraction);
         });

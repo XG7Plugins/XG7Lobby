@@ -30,7 +30,7 @@ public class UnbanIPCommand implements Command {
     public void onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() != 1) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandConfigurations().syntax());
+            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
             return;
         }
 

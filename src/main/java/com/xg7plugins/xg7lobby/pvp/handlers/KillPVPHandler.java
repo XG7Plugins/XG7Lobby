@@ -8,14 +8,12 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
-import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
+import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.pvp.DeathCause;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
-import com.xg7plugins.xg7lobby.pvp.event.JoinPVPEvent;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerKillInPVPEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.Collections;
@@ -23,9 +21,13 @@ import java.util.List;
 
 public class KillPVPHandler implements PVPHandler, Listener {
 
+    private final PVPConfigs.OnKill config = Config.of(XG7Lobby.getInstance(), PVPConfigs.OnKill.class);
+    private final PVPConfigs pvpConfigs = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
+
+
     @Override
     public boolean isEnabled() {
-        return Config.of("pvp", XG7Lobby.getInstance()).get("enabled", Boolean.class).orElse(false);
+        return pvpConfigs.isEnabled();
     }
 
     @Override
@@ -34,12 +36,10 @@ public class KillPVPHandler implements PVPHandler, Listener {
         Player killer = (Player) args[0];
         DeathCause deathCause = (DeathCause) args[1];
 
-        Config config = Config.of("pvp", XG7Lobby.getInstance());
-
-        ActionsProcessor.process(config.getList("on-kill-pvp.victim-actions", String.class).orElse(Collections.emptyList()), killer, Pair.of("victim", victim.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
+        ActionsProcessor.process(config.getVictimActions(), killer, Pair.of("victim", victim.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
 
         if (killer != null) {
-            ActionsProcessor.process(config.getList("on-kill-pvp.killer-actions", String.class).orElse(Collections.emptyList()), killer, Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
+            ActionsProcessor.process(config.getKillerActions(), killer, Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
             XG7LobbyAPI.requestLobbyPlayer(killer.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.setGlobalPVPKills(lobbyPlayer.getGlobalPVPKills() + 1);
                 lobbyPlayer.setGlobalPVPKillStreak(lobbyPlayer.getGlobalPVPKillStreak() + 1);
@@ -52,8 +52,6 @@ public class KillPVPHandler implements PVPHandler, Listener {
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
         });
 
-        Bukkit.getPluginManager().callEvent(new PlayerKillInPVPEvent(killer, victim, deathCause));
-
         List<Player> playersInPVP = XG7LobbyAPI.globalPVPManager().getAllPlayersInPVP();
 
         playersInPVP.forEach(player -> {
@@ -65,6 +63,8 @@ public class KillPVPHandler implements PVPHandler, Listener {
             Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death-with-killer", Pair.of("victim", victim.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
         });
 
+        Bukkit.getPluginManager().callEvent(new PlayerKillInPVPEvent(killer, victim, deathCause));
+
     }
 
     @EventHandler
@@ -72,8 +72,8 @@ public class KillPVPHandler implements PVPHandler, Listener {
 
         GlobalPVPManager globalPVPManager = XG7LobbyAPI.globalPVPManager();
 
-        Player killer = (Player) event.getEntity().getKiller();
-        Player victim = (Player) event.getEntity();
+        Player killer = event.getEntity().getKiller();
+        Player victim = event.getEntity();
 
         DeathCause deathCause = DeathCause.fromCause(victim.getLastDamageCause().getCause());
 

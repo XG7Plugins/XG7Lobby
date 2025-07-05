@@ -1,7 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.utils;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
@@ -14,7 +13,6 @@ import org.apache.logging.log4j.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +31,7 @@ public class ExecuteActionCommand implements Command {
     public void onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() == 0) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandConfigurations().syntax());
+            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
             return;
         }
 

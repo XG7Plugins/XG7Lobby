@@ -3,13 +3,12 @@ package com.xg7plugins.xg7lobby.tasks;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.server.MinecraftVersion;
-import com.xg7plugins.tasks.tasks.Task;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.configs.WorldConfigs;
-import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
+import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 
@@ -26,7 +25,7 @@ public class WorldCyclesTask extends TimerTask {
                 XG7Lobby.getInstance(),
                 "world-cycles",
                 0,
-                Config.mainConfigOf(XG7Lobby.getInstance()).getTime("world-task-delay").orElse(Time.of(30)).getMilliseconds(),
+                Config.of(XG7Lobby.getInstance(), WorldConfigs.class).getWorldTaskDelay().getMilliseconds(),
                 TaskState.RUNNING,
                 false
         );
@@ -39,21 +38,21 @@ public class WorldCyclesTask extends TimerTask {
     @Override
     public void run() {
 
-        WorldConfigs configs = ((XG7LobbyConfig) XG7Lobby.getInstance().getEnvironmentConfig()).getWorldConfigs();
+        WorldConfigs configs = Config.of(XG7Lobby.getInstance(), WorldConfigs.class);
 
         Bukkit.getWorlds().stream().filter(world -> XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(), world)).forEach(world -> {
 
-            if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, configs.dayCycle);
-            else world.setGameRuleValue("doDaylightCycle", String.valueOf(configs.dayCycle));
+            if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, configs.isDayCycle());
+            else world.setGameRuleValue("doDaylightCycle", String.valueOf(configs.isDayCycle()));
 
-            if (!configs.dayCycle) {
-                world.setTime(translateTimeToMinecraftTicks(configs.time));
+            if (!configs.isDayCycle()) {
+                world.setTime(translateTimeToMinecraftTicks(configs.getTime()));
             }
 
-            if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_WEATHER_CYCLE, configs.weatherCycle);
-            else world.setGameRuleValue("doWeatherCycle", String.valueOf(configs.weatherCycle));
+            if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_WEATHER_CYCLE, configs.isWeatherCycle());
+            else world.setGameRuleValue("doWeatherCycle", String.valueOf(configs.isWeatherCycle()));
 
-            if (!configs.weatherCycle) world.setStorm(configs.storm);
+            if (!configs.isWeatherCycle()) world.setStorm(configs.isStorm());
 
         });
 

@@ -1,8 +1,8 @@
 package com.xg7plugins.xg7lobby.pvp;
 
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.managers.Manager;
-import com.xg7plugins.xg7lobby.pvp.handlers.JoinPVPHandler;
-import com.xg7plugins.xg7lobby.pvp.handlers.PVPHandler;
+import com.xg7plugins.xg7lobby.pvp.handlers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -21,6 +21,9 @@ public class GlobalPVPManager implements Manager {
 
     static {
         handlers.put(JoinPVPHandler.class, new JoinPVPHandler());
+        handlers.put(KillPVPHandler.class, new KillPVPHandler());
+        handlers.put(RespawnPVPHandler.class, new RespawnPVPHandler());
+        handlers.put(LeavePVPHandler.class, new LeavePVPHandler());
     }
 
 
@@ -43,6 +46,10 @@ public class GlobalPVPManager implements Manager {
 
     public List<Player> getAllPlayersInPVP() {
         return playersInPVP.stream().map(Bukkit::getPlayer).collect(Collectors.toList());
+    }
+
+    public List<Listener>  getAllListenersHandlers() {
+        return handlers.values().stream().filter(h -> h instanceof Listener).map(h -> (Listener) h).collect(Collectors.toList());
     }
 
 

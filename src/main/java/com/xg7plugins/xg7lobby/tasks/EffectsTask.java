@@ -3,12 +3,15 @@ package com.xg7plugins.xg7lobby.tasks;
 import com.cryptomorin.xseries.XPotion;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
-import com.xg7plugins.tasks.tasks.Task;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.utils.Parser;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.AdvertisementConfigs;
+import com.xg7plugins.xg7lobby.configs.MainConfigs;
+import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import org.bukkit.Bukkit;
 import org.bukkit.potion.PotionEffect;
 
@@ -23,14 +26,14 @@ public class EffectsTask extends TimerTask {
                 XG7Lobby.getInstance(),
                 "effects",
                 0,
-                Config.mainConfigOf(XG7Lobby.getInstance()).getTime("effects-task-delay").orElse(Time.of(10)).getMilliseconds(),
+                Config.of(XG7Lobby.getInstance(), MainConfigs.class).getEffectsTaskDelay().getMilliseconds(),
                 TaskState.RUNNING,
                 false
         );
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
+        MainConfigs config = Config.of(XG7Lobby.getInstance(), MainConfigs.class);
 
-        List<String> effectsStringList = config.getList("effects", String.class).orElse(null);
+        List<String> effectsStringList = config.getEffects();
 
         if (effectsStringList == null) return;
 
@@ -55,7 +58,9 @@ public class EffectsTask extends TimerTask {
         Bukkit.getOnlinePlayers().stream()
                 .filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).
                 forEach(player -> {
-//                    if (XG7Lobby.getInstance().getGlobalPVPManager().isPlayerInPVP(player)) return;
+
+                    if (Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isDisableLobbyEffects() && XG7LobbyAPI.isPlayerInPVP(player)) return;
+
                     effects.forEach(effect -> {
                         player.removePotionEffect(effect.getType());
                         player.addPotionEffect(effect);

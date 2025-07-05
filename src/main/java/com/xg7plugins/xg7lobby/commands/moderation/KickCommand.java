@@ -13,6 +13,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.apache.logging.log4j.util.Strings;
@@ -38,7 +39,7 @@ public class KickCommand implements Command {
     public void onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 1) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandConfigurations().syntax());
+            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
             return;
         }
 
@@ -57,9 +58,9 @@ public class KickCommand implements Command {
 
         Player target = offlineTarget.getPlayer();
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
+        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
 
-        if (target.hasPermission("xg7lobby.moderation.kick") && !config.get("kick-admin",Boolean.class).orElse(false)) {
+        if (target.hasPermission("xg7lobby.moderation.kick") && !config.isKickAdmin()) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.kick-admin");
             return;
         }
@@ -69,7 +70,7 @@ public class KickCommand implements Command {
         lobbyPlayerManager.kickPlayer(target, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.kick.on-kick").join().replace("reason", reason));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
-            int warningLevel = config.get("kick-warning-level", Integer.class).orElse(2);
+            int warningLevel = config.getKickWarningLevel();
 
             Infraction infraction = new Infraction(target.getUniqueId(), warningLevel, reason);
             lobbyPlayerManager.addInfraction(infraction);

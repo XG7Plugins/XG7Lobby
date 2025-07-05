@@ -19,7 +19,6 @@ public class InfractionsMenuHolder extends MenuHolder {
     public InfractionsMenuHolder(InfractionsMenu menu, OfflinePlayer target, Player player) {
         super(menu, player);
         this.target = target;
-
     }
 
     public void goPage(int page) {

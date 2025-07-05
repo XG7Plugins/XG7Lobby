@@ -37,7 +37,7 @@ public class InfractionCommand implements Command {
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
 
         if (args.len() == 1) {
-            return subCommands.stream().filter(cmd -> sender.hasPermission(cmd.getCommandConfigurations().permission())).map(cmd -> cmd.getCommandConfigurations().name()).collect(Collectors.toList());
+            return subCommands.stream().filter(cmd -> sender.hasPermission(cmd.getCommandSetup().permission())).map(cmd -> cmd.getCommandSetup().name()).collect(Collectors.toList());
         }
 
         if (args.get(0, String.class).equalsIgnoreCase("pardon") && args.len() == 2) {

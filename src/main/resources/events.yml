@@ -128,6 +128,9 @@ on-first-join:
 on-quit:
   enabled: true
 
+  send-quit-message: true
+  send-quit-message-only-on-lobby: false
+
   run-events-when-return-to-the-world: true
 
   events:

@@ -11,6 +11,9 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.MainConfigs;
+import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
+import com.xg7plugins.xg7lobby.configs.MultiJumpsConfigs;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -71,6 +74,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     public OfflinePlayer getOfflinePlayer() {
         return Bukkit.getServer().getOfflinePlayer(playerUUID);
     }
+
     public Player getPlayer() {
         return Bukkit.getServer().getPlayer(playerUUID);
     }
@@ -80,13 +84,10 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         if (player == null) return;
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
-
-
         if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
         player.setAllowFlight(flying || (
-                                (config.get("multi-jumps.enabled", Boolean.class).orElse(false) && player.hasPermission("xg7lobby.multi-jumps"))
+                        (Config.of(XG7Lobby.getInstance(), MultiJumpsConfigs.class).isEnabled() && player.hasPermission("xg7lobby.multi-jumps"))
                                 || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR
                 )
         );
@@ -104,9 +105,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
             return;
         }
 
-        Config mainConfig = Config.mainConfigOf(XG7Lobby.getInstance());
-
-        XG7LobbyAPI.customInventoryManager().openMenu(mainConfig.get("main-selector-id", String.class).orElse("selector"), player);
+        XG7LobbyAPI.customInventoryManager().openMenu(Config.of(XG7Lobby.getInstance(), MainConfigs.class).getMainSelectorId(), player);
 
     }
 
@@ -144,78 +143,73 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
     public void applyInfractions() {
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
-
         OfflinePlayer player = getOfflinePlayer();
-        
+
         Infraction newInfraction = infractions.get(infractions.size() - 1);
 
         LobbyPlayerManager playerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        boolean banIp = config.get("infraction-ban-by-ip", Boolean.class).orElse(false);
+        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
 
-        config.getList("infraction-levels", Map.class).ifPresent(levels -> {
-            long infractionCount = infractions.stream().filter(infraction -> infraction.getLevel() == newInfraction.getLevel()).count();
-            levels.stream().filter(map -> map.get("level").equals(newInfraction.getLevel())).findFirst().ifPresent(map -> {
+        long infractionCount = infractions.stream().filter(infraction -> infraction.getLevel() == newInfraction.getLevel()).count();
 
-                int infractionsToBan = (int) map.get("min-to-ban");
-                int infractionsToKick = (int) map.get("min-to-kick");
-                int infractionsToMute = (int) map.get("min-to-mute");
 
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
-                    if ((infractionCount >= infractionsToBan && infractionsToBan > -1)) {
-                        if (player.isOnline()) playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
+        config.getInfractionLevels().stream().filter(map -> map.get("level").equals(newInfraction.getLevel())).findFirst().ifPresent(map -> {
 
-                        if (banIp && player.isOnline()) {
-                            playerManager.banIpPlayer(player.getPlayer(), null, Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
-                        }
-                        else {
-                            playerManager.banPlayer(player, null, Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
-                        }
+            int infractionsToBan = (int) map.get("min-to-ban");
+            int infractionsToKick = (int) map.get("min-to-kick");
+            int infractionsToMute = (int) map.get("min-to-mute");
+
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+                if ((infractionCount >= infractionsToBan && infractionsToBan > -1)) {
+                    if (player.isOnline())
+                        playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
+
+                    if (config.isInfractionsBanByIp() && player.isOnline()) {
+                        playerManager.banIpPlayer(player.getPlayer(), null, Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
+                    } else {
+                        playerManager.banPlayer(player, null, Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
                     }
-
-                    if (((infractionCount >= infractionsToKick && infractionsToKick > -1)) && player.isOnline()) {
-                        playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
-                    }
-                }));
-                if ((infractionCount >= infractionsToMute && infractionsToMute > -1)) {
-                    Time unmuteTime = config.get("infraction-time-to-unmute",String.class).orElse("").toLowerCase().equals("forever") ? Time.of(0) : config.getTime("infraction-time-to-unmute").orElse(Time.of(30, 0)).add(Time.now());
-
-                    playerManager.mutePlayer(this, unmuteTime, Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-mute").join().replace("reason", newInfraction.getWarning()));
                 }
-            });
 
-            int totalInfractionCount = infractions.size();
-
-            int totalInfractionsToBan = config.get("total-infractions-to-ban", Integer.class).orElse(-1);
-            int totalInfractionsToKick = config.get("total-infractions-to-kick", Integer.class).orElse(-1);
-            int totalInfractionsToMute = config.get("total-infractions-to-mute", Integer.class).orElse(-1);
-
-            if (totalInfractionCount >= totalInfractionsToMute) {
-                Time unmuteTime = config.get("infraction-time-to-unmute",String.class).orElse("").toLowerCase().equals("forever") ? Time.of(0) : config.getTime("infraction-time-to-unmute").orElse(Time.of(30, 0)).add(Time.now());
-
-                playerManager.mutePlayer(this, unmuteTime, Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-mute").join().replace("reason", newInfraction.getWarning()));
-            }
-
-            if (totalInfractionCount >= totalInfractionsToBan) {
-                if (player.isOnline()) playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
-
-                if (banIp && player.isOnline()) {
-                    playerManager.banIpPlayer(player.getPlayer(), null, Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
+                if (((infractionCount >= infractionsToKick && infractionsToKick > -1)) && player.isOnline()) {
+                    playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
                 }
-                else {
-                    playerManager.banPlayer(player, null, Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
-                }
+            }));
+            if ((infractionCount >= infractionsToMute && infractionsToMute > -1)) {
+                Time unmuteTime = getTimeToUnmuteByInfraction(newInfraction, playerManager, config);
             }
-
-            if (totalInfractionCount >= totalInfractionsToKick && player.isOnline()) {
-                playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(),XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
-            }
-
         });
-        
+
+        int totalInfractionCount = infractions.size();
+
+        if (totalInfractionCount >= config.getTotalInfractionsToMute()) {
+            getTimeToUnmuteByInfraction(newInfraction, playerManager, config);
+        }
+
+        if (totalInfractionCount >= config.getTotalInfractionsToBan()) {
+            if (player.isOnline())
+                playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
+
+            if (config.isInfractionsBanByIp() && player.isOnline()) {
+                playerManager.banIpPlayer(player.getPlayer(), null, Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
+            } else {
+                playerManager.banPlayer(player, null, Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));
+            }
+        }
+
+        if (totalInfractionCount >= config.getTotalInfractionsToKick() && player.isOnline()) {
+            playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
+        }
+
     }
 
+    private Time getTimeToUnmuteByInfraction(Infraction newInfraction, LobbyPlayerManager playerManager, ModerationConfigs config) {
+        Time unmuteTime = config.getConfig().get("infraction-time-to-unmute", String.class).orElse("").toLowerCase().equals("forever") ? Time.of(0) : config.getConfig().getTime("infraction-time-to-unmute").orElse(Time.of(30, 0)).add(Time.now());
 
+        playerManager.mutePlayer(this, unmuteTime, Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-mute").join().replace("reason", newInfraction.getWarning()));
+        return unmuteTime;
+    }
 
 }
+

@@ -3,7 +3,6 @@ package com.xg7plugins.xg7lobby.scores;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;

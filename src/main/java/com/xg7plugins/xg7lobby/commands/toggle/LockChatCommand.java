@@ -7,7 +7,7 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
+import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
 import org.bukkit.command.CommandSender;
 
 @CommandSetup(
@@ -20,7 +20,7 @@ import org.bukkit.command.CommandSender;
 public class LockChatCommand implements Command {
     @Override
     public void onCommand(CommandSender sender, CommandArgs args) {
-        XG7LobbyConfig xg7LobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
+        XG7LobbyEnvironment xg7LobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
 
         xg7LobbyConfig.setChatLocked(!xg7LobbyConfig.isChatLocked());
 

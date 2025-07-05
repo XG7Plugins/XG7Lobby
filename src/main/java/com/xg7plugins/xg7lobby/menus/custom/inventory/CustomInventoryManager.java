@@ -1,21 +1,16 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory;
 
-import com.google.common.collect.Lists;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.managers.Manager;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
-import com.xg7plugins.modules.xg7menus.menus.menus.player.PlayerMenu;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import lombok.Getter;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.Hash;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class CustomInventoryManager implements Manager {

@@ -15,6 +15,7 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.LobbyTeleportConfigs;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -72,7 +73,7 @@ public class Lobby implements Command {
         }
 
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
+        LobbyTeleportConfigs config = Config.of(XG7Lobby.getInstance(), LobbyTeleportConfigs.class);
 
         CooldownManager cooldownManager = XG7PluginsAPI.cooldowns();
 
@@ -111,7 +112,7 @@ public class Lobby implements Command {
             cooldownManager.addCooldown(finalTargetToTeleport,
                     new CooldownManager.CooldownTask(
                             "lobby-cooldown-before",
-                            config.getTime("lobby-teleport-cooldown.before-teleport").orElse(Time.of(5)).getMilliseconds(),
+                            config.getBeforeTeleport().getMilliseconds(),
                             player -> Text.fromLang(
                                     player,
                                     XG7Lobby.getInstance(),
@@ -128,7 +129,7 @@ public class Lobby implements Command {
                                     return;
                                 }
                                 XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport)));
-                                cooldownManager.addCooldown(finalTargetToTeleport, "lobby-cooldown-after", config.getTime("lobby-teleport-cooldown.after-teleport").orElse(Time.of(5)).getMilliseconds());
+                                cooldownManager.addCooldown(finalTargetToTeleport, "lobby-cooldown-after", config.getAfterTeleport().getMilliseconds());
                             })
                     )
             );

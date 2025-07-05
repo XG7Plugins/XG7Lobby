@@ -10,7 +10,9 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
-import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
+import com.xg7plugins.xg7lobby.configs.EventConfigs;
+import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
+import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
@@ -51,20 +53,16 @@ public class LoginAndLogoutEvent implements LobbyListener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
-        Config config = Config.of("events", XG7Lobby.getInstance());
+        EventConfigs.OnJoin joinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnJoin.class);
+        EventConfigs.OnFirstJoin firstJoinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnFirstJoin.class);
 
         Player player = event.getPlayer();
 
-        boolean messageOnlyInLobby = config.get("on-join.send-join-message-only-on-lobby", Boolean.class).orElse(false);
-
-        boolean firstJoinEnabled = config.get("on-first-join.enabled", Boolean.class).orElse(false);
-        boolean sendJoinMessage = config.get("on-join.send-join-message", Boolean.class).orElse(true);
-
-        if (sendJoinMessage) {
+        if (joinConfig.isSendJoinMessage()) {
 
             Bukkit.getOnlinePlayers().forEach(p -> {
-                if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && messageOnlyInLobby) return;
-                Text.sendTextFromLang(p, XG7Lobby.getInstance(), firstJoinEnabled && !player.hasPlayedBefore() ? "messages.on-first-join" : "messages.on-join", Pair.of("target", player.getDisplayName()));
+                if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && joinConfig.isSendJoinMessageOnlyOnLobby()) return;
+                Text.sendTextFromLang(p, XG7Lobby.getInstance(), firstJoinConfig.isEnabled() && !player.hasPlayedBefore() ? "messages.on-first-join" : "messages.on-join", Pair.of("target", player.getDisplayName()));
             });
         }
 
@@ -78,32 +76,37 @@ public class LoginAndLogoutEvent implements LobbyListener {
         event.setQuitMessage(null);
         Player player = event.getPlayer();
 
+        EventConfigs.OnQuit quitConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnQuit.class);
+
         if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
             player.getInventory().clear();
             XG7Menus.removePlayerMenuHolder(player.getUniqueId());
         }
 
-        boolean messageOnlyInLobby = Config.of("events", XG7Lobby.getInstance()).get("on-join.send-join-message-only-on-lobby", Boolean.class).orElse(false);
+        if (quitConfig.isSendQuitMessage()) {
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && quitConfig.isSendQuitMessageOnlyOnLobby())
+                    return;
+                Text.sendTextFromLang(p, XG7Lobby.getInstance(), "messages.on-quit", Pair.of("target", player.getName())).join();
+            });
 
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && messageOnlyInLobby) return;
-            Text.sendTextFromLang(p, XG7Lobby.getInstance(), "messages.on-quit", Pair.of("target", player.getName())).join();
-        });
+        }
 
-        onWorldLeave(player, player.getWorld());
+        onWorldLeave(player, null);
     }
 
     @Override
     public void onWorldJoin(Player player, World newWorld) {
-        Config config = Config.of("events", XG7Lobby.getInstance());
+        EventConfigs.OnJoin joinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnJoin.class);
+        EventConfigs.OnFirstJoin firstJoinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnFirstJoin.class);
 
-        if (player.getWorld() == newWorld || config.get("on-join.run-events-when-return-to-the-world", Boolean.class).orElse(false)) {
-            ActionsProcessor.process(config.getList(config.get("on-first-join.enabled", Boolean.class).orElse(false) && !player.hasPlayedBefore() ? "on-first-join.events" : "on-join.events", String.class).orElse(Collections.emptyList()), player);
+        if (player.getWorld() == newWorld || joinConfig.isRunEventsWhenReturnToTheWorld() || newWorld == null) {
+            ActionsProcessor.process(firstJoinConfig.isEnabled() && !player.hasPlayedBefore() ? firstJoinConfig.getEvents() : joinConfig.getEvents(), player);
         }
 
-        if (config.get("on-join.tp-to-lobby", Boolean.class).orElse(true)) {
+        if (joinConfig.isTpToLobby()) {
 
-            String lobbyId = config.get("lobby-to-tp-id", String.class).orElse("random");
+            String lobbyId = joinConfig.getLobbyToTpId();
 
             CompletableFuture<LobbyLocation> lobbyLocation = lobbyId.equalsIgnoreCase("random") ? XG7LobbyAPI.requestRandomLobbyLocation() : XG7LobbyAPI.requestLobbyLocation(lobbyId);
 
@@ -121,11 +124,12 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         XG7LobbyAPI.customInventoryManager().openMenu(mainConfig.get("main-selector-id", String.class).orElse("selector"), player);
 
-        XG7LobbyConfig lobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
-        lobbyConfig.getPlayerConfigs().apply(player);
+        PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
 
-        if (config.get("on-join.heal", Boolean.class).orElse(true)) player.setHealth(player.getMaxHealth());
-        if (config.get("on-join.clear-inventory", Boolean.class).orElse(true)) player.getInventory().clear();
+        configs.apply(player);
+
+        if (joinConfig.isHeal()) player.setHealth(player.getMaxHealth());
+        if (joinConfig.isClearInventory()) player.getInventory().clear();
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();
@@ -137,15 +141,18 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
     @Override
     public void onWorldLeave(Player player, World newWorld) {
-        Config config = Config.of("events", XG7Lobby.getInstance());
+
+        EventConfigs.OnQuit quitConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnQuit.class);
+
 
         XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
 
-        if (player.getWorld().getUID().equals(newWorld.getUID()) || config.get("on-quit.run-events-when-return-to-the-world", Boolean.class).orElse(false)) {
-            ActionsProcessor.process(config.getList("on-quit.events", String.class).orElse(Collections.emptyList()), player);
+        if (player.getWorld().getUID().equals(newWorld.getUID()) || quitConfig.isRunEventsWhenReturnToTheWorld()) {
+            ActionsProcessor.process(quitConfig.getEvents(), player);
         }
 
-        XG7LobbyConfig lobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
-        lobbyConfig.getPlayerConfigs().reset(player);
+        PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
+
+        configs.reset(player);
     }
 }

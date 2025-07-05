@@ -10,14 +10,13 @@ import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
-import com.xg7plugins.modules.xg7menus.menus.holders.PagedMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menus.gui.menus.Menu;
-import com.xg7plugins.modules.xg7menus.menus.menus.gui.menus.PagedMenu;
 import com.xg7plugins.tasks.tasks.AsyncTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import lombok.SneakyThrows;
 import org.bukkit.Material;
@@ -26,7 +25,6 @@ import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 public class InfractionsMenu extends Menu {
 
@@ -43,9 +41,7 @@ public class InfractionsMenu extends Menu {
 
     public List<Item> pagedItems(OfflinePlayer target) {
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
-
-        List<Map> levels = config.getList("infraction-levels", Map.class).orElse(null);
+        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
 
         LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
@@ -53,7 +49,7 @@ public class InfractionsMenu extends Menu {
 
         lobbyPlayer.getInfractions().forEach(infraction -> {
 
-            Map warnLevel = levels.stream()
+            Map warnLevel = config.getInfractionLevels().stream()
                     .filter(map -> map.get("level").equals(infraction.getLevel()))
                     .findFirst()
                     .orElse(new HashMap<>());

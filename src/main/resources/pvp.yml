@@ -6,10 +6,13 @@ disable-multi-jumps: true
 disable-launchpad: true
 disable-lobby-effects: true
 combat-log-remove: 20s
-send-pvp-kill-message-for-all: false
+
+pvp-lobby: "lobby1"
 
 on-join-pvp:
   heal: true
+  teleport-to-pvp-lobby: true
+
   actions:
     - "[EQUIP] HELMET, DIAMOND_HELMET"
     - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"
@@ -23,6 +26,10 @@ on-kill:
   victim-actions: []
 
 on-respawn:
+  teleport-to-pvp-lobby: true
+
+  reset-items: true
+
   actions: []
 
 on-leave-pvp:

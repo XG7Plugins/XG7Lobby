@@ -4,13 +4,9 @@ import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigTypeAdapter;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.utils.Pair;
-import com.xg7plugins.utils.text.Condition;
-import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;

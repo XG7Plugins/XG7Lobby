@@ -13,6 +13,7 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
@@ -38,7 +39,7 @@ public class MuteCommand implements Command {
     public void onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 2) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandConfigurations().syntax());
+            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
             return;
         }
 
@@ -50,8 +51,7 @@ public class MuteCommand implements Command {
 
         if (args.len() > 2) reason = Strings.join(Arrays.asList(Arrays.copyOfRange(args.getArgs(), 2, args.len())), ' ');
 
-
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
+        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
 
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
@@ -60,7 +60,7 @@ public class MuteCommand implements Command {
             return;
         }
 
-        if (player.getPlayer().hasPermission("xg7lobby.moderation.mute") && !config.get("mute-admin",Boolean.class).orElse(false)) {
+        if (player.getPlayer().hasPermission("xg7lobby.moderation.mute") && !config.isMuteAdmin()) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.mute.mute-admin").thenAccept(text -> text.send(sender));
             return;
         }
@@ -71,9 +71,7 @@ public class MuteCommand implements Command {
 
         XG7LobbyAPI.lobbyPlayerManager().updatePlayer(player);
 
-        int warningLevel = config.get("mute-warning-level", Integer.class).orElse(2);
-
-        Infraction infraction = new Infraction(player.getPlayerUUID(), warningLevel, reason);
+        Infraction infraction = new Infraction(player.getPlayerUUID(), config.getMuteWarningLevel(), reason);
 
         XG7LobbyAPI.lobbyPlayerManager().addInfraction(infraction);
 

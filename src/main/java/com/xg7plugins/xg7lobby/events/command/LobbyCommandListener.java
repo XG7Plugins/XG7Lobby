@@ -6,13 +6,14 @@ import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.configs.LobbyTeleportConfigs;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class LobbyCommandListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return Config.mainConfigOf(XG7Lobby.getInstance()).get("lobby-teleport-cooldown.dont-move", Boolean.class).orElse(false);
+        return Config.of(XG7Lobby.getInstance(), LobbyTeleportConfigs.class).isDontMove();
     }
 
     @EventHandler

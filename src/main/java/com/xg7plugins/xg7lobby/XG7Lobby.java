@@ -3,10 +3,12 @@ package com.xg7plugins.xg7lobby;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.boot.PluginSetup;
+import com.xg7plugins.cache.RedisCacheSection;
 import com.xg7plugins.commands.core_commands.reload.ReloadCause;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigManager;
+import com.xg7plugins.data.config.core.MainConfigSection;
 import com.xg7plugins.data.database.dao.DAO;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
@@ -35,7 +37,7 @@ import com.xg7plugins.xg7lobby.commands.toggle.VanishCommand;
 import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
 import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
 import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
-import com.xg7plugins.xg7lobby.configs.XG7LobbyConfig;
+import com.xg7plugins.xg7lobby.configs.*;
 import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
 import com.xg7plugins.xg7lobby.events.chat.AntiSpamListener;
@@ -85,6 +87,15 @@ import java.util.List;
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
         configs = {"ads", "custom_commands", "events", "pvp", "scores"},
+        configSections = {
+                AdvertisementConfigs.class, ChatConfigs.class, ChatConfigs.AntiSwearing.class,
+                ChatConfigs.AntiSpam.class, ChatConfigs.BlockCommands.class, EventConfigs.OnJoin.class,
+                EventConfigs.OnFirstJoin.class, EventConfigs.OnQuit.class, LaunchpadConfigs.class,
+                LobbyTeleportConfigs.class, MainConfigs.class, ModerationConfigs.class, MotdConfig.class,
+                MultiJumpsConfigs.class, PlayerConfigs.class, PVPConfigs.class, PVPConfigs.OnJoinPvp.class,
+                PVPConfigs.OnKill.class, PVPConfigs.OnLeavePvp.class, PVPConfigs.OnRespawn.class,
+                WorldConfigs.class
+        },
         reloadCauses = {"scores", "menus", "custom_commands"}
 
 )
@@ -92,9 +103,8 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public void onLoad() {
-        this.environmentConfig = new XG7LobbyConfig();
+        this.environmentConfig = new XG7LobbyEnvironment();
         super.onLoad();
-        ((XG7LobbyConfig)environmentConfig).reloadConfigs();
     }
 
     @Override
@@ -111,7 +121,7 @@ public final class XG7Lobby extends Plugin {
                 new CustomCommandManager()
         );
 
-        if (Config.mainConfigOf(this).get("menus-enabled", Boolean.class).orElse(false)) {
+        if (Config.of(this, MainConfigs.class).isMenusEnabled()) {
             managerRegistry.registerManager(new CustomInventoryManager());
         }
 
@@ -203,11 +213,10 @@ public final class XG7Lobby extends Plugin {
 
         List<TimerTask> tasks = new ArrayList<>();
 
-        if (Config.of("ads", this).get("enabled", Boolean.class).orElse(false)) tasks.add(new AutoBroadcastTask());
+        if (Config.of(this, AdvertisementConfigs.class).isEnabled()) tasks.add(new AutoBroadcastTask());
         tasks.add(new EffectsTask());
         tasks.add(new WorldCyclesTask());
-        if (Config.mainConfigOf(this).get("anti-spam.enabled", Boolean.class).orElse(false)
-                        && Config.mainConfigOf(this).get("anti-spam.spam-tolerance", Integer.class).orElse(0) > 0) tasks.add(new AntiSpamTask());
+        if (Config.of(this, ChatConfigs.AntiSpam.class).isEnabled() && Config.of(this, ChatConfigs.AntiSpam.class).getSpamTolerance() > 0) tasks.add(new AntiSpamTask());
 
         return tasks;
     }

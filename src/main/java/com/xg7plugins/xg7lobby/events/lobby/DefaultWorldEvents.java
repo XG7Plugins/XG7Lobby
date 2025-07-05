@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.events.lobby;
 
-import com.xg7plugins.data.config.ConfigBoolean;
+import com.xg7plugins.data.config.section.ConfigBoolean;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import org.bukkit.event.block.BlockBurnEvent;

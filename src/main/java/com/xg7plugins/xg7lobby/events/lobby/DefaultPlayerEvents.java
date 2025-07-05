@@ -5,7 +5,7 @@ import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
-import com.xg7plugins.data.config.ConfigBoolean;
+import com.xg7plugins.data.config.section.ConfigBoolean;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
@@ -110,7 +110,6 @@ public class DefaultPlayerEvents implements Listener {
     private <T extends Event & Cancellable> void handleItemEvents(T event, String path) {
 
         Player player = ReflectionObject.of(event).getMethod("getPlayer").invoke();
-
 
         if (player.hasPermission("xg7lobby.build")) {
             LobbyPlayer lobbyPlayer = XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).join();

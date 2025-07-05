@@ -9,6 +9,7 @@ import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -57,6 +58,10 @@ public class XG7LobbyAPI {
 
     public static GlobalPVPManager globalPVPManager() {
         return ManagerRegistry.get(XG7Lobby.getInstance(), GlobalPVPManager.class);
+    }
+
+    public static boolean isPlayerInPVP(Player player) {
+        return globalPVPManager().isInPVP(player);
     }
 
 }

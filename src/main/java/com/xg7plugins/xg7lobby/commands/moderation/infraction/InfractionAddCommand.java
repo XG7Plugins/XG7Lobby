@@ -11,6 +11,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.apache.logging.log4j.util.Strings;
@@ -33,7 +34,7 @@ public class InfractionAddCommand implements Command {
     public void onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 3) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandConfigurations().syntax());
+            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
             return;
         }
 
@@ -49,15 +50,15 @@ public class InfractionAddCommand implements Command {
             return;
         }
 
-        Config config = Config.mainConfigOf(XG7Lobby.getInstance());
+        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
 
 
-        if (player.getOfflinePlayer().isOp() && !config.get("warn-admin", Boolean.class).orElse(false)) {
+        if (player.getOfflinePlayer().isOp() && !config.isWarnAdmin()) {
             Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.warn-admin");
             return;
         }
 
-        if (config.getList("infraction-levels", Map.class).orElse(new ArrayList<>()).stream().noneMatch(map -> (int) map.get("level") == level)) {
+        if (config.getInfractionLevels().stream().noneMatch(map -> (int) map.get("level") == level)) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.level-invalid");
             return;
         }

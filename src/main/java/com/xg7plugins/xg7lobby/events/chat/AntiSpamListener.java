@@ -35,7 +35,7 @@ public class AntiSpamListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        ChatConfigs.AntiSpam config = Config.of(XG7Plugins.getInstance(), ChatConfigs.AntiSpam.class);
+        ChatConfigs.AntiSpam config = Config.of(XG7Lobby.getInstance(), ChatConfigs.AntiSpam.class);
 
         if (player.hasPermission("xg7lobby.chat.spam")) return;
 

@@ -15,6 +15,7 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -114,30 +115,7 @@ public class LobbiesMenu extends PagedMenu {
 
                 String lobbyId = item.getTag("lobby-id",String.class).get();
 
-                XG7LobbyAPI.requestLobbyLocation(lobbyId).thenAccept(lobbyLocation -> {
-                    if (lobbyLocation == null) return;
-
-                    if (!player.hasPermission("xg7lobby.command.lobby-delete") || event.getMenuAction().isLeftClick()) {
-                        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
-                            player.closeInventory();
-                            lobbyLocation.teleport(player);
-                        }));
-                        return;
-                    }
-
-                    if (!event.getMenuAction().isRightClick()) return;
-
-                    XG7LobbyAPI.lobbyManager().deleteLobbyLocation(lobbyLocation)
-                            .exceptionally(e -> {
-                                e.printStackTrace();
-                                return null;
-                            })
-                            .thenRun(() -> {
-                                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.delete.on-success", Pair.of("id", lobbyLocation.getID()));
-                                refresh((PagedMenuHolder) event.getHolder());
-                            });
-
-                });
+                player.getServer().dispatchCommand(player.getServer().getConsoleSender(), "lobby " + lobbyId + " " + player.getName());
 
         }    }
 }

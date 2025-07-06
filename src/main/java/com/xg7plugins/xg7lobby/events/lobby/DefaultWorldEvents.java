@@ -3,6 +3,7 @@ package com.xg7plugins.xg7lobby.events.lobby;
 import com.xg7plugins.data.config.section.ConfigBoolean;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
@@ -19,6 +20,7 @@ public class DefaultWorldEvents implements Listener {
             isEnabled = @ConfigBoolean(configName = "config", path = "spawn-mobs", invert = true)
     )
     public void onMobSpawn(CreatureSpawnEvent event) {
+        if (event.getEntity() instanceof Projectile) return;
         event.setCancelled(true);
     }
 

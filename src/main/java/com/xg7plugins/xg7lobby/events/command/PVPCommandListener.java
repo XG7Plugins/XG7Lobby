@@ -6,7 +6,6 @@ import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.configs.LobbyTeleportConfigs;
 import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -31,7 +30,7 @@ public class PVPCommandListener implements Listener {
                             || event.getFrom().getBlockY() != event.getTo().getBlockY()
                             || event.getFrom().getBlockZ() != event.getTo().getBlockZ()
             ) {
-                cooldownManager.removePlayer("pvp-disable", event.getPlayer().getUniqueId());
+                cooldownManager.removeCooldown("pvp-disable", event.getPlayer().getUniqueId());
             }
         }
 

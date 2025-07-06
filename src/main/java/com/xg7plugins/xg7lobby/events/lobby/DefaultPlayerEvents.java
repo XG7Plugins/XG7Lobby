@@ -83,6 +83,7 @@ public class DefaultPlayerEvents implements Listener {
             return;
         }
         if (!(action.isRightClick() && action.isBlockInteract())) return;
+        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
         handleItemEvents(event, "player-prohibitions.interact-with-blocks");
     }
 
@@ -96,6 +97,7 @@ public class DefaultPlayerEvents implements Listener {
             priority = EventPriority.HIGH
     )
     public void onDropItem(PlayerDropItemEvent event) {
+        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
         handleItemEvents(event,"player-prohibitions.drop-items");
     }
 
@@ -109,6 +111,7 @@ public class DefaultPlayerEvents implements Listener {
             priority = EventPriority.HIGH
     )
     public void onPickupItem(PlayerPickupItemEvent event) {
+        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
         handleItemEvents(event,"player-prohibitions.pickup-items");
     }
 

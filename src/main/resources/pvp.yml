@@ -21,7 +21,7 @@ on-join-pvp:
     - "[EQUIP] LEGGINGS, DIAMOND_LEGGINGS"
     - "[EQUIP] BOOTS, DIAMOND_BOOTS"
     - "[EQUIP] OFFHAND, GOLDEN_APPLE"
-    - "[BROADCAST] &a%player_name% joined the PvP!"
+    - "[BROADCAST] &a%player% joined the PvP!"
 
 on-kill:
   killer-actions: []
@@ -37,7 +37,7 @@ on-respawn:
 on-leave-pvp:
   dont-move: true
   actions:
-    - "[BROADCAST] &c%player_name% left the PvP!"
+    - "[BROADCAST] &c%player% left the PvP!"
   
 commands-blocked:
     - "/lobby"

@@ -18,8 +18,6 @@ import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @CommandSetup(
         name = "pvp",
         permission = "xg7lobby.pvp",
@@ -46,7 +44,7 @@ public class PVPCommand implements Command {
         PVPConfigs config = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
 
         if (XG7PluginsAPI.cooldowns().containsPlayer("pvp-disable", player)) {
-            XG7PluginsAPI.cooldowns().removePlayer("pvp-disable", player.getUniqueId());
+            XG7PluginsAPI.cooldowns().removeCooldown("pvp-disable", player.getUniqueId());
             return;
         }
 
@@ -55,7 +53,7 @@ public class PVPCommand implements Command {
                 config.getLeaveCommandCooldown().getMilliseconds(),
                 p -> {
 
-                    double cooldownToToggle = XG7PluginsAPI.cooldowns().getReamingTime("pvp-disable", p);
+                    long cooldownToToggle = XG7PluginsAPI.cooldowns().getReamingTime("pvp-disable", p);
 
                     Text.sendTextFromLang(player,XG7Lobby.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
                 },

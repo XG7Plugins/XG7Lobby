@@ -28,11 +28,12 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
     private final Config menuConfig;
 
     private final Time cooldown;
+    private final boolean disableCooldown;
 
     private final HashMap<String, LobbyItem> items;
     private final HashMap<Integer, String> grid;
 
-    public LobbyHotbar(Config menuConfig, String id, HashMap<String, LobbyItem> items, HashMap<Integer, String> grid, Time cooldown) {
+    public LobbyHotbar(Config menuConfig, String id, HashMap<String, LobbyItem> items, HashMap<Integer, String> grid, Time cooldown, boolean disableCooldown) {
         super(PlayerMenuConfigurations.of(
                 XG7Lobby.getInstance(),
                 "lobby-custom-hotbar:" + id,
@@ -43,6 +44,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
         this.grid = grid;
 
         this.cooldown = cooldown;
+        this.disableCooldown = disableCooldown;
 
         this.menuConfig = menuConfig;
     }
@@ -83,6 +85,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
     @Override
     public void onClick(ActionEvent event) {
         if (!event.getMenuAction().isRightClick()) return;
+        event.setCancelled(false);
         Item clickedItem = event.getClickedItem();
         if (clickedItem == null || clickedItem.getItemStack() == null || clickedItem.isAir()) return;
 
@@ -100,8 +103,18 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
         ActionsProcessor.process(actions, event.getHolder().getPlayer());
 
-        if (!cooldown.isZero()) XG7PluginsAPI.cooldowns().addCooldown(event.getHolder().getPlayer(), "selector-cooldown", cooldown.getMilliseconds());
+        if (!cooldown.isZero() && !disableCooldown) XG7PluginsAPI.cooldowns().addCooldown(event.getHolder().getPlayer(), "selector-cooldown", cooldown.getMilliseconds());
     }
+
+    @Override
+    public void onDrop(ActionEvent event) {event.setCancelled(false);}
+    @Override
+    public void onPickup(ActionEvent event) {event.setCancelled(false);}
+
+    @Override
+    public void onBreakBlocks(ActionEvent event) {event.setCancelled(false);}
+    @Override
+    public void onPlaceBlocks(ActionEvent event) {event.setCancelled(false);}
 
     private LobbyItem getItem(Player player, String path) {
         LobbyItem lobbyItem = this.items.get(path);

@@ -80,7 +80,7 @@ public class KillPVPHandler implements PVPHandler, Listener {
         if (!globalPVPManager.isInPVP(victim)) return;
         if (killer != null && !globalPVPManager.isInPVP(killer)) return;
 
-        handle(victim, deathCause);
+        handle(victim, killer, deathCause);
 
     }
 }

@@ -147,9 +147,10 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
 
-        if (player.getWorld().getUID().equals(newWorld.getUID()) || quitConfig.isRunEventsWhenReturnToTheWorld()) {
+        if (newWorld == null || (player.getWorld().getUID().equals(newWorld.getUID()) && quitConfig.isRunEventsWhenChangeWorld())) {
             ActionsProcessor.process(quitConfig.getEvents(), player);
         }
+
 
         PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
 

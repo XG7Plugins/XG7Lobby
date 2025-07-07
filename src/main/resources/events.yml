@@ -131,7 +131,7 @@ on-quit:
   send-quit-message: true
   send-quit-message-only-on-lobby: false
 
-  run-events-when-return-to-the-world: true
+  run-events-when-change-world: true
 
   events:
     - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"

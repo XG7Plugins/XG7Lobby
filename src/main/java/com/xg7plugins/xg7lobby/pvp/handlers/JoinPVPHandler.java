@@ -53,8 +53,17 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
     @Override
     public void onWorldJoin(Player player, World newWorld) {
-        Bukkit.getOnlinePlayers().stream().filter(XG7LobbyAPI::isPlayerInPVP).forEach(p -> applyPVPHiding(p, player));
-    }
+        if (!pvpConfigs.isHidePlayersNotInPvp()) return;
+        System.out.println("!ASPFIHJASOIFAOÌFAÒPISF");
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!p.equals(player) &&
+                    XG7LobbyAPI.isPlayerInPVP(p) &&
+                    !XG7LobbyAPI.isPlayerInPVP(player)) {
+
+                p.hidePlayer(player); // garante compatibilidade
+                System.out.println("Escondido " + player.getName() + " de " + p.getName());
+            }
+        }    }
 
     private void applyPVPHiding(Player player, Player other) {
         if (!pvpConfigs.isHidePlayersNotInPvp()) return;

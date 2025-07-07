@@ -122,6 +122,7 @@ pickup-items: false
 
 take-damage: false
 attack: false
+auto-respawn: true
 
 cancel-death-by-void: true
 

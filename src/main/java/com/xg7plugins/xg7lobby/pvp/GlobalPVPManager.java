@@ -1,7 +1,11 @@
 package com.xg7plugins.xg7lobby.pvp;
 
+import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.managers.Manager;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.pvp.handlers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -49,9 +53,6 @@ public class GlobalPVPManager implements Manager {
     public List<Listener> getAllListenersHandlers() {
         return handlers.values().stream().filter(h -> h instanceof Listener).map(h -> (Listener) h).collect(Collectors.toList());
     }
-
-
-
 
 
 }

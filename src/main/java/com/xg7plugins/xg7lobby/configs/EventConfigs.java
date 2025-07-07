@@ -34,8 +34,8 @@ public class EventConfigs {
     @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-quit.")
     public static class OnQuit extends ConfigSection {
         private boolean enabled;
-        private boolean runEventsWhenReturnToTheWorld;
         private boolean sendQuitMessage;
+        private boolean runEventsWhenChangeWorld;
         private boolean sendQuitMessageOnlyOnLobby;
         private List<String> events;
     }

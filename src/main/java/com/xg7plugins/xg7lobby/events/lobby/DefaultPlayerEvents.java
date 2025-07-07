@@ -281,4 +281,15 @@ public class DefaultPlayerEvents implements Listener {
 
     }
 
+    @EventHandler(
+            isOnlyInWorld = true,
+            isEnabled = @ConfigBoolean(
+                    configName = "config",
+                    path = "auto-respawn"
+            )
+    )
+    public void onAutoRespawn(PlayerDeathEvent event) {
+        event.getEntity().spigot().respawn();
+    }
+
 }

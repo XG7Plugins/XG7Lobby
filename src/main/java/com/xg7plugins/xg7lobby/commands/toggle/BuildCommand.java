@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @CommandSetup(
         name = "build",
-        permission = "xg7lobby.build",
+        permission = "xg7lobby.command.build",
         syntax = "/7lbuild (player)",
         description = "Toggle build mode",
         isInEnabledWorldOnly = true,
@@ -45,6 +45,12 @@ public class BuildCommand implements Command {
 
         OfflinePlayer target = null;
         boolean isOther = false;
+
+        if (!sender.hasPermission("xg7lobby.build")) {
+            CommandMessages.NO_PERMISSION.send(sender);
+            return;
+        }
+
         if (args.len() == 0) {
             if (!(sender instanceof Player)) {
                 CommandMessages.NOT_A_PLAYER.send(sender);

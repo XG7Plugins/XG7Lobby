@@ -30,7 +30,7 @@ public enum DeathCause {
     FALL_OUT_OF_WORLD,
     GENERIC;
 
-    String getLangPath() {
+    public String getLangPath() {
         return "lang:[pvp.causes." + this.name().toLowerCase() + "]";
     }
 

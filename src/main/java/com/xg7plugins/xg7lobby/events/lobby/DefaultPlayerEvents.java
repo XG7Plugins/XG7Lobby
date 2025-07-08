@@ -20,7 +20,9 @@ import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -120,8 +122,12 @@ public class DefaultPlayerEvents implements Listener {
         Player player = ReflectionObject.of(event).getMethod("getPlayer").invoke();
 
         if (player.hasPermission("xg7lobby.build")) {
+            if (!Config.of(XG7Lobby.getInstance(), MainConfigs.class).isBuildSystemEnabled()) {
+                event.setCancelled(false);
+                return;
+            }
             LobbyPlayer lobbyPlayer = XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).join();
-            if (lobbyPlayer.isBuildEnabled() || !Config.mainConfigOf(XG7Lobby.getInstance()).get("build-system-enabled", Boolean.class).orElse(false))  {
+            if (lobbyPlayer.isBuildEnabled())  {
                 event.setCancelled(false);
                 return;
             }
@@ -157,13 +163,15 @@ public class DefaultPlayerEvents implements Listener {
             )
     )
     public void onAttack(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player)) return;
         if (!(event.getEntity() instanceof Player)) return;
 
         Player victim = (Player) event.getEntity();
-        Player damager = (Player) event.getDamager();
+        Player damager = getDamager(event.getDamager());
+
+        if (damager == null) return;
 
         if (damager.hasPermission("xg7lobby.attack")) return;
+
         if (XG7LobbyAPI.isPlayerInPVP(victim) && XG7LobbyAPI.isPlayerInPVP(damager)) return;
 
         if (XG7LobbyAPI.isPlayerInPVP(damager) && !XG7LobbyAPI.isPlayerInPVP(victim)) {
@@ -171,6 +179,7 @@ public class DefaultPlayerEvents implements Listener {
             Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-in-pvp");
             return;
         }
+
         if (!XG7LobbyAPI.isPlayerInPVP(damager) && damager.hasPermission("xg7lobby.pvp")) {
             event.setCancelled(true);
             Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-out-pvp");
@@ -180,6 +189,17 @@ public class DefaultPlayerEvents implements Listener {
         event.setCancelled(true);
         Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "player-prohibitions.attack");
     }
+
+    private Player getDamager(Entity damager) {
+        if (damager instanceof Player) {
+            return (Player) damager;
+        } else if (damager instanceof Projectile) {
+            Projectile projectile = (Projectile) damager;
+            if (projectile.getShooter() instanceof Player) return (Player) projectile.getShooter();
+        }
+        return null;
+    }
+
 
     @EventHandler(
             isOnlyInWorld = true,

@@ -56,11 +56,11 @@ public class KillPVPHandler implements PVPHandler, Listener {
 
         playersInPVP.forEach(player -> {
             if (killer != null) {
-                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death-with-killer", Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
+                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death-with-killer", Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", Text.fromLang(player, XG7Lobby.getInstance(), deathCause.getLangPath()).join().getText()));
                 return;
             }
 
-            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death-with-killer", Pair.of("victim", victim.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
+            Text.detectLangsAndSend(player, XG7Lobby.getInstance(), "pvp.on-death", Pair.of("victim", victim.getName()), Pair.of("cause", Text.fromLang(player, XG7Lobby.getInstance(), deathCause.getLangPath()).join().getText()));
         });
 
         Bukkit.getPluginManager().callEvent(new PlayerKillInPVPEvent(killer, victim, deathCause));

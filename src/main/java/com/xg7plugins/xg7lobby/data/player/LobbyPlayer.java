@@ -122,6 +122,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
                     LobbyPlayer otherPlayer = XG7LobbyAPI.getLobbyPlayer(p.getUniqueId());
 
                     tasks.add(() -> {
+
                         if (hidingPlayers) player.hidePlayer(p);
                         else player.showPlayer(p);
 
@@ -134,7 +135,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     }
 
     public boolean isBuildEnabled() {
-        return buildEnabled && Config.mainConfigOf(XG7Lobby.getInstance()).get("build-system-enabled", Boolean.class).orElse(false);
+        return buildEnabled && Config.of(XG7Lobby.getInstance(), MainConfigs.class).isBuildSystemEnabled();
     }
 
     public void addInfraction(Infraction infraction) {

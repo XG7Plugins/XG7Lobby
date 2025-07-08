@@ -1,6 +1,7 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
 import com.xg7plugins.data.config.Config;
+import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
@@ -12,6 +13,7 @@ import com.xg7plugins.xg7lobby.pvp.event.PlayerLeavePVPEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
@@ -54,5 +56,9 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
     @Override
     public void onWorldLeave(Player player, World newWorld) {
         XG7LobbyAPI.globalPVPManager().removePlayer(player);
+    }
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        XG7LobbyAPI.globalPVPManager().removePlayer(event.getPlayer());
     }
 }

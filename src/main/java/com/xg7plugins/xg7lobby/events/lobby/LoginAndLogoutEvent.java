@@ -132,10 +132,11 @@ public class LoginAndLogoutEvent implements LobbyListener {
         if (joinConfig.isHeal()) player.setHealth(player.getMaxHealth());
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-            lobbyPlayer.fly();
-            lobbyPlayer.applyBuild();
-            lobbyPlayer.applyHide();
-            lobbyPlayer.applyInfractions();
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::fly));
+                lobbyPlayer.applyBuild();
+                lobbyPlayer.applyHide();
+                lobbyPlayer.applyInfractions();
+
         });
     }
 

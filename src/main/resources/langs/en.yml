@@ -166,6 +166,8 @@ pvp:
 
   pvp-command: "You can't use this command in global PvP mode."
 
+  tagged: "You are now tagged by %target% for @SECONDS:%time%@"
+
   causes:
     fall: "fell"
     void: "fell into the void"

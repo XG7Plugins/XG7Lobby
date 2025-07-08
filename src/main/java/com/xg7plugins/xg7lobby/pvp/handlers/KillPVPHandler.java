@@ -54,13 +54,16 @@ public class KillPVPHandler implements PVPHandler, Listener {
 
         List<Player> playersInPVP = XG7LobbyAPI.globalPVPManager().getAllPlayersInPVP();
 
+        if (killer != null) XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(killer);
+        XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(victim);
+
         playersInPVP.forEach(player -> {
             if (killer != null) {
                 Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death-with-killer", Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", Text.fromLang(player, XG7Lobby.getInstance(), deathCause.getLangPath()).join().getText()));
                 return;
             }
 
-            Text.detectLangsAndSend(player, XG7Lobby.getInstance(), "pvp.on-death", Pair.of("victim", victim.getName()), Pair.of("cause", Text.fromLang(player, XG7Lobby.getInstance(), deathCause.getLangPath()).join().getText()));
+            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death", Pair.of("victim", victim.getName()), Pair.of("cause", Text.fromLang(player, XG7Lobby.getInstance(), deathCause.getLangPath()).join().getText()));
         });
 
         Bukkit.getPluginManager().callEvent(new PlayerKillInPVPEvent(killer, victim, deathCause));
@@ -72,13 +75,15 @@ public class KillPVPHandler implements PVPHandler, Listener {
 
         GlobalPVPManager globalPVPManager = XG7LobbyAPI.globalPVPManager();
 
-        Player killer = event.getEntity().getKiller();
         Player victim = event.getEntity();
+        Player killer = Bukkit.getPlayer(globalPVPManager.getCombatLogHandler().getDamagerOf(victim));
 
         DeathCause deathCause = DeathCause.fromCause(victim.getLastDamageCause().getCause());
 
         if (!globalPVPManager.isInPVP(victim)) return;
         if (killer != null && !globalPVPManager.isInPVP(killer)) return;
+
+        event.setDeathMessage(null);
 
         handle(victim, killer, deathCause);
 

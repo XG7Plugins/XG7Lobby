@@ -7,6 +7,7 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.pvp.handlers.*;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -17,14 +18,21 @@ public class GlobalPVPManager implements Manager {
 
     private final Set<UUID> playersInPVP = new HashSet<>();
 
-    private static final HashMap<Class<? extends PVPHandler>, PVPHandler> handlers = new HashMap<>();
+    private final HashMap<Class<? extends PVPHandler>, PVPHandler> handlers = new HashMap<>();
 
-    static {
+    @Getter
+    private final CombatLogHandler combatLogHandler;
+
+    {
         handlers.put(JoinPVPHandler.class, new JoinPVPHandler());
         handlers.put(KillPVPHandler.class, new KillPVPHandler());
         handlers.put(RespawnPVPHandler.class, new RespawnPVPHandler());
         handlers.put(LeavePVPHandler.class, new LeavePVPHandler());
+
+        combatLogHandler = new CombatLogHandler();
     }
+
+
 
 
     public void addPlayer(Player player) {
@@ -51,7 +59,9 @@ public class GlobalPVPManager implements Manager {
     }
 
     public List<Listener> getAllListenersHandlers() {
-        return handlers.values().stream().filter(h -> h instanceof Listener).map(h -> (Listener) h).collect(Collectors.toList());
+        List<Listener> listeners = new ArrayList<>(handlers.values().stream().map(l -> (Listener) l).collect(Collectors.toList()));
+       listeners.add(combatLogHandler);
+       return listeners;
     }
 
 

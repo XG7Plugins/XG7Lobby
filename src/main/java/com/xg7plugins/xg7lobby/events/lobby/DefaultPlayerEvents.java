@@ -151,6 +151,7 @@ public class DefaultPlayerEvents implements Listener {
     public void onTakeDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
+        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity())) return;
         event.setCancelled(true);
     }
 
@@ -167,6 +168,8 @@ public class DefaultPlayerEvents implements Listener {
 
         Player victim = (Player) event.getEntity();
         Player damager = getDamager(event.getDamager());
+
+        event.setCancelled(false);
 
         if (damager == null) return;
 

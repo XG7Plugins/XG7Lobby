@@ -31,7 +31,7 @@ public enum DeathCause {
     GENERIC;
 
     public String getLangPath() {
-        return "lang:[pvp.causes." + this.name().toLowerCase() + "]";
+        return "pvp.causes." + this.name().toLowerCase();
     }
 
     public static DeathCause fromCause(EntityDamageEvent.DamageCause damageCause) {

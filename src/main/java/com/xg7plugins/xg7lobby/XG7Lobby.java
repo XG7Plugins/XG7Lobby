@@ -210,7 +210,6 @@ public final class XG7Lobby extends Plugin {
 
         if (pvpManager != null) {
             listeners.addAll(pvpManager.getAllListenersHandlers());
-            listeners.add(new CombatLogHandler());
         }
 
         return listeners;

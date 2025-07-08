@@ -62,6 +62,7 @@ public class PVPCommand implements Command {
                         Text.fromLang(player,XG7Lobby.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
                         return;
                     }
+                    XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
                     XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
                 })
         );

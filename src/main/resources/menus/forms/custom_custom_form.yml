@@ -1,3 +1,5 @@
+id: ""
+
 type: "custom"
 
 title: "Exemplo"
@@ -30,4 +32,7 @@ on-submit:
   - "[ACTION] %component-input% esse é o texto que você digitou"
   - "[ACTION] %component-toggle% valor true ou false"
   - "[ACTION] %component-slider% numero que você escolheu"
-  - "[ACTION] %component-options% opção escolhida"
+  - "[ACTION] %component-options% numero da opção escolhida"
+
+on-error:
+  - "[ACTIONS]"

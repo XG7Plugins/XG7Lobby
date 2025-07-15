@@ -5,6 +5,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Condition;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +15,10 @@ public class ActionsProcessor {
     private static final Pattern conditionPattern = Pattern.compile("\\((.*?)\\)");
 
     public static void process(List<String> actions, Player player, Pair<String, String>... placeholders) {
+        process(actions, player, Arrays.asList(placeholders));
+    }
+
+    public static void process(List<String> actions, Player player, List<Pair<String, String>> placeholders) {
         actions.forEach(action -> {
             try {
                 getActionOf(action, placeholders).execute(player);
@@ -23,8 +28,10 @@ public class ActionsProcessor {
         });
     }
 
-    public static Action getActionOf(String line, Pair<String, String>... placeholders) {
-        if (placeholders != null && placeholders.length > 0) {
+
+
+    public static Action getActionOf(String line, List<Pair<String, String>> placeholders) {
+        if (placeholders != null && !placeholders.isEmpty()) {
             for (Pair<String, String> placeholder : placeholders) {
                 line = line.replace("%" + placeholder.getFirst() + "%", placeholder.getSecond());
             }

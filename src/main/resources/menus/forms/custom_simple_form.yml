@@ -1,3 +1,6 @@
+
+id: ""
+
 type: "simple"
 
 title: "Exemplo"
@@ -15,3 +18,9 @@ buttons:
     text: "Lobby2"
     on-click:
       - "Actions"
+
+on-close:
+  - "[ACTIONS]"
+
+on-error:
+  - "[ACTIONS]"

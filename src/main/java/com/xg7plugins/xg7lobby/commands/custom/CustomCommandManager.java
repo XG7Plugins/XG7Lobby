@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.custom;
 
+import com.xg7plugins.boot.PluginSetup;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.managers.Manager;
 import com.xg7plugins.utils.reflection.ReflectionClass;
@@ -39,7 +40,7 @@ public class CustomCommandManager implements Manager {
             pluginCommand.setPermission(customCommand.getPermission());
             pluginCommand.setUsage(customCommand.getSyntax());
             pluginCommand.setExecutor(customCommandExecutor);
-            commandMap.register(customCommand.getName(), pluginCommand);
+            commandMap.register(XG7Lobby.getInstance().getClass().getAnnotation(PluginSetup.class).mainCommandName(), pluginCommand);
             commands.put(customCommand.getName(), customCommand);
         }
     }

@@ -57,7 +57,7 @@ public class FlyCommand implements Command {
             target = args.get(0, OfflinePlayer.class);
             isOther = true;
         }
-        if (isOther && target == null || !target.hasPlayedBefore() || !target.isOnline()) {
+        if (isOther && target == null || (!target.hasPlayedBefore() && !target.isOnline())) {
             CommandMessages.PLAYER_NOT_FOUND.send(sender);
             return;
         }

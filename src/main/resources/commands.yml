@@ -1,4 +1,4 @@
-setlobby: ["7lsetlobby", "7lsetl", "setlobby", "setl", "lobbyset", "lset", "lsetlobby", "lsetl"]
+setlobby: ["7lsetlobby", "7lsetl", "setlobby", "setl", "lobbyset",]
 lobby: ["7llobby", "7ll", "l", "lobby"]
 deletelobby: ["7ldeletelobby", "7ldl", "deletelobby"]
 lobbies: ["7llobbies", "7lls", "lobbies"]

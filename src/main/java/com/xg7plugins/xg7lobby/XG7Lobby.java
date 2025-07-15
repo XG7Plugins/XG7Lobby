@@ -3,12 +3,10 @@ package com.xg7plugins.xg7lobby;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.boot.PluginSetup;
-import com.xg7plugins.cache.RedisCacheSection;
 import com.xg7plugins.commands.core_commands.reload.ReloadCause;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigManager;
-import com.xg7plugins.data.config.core.MainConfigSection;
 import com.xg7plugins.data.database.dao.DAO;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
@@ -40,11 +38,10 @@ import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
 import com.xg7plugins.xg7lobby.events.chat.AntiSpamListener;
 import com.xg7plugins.xg7lobby.events.chat.AntiSwearingListener;
 import com.xg7plugins.xg7lobby.events.chat.LockChatCommandListener;
-import com.xg7plugins.xg7lobby.events.command.BlockCommandsListener;
-import com.xg7plugins.xg7lobby.events.command.LobbyCommandListener;
+import com.xg7plugins.xg7lobby.events.command.*;
 import com.xg7plugins.xg7lobby.events.chat.MuteCommandListener;
-import com.xg7plugins.xg7lobby.events.command.PVPBlockCommandsListener;
-import com.xg7plugins.xg7lobby.events.command.PVPCommandListener;
+import com.xg7plugins.xg7lobby.events.command.blocker.CommandAntiTabListener;
+import com.xg7plugins.xg7lobby.events.command.blocker.CommandProcessListener;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby.LoginAndLogoutEvent;
@@ -60,7 +57,6 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
-import com.xg7plugins.xg7lobby.pvp.handlers.CombatLogHandler;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.AntiSpamTask;
 import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
@@ -70,6 +66,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -204,7 +201,7 @@ public final class XG7Lobby extends Plugin {
     @Override
     public List<Listener> loadEvents() {
 
-        List<Listener> listeners = new ArrayList<>(Arrays.asList(new PVPCommandListener(), new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(), new PVPBlockCommandsListener()));
+        List<Listener> listeners = new ArrayList<>(Arrays.asList(new PVPCommandListener(), new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(), new PVPBlockCommandsListener(), new CommandProcessListener()));
 
         GlobalPVPManager pvpManager = XG7LobbyAPI.globalPVPManager();
 
@@ -217,7 +214,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<PacketListener> loadPacketEvents() {
-        return null;
+        return Collections.singletonList(new CommandAntiTabListener());
     }
 
     @Override

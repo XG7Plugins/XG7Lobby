@@ -16,7 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import java.util.Collections;
 import java.util.List;
 
 public class KillPVPHandler implements PVPHandler, Listener {

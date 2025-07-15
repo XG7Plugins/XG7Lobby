@@ -71,14 +71,15 @@ sql:
   type: "sqlite"
 
   host: "localhost"
-  port: "3306"
+  port: 3306
 
   database: "xg7lobby"
 
   username: "root"
   password: ""
 
-  additional-url-args: "characterEncoding=utf8"
+  #Connection string
+  #url: "jdbc:mysql://localhost:3306/"
 
 ##################################################################
 #                         LOBBY CONFIGS                          #
@@ -228,9 +229,9 @@ block-commands:
 
   anti-tab: true
 
-  #If you don't have permission and
-  #if you send some these commands
-  #will block
+  #If you don't have permission "xg7lobby.command_block_bypass"
+  #and you send some these commands,
+  #a "not-found" message will be sent
   blocked-commands:
     - /pl
     - /plugins

@@ -115,7 +115,14 @@ public class LobbiesMenu extends PagedMenu {
 
                 String lobbyId = item.getTag("lobby-id",String.class).get();
 
+                if (player.hasPermission("xg7lobby.command.lobby.delete") && event.getMenuAction().isRightClick()) {
+                    player.closeInventory();
+                    player.performCommand("deletelobby " + lobbyId);
+                    return;
+                }
+
                 player.getServer().dispatchCommand(player.getServer().getConsoleSender(), "lobby " + lobbyId + " " + player.getName());
 
-        }    }
+        }
+    }
 }

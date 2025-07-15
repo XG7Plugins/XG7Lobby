@@ -32,8 +32,9 @@ public class CustomCommandExecutor implements CommandExecutor {
 
         CustomCommand customCommand = customCommandManager.getCommand(command.getName());
 
-        if (!player.hasPermission(customCommand.getPermission())) {
+        if (!player.hasPermission(customCommand.getPermission()) && !customCommand.getPermission().isEmpty()) {
             CommandMessages.NO_PERMISSION.send(player);
+            return true;
         }
 
         customCommand.execute(player);

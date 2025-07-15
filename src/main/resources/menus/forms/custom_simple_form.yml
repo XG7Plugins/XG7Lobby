@@ -1,0 +1,17 @@
+type: "simple"
+
+title: "Exemplo"
+
+content: "Conteudo"
+
+buttons:
+  button1:
+    icon: "URL, https://github.com/GeyserMC.png?size=200"
+    text: "Lobby1"
+    on-click:
+      - "Actions"
+  button2:
+    icon: "URL, https://github.com/GeyserMC.png?size=200"
+    text: "Lobby2"
+    on-click:
+      - "Actions"

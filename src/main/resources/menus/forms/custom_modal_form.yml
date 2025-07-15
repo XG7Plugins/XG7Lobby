@@ -1,0 +1,17 @@
+type: "modal"
+
+title: "Exemplo"
+
+content: "Conteudo"
+
+first-button-text: "Sim"
+second-button-text: "Não"
+
+on-click-first-button:
+  - "ACTION"
+
+on-click-second-button:
+  - "ACTION"
+
+on-close:
+  - "ACTION"

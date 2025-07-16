@@ -31,7 +31,7 @@ public class AutoBroadcastTask extends TimerTask {
                 0,
                 Config.of(XG7Lobby.getInstance(), AdvertisementConfigs.class).getCooldown().getMilliseconds(),
                 TaskState.RUNNING,
-                null
+                false
         );
 
         this.config = Config.of(XG7Lobby.getInstance(), AdvertisementConfigs.class);

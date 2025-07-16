@@ -5,6 +5,7 @@ import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.location.LobbyManager;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
+import com.xg7plugins.xg7lobby.menus.custom.forms.CustomFormsManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
@@ -47,6 +48,10 @@ public class XG7LobbyAPI {
 
     public static CustomInventoryManager customInventoryManager() {
         return ManagerRegistry.get(XG7Lobby.getInstance(), CustomInventoryManager.class);
+    }
+
+    public static CustomFormsManager customFormsManager() {
+        return ManagerRegistry.get(XG7Lobby.getInstance(), CustomFormsManager.class);
     }
 
     public static LobbyGUI getCustomGUI(String id) {

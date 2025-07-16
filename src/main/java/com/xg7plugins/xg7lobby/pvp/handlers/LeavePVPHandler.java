@@ -27,9 +27,12 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-leave");
 
         if (player.isOnline()) {
-            XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
 
-            XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-selector-id", String.class).orElse("selector"), player);
+            if (XG7LobbyAPI.customInventoryManager() != null) {
+                XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
+
+                XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-selector-id", String.class).orElse("selector"), player);
+            }
 
             Config.of(XG7Lobby.getInstance(), PlayerConfigs.class).apply(player);
 

@@ -12,7 +12,6 @@ public class LobbyFormComponent {
 
     private final String id;
     private final ComponentType type;
-    private final List<String> actions;
     private final IComponent component;
 
 }

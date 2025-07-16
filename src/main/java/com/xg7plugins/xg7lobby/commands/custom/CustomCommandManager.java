@@ -49,30 +49,6 @@ public class CustomCommandManager implements Manager {
         return commands.get(name);
     }
 
-    public void unregisterCommands() {
-        commands.keySet().forEach(name -> {
-            CommandMap commandMap = ReflectionObject.of(Bukkit.getServer()).getField("commandMap");
-
-            if (!(commandMap instanceof SimpleCommandMap)) {
-                throw new IllegalArgumentException("CommandMap was modified but commandMap was not SimpleCommandMap");
-            }
-
-            SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
-
-            Map<String, Command> knownCommands = ReflectionObject.of(simpleCommandMap).getField("knownCommands");
-
-            Command command = knownCommands.get(name);
-            if (command == null) return;
-            knownCommands.remove(name);
-            for (String alias : command.getAliases()) knownCommands.remove(alias);
-        });
-        commands.clear();
-    }
-
-    public void reloadCommands() {
-        unregisterCommands();
-        registerCommands();
-    }
 
 
 

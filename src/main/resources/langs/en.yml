@@ -144,6 +144,7 @@ chat:
   prohibited-command: "&cCommand not found."
 
 menu-does-not-exist: "&cThis menu doesn't exist."
+form-does-not-exist: "&cThis form doesn't exist."
 
 selector-cooldown: "&cYou can't use the selector for another @SECONDS:%time%@"
 

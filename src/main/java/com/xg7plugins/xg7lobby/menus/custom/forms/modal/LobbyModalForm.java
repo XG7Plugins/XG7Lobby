@@ -2,24 +2,25 @@ package com.xg7plugins.xg7lobby.menus.custom.forms.modal;
 
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.modules.xg7geyserforms.forms.Form;
 import com.xg7plugins.modules.xg7geyserforms.forms.ModalForm;
 import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.forms.FormType;
 import com.xg7plugins.xg7lobby.menus.custom.forms.LobbyForm;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@Getter
 public class LobbyModalForm extends ModalForm implements LobbyForm {
 
-    private final List<String> closeActions;
     private final List<String> errorActions;
     private final List<String> firstButtonActions;
     private final List<String> secondButtonActions;
 
-    public LobbyModalForm(String id, String title, String content, String button1, String button2, List<String> closeActions, List<String> errorActions, List<String> firstButtonActions, List<String> secondButtonActions) {
-        super(XG7Plugins.getInstance(), id, title, content, button1, button2);
-        this.closeActions = closeActions;
+    public LobbyModalForm(String id, String title, String content, String button1, String button2, List<String> errorActions, List<String> firstButtonActions, List<String> secondButtonActions) {
+        super(XG7Plugins.getInstance(), "lobby-custom-form:" + id, title, content, button1, button2);
         this.firstButtonActions = firstButtonActions;
         this.secondButtonActions = secondButtonActions;
         this.errorActions = errorActions;
@@ -31,9 +32,7 @@ public class LobbyModalForm extends ModalForm implements LobbyForm {
     }
 
     @Override
-    public void onClose(org.geysermc.cumulus.form.ModalForm form, Player player) {
-        ActionsProcessor.process(closeActions, player);
-    }
+    public void onClose(org.geysermc.cumulus.form.ModalForm form, Player player) {}
 
     @Override
     public void onError(org.geysermc.cumulus.form.ModalForm form, org.geysermc.cumulus.response.result.InvalidFormResponseResult<org.geysermc.cumulus.response.ModalFormResponse> result, Player player) {
@@ -46,11 +45,6 @@ public class LobbyModalForm extends ModalForm implements LobbyForm {
     }
 
     @Override
-    public String id() {
-        return super.getId();
-    }
-
-    @Override
     public String title() {
         return super.getTitle();
     }
@@ -58,5 +52,10 @@ public class LobbyModalForm extends ModalForm implements LobbyForm {
     @Override
     public FormType getType() {
         return FormType.MODAL;
+    }
+
+    @Override
+    public Form<?, ?> getForm() {
+        return this;
     }
 }

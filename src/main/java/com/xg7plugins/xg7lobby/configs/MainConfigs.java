@@ -13,7 +13,8 @@ import java.util.List;
 public class MainConfigs extends ConfigSection {
 
     private boolean buildSystemEnabled;
-    private boolean menusEnabled;
+    private boolean customMenusEnabled;
+    private boolean customGeyserFormsEnabled;
     private String mainSelectorId;
     private String mainPvpSelectorId;
 

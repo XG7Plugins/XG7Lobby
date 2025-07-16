@@ -1,6 +1,7 @@
 package com.xg7plugins.xg7lobby.menus.custom.forms.simple;
 
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.modules.xg7geyserforms.forms.Form;
 import com.xg7plugins.modules.xg7geyserforms.forms.SimpleForm;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -8,6 +9,7 @@ import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.forms.FormType;
 import com.xg7plugins.xg7lobby.menus.custom.forms.LobbyForm;
 import com.xg7plugins.xg7lobby.menus.custom.forms.simple.button.LobbySimpleFormButton;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.geysermc.cumulus.component.ButtonComponent;
 import org.geysermc.cumulus.response.SimpleFormResponse;
@@ -18,16 +20,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Getter
 public class LobbySimpleForm extends SimpleForm implements LobbyForm {
 
     private final List<String> closeActions;
     private final List<String> errorActions;
 
-    private String content;
-    private HashMap<Integer, LobbySimpleFormButton> buttons;
+    private final String content;
+    private final HashMap<Integer, LobbySimpleFormButton> buttons;
 
     public LobbySimpleForm(String id, String title, String content, List<LobbySimpleFormButton> buttons, List<String> closeActions, List<String> errorActions) {
-        super(id, title, XG7Lobby.getInstance());
+        super("lobby-custom-form:" + id, title, XG7Lobby.getInstance());
         this.content = content;
         this.buttons = new HashMap<>();
         this.closeActions = closeActions;
@@ -70,11 +73,6 @@ public class LobbySimpleForm extends SimpleForm implements LobbyForm {
     }
 
     @Override
-    public String id() {
-        return super.getId();
-    }
-
-    @Override
     public String title() {
         return super.getTitle();
     }
@@ -82,5 +80,10 @@ public class LobbySimpleForm extends SimpleForm implements LobbyForm {
     @Override
     public FormType getType() {
         return FormType.SIMPLE;
+    }
+
+    @Override
+    public Form<?, ?> getForm() {
+        return this;
     }
 }

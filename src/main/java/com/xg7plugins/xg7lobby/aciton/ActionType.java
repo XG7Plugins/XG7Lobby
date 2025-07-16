@@ -365,6 +365,18 @@ public enum ActionType {
             false,
             (player, args) -> player.closeInventory()
     ),
+    OPEN_FORM(
+            "[OPEN_FORM] form_id",
+            "Sends a form",
+            "BEDROCK",
+            true,
+            (player, args) -> {
+                if (args.length != 1)
+                    throw new ActionException("OPEN_FORM", "Incorrectly amount of args: " + args.length + ". The right way to use is [OPEN_FORM] form_id.");
+
+                XG7LobbyAPI.customFormsManager().sendForm(args[0], player);
+            }
+    ),
     REFRESH_MENU(
             "[REFRESH_MENU] ",
             "Refreshs the menu",

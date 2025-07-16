@@ -33,9 +33,11 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
         player.setGameMode(GameMode.SURVIVAL);
         Config.of(XG7Lobby.getInstance(), PlayerConfigs.class).reset(player);
 
-        XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
+        if (XG7LobbyAPI.customInventoryManager() != null) {
+            XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
 
-        XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-pvp-selector-id", String.class).orElse("pvp"), player);
+            XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-pvp-selector-id", String.class).orElse("pvp"), player);
+        }
 
         if (config.isHeal()) player.setHealth(player.getMaxHealth());
 

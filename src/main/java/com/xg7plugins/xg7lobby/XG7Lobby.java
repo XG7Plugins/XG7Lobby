@@ -31,6 +31,7 @@ import com.xg7plugins.xg7lobby.commands.moderation.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle.*;
 import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
 import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
+import com.xg7plugins.xg7lobby.commands.utils.OpenFormCommand;
 import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
 import com.xg7plugins.xg7lobby.configs.*;
 import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
@@ -46,6 +47,10 @@ import com.xg7plugins.xg7lobby.events.lobby.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby.LoginAndLogoutEvent;
 import com.xg7plugins.xg7lobby.events.lobby.MOTDListener;
+import com.xg7plugins.xg7lobby.menus.custom.forms.CustomFormsManager;
+import com.xg7plugins.xg7lobby.menus.custom.forms.typeAdapter.LobbyCustomFormAdapter;
+import com.xg7plugins.xg7lobby.menus.custom.forms.typeAdapter.LobbyModalFormAdapter;
+import com.xg7plugins.xg7lobby.menus.custom.forms.typeAdapter.LobbySimpleFormAdapter;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyGUITypeAdapter;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter.LobbyHotbarTypeAdapter;
@@ -95,7 +100,7 @@ import java.util.List;
                 PVPConfigs.OnKill.class, PVPConfigs.OnLeavePvp.class, PVPConfigs.OnRespawn.class,
                 WorldConfigs.class
         },
-        reloadCauses = {"scores", "menus", "custom_commands"}
+        reloadCauses = {"scores", "menus", "forms"}
 
 )
 public final class XG7Lobby extends Plugin {
@@ -121,8 +126,11 @@ public final class XG7Lobby extends Plugin {
                 Config.of(this, PVPConfigs.class).isEnabled() ? new GlobalPVPManager() : null
         );
 
-        if (Config.of(this, MainConfigs.class).isMenusEnabled()) {
+        if (Config.of(this, MainConfigs.class).isCustomMenusEnabled()) {
             managerRegistry.registerManager(new CustomInventoryManager());
+        }
+        if (Config.of(this, MainConfigs.class).isCustomGeyserFormsEnabled()) {
+            managerRegistry.registerManager(new CustomFormsManager());
         }
 
         debug.loading("Loading scores...");
@@ -132,6 +140,11 @@ public final class XG7Lobby extends Plugin {
         debug.loading("Loading menus...");
 
         loadMenus();
+
+        debug.loading("Loading forms...");
+
+        System.out.println(XG7PluginsAPI.isGeyserFormsEnabled());
+        loadGeyserForms();
 
         debug.loading("Loading custom commands...");
 
@@ -158,14 +171,18 @@ public final class XG7Lobby extends Plugin {
             menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
 
             CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
-            inventoryManager.reloadInventories();
+
+            if (inventoryManager != null) inventoryManager.reloadInventories();
 
             debug.loading("Menus reloaded.");
         }
-        if (cause.equals("custom_commands")) {
-            debug.loading("Reloading custom commands...");
-            ManagerRegistry.get(this,  CustomCommandManager.class).reloadCommands();
-            debug.loading("Custom commands reloaded.");
+        if (cause.equals("forms")) {
+            debug.loading("Reloading forms...");
+
+            CustomFormsManager formsManager = XG7LobbyAPI.customFormsManager();
+            if (formsManager != null) formsManager.reloadForms();
+
+            debug.loading("Forms reloaded.");
         }
 
     }
@@ -195,7 +212,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand());
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand(), new OpenFormCommand());
     }
 
     @Override
@@ -236,6 +253,13 @@ public final class XG7Lobby extends Plugin {
     }
 
     public void loadMenus() {
+
+        XG7Menus menus = XG7Menus.getInstance();
+
+        menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
+
+        if (XG7LobbyAPI.customInventoryManager() == null) return;
+
         ConfigManager configManager = XG7PluginsAPI.configManager(this);
 
         configManager.registerAdapter(new LobbyItemTypeAdapter());
@@ -244,9 +268,21 @@ public final class XG7Lobby extends Plugin {
 
         XG7LobbyAPI.customInventoryManager().loadInventories();
 
-        XG7Menus menus = XG7Menus.getInstance();
+    }
 
-        menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
+    public void loadGeyserForms() {
+
+        if (!XG7PluginsAPI.isGeyserFormsEnabled()) return;
+        if (XG7LobbyAPI.customFormsManager() == null) return;
+
+        ConfigManager configManager = XG7PluginsAPI.configManager(this);
+
+        configManager.registerAdapter(new LobbyCustomFormAdapter());
+        configManager.registerAdapter(new LobbyModalFormAdapter());
+        configManager.registerAdapter(new LobbySimpleFormAdapter());
+
+        XG7LobbyAPI.customFormsManager().loadForms();
+
     }
 
     public void loadScores() {

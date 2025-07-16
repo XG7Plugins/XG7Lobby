@@ -93,7 +93,10 @@ lobby-teleport-cooldown:
 
 build-system-enabled: true
 
-menus-enabled: true
+custom-menus-enabled: true
+
+custom-geyser-forms-enabled: true
+lobbies-form-enabled: true
 
 main-selector-id: "selector"
 main-pvp-selector-id: "pvp"

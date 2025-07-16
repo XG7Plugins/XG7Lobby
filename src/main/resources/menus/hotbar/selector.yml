@@ -14,8 +14,8 @@ items:
     enchants:
       - "DURABILITY, 1"
     actions:
-      - "[OPEN_MENU] games"
-      - "[CLOSE_MENU] "
+      - "[OPEN_MENU] (?IF_NOT: %xg7plugins_is_bedrock_player%?) games"
+      - "[OPEN_FORM] (?IF: %xg7plugins_is_bedrock_player%?) games_form"
 
   profile:
 
@@ -28,7 +28,6 @@ items:
         - "DURABILITY, 1"
       actions:
         - "[OPEN_MENU] profile"
-        - "[CLOSE_MENU] "
 
   lobbies:
 
@@ -118,4 +117,4 @@ items:
 row: ["games","profile","","","enableFly","","enableBuild","hidePlayers","lobbies"]
 
 
-config-version: 1.0
+config-version: 2.0

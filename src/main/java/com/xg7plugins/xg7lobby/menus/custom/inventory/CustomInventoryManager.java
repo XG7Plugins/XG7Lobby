@@ -17,15 +17,8 @@ public class CustomInventoryManager implements Manager {
 
     private final HashMap<String, LobbyInventory> inventories = new HashMap<>();
 
-    @Getter
-    private boolean enabled;
-
     public void loadInventories() {
         XG7Lobby lobby = XG7Lobby.getInstance();
-
-        enabled = Config.mainConfigOf(lobby).get("menus-enabled", Boolean.class).orElse(true);
-
-        if (!enabled) return;
 
         lobby.getDebug().loading("Loading custom inventories...");
 
@@ -46,7 +39,7 @@ public class CustomInventoryManager implements Manager {
         for (File file : guis) {
             Config config = Config.of("menus/gui/" + file.getName().replace(".yml", ""), lobby);
 
-            String id = config.get("id", String.class).orElse(null);
+            String id = config.get("id", String.class).orElseThrow(() -> new IllegalArgumentException("GUI id cannot be null!"));
 
             config.get("", LobbyGUI.class).ifPresent((inv) -> {
                 inventories.put(id, inv);
@@ -56,15 +49,15 @@ public class CustomInventoryManager implements Manager {
         for (File file : hotbars) {
             Config config = Config.of("menus/hotbar/" + file.getName().replace(".yml", ""), lobby);
 
-            String id = config.get("id", String.class).orElse(null);
+            String id = config.get("id", String.class).orElseThrow(() -> new IllegalArgumentException("Hotbar id cannot be null!"));
 
             config.get("", LobbyHotbar.class).ifPresent((inv) -> {
                 inventories.put(id, inv);
                 XG7Menus.getInstance().registerMenus(inv);
             });
         }
-        XG7Lobby.getInstance().getDebug().loading("Loaded " + inventories.size() + " custom inventories.");
-        XG7Lobby.getInstance().getDebug().loading("Loaded " + inventories.keySet() + " custom inventories.");
+        lobby.getDebug().loading("Loaded " + inventories.size() + " custom inventories.");
+        lobby.getDebug().info("Loaded " + inventories.keySet() + " custom inventories.");
 
     }
 
@@ -120,6 +113,10 @@ public class CustomInventoryManager implements Manager {
         return getInventory(id) instanceof LobbyHotbar;
     }
 
+    public boolean isMenu(String id) {
+        return inventories.containsKey(id);
+    }
+
     public Collection<LobbyInventory> getInventories() {
         return inventories.values();
     }
@@ -137,7 +134,6 @@ public class CustomInventoryManager implements Manager {
     }
 
     public void closeAllMenus(Player player) {
-        if (!enabled) return;
         player.closeInventory();
         if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
             PlayerMenuHolder holder = XG7Menus.getPlayerMenuHolder(player.getUniqueId());

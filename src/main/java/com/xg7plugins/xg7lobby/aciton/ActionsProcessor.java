@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class ActionsProcessor {
 
-    private static final Pattern conditionPattern = Pattern.compile("\\((.*?)\\)");
+    private static final Pattern conditionPattern = Pattern.compile("\\((.*?)\\) ");
 
     public static void process(List<String> actions, Player player, Pair<String, String>... placeholders) {
         process(actions, player, Arrays.asList(placeholders));

@@ -25,8 +25,10 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
         }
 
         if (config.isResetItems()) {
-            XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
-            XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-pvp-selector-id", String.class).orElse("pvp"), player);
+            if (XG7LobbyAPI.customInventoryManager() != null) {
+                XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
+                XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-pvp-selector-id", String.class).orElse("pvp"), player);
+            }
         }
 
         ActionsProcessor.process(config.getActions(), player);

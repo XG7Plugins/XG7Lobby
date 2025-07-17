@@ -5,8 +5,8 @@ import com.xg7plugins.managers.Manager;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.data.player.dao.InfractionDAO;
-import com.xg7plugins.xg7lobby.data.player.dao.LobbyPlayerDAO;
+import com.xg7plugins.xg7lobby.data.player.dao.InfractionRepository;
+import com.xg7plugins.xg7lobby.data.player.dao.LobbyPlayerRepository;
 import lombok.Getter;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -20,45 +20,45 @@ import java.util.concurrent.CompletableFuture;
 public class LobbyPlayerManager implements Manager {
 
     @Getter
-    private final LobbyPlayerDAO lobbyPlayerDAO;
+    private final LobbyPlayerRepository lobbyPlayerRepository;
     @Getter
-    private final InfractionDAO infractionDAO;
+    private final InfractionRepository infractionRepository;
 
     public LobbyPlayerManager() {
-        this.lobbyPlayerDAO = new LobbyPlayerDAO();
-        this.infractionDAO = new InfractionDAO();
+        this.lobbyPlayerRepository = new LobbyPlayerRepository();
+        this.infractionRepository = new InfractionRepository();
     }
 
     public CompletableFuture<Boolean> savePlayerAsync(LobbyPlayer lobbyPlayer) {
-        return this.lobbyPlayerDAO.addAsync(lobbyPlayer);
+        return this.lobbyPlayerRepository.addAsync(lobbyPlayer);
     }
 
     public CompletableFuture<Boolean> deletePlayerAsync(LobbyPlayer lobbyPlayer) {
-        return this.lobbyPlayerDAO.deleteAsync(lobbyPlayer);
+        return this.lobbyPlayerRepository.deleteAsync(lobbyPlayer);
     }
 
     public CompletableFuture<Boolean> updatePlayerAsync(LobbyPlayer lobbyPlayer) {
-        return this.lobbyPlayerDAO.updateAsync(lobbyPlayer);
+        return this.lobbyPlayerRepository.updateAsync(lobbyPlayer);
     }
 
     public CompletableFuture<LobbyPlayer> getPlayerAsync(UUID uuid) {
-        return this.lobbyPlayerDAO.getAsync(uuid);
+        return this.lobbyPlayerRepository.getAsync(uuid);
     }
 
     public boolean savePlayer(LobbyPlayer lobbyPlayer) throws Exception {
-        return this.lobbyPlayerDAO.add(lobbyPlayer);
+        return this.lobbyPlayerRepository.add(lobbyPlayer);
     }
 
     public boolean deletePlayer(LobbyPlayer lobbyPlayer) {
-        return this.lobbyPlayerDAO.delete(lobbyPlayer);
+        return this.lobbyPlayerRepository.delete(lobbyPlayer);
     }
 
     public boolean updatePlayer(LobbyPlayer lobbyPlayer) {
-        return this.lobbyPlayerDAO.update(lobbyPlayer);
+        return this.lobbyPlayerRepository.update(lobbyPlayer);
     }
 
     public LobbyPlayer getPlayer(UUID uuid) {
-        return this.lobbyPlayerDAO.get(uuid);
+        return this.lobbyPlayerRepository.get(uuid);
     }
 
     public boolean isLoaded(UUID id) {
@@ -79,19 +79,19 @@ public class LobbyPlayerManager implements Manager {
     }
 
     public Infraction getInfraction(String id) {
-        return infractionDAO.get(id);
+        return infractionRepository.get(id);
     }
 
     public void deleteInfraction(Infraction infraction) {
-        infractionDAO.delete(infraction);
+        infractionRepository.delete(infraction);
     }
 
     public CompletableFuture<Boolean> saveInfractionAsync(Infraction infraction) {
-        return this.infractionDAO.addAsync(infraction);
+        return this.infractionRepository.addAsync(infraction);
     }
 
     public CompletableFuture<Boolean> deleteInfractionAsync(Infraction infraction) {
-        return this.infractionDAO.deleteAsync(infraction);
+        return this.infractionRepository.deleteAsync(infraction);
     }
 
     public List<Infraction> getInfractionsByPlayer(UUID playerUUID) {
@@ -101,7 +101,7 @@ public class LobbyPlayerManager implements Manager {
     }
 
     public List<Infraction> getAllInfractions() {
-        return infractionDAO.getAll();
+        return infractionRepository.getAll();
     }
 
     public void banPlayer(OfflinePlayer player, Time time, Text reason) {

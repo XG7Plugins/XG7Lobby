@@ -1,21 +1,17 @@
 package com.xg7plugins.xg7lobby.menus.default_menus;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.editor.InventoryShaper;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.modules.xg7menus.menus.holders.PagedMenuHolder;
-import com.xg7plugins.modules.xg7menus.menus.menus.gui.MenuConfigurations;
-import com.xg7plugins.modules.xg7menus.menus.menus.gui.menus.PagedMenu;
-import com.xg7plugins.tasks.tasks.BukkitTask;
+import com.xg7plugins.modules.xg7menus.menus.menuholders.PagedMenuHolder;
+import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
+import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.PagedMenu;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

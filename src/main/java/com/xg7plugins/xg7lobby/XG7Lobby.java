@@ -7,7 +7,7 @@ import com.xg7plugins.commands.core_commands.reload.ReloadCause;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigManager;
-import com.xg7plugins.data.database.dao.DAO;
+import com.xg7plugins.data.database.dao.Repository;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
@@ -143,7 +143,6 @@ public final class XG7Lobby extends Plugin {
 
         debug.loading("Loading forms...");
 
-        System.out.println(XG7PluginsAPI.isGeyserFormsEnabled());
         loadGeyserForms();
 
         debug.loading("Loading custom commands...");
@@ -206,8 +205,8 @@ public final class XG7Lobby extends Plugin {
     }
 
     @Override
-    public List<DAO<?,?>> loadDAOs() {
-        return Arrays.asList(XG7LobbyAPI.lobbyManager().getLobbyLocationDAO(), XG7LobbyAPI.lobbyPlayerManager().getLobbyPlayerDAO());
+    public List<Repository<?,?>> loadRepositories() {
+        return Arrays.asList(XG7LobbyAPI.lobbyManager().getLobbyLocationRepository(), XG7LobbyAPI.lobbyPlayerManager().getLobbyPlayerRepository());
     }
 
     @Override

@@ -248,7 +248,7 @@ lobbies-menu:
 help:
 
   menu:
-    title: "&b&lXG7Lobby Help"
+    title: "&rHelp of <rainbow>XG7Lobby</rainbow>"
 
     close-item: "&cClose"
     go-back-item: "&cBack"
@@ -257,6 +257,7 @@ help:
     profile-item:
       name: "&bProfile"
       lore:
+        first-join: "&7First join&b: &9%xg7plugins_player_firstjoin_format(dd/MM/yyyy HH:mm:ss)%"
         kills: "&7Kills&b: &9%xg7lobby_player_global_pvp_kills%"
         deaths: "&7Deaths&b: &c%xg7lobby_player_global_pvp_deaths%"
         kdr: "&7KDR&b: &9%xg7lobby_player_global_pvp_kdr%"
@@ -275,12 +276,12 @@ help:
     set-lobby-item:
       name: "&cLobby"
       lore:
-        current-location: "&7Current location&b: %random_lobby_location%"
+        current-location: "&7Random location&b: %xg7lobby_random_lobby_location%"
         click: "Click here to set the lobby location"
 
-    selectors-guide-item:
-      name: "&bSelectors Guide"
-      lore: "Click here to see the selectors guide"
+    menus-guide-item:
+      name: "&bMenus Guide"
+      lore: "Click here to see the menus guide"
 
     custom-commands-guide-item:
       name: "&bCustom Commands Guide"
@@ -380,9 +381,31 @@ help:
     - ""
     - "&7&oTips: Keep commands clear and simple"
 
+  form:
+
+    title: "&rHelp of <rainbow>XG7Lobby</rainbow>"
+
+
+    content:
+      - "&7Welcome to the &6XG7Lobby's &7help!"
+      - "&eXG7Lobby is a plugin that aims to facilitate the lobby management."
+      - "&bSee the options below for more information."
+
+    about: "&aAbout <rainbow>XG7Lobby</rainbow>"
+    commands: "&aCommands"
+    menus-guide: "&aMenus Guide"
+    custom-commands-guide: "&aCustom Commands Guide"
+    collaborators: "&aCollaborators"
+
+    collaborators-title: "Collaborators of XG7Lobby:"
+    collaborators-content: "See who helped on XG7Lobby process"
+
+    click-to-back: "Back to help"
+
+
   chat:
 
-    title: "&7Welcome to the &6XG7Lobby &7help page!"
+    title: "&7Welcome to the &6XG7Lobby's &7help!"
 
     content: "&eXG7Lobby is a plugin that aims to facilitate the lobby \nmanagement.\nClick to see more information."
 
@@ -390,9 +413,9 @@ help:
 
     lang: "&aLanguages&f: &1click here to change profile lang"
     commands: "&aCommands&f: &1click here to see the commands"
-    selector-guide: "&aSelectors Guide&f: &1click here to see the selectors guide"
+    menus-guide: "&aMenus Guide&f: &1click here to see the menus guide"
     custom-commands-guide: "&aCustom Commands Guide&f: &1click here to see the custom commands guide"
 
 help-in-chat.commands-title: "&7Commands of &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
-config-version: 1.0
+config-version: 2.0

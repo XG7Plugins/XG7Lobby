@@ -13,31 +13,31 @@ import java.util.stream.Collectors;
 public class LobbyManager implements Manager {
 
     @Getter
-    private final LobbyLocationDAO lobbyLocationDAO;
+    private final LobbyLocationRepository lobbyLocationRepository;
 
 
     public LobbyManager() {
-        this.lobbyLocationDAO = new LobbyLocationDAO();
+        this.lobbyLocationRepository = new LobbyLocationRepository();
     }
 
     public CompletableFuture<Boolean> saveLobbyLocation(LobbyLocation lobbyLocation) throws ExecutionException, InterruptedException {
-        return this.lobbyLocationDAO.addAsync(lobbyLocation);
+        return this.lobbyLocationRepository.addAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> deleteLobbyLocation(LobbyLocation lobbyLocation) {
-        return this.lobbyLocationDAO.deleteAsync(lobbyLocation);
+        return this.lobbyLocationRepository.deleteAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> updateLobbyLocation(LobbyLocation lobbyLocation) {
-        return this.lobbyLocationDAO.updateAsync(lobbyLocation);
+        return this.lobbyLocationRepository.updateAsync(lobbyLocation);
     }
 
     public CompletableFuture<List<LobbyLocation>> getAllLobbies() {
-        return this.lobbyLocationDAO.getAllAsync();
+        return this.lobbyLocationRepository.getAllAsync();
     }
 
     public CompletableFuture<LobbyLocation> getLobbyLocation(String name) {
-        return this.lobbyLocationDAO.getAsync(name);
+        return this.lobbyLocationRepository.getAsync(name);
     }
 
     public CompletableFuture<LobbyLocation> getRandomLobbyLocation() {
@@ -49,7 +49,7 @@ public class LobbyManager implements Manager {
 
             if (!cachedLocalLobbies.isEmpty()) return cachedLocalLobbies.get(new Random().nextInt(cachedLocalLobbies.size()));
 
-            List<LobbyLocation> lobbies = lobbyLocationDAO.getAll();
+            List<LobbyLocation> lobbies = lobbyLocationRepository.getAll();
 
             if (lobbies.isEmpty()) return null;
 

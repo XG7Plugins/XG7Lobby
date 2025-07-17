@@ -9,11 +9,10 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
+import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.configs.EventConfigs;
 import com.xg7plugins.xg7lobby.configs.MainConfigs;
 import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
-import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
@@ -26,7 +25,6 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 public class LoginAndLogoutEvent implements LobbyListener {

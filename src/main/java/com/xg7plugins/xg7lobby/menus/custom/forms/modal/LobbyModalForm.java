@@ -1,10 +1,9 @@
 package com.xg7plugins.xg7lobby.menus.custom.forms.modal;
 
 import com.xg7plugins.XG7Plugins;
-import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.modules.xg7geyserforms.forms.Form;
 import com.xg7plugins.modules.xg7geyserforms.forms.ModalForm;
-import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
+import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.forms.FormType;
 import com.xg7plugins.xg7lobby.menus.custom.forms.LobbyForm;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.aciton;
+package com.xg7plugins.xg7lobby.acitons;
 
 import com.cryptomorin.xseries.XEntityType;
 import com.cryptomorin.xseries.XMaterial;
@@ -7,12 +7,11 @@ import com.cryptomorin.xseries.XSound;
 import com.cryptomorin.xseries.particles.XParticle;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
-import com.xg7plugins.modules.xg7menus.menus.holders.BasicMenuHolder;
-import com.xg7plugins.modules.xg7menus.menus.holders.MenuHolder;
-import com.xg7plugins.modules.xg7menus.menus.holders.PlayerMenuHolder;
+import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
+import com.xg7plugins.modules.xg7menus.menus.menuholders.MenuHolder;
+import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
 import com.xg7plugins.server.MinecraftVersion;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;

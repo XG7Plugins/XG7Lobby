@@ -1,8 +1,6 @@
-package com.xg7plugins.xg7lobby.aciton;
+package com.xg7plugins.xg7lobby.acitons;
 
-import com.xg7plugins.managers.Manager;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.utils.text.Condition;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;

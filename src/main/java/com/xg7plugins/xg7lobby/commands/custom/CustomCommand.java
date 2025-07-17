@@ -2,7 +2,7 @@ package com.xg7plugins.xg7lobby.commands.custom;
 
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.aciton.ActionsProcessor;
+import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

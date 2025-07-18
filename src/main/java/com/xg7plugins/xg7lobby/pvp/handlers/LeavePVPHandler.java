@@ -38,6 +38,10 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
             ActionsProcessor.process(config.getActions(), player);
 
+            if (pvpConfigs.isHidePlayersNotInPvp()) {
+                Bukkit.getOnlinePlayers().stream().filter(XG7LobbyAPI.globalPVPManager()::isInPVP).forEach(p -> p.hidePlayer(player));
+            }
+
             XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.fly();
                 lobbyPlayer.applyBuild();

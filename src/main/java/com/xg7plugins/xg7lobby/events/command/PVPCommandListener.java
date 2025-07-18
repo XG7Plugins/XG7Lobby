@@ -30,7 +30,7 @@ public class PVPCommandListener implements Listener {
                             || event.getFrom().getBlockY() != event.getTo().getBlockY()
                             || event.getFrom().getBlockZ() != event.getTo().getBlockZ()
             ) {
-                cooldownManager.removeCooldown("pvp-disable", event.getPlayer().getUniqueId());
+                cooldownManager.removeCooldown("pvp-disable", event.getPlayer().getUniqueId(), true);
             }
         }
 

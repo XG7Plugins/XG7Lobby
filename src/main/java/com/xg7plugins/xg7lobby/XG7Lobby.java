@@ -11,6 +11,10 @@ import com.xg7plugins.data.database.dao.Repository;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.PacketListener;
+import com.xg7plugins.help.HelpMessenger;
+import com.xg7plugins.help.chat.HelpChat;
+import com.xg7plugins.help.form.HelpForm;
+import com.xg7plugins.help.menu.HelpGUI;
 import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.TimerTask;
@@ -29,10 +33,7 @@ import com.xg7plugins.xg7lobby.commands.moderation.infraction.InfractionCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.MuteCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle.*;
-import com.xg7plugins.xg7lobby.commands.utils.ExecuteActionCommand;
-import com.xg7plugins.xg7lobby.commands.utils.GamemodeCommand;
-import com.xg7plugins.xg7lobby.commands.utils.OpenFormCommand;
-import com.xg7plugins.xg7lobby.commands.utils.OpenInventoryCommand;
+import com.xg7plugins.xg7lobby.commands.utils.*;
 import com.xg7plugins.xg7lobby.configs.*;
 import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
@@ -47,6 +48,15 @@ import com.xg7plugins.xg7lobby.events.lobby.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby.LoginAndLogoutEvent;
 import com.xg7plugins.xg7lobby.events.lobby.MOTDListener;
+import com.xg7plugins.xg7lobby.help.chat.AboutPage;
+import com.xg7plugins.xg7lobby.help.chat.CustomCommandPage;
+import com.xg7plugins.xg7lobby.help.chat.Index;
+import com.xg7plugins.xg7lobby.help.chat.MenusGuidePage;
+import com.xg7plugins.xg7lobby.help.form.CollaboratorsForm;
+import com.xg7plugins.xg7lobby.help.form.XG7LobbyHelpForm;
+import com.xg7plugins.xg7lobby.help.gui.ActionsMenu;
+import com.xg7plugins.xg7lobby.help.gui.CollaboratorsMenu;
+import com.xg7plugins.xg7lobby.help.gui.XG7LobbyHelpGUI;
 import com.xg7plugins.xg7lobby.menus.custom.forms.CustomFormsManager;
 import com.xg7plugins.xg7lobby.menus.custom.forms.typeAdapter.LobbyCustomFormAdapter;
 import com.xg7plugins.xg7lobby.menus.custom.forms.typeAdapter.LobbyModalFormAdapter;
@@ -68,6 +78,7 @@ import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
 import com.xg7plugins.xg7lobby.tasks.EffectsTask;
 import com.xg7plugins.xg7lobby.tasks.WorldCyclesTask;
 import lombok.Getter;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -176,6 +187,10 @@ public final class XG7Lobby extends Plugin {
             debug.loading("Menus reloaded.");
         }
         if (cause.equals("forms")) {
+
+            if (!XG7PluginsAPI.isGeyserFormsEnabled()) return;
+            if (XG7LobbyAPI.customFormsManager() == null) return;
+
             debug.loading("Reloading forms...");
 
             CustomFormsManager formsManager = XG7LobbyAPI.customFormsManager();
@@ -211,7 +226,7 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand(), new OpenFormCommand());
+        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand(), new OpenFormCommand(), new ResetStatsCommand());
     }
 
     @Override
@@ -249,6 +264,31 @@ public final class XG7Lobby extends Plugin {
     @Override
     public void loadHelp() {
 
+        HelpGUI helpCommandGUI = new HelpGUI(this, new XG7LobbyHelpGUI());
+
+        helpCommandGUI.registerMenu("actions", new ActionsMenu());
+        helpCommandGUI.registerMenu("collaborators", new CollaboratorsMenu());
+
+        HelpForm helpCommandForm = null;
+
+        if (XG7PluginsAPI.isGeyserFormsEnabled()) {
+            helpCommandForm = new HelpForm(new XG7LobbyHelpForm());
+
+            helpCommandForm.registerForm("lobby-collaborators-help", new CollaboratorsForm());
+        }
+
+        HelpChat helpInChat = new HelpChat(this, new Index());
+        helpInChat.registerPage(new MenusGuidePage());
+        helpInChat.registerPage(new CustomCommandPage());
+        helpInChat.registerPage(new AboutPage());
+
+        this.helpMessenger = new HelpMessenger(this, helpCommandGUI, helpCommandForm, helpInChat);
+
+    }
+
+    @Override
+    public PlaceholderExpansion loadPlaceholderExpansion() {
+        return new XG7LobbyPlaceholderExpansion();
     }
 
     public void loadMenus() {

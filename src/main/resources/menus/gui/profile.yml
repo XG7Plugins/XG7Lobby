@@ -31,12 +31,13 @@ items:
     actions:
       - "[PLAYER_COMMAND] lobby"
       - "[CLOSE_MENU] "
+      - "[REFRESH_MENU] "
 
   hidePlayers:
 
     material: LIME_DYE
 
-    conditional: "[IF_NOT: %xg7lobby_player_is_hiding%]"
+    conditional: "?IF_NOT: %xg7lobby_player_is_hiding_players%?"
     if-false: "showPlayers"
 
     name: "&aHide Players"
@@ -48,6 +49,7 @@ items:
     actions:
       - "[HIDE_PLAYERS] "
       - "[SWAP] showPlayers"
+      - "[REFRESH_MENU] "
 
   showPlayers:
 

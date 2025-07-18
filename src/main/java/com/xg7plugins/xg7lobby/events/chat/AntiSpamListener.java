@@ -63,7 +63,7 @@ public class AntiSpamListener implements Listener {
 
         if (config.getSpamTolerance() <= 0) return;
 
-        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7PluginsAPI.taskManager().getTimerTask(XG7Lobby.getInstance().getName() + ":anti-spam-tolerance");
+        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7PluginsAPI.taskManager().getTimerTask(XG7Lobby.getInstance(),  "anti-spam-tolerance");
 
         antiSpamTask.incrementTolerance(player.getUniqueId());
 

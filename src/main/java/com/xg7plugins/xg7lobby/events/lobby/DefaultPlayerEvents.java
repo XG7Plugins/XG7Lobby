@@ -312,7 +312,7 @@ public class DefaultPlayerEvents implements Listener {
             )
     )
     public void onAutoRespawn(PlayerDeathEvent event) {
-        event.getEntity().spigot().respawn();
+        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> event.getEntity().spigot().respawn()), 100L);
     }
 
 }

@@ -10,6 +10,7 @@ import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.utils.text.Condition;
+import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
@@ -116,12 +117,14 @@ public class LobbyGUI extends Menu implements LobbyInventory {
 
         if (lobbyItem == null) return null;
 
-        if (!Condition.processConditions(lobbyItem.getConditionLine() + " Random_content", player).isEmpty()) {
+        if (lobbyItem.getConditionLine() == null || lobbyItem.getConditionLine().isEmpty()) return lobbyItem;
+
+        if (!Text.format(lobbyItem.getConditionLine() + "RANDOLAS").textFor(player).getPlainText().isEmpty()) {
             return lobbyItem;
         }
         if (lobbyItem.getOtherItemPath() == null) return null;
 
-        return getItem(player, "items." + lobbyItem.getOtherItemPath());
+        return getItem(player, lobbyItem.getOtherItemPath());
     }
 
 }

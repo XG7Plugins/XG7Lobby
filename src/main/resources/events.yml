@@ -126,8 +126,6 @@ on-first-join:
     - "[PLAYER_COMMAND] (?PERMISSION: xg7lobby.command.help?) 7l help"
 
 on-quit:
-  enabled: true
-
   send-quit-message: true
   send-quit-message-only-on-lobby: false
 

@@ -475,7 +475,7 @@ public enum ActionType {
             }
     ),
     FLY_OFF(
-            "[FLY_FF] ",
+            "[FLY_OFF] ",
             "Disables the player flying on lobby",
             "FEATHER",
             false,
@@ -499,7 +499,7 @@ public enum ActionType {
             }
     ),
     BUILD_OFF(
-            "[BUILD_FF] ",
+            "[BUILD_OFF] ",
             "Disables the player building on lobby",
             "IRON_SHOVEL",
             false,

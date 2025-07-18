@@ -11,6 +11,7 @@ import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.pvp.DeathCause;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerLeavePVPEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -57,7 +58,7 @@ public class CombatLogHandler implements Listener {
 
         if (damager == null) return;
 
-        if (!XG7LobbyAPI.isPlayerInPVP(victim) && !XG7LobbyAPI.isPlayerInPVP(damager)) return;
+        if (!XG7LobbyAPI.isPlayerInPVP(victim) || !XG7LobbyAPI.isPlayerInPVP(damager)) return;
 
         if (log.containsKey(victim.getUniqueId()).join() &&
                 log.get(victim.getUniqueId()).join().equals(damager.getUniqueId())
@@ -89,7 +90,7 @@ public class CombatLogHandler implements Listener {
 
         if (!log.containsKey(player.getUniqueId()).join()) return;
 
-        XG7LobbyAPI.globalPVPManager().getHandler(KillPVPHandler.class).handle(player, player.getKiller(), player.getLastDamageCause() != null ? DeathCause.fromCause(player.getLastDamageCause().getCause()) : DeathCause.GENERIC);
+        XG7LobbyAPI.globalPVPManager().getHandler(KillPVPHandler.class).handle(player, Bukkit.getPlayer(log.get(player.getUniqueId()).join()), player.getLastDamageCause() != null ? DeathCause.fromCause(player.getLastDamageCause().getCause()) : DeathCause.GENERIC);
     }
 
     public void removeFromLog(Player player) {

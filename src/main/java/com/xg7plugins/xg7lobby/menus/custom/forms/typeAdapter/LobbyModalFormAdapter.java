@@ -32,3 +32,5 @@ public class LobbyModalFormAdapter implements ConfigTypeAdapter<LobbyModalForm> 
         return LobbyModalForm.class;
     }
 }
+
+

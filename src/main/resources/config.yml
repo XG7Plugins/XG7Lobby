@@ -53,7 +53,7 @@
 #Entities: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Entity.html
 
 
-prefix: "&1X&9G&37&bLobby&r"
+prefix: "&1X&9G&37&bLobby&r &8>>&r"
 
 #Worlds where the plugin will be enabled
 enabled-worlds:

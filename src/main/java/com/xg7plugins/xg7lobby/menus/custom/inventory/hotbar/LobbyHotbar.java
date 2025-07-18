@@ -121,11 +121,14 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
         if (lobbyItem == null) return null;
 
-        if (!Condition.processConditions(lobbyItem.getConditionLine() + " Random_content", player).isEmpty()) {
+        if (lobbyItem.getConditionLine() == null || lobbyItem.getConditionLine().isEmpty()) return lobbyItem;
+
+        if (!Text.format(lobbyItem.getConditionLine() + "RANDOLAS").textFor(player).getPlainText().isEmpty()) {
             return lobbyItem;
         }
+
         if (lobbyItem.getOtherItemPath() == null) return null;
 
-        return getItem(player, "items." + lobbyItem.getOtherItemPath());
+        return getItem(player, lobbyItem.getOtherItemPath());
     }
 }

@@ -20,8 +20,7 @@ public class InfractionsMenuHolder extends MenuHolder {
     }
 
     public void goPage(int page) {
-        getMenu().goPage(page, this);
-        this.page = page;
+        if (getMenu().goPage(page, this)) this.page = page;
     }
     public void nextPage() {
         goPage(page + 1);

@@ -32,9 +32,6 @@ public class GlobalPVPManager implements Manager {
         combatLogHandler = new CombatLogHandler();
     }
 
-
-
-
     public void addPlayer(Player player) {
         this.playersInPVP.add(player.getUniqueId());
         getHandler(JoinPVPHandler.class).handle(player);

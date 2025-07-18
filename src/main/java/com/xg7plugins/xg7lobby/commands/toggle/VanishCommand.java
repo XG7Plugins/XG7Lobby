@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
@@ -62,6 +63,6 @@ public class VanishCommand implements Command {
 
     @Override
     public Item getIcon() {
-        return null;
+        return Item.commandIcon(XMaterial.ENDER_EYE, this);
     }
 }

@@ -72,8 +72,8 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
         boolean isInPvP = XG7LobbyAPI.isPlayerInPVP(player);
 
-
         for (Player other : Bukkit.getOnlinePlayers()) {
+
             if (player.equals(other)) continue;
 
             boolean otherInPvP = XG7LobbyAPI.isPlayerInPVP(other);

@@ -25,7 +25,7 @@ public class ActionsMenu extends PagedMenu {
                         "lang:[help.menu.actions-menu.title]",
                         6
                 ),
-                Slot.of(2, 2), Slot.of(5, 8)
+                Slot.of(2, 2), Slot.of(4, 8)
 
         );
     }

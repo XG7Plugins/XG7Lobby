@@ -34,7 +34,7 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
 
         String conditionLine = config.get(path + ".conditional", String.class).orElse(null);
 
-        String otherItemPath = config.get("if-false", String.class).orElse(null);
+        String otherItemPath = config.get(path + ".if-false", String.class).orElse(null);
 
         return new LobbyItem(item, conditionLine, otherItemPath);
     }

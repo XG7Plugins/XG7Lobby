@@ -87,7 +87,7 @@ public class Lobby implements Command {
         }
 
         if (cooldownManager.containsPlayer("lobby-cooldown-before", targetToTeleport) && !targetIsOther) {
-            cooldownManager.removeCooldown("lobby-cooldown-before", targetToTeleport.getUniqueId());
+            cooldownManager.removeCooldown("lobby-cooldown-before", targetToTeleport.getUniqueId(), true);
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.teleport-cancelled");
             return;
         }

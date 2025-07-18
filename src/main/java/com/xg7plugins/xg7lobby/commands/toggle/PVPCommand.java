@@ -44,7 +44,7 @@ public class PVPCommand implements Command {
         PVPConfigs config = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
 
         if (XG7PluginsAPI.cooldowns().containsPlayer("pvp-disable", player)) {
-            XG7PluginsAPI.cooldowns().removeCooldown("pvp-disable", player.getUniqueId());
+            XG7PluginsAPI.cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
             return;
         }
 

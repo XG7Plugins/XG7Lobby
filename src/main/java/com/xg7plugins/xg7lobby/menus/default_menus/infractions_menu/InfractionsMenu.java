@@ -11,7 +11,9 @@ import com.xg7plugins.modules.xg7menus.item.Item;
 
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
+import com.xg7plugins.modules.xg7menus.menus.menuholders.PagedMenuHolder;
 import com.xg7plugins.tasks.tasks.AsyncTask;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -94,15 +96,18 @@ public class InfractionsMenu extends Menu {
         );
     }
 
-    @SneakyThrows
-    public void goPage(int page, InfractionsMenuHolder menuHolder) {
-        XG7PluginsAPI.taskManager().scheduleAsync(AsyncTask.of(XG7Plugins.getInstance(), () -> {
-            List<Item> pagedItems = pagedItems(menuHolder.getTarget());
+    public boolean goPage(int page, InfractionsMenuHolder menuHolder) {
 
-            if (page < 0) return;
-            if (page * Slot.areaOf(pos1, pos2) >= pagedItems.size()) return;
-            List<Item> itemsToAdd = pagedItems.subList(page * (Slot.areaOf(pos1, pos2)), pagedItems.size());
+        System.out.println("Going page: " + page);
 
+        List<Item> pagedItems = pagedItems(menuHolder.getTarget());
+
+        if (page < 0) return false;
+        if (page * Slot.areaOf(pos1, pos2) >= pagedItems.size()) return false;
+        List<Item> itemsToAdd = pagedItems.subList(page * (Slot.areaOf(pos1, pos2)), pagedItems.size());
+
+
+        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Plugins.getInstance(), () -> {
             int index = 0;
 
             InventoryUpdater inventory = menuHolder.getInventoryUpdater();
@@ -119,7 +124,9 @@ public class InfractionsMenu extends Menu {
                     index++;
                 }
             }
+
         }), 100L);
+        return true;
     }
 
     public void open(Player player, OfflinePlayer target) {
@@ -168,6 +175,7 @@ public class InfractionsMenu extends Menu {
     }
 
     public static void refresh(InfractionsMenuHolder menuHolder) {
-        BasicMenu.refresh(menuHolder).thenRun(() -> menuHolder.goPage(0));
+        BasicMenu.refresh(menuHolder);
+        menuHolder.goPage(0);
     }
 }

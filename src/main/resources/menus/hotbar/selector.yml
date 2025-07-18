@@ -43,7 +43,7 @@ items:
 
     material: LIME_DYE
 
-    conditional: "?IF_NOT: %xg7lobby_player_is_hiding%?"
+    conditional: "?IF_NOT: %xg7lobby_player_is_hiding_players%?"
     if-false: "showPlayers"
 
     name: "&aHide Players"

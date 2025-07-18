@@ -28,7 +28,7 @@ public class LobbyCommandListener implements Listener {
                             || event.getFrom().getBlockY() != event.getTo().getBlockY()
                             || event.getFrom().getBlockZ() != event.getTo().getBlockZ()
             ) {
-                cooldownManager.removeCooldown("lobby-cooldown-before", event.getPlayer().getUniqueId());
+                cooldownManager.removeCooldown("lobby-cooldown-before", event.getPlayer().getUniqueId(), true);
             }
         }
 

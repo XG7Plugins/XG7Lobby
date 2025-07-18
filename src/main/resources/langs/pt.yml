@@ -1,220 +1,303 @@
 formated-name: "Português (BR)"
 
 commands:
-  not-online: "Este jogador não está online."
+  not-online: "&cEste jogador não está online."
 
   fly:
-    toggle-on: "&aModo de voo ativado."
-    toggle-off: "&cModo de voo desativado."
-    toggle-other-on: "&aModo de voo ativado para %target%."
-    toggle-other-off: "&cModo de voo desativado para %target%."
+    toggle-on: "%prefix% &aModo de voo ativado."
+    toggle-off: "%prefix% &cModo de voo desativado."
+    toggle-other-on: "%prefix% &aModo de voo ativado para &b%target%."
+    toggle-other-off: "%prefix% &cModo de voo desativado para &b%target%."
 
-  gamemode:
-    invalid-gamemode: "&cModo de jogo inválido. Use (0, s), (1, c), (2, a) ou (3, sp)."
-    set: "&aModo de jogo definido para %gamemode%."
-    set-other: "&aModo de jogo definido para %gamemode% para %target%."
+  game-mode:
+    invalid-game-mode: "%prefix% &cModo de jogo inválido. &aUse &b(0, s)&8, &b(1, c)&8, &b(2, a) &aou &b(3, sp)."
+    set: "%prefix% &aModo de jogo definido para %gamemode%."
+    set-other: "%prefix% &aModo de jogo de %target% definido para %gamemode%."
 
   build:
-    toggle-on: "&aModo de construção ativado."
-    toggle-off: "&cModo de construção desativado."
-    toggle-other-on: "&aModo de construção ativado para %target%."
-    toggle-other-off: "&cModo de construção desativado para %target%."
+    toggle-on: "%prefix% &aModo de construção ativado."
+    toggle-off: "%prefix% &cModo de construção desativado."
+    toggle-other-on: "%prefix% &aModo de construção ativado para &b%target%."
+    toggle-other-off: "%prefix% &cModo de construção desativado para &b%target%."
 
-  warn:
-    level-invalid: "&cNível de advertência inválido. Use um número entre 1 e 3."
-    warn-admin: "&cVocê não pode advertir um administrador."
-    invalid-id: "ID de advertência inválido!"
-    warn-not-found: "Advertência não encontrada!"
-    on-pardon: "&aAdvertência com id %id% perdoada com sucesso."
-    on-warn: "&cVocê foi advertido por um administrador. Motivo: %reason%."
-    on-warn-sender: "&aJogador %target% foi advertido com sucesso por %reason%."
-    warn-ban: "&cVocê foi banido por atingir o número máximo de advertências.\n Motivo: %reason%."
-    warn-mute: "&cVocê foi mutado por atingir o número máximo de advertências.\n Motivo: %reason%."
-    warn-kick: "&cVocê foi expulso por atingir o número máximo de advertências.\n Motivo: %reason%."
+  infraction:
+    level-invalid: "%prefix% &cNível de infração inválido. &eUse um nível registrado na configuração."
+
+    warn-admin: "%prefix% &cVocê não pode advertir um administrador."
+
+    infraction-not-found: "%prefix% &cInfração não encontrada!"
+
+    on-pardon: "%prefix% &aAdvertência com ID %id% perdoada com sucesso."
+
+    on-warn: "%prefix% &cVocê foi advertido por um administrador. Motivo: &e%reason%."
+    on-warn-sender: "%prefix% &aJogador &b%target% &aadvertido com sucesso por &e%reason%."
+
+    on-ban: "&cVocê foi banido por atingir o número máximo de advertências.\n Motivo: %reason%."
+    on-mute: "&cVocê foi silenciado por atingir o número máximo de advertências.\n Motivo: %reason%."
+    on-kick: "&cVocê foi expulso por atingir o número máximo de advertências.\n Motivo: %reason%."
 
   mute:
-    already-muted: "&cEste jogador já está mutado."
-    mute-admin: "&cVocê não pode mutar um administrador."
-    on-mute: "&cVocê foi mutado por %time%."
-    on-mute-sender: "&aJogador %target% foi mutado com sucesso por %time%."
+    already-muted: "%prefix% &cEste jogador já está silenciado."
+
+    mute-admin: "%prefix% &cVocê não pode silenciar um administrador."
+
+    on-mute: "%prefix% &cVocê foi silenciado por &b@DAYS_HOURS_MINUTES_SECONDS:%time%@&c."
+    on-mute-sender: "%prefix% &aJogador &b%target% &cfoi silenciado com sucesso por &b@DAYS_HOURS_MINUTES_SECONDS:%time%@&c."
 
   unmute:
-    not-muted: "&cEste jogador não está mutado."
-    on-unmute: "&aVocê foi desmutado."
-    on-unmute-sender: "&aJogador %target% foi desmutado com sucesso."
+    not-muted: "%prefix% &cEste jogador não está silenciado."
+
+    on-unmute: "%prefix% &aVocê não está mais silenciado."
+    on-unmute-sender: "%prefix% &aJogador &b%target% &afoi dessilenciado com sucesso."
 
   kick:
-    kick-admin: "&cVocê não pode expulsar um administrador."
+
+    kick-admin: "%prefix% &cVocê não pode expulsar um administrador."
+
     on-kick: "&cVocê foi expulso por um administrador. Motivo: %reason%."
-    on-kick-sender: "&aJogador %target% foi expulso com sucesso por %reason%."
+    on-kick-sender: "%prefix% &aJogador %target% foi expulso com sucesso por &e%reason%."
 
   ban:
-    already-banned: "&cEste jogador já está banido."
-    ban-admin: "&cVocê não pode banir um administrador."
-    on-ban: "&cVocê foi banido por %time%. Motivo: %reason%."
-    on-ban-sender: "&aJogador %target% foi banido com sucesso por %time% por %reason%."
+    already-banned: "%prefix% &cEste jogador já está banido."
+
+    ban-admin: "%prefix% &cVocê não pode banir um administrador."
+
+    on-ban: "&cVocê foi banido por @DAYS_HOURS_MINUTES_SECONDS:%time%@. Motivo: %reason%."
+    on-ban-sender: "%prefix% &aJogador &b%target%&c foi banido com sucesso por &b@DAYS_HOURS_MINUTES_SECONDS:%time%@ &cpor &e%reason%."
 
   unban:
-    not-banned: "&cEste jogador não está banido."
-    on-unban: "&aJogador %target% foi desbanido com sucesso."
-    on-unban-ip: "&a%ip% foi desbanido com sucesso."
+    not-banned: "%prefix% &cEste jogador não está banido."
+
+    on-unban: "%prefix% &aJogador &b%target% foi desbanido com sucesso."
+    on-unban-ip: "%prefix% &b%ip%&a foi desbanido com sucesso."
 
   reset-stats:
-    on-reset: "&aEstatísticas do jogador %target% resetadas com sucesso."
-    kills-reset: "&aMortes do jogador %target% resetadas com sucesso."
-    deaths-reset: "&aMortes do jogador %target% resetadas com sucesso."
+    on-reset: "%prefix% &aEstatísticas do jogador &b%target% &aresetadas com sucesso."
+    kills-reset: "%prefix% &aKills do jogador &b%target% &aresetadas com sucesso."
+    deaths-reset: "%prefix% &aMortes do jogador &b%target% &aresetadas com sucesso."
 
 lobby:
+
   on-set:
-    on-error: "&cErro ao definir a localização do lobby. %error%"
-    on-success: "&aLocalização do lobby %id% definida com sucesso no Mundo: %world%, X: %x%, Y: %y%, Z: %z%, YAW: %yaw%, PITCH: %pitch%."
+    on-error: "%prefix% &cErro ao definir a localização do lobby. &f%error%"
+    on-success: "%prefix% &aLocalização do lobby &e%id% &adefinida com sucesso em &7Mundo&b: &6%world%&b, &6X&b: &6%x%&b, &6Y&b: &6%y%&b, &6Z&b: &6%z%&b, &6YAW&b: &6%yaw%&b, &6PITCH&b: &6%pitch%&b."
 
   on-teleport:
-    on-error: "&cErro ao tentar teleportar para o lobby."
-    on-error-doesnt-exist: "&cA localização do lobby não existe. Aguarde um administrador defini-la."
-    on-error-doesnt-exist-adm: "&cA localização do lobby não existe. Use /setlobby para defini-la."
-    on-success: "&aTeleportado para o lobby com sucesso."
-    on-success-other: "&a%target% foi teleportado para o lobby com sucesso."
-    on-cooldown: "&cVocê não pode teleportar para o lobby por mais @SECONDS:%time%@ segundos."
-    on-cooldown-other: "&cVocê não pode teleportar este jogador para o lobby por mais @SECONDS:%time%@ segundos."
+    on-error: "%prefix% &cErro ao tentar teleportar para o lobby."
+    on-error-doesnt-exist: "&%prefix% cA localização do lobby não existe. Aguarde um administrador defini-la."
+    on-error-doesnt-exist-adm: "%prefix% &cA localização do lobby não existe. Use &9/&esetlobby &cpara definir."
+    on-success: "%prefix% &aTeleportado para o lobby com sucesso."
+    on-success-other: "%prefix% &aTeleportado &b%target% &apara o lobby com sucesso."
+    on-cooldown: "%prefix% &cVocê não pode se teleportar para o lobby por mais &e@SECONDS:%time%@&c."
+    on-cooldown-other: "%prefix% &cVocê não pode teleportar este jogador para o lobby por mais &e@SECONDS:%time%@&c."
 
   on-join-events:
     title: "&bBem-vindo"
     message1: "&5&oPlugin feito por DaviXG7"
 
   delete:
-    id-not-found: "&cLocalização do lobby com id %id% não encontrada."
-    on-error: "&cErro ao tentar deletar a localização do lobby."
-    on-success: "&aLocalização do lobby %id% deletada com sucesso."
+    id-not-found: "%prefix% &cLocalização do lobby com id &e%id% &cnão encontrada."
+    on-error: "%prefix% &cErro ao tentar deletar a localização do lobby."
+    on-success: "%prefix% &aLocalização do lobby &e%id% &cdeletada com sucesso."
 
-  on-teleporting-message: "[ACTION] &7Teleportando para o lobby em @SECONDS:%time%@ segundos... Não se mova!"
-  teleport-cancelled: "&cTeleporte cancelado!"
+  on-teleporting-message: "[ACTION] %prefix% &7Teleportando para o lobby em &b@SECONDS:%time%@&7... &6Não se mova!"
+  teleport-cancelled: "%prefix% &cTeleportação cancelada!"
 
 messages:
-  on-join: "&b%target%&7, &eentrou no jogo!"
-  on-first-join: "&b%target%&7, &eentrou no jogo pela primeira vez!"
-  on-quit: "&b%target%&7, &esaiu do jogo!"
 
-multi-jump-left: "[ACTION] &7Você tem &b%jumps% &7pulos restantes."
+  on-join: "%prefix% &b%target%&7, &eentrou no jogo!"
+  on-first-join: "%prefix% &b%target%&7, <rainbow>entrou pela primeira vez no jogo!</rainbow>"
 
-build-not-enabled: "&cVocê está com a construção desativada! Use /build para ativá-la."
+  on-quit: "%prefix% &b%target%&7, &csaiu do jogo!"
+
+multi-jump-left: "[ACTION] %prefix% &7Você tem &b%jumps% &7pulos restantes."
+
+build-not-enabled: "%prefix% &cVocê está com construção desativada! Use &9/&ebuild &cpara ativar."
 
 player-prohibitions:
-  break-blocks: "&cVocê não pode quebrar blocos."
-  place-blocks: "&cVocê não pode colocar blocos."
-  interact-with-blocks: "&cVocê não pode interagir com blocos."
-  pickup-items: "&cVocê não pode pegar itens."
-  drop-items: "&cVocê não pode soltar itens."
-  attack: "&cVocê não pode atacar."
+  break-blocks: "%prefix% &cVocê não pode quebrar blocos."
+  place-blocks: "%prefix% &cVocê não pode colocar blocos."
+  interact-with-blocks: "%prefix% &cVocê não pode interagir com blocos."
+
+  pickup-items: "%prefix% &cVocê não pode pegar itens."
+  drop-items: "%prefix% &cVocê não pode soltar itens."
+
+  attack: "%prefix% &cVocê não pode atacar."
 
 chat:
-  on-lock: "&cChat bloqueado."
-  on-unlock: "&aChat desbloqueado."
-  locked: "&cVocê não pode enviar mensagens. O chat está bloqueado."
-  swear: "&cVocê não pode xingar no chat."
-  muted: "&cVocê está mutado. Não pode enviar mensagens por %time%."
-  same-message: "&cVocê não pode enviar a mesma mensagem duas vezes."
-  message-cooldown: "&cVocê não pode enviar mensagens por mais @SECONDS:%time%@ segundos."
-  send-much-messages: "&cVocê está enviando mensagens muito rápido. Por favor, diminua a velocidade."
-  prohibited-command: "&cComando não encontrado."
 
-menu-does-not-exist: "&cEste menu não existe."
+  on-lock: "%prefix% &cChat bloqueado."
+  on-unlock: "%prefix% &aChat desbloqueado."
 
-selector-cooldown: "&cVocê não pode usar o seletor por mais @SECONDS:%time%@ segundos."
+  locked: "%prefix% &cVocê não pode enviar mensagens. O chat está bloqueado."
+
+  swear: "%prefix% &cVocê não pode xingar no chat."
+  muted: "%prefix% &cVocê está silenciado. Você não pode enviar mensagens por &b@DAYS_HOURS_MINUTES_SECONDS:%time%@&c."
+
+  same-message: "%prefix% &cVocê não pode enviar a mesma mensagem duas vezes."
+  message-cooldown: "%prefix% &cVocê não pode enviar mensagens por mais &b@SECONDS:%time%@"
+  send-much-messages: "%prefix% &cVocê está enviando mensagens rápido demais. Por favor, diminua o ritmo."
+
+  prohibited-command: "%prefix% &cComando não encontrado."
+
+menu-does-not-exist: "%prefix% &cEste menu não existe."
+form-does-not-exist: "%prefix% &cEste formulário não existe."
+
+selector-cooldown: "[ACTION] %prefix% &cVocê não pode usar o seletor por mais &b@SECONDS:%time%@"
 
 hide-players:
-  show: "&aOs jogadores agora estão visíveis."
-  hide: "&cOs jogadores agora estão ocultos."
+  show: "[ACTION] %prefix% &aJogadores agora estão visíveis."
+  hide: "[ACTION] %prefix% &cJogadores agora estão ocultos."
 
 pvp:
-  on-enter: "&aVocê está no modo PvP global."
-  on-leave: "&cVocê não está mais no modo PvP global."
-  on-death-with-killer: "&c%victim% foi morto por %killer%."
-  on-death-without-killer: "&c%victim% morreu por %cause%."
-  on-attack: "&cVocê não pode atacar este jogador. Ele não está no modo PvP global."
-  pvp-disabling: "[ACTION] &cSeu PvP está sendo desativado em @SECONDS:%time%@ segundos. Não se mova!"
-  disable-cancelled: "&cDesativação do PvP cancelada!"
-  pvp-command: "Você não pode usar este comando no modo PvP global."
+  on-join: "%prefix% &aVocê agora está no modo PvP global."
+  on-leave: "%prefix% &cVocê não está mais no modo PvP global."
+
+  on-death: "%prefix% &c%victim% %cause%."
+  on-death-with-killer: "%prefix% &c%victim% %cause% por %killer%."
+
+  on-attack-in-pvp: "%prefix% &cVocê não pode atacar este jogador. Ele não está no modo PvP global."
+  on-attack-out-pvp: "%prefix% &cVocê não pode atacar. Você não está no modo PvP!"
+
+  pvp-disabling: "[ACTION] %prefix% &cSeu PvP será desativado em &e@SECONDS:%time%@ &csegundos. &lNão se mova!"
+  disable-cancelled: "%prefix% &cDesativação do PvP cancelada!"
+
+  pvp-command: "%prefix% Você não pode usar este comando no modo PvP global."
+
+  tagged: "%prefix% Você foi marcado por &b%target% por &b@SECONDS:%time%@"
+
+  causes:
+    fall: "caiu"
+    void: "caiu no void"
+    fire: "foi queimado"
+    lava: "caiu na lava"
+    drowning: "se afogou"
+    explosion: "explodiu"
+    projectile: "foi atingido por um projétil"
+    melee: "foi morto"
+    magic: "foi morto por magia"
+    poison: "foi envenenado"
+    starvation: "morreu de fome"
+    suffocation: "sufocou"
+    lightning: "foi atingido por um raio"
+    cactus: "foi espetado até a morte"
+    freezing: "congelou até a morte"
+    thorns: "foi morto por espinhos"
+    anvil: "foi esmagado por uma bigorna"
+    block_crushing: "foi esmagado por um bloco"
+    end_crystal: "foi explodido por um cristal do End"
+    fire_tick: "foi queimado"
+    sweet_berry_bush: "foi espetado até a morte"
+    dragon_breath: "foi queimado pelo bafo do dragão"
+    wither: "apodreceu até a morte"
+    fall_out_of_world: "caiu para fora do mundo"
+    generic: "morreu"
 
 scoreboard:
   player-info: "&e&lJogador&b:"
   name: "&7Nome&b: &b%player_name%"
   rank: "&7Rank&b: &r[%luckperms_prefix%]"
+
   global-pvp: "&e&lPvP Global&b:"
   kills: "&7Kills&b: &9%xg7lobby_player_global_pvp_kills%"
   deaths: "&7Mortes&b: &c%xg7lobby_player_global_pvp_deaths%"
+
   players-online: "&7Jogadores online&b: &a%server_online%"
-  players-in-pvp: "&7Jogadores em PvP&b: &a%xg7lobby_players_in_global_pvp%"
+  players-in-pvp: "&7Jogadores no pvp&b: &a%xg7lobby_players_in_global_pvp%"
 
 warn-menu:
   title: "&c&lAdvertências de %target%"
+
   warn-item:
     name: "&cAdvertência %id%"
     reason: "&7Motivo&b: &r%reason%"
     level: "&7Nível&b: &r%level%"
     date: "&7Data&b: &r%date%  "
-    click-to-copy-id: "&7Clique para copiar o ID da advertência."
+    click-to-copy-id: "&7Clique para copiar o id da advertência."
+
   go-back: "&cPágina anterior"
   go-next: "&aPróxima página"
   close: "&cFechar"
-  id-message: "&7Clique para copiar o ID da advertência %id%."
+
+  id-message: "%prefix% <click:suggest_command:%id%>&7Clique para copiar o id da advertência &b%id%.</click>"
 
 lobbies-menu:
-  title: "&b&lLobbies"
+
+  title: "&b&lLobby"
+
   lobby-item:
     name: "&bLobby %id%"
+
     server: "&7Servidor&b: &r%server%"
     location: "&7Localização&b: &rMundo: %world%, X: %x%, Y: %y%, Z: %z%, YAW: %yaw%, PITCH: %pitch%"
     click-to-tp: "&7Clique para teleportar para o lobby."
+
     for-admins:
       click-to-tp: "&7Clique esquerdo para teleportar para o lobby."
       click-to-remove: "&7Clique direito para remover a localização do lobby."
+
   go-back: "&cPágina anterior"
   go-next: "&aPróxima página"
   close: "&cFechar"
 
 help:
+
   menu:
-    title: "&b&lAjuda do XG7Lobby"
+    title: "&rAjuda do <rainbow>XG7Lobby</rainbow>"
+
     close-item: "&cFechar"
     go-back-item: "&cVoltar"
     go-next-item: "&aPróximo"
+
     profile-item:
       name: "&bPerfil"
       lore:
-        kills: "&7Mortes&b: &9%xg7lobby_player_global_pvp_kills%"
+        first-join: "&7Primeiro acesso&b: &9%xg7plugins_player_firstjoin_format(dd/MM/yyyy HH:mm:ss)%"
+        kills: "&7Abates&b: &9%xg7lobby_player_global_pvp_kills%"
         deaths: "&7Mortes&b: &c%xg7lobby_player_global_pvp_deaths%"
-        kdr: "&7KDR&b: &9%xg7lobby_player_kdr%"
+        kdr: "&7KDR&b: &9%xg7lobby_player_global_pvp_kdr%"
         build-enabled: "&7Construção&b: &r%xg7lobby_player_is_build_enabled%"
-        fly-enabled: "&7Voo&b: &r%xg7lobby_player_is_flying%"
+        fly-enabled: "&7Voar&b: &r%xg7lobby_player_is_flying%"
         chat-locked: "&7Chat bloqueado&b: &r%xg7lobby_chat_locked%"
+
     commands-item:
       name: "&bComandos"
       lore: "Clique aqui para ver os comandos"
+
     actions-item:
       name: "&bAções"
       lore: "Clique aqui para ver as ações"
+
     set-lobby-item:
       name: "&cLobby"
       lore:
-        current-location: "&7Localização atual&b: %random_lobby_location%"
+        current-location: "&7Localização aleatória&b: %xg7lobby_random_lobby_location%"
         click: "Clique aqui para definir a localização do lobby"
-    selectors-guide-item:
-      name: "&bGuia de Seletores"
-      lore: "Clique aqui para ver o guia de seletores"
+
+    menus-guide-item:
+      name: "&bGuia de Menus"
+      lore: "Clique aqui para ver o guia de menus"
+
     custom-commands-guide-item:
       name: "&bGuia de Comandos Personalizados"
       lore: "Clique aqui para ver o guia de comandos personalizados"
+
     about-item:
       name: "&bSobre"
-      lore: "Clique aqui para ver as informações do plugin"
+      lore: "Clique aqui para ver informações do plugin"
+
     collaborators-item:
       name: "&bColaboradores"
       lore: "Clique aqui para ver os colaboradores"
+
+
     collaborators-menu-title: "&b&lColaboradores"
+
     actions-menu:
       title: "&b&lAções"
+
       action-item:
+
         name: "&bAção %id%"
         lore:
           description: "&7Descrição&b: &r%description%"
@@ -222,86 +305,216 @@ help:
   about:
     - "Sobre &9XG7Lobby"
     - ""
-    - "Versão: &a%version%&r"
-    - "Site: &a&n%website%&r"
-    - "GitHub: &a&n%github%&r"
-    - "Discord: &a&n%discord%&r"
+    - "&8Versão: &a%version%&r"
+    - "&8Site: &a&n%website%&r"
+    - "&8GitHub: &a&n%github%&r"
+    - "&8Discord: &a&n%discord%&r"
     - ""
-    - "Este plugin foi feito para"
-    - "gerenciamento de lobbies."
-    - "Seu objetivo é proporcionar"
-    - "diversão e segurança"
-    - "aos jogadores"
-    - "em mundos de lobby."
+    - "&8Este plugin foi feito para"
+    - "&8gerenciamento de lobby."
+    - "&8Seu objetivo é oferecer"
+    - "&8diversão e segurança"
+    - "&8aos jogadores"
+    - "&8em mundos de lobby."
     - ""
-    - "&oDesenvolvido por DaviXG7"
+    - "&8&oDesenvolvido por DaviXG7"
 
-  selector-guide:
-    - "&9Guia de Seletores"
+  menus-guide:
+    - "&9Guia de Menus"
     - ""
-    - "&7Seletores são itens especiais da hotbar"
-    - "&7que realizam ações ao serem clicados."
+    - "&7Existem 3 tipos:"
+    - "&81 - Hotbar"
+    - "&82 - GUI"
+    - "&83 - Forms"
     - ""
-    - "&6Como Criar:"
-    - "&7Navegue até a configuração:"
-    - "- menus/selector.yml ->"
-    - "items"
+    - "&61 - Menus de Hotbar"
+    - "&7Itens no inventário"
+    - "&7executam ações ao clicar."
     - ""
-    - "&6Configuração do Item:"
-    - "&7Defina estas propriedades:"
-    - "- item: Tipo de material"
-    - "- name: Nome de exibição"
+    - "&62 - Menus GUI"
+    - "&7Menus de baú personalizados"
+    - "&7com itens clicáveis."
     - ""
-    - "- lore: Descrição"
-    - "- grow: Efeito de encantamento"
+    - "&63 - Menus de Formulário"
+    - "&7Formulários do Floodgate"
+    - "&7funcionam apenas no Bedrock."
+    - "&7Veja: geysermc.org/wiki/floodgate/"
     - ""
-    - "- amount: Quantidade"
-    - "- slot: Posição do item"
+    - "&6Criando Menus"
+    - "&71 - Vá até a pasta:"
+    - "&bXG7Lobby/menus/"
+    - "&7Crie um arquivo .yml"
+    - " "
+    - "&72 - Configuração Base"
+    - "&7Todo menu precisa de:"
+    - "&1- id: id do menu"
+    - " "
+    - "&6Estrutura GUI"
+    - "&1- title: Título da GUI"
+    - "&1- rows: linhas de 9 slots"
     - ""
-    - "- custom-model-data: Modelo personalizado"
-    - "- item-flags: Propriedades especiais"
-    - "- actions: Lista de ações"
+    - "&1- items: itens da GUI"
+    - "&1- fill-material: "
+    - "&1    itens de fundo"
+    - "&1- grid: mapa dos itens"
+    - " "
+    - "&1Estrutura da Hotbar"
+    - "&1- cooldown-to-use:"
+    - "&1    Tempo de espera por uso"
+    - "&1- disable-cooldown:"
+    - "&1    Desativa o tempo de espera"
+    - " "
+    - "&1- items: lista da hotbar"
+    - "&1- row: linha da hotbar"
+    - " "
+    - "&6Estrutura dos Itens"
+    - "&7Dentro de 'items':"
+    - "&1items:"
+    - "&1  my-item:"
+    - "&1    material: Tipo de material"
+    - "&1    name: Nome visível"
+    - "&1    lore: Descrição"
+    - "&1    amount: Quantidade"
+    - "&1    enchants: Encantamentos"
+    - "&1    actions: Ações ao clicar"
+    - "&1    conditional: Adicionar condição"
+    - "&1    if-false: Item alternativo"
     - ""
-    - "&6Tempo de Recarga:"
-    - "&7Gerencie a frequência de uso do item"
+    - "&6Estrutura de Formulários"
+    - "&73 tipos de formulário:"
+    - "&81 - Simples"
+    - "&82 - Modal"
+    - "&83 - Personalizado"
     - ""
-    - "&7&oDicas: Configure com sabedoria"
+    - "&7Use o campo 'type':"
+    - "&1- type: tipo de formulário"
+    - ""
+    - "&61 - Formulário Simples"
+    - "&1- title: nome do formulário"
+    - "&1- content: mensagem"
+    - "&1- buttons: lista"
+    - "&1- on-close: ações ao fechar"
+    - "&1- on-error: ações de erro"
+    - ""
+    - "&6Botões"
+    - "&1- icon: imagem"
+    - "&1- text: rótulo"
+    - "&1- actions: ações do botão"
+    - ""
+    - "&12 - Formulário Modal"
+    - "&1- title: nome do formulário"
+    - "&1- content: texto"
+    - "&1- first-button:"
+    - "&1- second-button:"
+    - "&1- on-click-first-button:"
+    - "&1- on-click-second-button:"
+    - "&1- on-error:"
+    - ""
+    - "&63 - Formulário Personalizado"
+    - "&1- title: nome do formulário"
+    - "&1- on-close: ao fechar"
+    - "&1- on-submit: ao enviar"
+    - "&1- on-error: erro"
+    - ""
+    - "&1- components:"
+    - "&7Cada um tem um tipo:"
+    - "&11 - Deslizante"
+    - "&12 - Entrada"
+    - "&13 - Alternar"
+    - "&14 - Opções"
+    - ""
+    - "&6Deslizante:"
+    - "&1- title: texto"
+    - "&1- min/max-value"
+    - "&1- start/increment-value"
+    - ""
+    - "&6Entrada:"
+    - "&1- title: texto"
+    - "&1- placeholder: dica"
+    - "&1- default-text:"
+    - ""
+    - "&6Alternar:"
+    - "&1- text: rótulo"
+    - "&1- default-enabled"
+    - ""
+    - "&6Opções:"
+    - "&1- title: texto"
+    - "&1- options: escolhas"
+    - ""
+    - "&aDicas:"
+    - "&6/openform <id>"
+    - "&6/openinv <id>"
+    - "&7para testar menus"
+    - ""
+    - "&7Use ações:"
+    - "&6[OPEN_FORM]"
+    - "&6[OPEN_INV]"
+    - ""
+    - "&6Teste passo a passo!"
+    - ""
+    - "&8&oFeito por &bDaviXG7"
+
 
   custom-commands-guide:
     - "&9Guia de Comandos Personalizados"
     - ""
-    - "&7Aprenda como criar comandos personalizados"
+    - "&7Aprenda a criar comandos personalizados"
     - ""
     - "&6Nota Importante:"
     - "&7Não pode usar argumentos como:"
-    - "- test arg1/arg3 arg2"
+    - "&1- test arg1/arg3 arg2"
     - ""
-    - "&6Localização da Configuração:"
-    - "&7Navegue até:"
-    - "- seção custom-commands"
+    - "&6Local de Configuração:"
+    - "&7Navegue para:"
+    - "&1- seção custom-commands"
     - ""
-    - "&6Passos para Criação de Comandos:"
-    - "&7Crie uma nova seção de comando com:"
+    - "&6Passos para Criar Comando:"
+    - "&7Crie uma seção de comando com:"
     - ""
-    - "- description: Explicação do comando"
+    - "&1- description: Explicação do comando"
     - ""
-    - "- aliases: Nomes alternativos do comando"
+    - "&1- aliases: Nomes alternativos"
     - ""
-    - "- permission: Nível de acesso necessário"
+    - "&1- permission: Nível de acesso"
     - ""
-    - "- actions: Lista de execução do comando"
+    - "&1- actions: Lista de execução"
     - ""
-    - "&7&oDicas: Mantenha os comandos claros e simples"
+    - "&7&oDicas: Mantenha comandos claros e simples"
+
+  form:
+
+    title: "&rAjuda do <rainbow>XG7Lobby</rainbow>"
+
+    content:
+      - "&7Bem-vindo à ajuda do &6XG7Lobby&7!"
+      - "&eXG7Lobby é um plugin que visa facilitar o gerenciamento de lobby."
+      - "&bVeja as opções abaixo para mais informações."
+
+    about: "&aSobre <rainbow>XG7Lobby</rainbow>"
+    commands: "&aComandos"
+    menus-guide: "&aGuia de Menus"
+    custom-commands-guide: "&aGuia de Comandos Personalizados"
+    collaborators: "&aColaboradores"
+
+    collaborators-title: "Colaboradores do XG7Lobby:"
+    collaborators-content: "Veja quem ajudou no processo do XG7Lobby"
+
+    click-to-back: "Voltar para ajuda"
+
 
   chat:
-    title: "&7Bem-vindo à página de ajuda do &6XG7Lobby &7!"
-    content: "&eXG7Lobby é um plugin que visa facilitar o gerenciamento de lobbies.\nClique para ver mais informações."
+
+    title: "&7Bem-vindo à ajuda do &6XG7Lobby&7!"
+
+    content: "&eXG7Lobby é um plugin que visa facilitar o gerenciamento\nde lobby.\nClique para ver mais informações."
+
     back: "&aClique para voltar à ajuda"
+
     lang: "&aIdiomas&f: &1clique aqui para mudar o idioma do perfil"
     commands: "&aComandos&f: &1clique aqui para ver os comandos"
-    selector-guide: "&aGuia de Seletores&f: &1clique aqui para ver o guia de seletores"
+    menus-guide: "&aGuia de Menus&f: &1clique aqui para ver o guia de menus"
     custom-commands-guide: "&aGuia de Comandos Personalizados&f: &1clique aqui para ver o guia de comandos personalizados"
 
 help-in-chat.commands-title: "&7Comandos do &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
-config-version: 1.1
+config-version: 2.0

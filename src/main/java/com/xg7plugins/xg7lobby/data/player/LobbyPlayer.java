@@ -113,6 +113,8 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         Player player = this.getPlayer();
         if (player == null) return;
 
+        if (XG7LobbyAPI.globalPVPManager().isInPVP(player)) return;
+
         List<Runnable> tasks = new ArrayList<>();
 
         Bukkit.getOnlinePlayers().stream()
@@ -125,6 +127,8 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
                         if (hidingPlayers) player.hidePlayer(p);
                         else player.showPlayer(p);
+
+                        if (XG7LobbyAPI.globalPVPManager().isInPVP(p)) return;
 
                         if (otherPlayer.isHidingPlayers()) p.hidePlayer(player);
                         else p.showPlayer(player);

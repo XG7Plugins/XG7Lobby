@@ -12,14 +12,11 @@ import java.util.Optional;
 public class ScoreConfig {
 
     private final String scorePath;
-    private final boolean enabled;
-    private final long delay;
+    private boolean enabled;
+    private long delay;
 
     public ScoreConfig (String scorePath) {
         this.scorePath = scorePath;
-        Config config = Config.of("scores", XG7Lobby.getInstance());
-        this.enabled = config.get(scorePath + ".enabled", Boolean.class).orElse(false);
-        this.delay = config.getTime(scorePath + ".update-time").orElse(Time.of(30)).getMilliseconds();
     }
 
     public <T> Optional<T> get(String path, Class<T> clazz) {
@@ -27,6 +24,12 @@ public class ScoreConfig {
     }
     public <T> Optional<List<T>> getList(String path, Class<T> clazz) {
         return Config.of("scores", XG7Lobby.getInstance()).getList(scorePath + "." + path,  clazz);
+    }
+
+    public void load() {
+        Config config = Config.of("scores", XG7Lobby.getInstance());
+        this.enabled = config.get(scorePath + ".enabled", Boolean.class).orElse(false);
+        this.delay = config.getTime(scorePath + ".update-time").orElse(Time.of(30)).getMilliseconds();
     }
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CollaboratorsForm extends SimpleForm {
     public CollaboratorsForm() {
-        super("lobby-collaborators-help", "lang:[collaborators-title]", XG7Lobby.getInstance());
+        super("lobby-collaborators-help", "lang:[help.form.collaborators-title]", XG7Lobby.getInstance());
     }
 
     @Override

@@ -7,6 +7,13 @@
 #/_/ \_\_____|/_/   |______\___/|_.__/|_.__/ \__, |
 #                                             __/ |
 #                                            |___/
+#Settings for XG7Lobby
+
+#Visit our website: https://xg7plugins.com
+#See our documentation: https://xg7plugins.gitbook.io/doc/xg7lobby-en
+
+#TO REPORT SOME BUG, REPORT ON SPIGOT OR ON THE DISCORD SERVER:
+#https://discord.gg/2wzmnyu7S3
 
 #Use %player_name% to replace player name
 #You need the PlaceHolderAPI for that!
@@ -23,36 +30,43 @@
 
 #Lettering options:
 #&k - Random    | &n - Underlined
-#&l - Bold     | &o - Italic
+#&l - Bold      | &o - Italic
 #&m - Track     | &r - Reset
 
-#HEX to get hex color!
-#Only in 1.16+
+#Hex text:
 #<hex:#FFFFFF>text</hex>
+
+#Gradients text:
+#<gradient:#FFFFFF>text</gradient:#000000>
+
+#Only in 1.16+
+
+#Rainbow text (Works on 1.8+):
+#<rainbow>text</rainbow>
 
 #Placeholders
 
-# %xg7lobby_chat_locked%: Returns whether the lobby chat is locked (true/false).
-# %xg7lobby_random_lobby_location%: Returns a random lobby location.
-# %xg7lobby_player_is_hiding%: Returns whether the player is hiding other players (true/false).
-# %xg7lobby_player_is_muted%: Returns whether the player is muted (true/false).
-# %xg7lobby_player_infractions%: Returns the number of warnings the player has.
-# %xg7lobby_player_time_for_unmute%: Returns the remaining time for the player to be unmuted (format: dd/MM/yyyy HH:mm:ss).
-# %xg7lobby_player_is_build_enabled%: Returns whether build mode is enabled for the player (true/false).
-# %xg7lobby_player_is_flying%: Returns whether fly mode is enabled for the player (true/false).
-# %xg7lobby_player_is_in_pvp%: Returns whether the player is in global PvP mode (true/false).
-# %xg7lobby_players_in_global_pvp%: Returns the number of players currently in global PvP mode.
-# %xg7lobby_player_global_pvp_kills%: Returns the number of kills the player has in global PvP.
-# %xg7lobby_player_global_pvp_deaths%: Returns the number of deaths the player has in global PvP.
-# %xg7lobby_player_global_pvp_kdr%: Returns the kill/death ratio (KDR) of the player in global PvP.
+#%xg7lobby_chat_locked% Locked chat status (true/false)
+#%xg7lobby_random_lobby_location% A random lobby location (as stringifies location)
+#%xg7lobby_player_warns% Number of warnings the player has received
+#%xg7lobby_player_is_hiding_players% Whether the player is currently hiding other players (true/false)
+#%xg7lobby_player_is_muted% Whether the player is currently muted (true/false)
+#%xg7lobby_player_time_for_unmute% The date and time when the player's mute ends
+#%xg7lobby_player_is_build_enabled% Whether the player has build mode enabled (true/false)
+#%xg7lobby_player_is_flying% Whether the player is currently flying (true/false)
+#%xg7lobby_player_is_in_pvp% Whether the player is currently in global PvP (true/false)
+#%xg7lobby_players_in_global_pvp% Total number of players currently in global PvP
+#%xg7lobby_player_global_pvp_kills% Total number of global PvP kills by the player
+#%xg7lobby_player_global_pvp_deaths% Total number of global PvP deaths by the player
+#%xg7lobby_player_global_pvp_kdr% Global PvP kill/death ratio of the player
 
-#Links:
+#Utility links:
 
 #Items: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 #Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 #Entities: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Entity.html
 
-
+#Prefix for all messagesd
 prefix: "&1X&9G&37&bLobby&r &8>>&r"
 
 #Worlds where the plugin will be enabled
@@ -66,6 +80,7 @@ debug-enabled: false
 #                              SQL                               #
 ##################################################################
 
+#SQL Configs for XG7Lobby
 sql:
 
   type: "sqlite"
@@ -85,24 +100,42 @@ sql:
 #                         LOBBY CONFIGS                          #
 ##################################################################
 
+#Lobby command teleport
 lobby-teleport-cooldown:
+
+  #Cooldown for teleport to lobby
   before-teleport: "5s"
+
+  #If true, the player must be
+  #standing still while the
+  #teleport cooldown is in progress
   dont-move: true
 
+  #Cooldown to use the command again
   after-teleport: "5s"
 
+# Enables the build system (/build on or off it doesn't matter if you have permission)
 build-system-enabled: true
 
+# Enables support for custom menus
 custom-menus-enabled: true
 
+# Enables support for custom forms on Geyser
 custom-geyser-forms-enabled: true
+
+# Enables the built-in lobbies form
 lobbies-form-enabled: true
 
+# Main selector menu ID
 main-selector-id: "selector"
+
+# PvP selector menu ID
 main-pvp-selector-id: "pvp"
 
+# Delay between player effects task executions
 effects-task-delay: 5s
 
+# List of effects to apply to the player on lobby join
 effects:
   - "JUMP_BOOST, 2"
   - "SPEED, 2"
@@ -112,10 +145,16 @@ effects:
 #                         PLAYER CONFIGS                         #
 ##################################################################
 
+# Number of hearts the player should have (1 heart = 2 HP)
 hearts: 1
 
+# Hunger level of the player (0–10)
 hunger: 10
+
+# Whether the player's hunger will change over time
 food-change: false
+
+#Player-interacting settings
 
 interact-with-blocks: false
 break-blocks: false
@@ -124,117 +163,140 @@ place-blocks: false
 drop-items: false
 pickup-items: false
 
+# Whether the player can take damage
 take-damage: false
+
+# Whether the player can attack entities
 attack: false
+
+# Automatically respawn the player on death
 auto-respawn: true
 
+# Prevent death by falling into the void
 cancel-death-by-void: true
 
+# Prevent teleportation through portals
 cancel-portal-teleport: true
 
 ##################################################################
 #                          WORLD CONFIGS                         #
 ##################################################################
 
-world-task-delay: 10s
+# Delay between world tasks (e.g., time or weather updates)
+world-task-delay: 30s
 
+# Whether the weather will change over time
 weather-cycle: false
 
+# Whether it will rain or storm in the world
 storm: false
 
-#Define the day cycle on a lobby world
+# Whether the day-night cycle is active
 day-cycle: false
 
-#12:00
-#12 PM
+# Fixed world time (24h format)
 time: "12:30"
 
-#Define if mobs will spawn in the lobby
+# Whether mobs are allowed to spawn in the lobby
 spawn-mobs: false
 
-#Define if the leaves will fall in the lobby
+# Whether leaves decay naturally in the lobby
 leaves-decay: false
 
-#Define whether blocks will burn in the lobby
+# Whether fire can burn blocks
 burn-blocks: false
 
+# Whether blocks can spread (e.g., grass or mycelium)
 block-spread: false
 
-#Cancel explosions
+# Prevent explosions in the world
 cancel-explosions: true
 
 ##################################################################
 #                          MODERATION                            #
 ##################################################################
 
+# Whether admins can be warned when players are warned
 warn-admin: false
+
+# Whether admins can be muted if reported
 mute-admin: false
+
+# Whether admins can be kicked if reported
 kick-admin: false
+
+# Whether admins can be banned if reported
 ban-admin: false
 
+# Warning thresholds and menu materials for different infraction levels
 infraction-levels:
 
   - level: 1
     min-to-ban: 5
     min-to-mute: 2
     min-to-kick: 3
-
     menu-material: "LIME_WOOL"
 
   - level: 2
     min-to-ban: 3
     min-to-mute: 2
     min-to-kick: 1
-
     menu-material: "YELLOW_WOOL"
 
   - level: 3
     min-to-ban: 2
     min-to-mute: 1
     min-to-kick: 1
-
     menu-material: "RED_WOOL"
 
+# Default levels when a player reaches a certain number of warnings
 mute-warning-level: 1
 kick-warning-level: 2
 ban-warning-level: 3
 
+# Total warnings needed to apply automatic punishments
 total-infractions-to-ban: 10
 total-infractions-to-mute: 2
 total-infractions-to-kick: 5
 
-#Put forever to infinite
+# Duration before a player is automatically unmuted
+# Uses "forever" for permanent mute
 infractions-time-to-unmute: "30m"
 
+# Whether bans apply to the player's IP
 infractions-ban-by-ip: false
-
 
 ##################################################################
 #                             CHAT                               #
 ##################################################################
 
+# Lock chat only if the player is in the lobby world
 lock-chat-only-on-lobby: false
 
 anti-swearing:
+  # Enable anti-swearing system
   enabled: true
 
-  blocked-words: ["badword1", "badword2", "badword3"]
+  # List of blocked words
+  blocked-words: [ "badword1", "badword2", "badword3" ]
 
+  # Replacement string for blocked words
   replacement: "*"
 
+  # Prevent the message from being sent if it contains a blocked word
   dont-send-the-message: false
 
+  # Only apply anti-swearing in lobby world
   anti-swear-only-on-lobby: false
 
-
 block-commands:
+  # Enable command blocking
   enabled: true
 
+  # Prevent tab-completion of blocked commands
   anti-tab: true
 
-  #If you don't have permission "xg7lobby.command_block_bypass"
-  #and you send some these commands,
-  #a "not-found" message will be sent
+  # List of commands to block if the player does not have the bypass permission
   blocked-commands:
     - /pl
     - /plugins
@@ -249,24 +311,34 @@ block-commands:
     - /tell
 
 anti-spam:
+  # Enable anti-spam system
   enabled: true
 
+  # Only apply anti-spam in the lobby world
   anti-spam-only-on-lobby: false
 
+  # Block repeated identical messages
   message-cannot-be-the-same: true
+
+  # Time between messages allowed
   cooldown: "1s 500ms"
 
-  #Messages tolerance to infraction
-  #Put -1 to disable infraction
+  # Number of messages allowed before considering it spam (-1 to disable infractions)
   spam-tolerance: 5
+
+  # Time to reduce the spam counter
   time-for-decrement-spam-tolerance: 10s
 
+  # Send a warning to the player after X spam attempts
   send-warning-on-message: 3
 
+  # Automatically mute the player after reaching spam tolerance
   mute-on-spam-limit: true
 
+  # Duration of automatic mute after spamming
   unmute-delay: "30m"
 
+  # Infraction level to apply when spamming
   spam-warn-level: 1
 
 ##################################################################
@@ -274,14 +346,18 @@ anti-spam:
 ##################################################################
 
 multi-jumps:
-
+  # Max jumps allowed in air
   jump-limit: 3
 
   enabled: true
 
+  # Sound played when jumping
   sound: "ENTITY_BAT_TAKEOFF, 1.0, 1.0"
 
+  # Horizontal boost
   power: 2
+
+  # Vertical boost
   height: 1
 
 ##################################################################
@@ -289,30 +365,38 @@ multi-jumps:
 ##################################################################
 
 launchpad:
-
   enabled: true
 
+  # Sound played when launched
   sound: "ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0, 1.0"
 
+  # Block on top of the launchpad
   top-block: "STONE_PRESSURE_PLATE"
+
+  # Block underneath the launchpad
   bottom-block: "REDSTONE_BLOCK"
 
+  # Horizontal launch power
   power: 3
+
+  # Vertical launch height
   height: 1
 
 ##################################################################
 #                             MOTD                               #
 ##################################################################
 
-#MOTD is the message that appears before
-#join the server!
+# MOTD that appears in the server list
 motd:
   enabled: true
 
+  # Maximum number of players displayed in the server list
   max-players: 9999
 
   text:
     - "[CENTER:MOTD] &9XG7&3Lob&bby&r"
     - "[CENTER:MOTD] &5&oMade by DaviXG7"
 
+
+#DO NOT CHANGE THIS!
 config-version: 4

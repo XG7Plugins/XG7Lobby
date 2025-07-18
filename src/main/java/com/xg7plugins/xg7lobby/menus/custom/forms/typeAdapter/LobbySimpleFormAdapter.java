@@ -40,8 +40,8 @@ public class LobbySimpleFormAdapter implements ConfigTypeAdapter<LobbySimpleForm
             }
         });
 
-        List<String> onErrorActions = config.getList("on-error", String.class).orElse(new ArrayList<>());
-        List<String> onCloseActions = config.getList("on-close", String.class).orElse(new ArrayList<>());
+        List<String> onErrorActions = config.getList("on-error", String.class, true).orElse(new ArrayList<>());
+        List<String> onCloseActions = config.getList("on-close", String.class, true).orElse(new ArrayList<>());
 
         return new LobbySimpleForm(id, title, content, buttons, onCloseActions, onErrorActions);
     }

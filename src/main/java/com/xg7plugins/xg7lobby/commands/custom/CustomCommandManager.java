@@ -3,6 +3,7 @@ package com.xg7plugins.xg7lobby.commands.custom;
 import com.xg7plugins.boot.PluginSetup;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.managers.Manager;
+import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.reflection.ReflectionClass;
 import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -25,6 +26,8 @@ public class CustomCommandManager implements Manager {
     public void registerCommands() {
         Config config = Config.of("custom_commands", XG7Lobby.getInstance());
 
+        Debug.of(XG7Lobby.getInstance()).info("Registering custom commands");
+
         if (!config.get("enabled", Boolean.class).orElse(false)) return;
 
         CommandMap commandMap = ReflectionObject.of(Bukkit.getServer()).getField("commandMap");
@@ -42,6 +45,8 @@ public class CustomCommandManager implements Manager {
             pluginCommand.setExecutor(customCommandExecutor);
             commandMap.register(XG7Lobby.getInstance().getClass().getAnnotation(PluginSetup.class).mainCommandName(), pluginCommand);
             commands.put(customCommand.getName(), customCommand);
+
+            Debug.of(XG7Lobby.getInstance()).info("Registered " + customCommand.getName() + " command with succes!");
         }
     }
 

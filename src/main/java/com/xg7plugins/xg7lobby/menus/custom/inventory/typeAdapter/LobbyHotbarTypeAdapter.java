@@ -35,8 +35,8 @@ public class LobbyHotbarTypeAdapter implements ConfigTypeAdapter<LobbyHotbar> {
             }
         }
 
-        Time cooldown = config.getTime("cooldown-to-use").orElse(Time.of(2));
-        boolean disableCooldown = config.get("disable-cooldown", Boolean.class).orElse(false);
+        Time cooldown = config.getTime("cooldown-to-use", true).orElse(Time.of(2));
+        boolean disableCooldown = config.get("disable-cooldown", Boolean.class, true).orElse(false);
 
         return new LobbyHotbar(config, id, items, grid, cooldown, disableCooldown);
 

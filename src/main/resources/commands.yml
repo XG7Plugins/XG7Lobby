@@ -1,3 +1,5 @@
+#Commands of XG7Lobby, you can customize args
+
 setlobby: ["7lsetlobby", "7lsetl", "setlobby", "setl", "lobbyset",]
 lobby: ["7llobby", "7ll", "l", "lobby"]
 deletelobby: ["7ldeletelobby", "7ldl", "deletelobby"]

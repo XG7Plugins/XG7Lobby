@@ -21,7 +21,7 @@ public class LobbyGUITypeAdapter implements ConfigTypeAdapter<LobbyGUI> {
 
         int rows = config.get("rows", Integer.class).orElseThrow(() -> new IllegalArgumentException("rows is required"));
 
-        XMaterial fillItem = config.get("fill-material", XMaterial.class).orElse(XMaterial.AIR);
+        XMaterial fillItem = config.get("fill-material", XMaterial.class, true).orElse(XMaterial.AIR);
 
         HashMap<String, LobbyItem> items = new HashMap<>();
         HashMap<Integer, String> grid = new HashMap<>();

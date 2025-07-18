@@ -2,6 +2,8 @@ package com.xg7plugins.xg7lobby.data.location;
 
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.managers.Manager;
+import com.xg7plugins.utils.Debug;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 
 import java.util.List;
@@ -21,14 +23,17 @@ public class LobbyManager implements Manager {
     }
 
     public CompletableFuture<Boolean> saveLobbyLocation(LobbyLocation lobbyLocation) throws ExecutionException, InterruptedException {
+        Debug.of(XG7Lobby.getInstance()).info("Saving LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.addAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> deleteLobbyLocation(LobbyLocation lobbyLocation) {
+        Debug.of(XG7Lobby.getInstance()).info("Deleting LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.deleteAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> updateLobbyLocation(LobbyLocation lobbyLocation) {
+        Debug.of(XG7Lobby.getInstance()).info("Updating LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.updateAsync(lobbyLocation);
     }
 
@@ -37,6 +42,7 @@ public class LobbyManager implements Manager {
     }
 
     public CompletableFuture<LobbyLocation> getLobbyLocation(String name) {
+        Debug.of(XG7Lobby.getInstance()).info("Getting LobbyLocation with id: " + name);
         return this.lobbyLocationRepository.getAsync(name);
     }
 

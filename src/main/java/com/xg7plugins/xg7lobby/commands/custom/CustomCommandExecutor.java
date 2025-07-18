@@ -37,6 +37,11 @@ public class CustomCommandExecutor implements CommandExecutor {
             return true;
         }
 
+        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && customCommand.isEnabledWorldOnly()) {
+            CommandMessages.DISABLED_WORLD.send(player);
+            return true;
+        }
+
         customCommand.execute(player);
 
         return true;

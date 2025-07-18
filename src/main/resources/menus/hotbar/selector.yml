@@ -1,3 +1,7 @@
+
+#Main hotbar items
+#See games.yml file to menu help
+
 id: "selector"
 
 cooldown-to-use: "2s"

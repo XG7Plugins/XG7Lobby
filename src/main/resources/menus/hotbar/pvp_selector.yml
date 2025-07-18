@@ -1,3 +1,8 @@
+
+#PVP Hotbar items
+#See games.yml file to menu help
+
+
 id: "pvp"
 
 disable-cooldown: true

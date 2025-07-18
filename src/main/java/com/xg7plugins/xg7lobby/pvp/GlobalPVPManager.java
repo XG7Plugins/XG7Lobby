@@ -3,6 +3,7 @@ package com.xg7plugins.xg7lobby.pvp;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.managers.Manager;
+import com.xg7plugins.utils.Debug;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.configs.PVPConfigs;
@@ -33,12 +34,16 @@ public class GlobalPVPManager implements Manager {
     }
 
     public void addPlayer(Player player) {
+        Debug.of(XG7Lobby.getInstance()).info("Adding " + player.getName() + " to lobby pvp");
         this.playersInPVP.add(player.getUniqueId());
         getHandler(JoinPVPHandler.class).handle(player);
     }
 
     public void removePlayer(Player player) {
         if (!playersInPVP.contains(player.getUniqueId())) return;
+
+        Debug.of(XG7Lobby.getInstance()).info("Removing " + player.getName() + " from lobby pvp");
+
         this.playersInPVP.remove(player.getUniqueId());
         getHandler(LeavePVPHandler.class).handle(player);
     }

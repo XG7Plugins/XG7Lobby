@@ -1,89 +1,180 @@
-#Actions
+#Colors:
+#&0 - Black           | &8 - Dark Gray
+#&1 - Dark blue       | &9 - Blue
+#&2 - Dark green      | &a - Green
+#&3 - Dark cyan       | &b - Cyan
+#&4 - Dark red        | &c - Red
+#&5 - Purple          | &d - Pink
+#&6 - Orange          | &e - Yellow
+#&7 - Gray            | &f - White
 
-#You can use actions in the "actions:" or "events:"
-#The right way to use your action is: [ACTION] content
+#Lettering options:
+#&k - Random    | &n - Underlined
+#&l - Bold      | &o - Italic
+#&m - Track     | &r - Reset
 
-#[MESSAGE] Send a message
-#[TITLE] Send a title
+#Hex text:
+#<hex:#FFFFFF>text</hex>
 
-#[FIREWORK] Summons a firework
-#Ex.: [FIREWORK] BALL_LARGE, #FF00FF, #FFFF00, true, true, 1
+#Gradients text:
+#<gradient:#FFFFFF>text</gradient:#000000>
 
-#Ex.: [TITLE] &bWelcome!, Subtitle
-#[BROADCAST] Advertise to everyone.
+#Only in 1.16+
 
-#[PLAYER_COMMAND] Make the player execute a command
-#[CONSOLE_COMMAND] Make console execute a command
+#Rainbow text (Works on 1.8+):
+#<rainbow>text</rainbow>
 
-#[SOUND] play a sound
-#[SOUND] ENTITY_EXPERIENCE_ORB_PICKUP, (Volume) 10.0, (Pitch) 10.0"
+#Placeholders
 
-#[SUMMON] Summons an entity
+#%xg7lobby_chat_locked% Locked chat status (true/false)
+#%xg7lobby_random_lobby_location% A random lobby location (as stringifies location)
+#%xg7lobby_player_warns% Number of warnings the player has received
+#%xg7lobby_player_is_hiding_players% Whether the player is currently hiding other players (true/false)
+#%xg7lobby_player_is_muted% Whether the player is currently muted (true/false)
+#%xg7lobby_player_time_for_unmute% The date and time when the player's mute ends
+#%xg7lobby_player_is_build_enabled% Whether the player has build mode enabled (true/false)
+#%xg7lobby_player_is_flying% Whether the player is currently flying (true/false)
+#%xg7lobby_player_is_in_pvp% Whether the player is currently in global PvP (true/false)
+#%xg7lobby_players_in_global_pvp% Total number of players currently in global PvP
+#%xg7lobby_player_global_pvp_kills% Total number of global PvP kills by the player
+#%xg7lobby_player_global_pvp_deaths% Total number of global PvP deaths by the player
+#%xg7lobby_player_global_pvp_kdr% Global PvP kill/death ratio of the player
 
-#[EFFECT] give an effect to the player
-#[EFFECT] effect, duration, amplifier
+#ACTIONS
 
-#[EQUIP] equip an item to the player
-#[EQUIP] SLOT, MATERIAL
+# [MESSAGE]: Sends a message to a player
+# Ex: [MESSAGE] Hello %player%!
 
-#[CLEAR_CHAT] clear the chat
+# [BROADCAST]: Broadcasts a message to all players
+# Ex: [BROADCAST] Message!
 
-#[CLEAR_INVENTORY] clear the player's inventory
+# [PLAYER_COMMAND]: Makes a player execute a command
+# Ex: [PLAYER_COMMAND] warp spawn
 
-#[PARTICLE] create a particle
-#[PARTICLE] particle, amount, x,y,z offset
+# [CONSOLE_COMMAND]: Executes a command from console
+# Ex: [CONSOLE_COMMAND] say Hello everyone!
 
-#[TP] teleport player for an exact location
-#[TP] world, x, y, z (yaw, pictch)
+# [TITLE]: Displays a title to a player
+# Ex: [TITLE] Welcome!
+# Ex: [TITLE] Welcome!, Subtitle!
 
-#[LOBBY] Teleport the player to a lobby
-#[LOBBY] lobby-id
+#Only in high versions
+# Ex: [TITLE] Welcome!, %player%!, 10, 70, 20
 
-#[BUNGEE] Teleport the player to another server
-#[BUNGEE] server-name
+# [EFFECT]: Gives an effect to a player
+# Ex: [EFFECT] SPEED 200 1
+# Ex2: [EFFECT] SPEED 200 1 true false true
 
-#[OPEN_MENU] Opens an inventory
-#[CLOSE_MENU] Closes an inventory
-#[REFRESH_MENU] Refreshes the inventory
-#[SWAP] Swaps the item in the inventory
-#[SWAP] item-id
-#There in the selectors.yml file you can create an inventory
-#Mode of use: "[OPEN_MENU] (id)", "[CLOSE_MENU] "
+# [TP]: Teleports a player to a specific location
+# Ex: [TP] world 100 65 200
+# Ex: [TP] world 100 65 200 90 0
 
-#%player% returns the player's name (if you are not using PLACEHOLDER API)
+# [SUMMON]: Summons an entity
+# Ex: [SUMMON] ZOMBIE
 
-#[HIDE_PLAYERS] hide the players
-#[SHOW_PLAYERS] show the players
+# [SOUND]: Plays a sound to a player
+# Ex: [SOUND] ENTITY_PLAYER_LEVELUP
+# Ex: [SOUND] ENTITY_PLAYER_LEVELUP 1.0
+# Ex: [SOUND] ENTITY_PLAYER_LEVELUP 1.0 1.5
 
-#[GAMEMODE] change the game mode of the player
+# [GAMEMODE]: Sets the gamemode of a player
+# Ex: [GAMEMODE] CREATIVE
+# Ex: [GAMEMODE] 1
 
-#[CENTER:CHAT] Centers your text according to Minecraft's default chat size
-#It is an approximate centering according to the pixels of each letter in the game
+# [PARTICLE]: Displays a particle to the player
+# Ex: [PARTICLE] FLAME
+# Ex: [PARTICLE] FLAME 10
+# Ex: [PARTICLE] FLAME 10 0.5 1 0.5
 
-#[PERMISSION] Only do the action if you have permission
-#[OPEN_MENU] 1 [PERMISSION: your.permission]
-#[OPEN_MENU] 1 [!PERMISSION: your.permission] (If you don't have permission)
+# [FIREWORK]: Spawns a firework to a player
+# Ex: [FIREWORK] BALL #FF0000 #00FF00 true false 1
 
-#[ACTION] Send an action
+# [CLEAR_CHAT]: Clears the chat
+# Ex: [CLEAR_CHAT]
 
-#[PERMISSION] Only do the action if the condition is true
-#[OPEN_MENU] 1 [IF: %xg7lobby_players_hiding%]
-#[OPEN_MENU] 1 [!IF: #%xg7lobby_players_hiding%] (If the condition is false)
+# [CLEAR_INVENTORY]: Clears the player inventory
+# Ex: [CLEAR_INVENTORY]
 
+# [EQUIP]: Equip an item
+# Ex: [EQUIP] HELMET DIAMOND_HELMET
+
+# [LOBBY]: Teleport to a lobby
+# Ex: [LOBBY] main_lobby
+# Ex random: [LOBBY] random
+
+# [BUNGEE]: Connect to a bungee server
+# Ex: [BUNGEE] survival_server
+
+# [OPEN_MENU]: Opens a custom inventory
+# Ex: [OPEN_MENU] shop_menu
+
+# [CLOSE_MENU]: Closes the inventory
+# Ex: [CLOSE_MENU]
+
+# [OPEN_FORM]: Sends a form
+# Ex: [OPEN_FORM] feedback_form
+
+# [REFRESH_MENU]: Refreshs the menu
+# Ex: [REFRESH_MENU]
+
+# [SWAP]: Swaps a item on the inventory
+# Ex: [SWAP] menuId 0 itemPath
+
+# [HIDE_PLAYERS]: Hides the players on lobby
+# Ex: [HIDE_PLAYERS]
+
+# [SHOW_PLAYERS]: Shows the player on lobby
+# Ex: [SHOW_PLAYERS]
+
+# [FLY_ON]: Enables the player flying on lobby
+# Ex: [FLY_ON]
+
+# [FLY_OFF]: Disables the player flying on lobby
+# Ex: [FLY_OFF]
+
+# [BUILD_ON]: Enables the player building on lobby
+# Ex: [BUILD_ON]
+
+# [BUILD_OFF]: Disables the player building on lobby
+# Ex: [BUILD_OFF]
+
+#TEXT SENDERS:
+
+# [CENTER:display_size] Sends a centralized message
+# Ex: [CENTER:CHAT] Chat centralized message
+
+# [ACTION] Sends an action bar message
+# Ex: [ACTION] Action bar message
+
+#Utility links:
+
+#Items: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+#Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+#Entities: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Entity.html
+
+
+#Join events
 on-join:
+  # Whether to teleport players to the lobby on join
   tp-to-lobby: true
 
-  #Put "random" for a random lobby
+  # Which lobby to teleport to - "random" for a random lobby
   lobby-to-tp-id: "random"
 
+  # Whether to heal players on join
   heal: true
+
+  # Whether to clear inventory on join  
   clear-inventory: true
 
+  # Run join events when returning to the world
   run-events-when-return-to-the-world: true
 
+  # Join message settings
   send-join-message: true
   send-join-message-only-on-lobby: false
 
+  # Events to run when a player joins
   events:
     - "[GAMEMODE] survival"
     - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
@@ -102,9 +193,13 @@ on-join:
     - "[OPEN_MENU] (?NO_PERMISSION: xg7lobby.admin?) profile"
     - "[PLAYER_COMMAND] (?PERMISSION: xg7lobby.command.help?) 7l help"
 
+#First join events
 on-first-join:
+  # Whether to enable first join events
   enabled: true
+  # Whether to send a first join message
   send-first-join-message: true
+  # Events to run on player's first join
   events:
     - "[GAMEMODE] survival"
     - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
@@ -125,12 +220,18 @@ on-first-join:
     - "[OPEN_MENU] (?NO_PERMISSION: xg7lobby.admin?) profile"
     - "[PLAYER_COMMAND] (?PERMISSION: xg7lobby.command.help?) 7l help"
 
+#Quit events
 on-quit:
+  # Whether to send a quit message
   send-quit-message: true
+
+  # Only send the quit message if player is in lobby
   send-quit-message-only-on-lobby: false
 
+  # Run quit events when changing worlds
   run-events-when-change-world: true
 
+  # Events to run when a player quits
   events:
     - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
 

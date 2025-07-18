@@ -1,5 +1,158 @@
+#Colors:
+#&0 - Black           | &8 - Dark Gray
+#&1 - Dark blue       | &9 - Blue
+#&2 - Dark green      | &a - Green
+#&3 - Dark cyan       | &b - Cyan
+#&4 - Dark red        | &c - Red
+#&5 - Purple          | &d - Pink
+#&6 - Orange          | &e - Yellow
+#&7 - Gray            | &f - White
 
-#ID of the menu, must be unique
+#Lettering options:
+#&k - Random    | &n - Underlined
+#&l - Bold      | &o - Italic
+#&m - Track     | &r - Reset
+
+#Hex text:
+#<hex:#FFFFFF>text</hex>
+
+#Gradients text:
+#<gradient:#FFFFFF>text</gradient:#000000>
+
+#Only in 1.16+
+
+#Rainbow text (Works on 1.8+):
+#<rainbow>text</rainbow>
+
+#Placeholders
+
+#%xg7lobby_chat_locked% Locked chat status (true/false)
+#%xg7lobby_random_lobby_location% A random lobby location (as stringifies location)
+#%xg7lobby_player_warns% Number of warnings the player has received
+#%xg7lobby_player_is_hiding_players% Whether the player is currently hiding other players (true/false)
+#%xg7lobby_player_is_muted% Whether the player is currently muted (true/false)
+#%xg7lobby_player_time_for_unmute% The date and time when the player's mute ends
+#%xg7lobby_player_is_build_enabled% Whether the player has build mode enabled (true/false)
+#%xg7lobby_player_is_flying% Whether the player is currently flying (true/false)
+#%xg7lobby_player_is_in_pvp% Whether the player is currently in global PvP (true/false)
+#%xg7lobby_players_in_global_pvp% Total number of players currently in global PvP
+#%xg7lobby_player_global_pvp_kills% Total number of global PvP kills by the player
+#%xg7lobby_player_global_pvp_deaths% Total number of global PvP deaths by the player
+#%xg7lobby_player_global_pvp_kdr% Global PvP kill/death ratio of the player
+
+#ACTIONS
+
+# [MESSAGE]: Sends a message to a player
+# Ex: [MESSAGE] Hello %player%!
+
+# [BROADCAST]: Broadcasts a message to all players
+# Ex: [BROADCAST] Message!
+
+# [PLAYER_COMMAND]: Makes a player execute a command
+# Ex: [PLAYER_COMMAND] warp spawn
+
+# [CONSOLE_COMMAND]: Executes a command from console
+# Ex: [CONSOLE_COMMAND] say Hello everyone!
+
+# [TITLE]: Displays a title to a player
+# Ex: [TITLE] Welcome!
+# Ex: [TITLE] Welcome!, Subtitle!
+
+#Only in high versions
+# Ex: [TITLE] Welcome!, %player%!, 10, 70, 20
+
+# [EFFECT]: Gives an effect to a player
+# Ex: [EFFECT] SPEED 200 1
+# Ex2: [EFFECT] SPEED 200 1 true false true
+
+# [TP]: Teleports a player to a specific location
+# Ex: [TP] world 100 65 200
+# Ex: [TP] world 100 65 200 90 0
+
+# [SUMMON]: Summons an entity
+# Ex: [SUMMON] ZOMBIE
+
+# [SOUND]: Plays a sound to a player
+# Ex: [SOUND] ENTITY_PLAYER_LEVELUP
+# Ex: [SOUND] ENTITY_PLAYER_LEVELUP 1.0
+# Ex: [SOUND] ENTITY_PLAYER_LEVELUP 1.0 1.5
+
+# [GAMEMODE]: Sets the gamemode of a player
+# Ex: [GAMEMODE] CREATIVE
+# Ex: [GAMEMODE] 1
+
+# [PARTICLE]: Displays a particle to the player
+# Ex: [PARTICLE] FLAME
+# Ex: [PARTICLE] FLAME 10
+# Ex: [PARTICLE] FLAME 10 0.5 1 0.5
+
+# [FIREWORK]: Spawns a firework to a player
+# Ex: [FIREWORK] BALL #FF0000 #00FF00 true false 1
+
+# [CLEAR_CHAT]: Clears the chat
+# Ex: [CLEAR_CHAT]
+
+# [CLEAR_INVENTORY]: Clears the player inventory
+# Ex: [CLEAR_INVENTORY]
+
+# [EQUIP]: Equip an item
+# Ex: [EQUIP] HELMET DIAMOND_HELMET
+
+# [LOBBY]: Teleport to a lobby
+# Ex: [LOBBY] main_lobby
+# Ex random: [LOBBY] random
+
+# [BUNGEE]: Connect to a bungee server
+# Ex: [BUNGEE] survival_server
+
+# [OPEN_MENU]: Opens a custom inventory
+# Ex: [OPEN_MENU] shop_menu
+
+# [CLOSE_MENU]: Closes the inventory
+# Ex: [CLOSE_MENU]
+
+# [OPEN_FORM]: Sends a form
+# Ex: [OPEN_FORM] feedback_form
+
+# [REFRESH_MENU]: Refreshs the menu
+# Ex: [REFRESH_MENU]
+
+# [SWAP]: Swaps a item on the inventory
+# Ex: [SWAP] menuId 0 itemPath
+
+# [HIDE_PLAYERS]: Hides the players on lobby
+# Ex: [HIDE_PLAYERS]
+
+# [SHOW_PLAYERS]: Shows the player on lobby
+# Ex: [SHOW_PLAYERS]
+
+# [FLY_ON]: Enables the player flying on lobby
+# Ex: [FLY_ON]
+
+# [FLY_OFF]: Disables the player flying on lobby
+# Ex: [FLY_OFF]
+
+# [BUILD_ON]: Enables the player building on lobby
+# Ex: [BUILD_ON]
+
+# [BUILD_OFF]: Disables the player building on lobby
+# Ex: [BUILD_OFF]
+
+#TEXT SENDERS:
+
+# [CENTER:display_size] Sends a centralized message
+# Ex: [CENTER:CHAT] Chat centralized message
+
+# [ACTION] Sends an action bar message
+# Ex: [ACTION] Action bar message
+
+#Utility links:
+
+#Items: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+#Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+#Entities: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Entity.html
+
+#ID of the menu must be unique
 id: "games"
 
 #Title of the menu
@@ -52,7 +205,7 @@ items:
 #Fill material of the menu
 fill-material: GRAY_STAINED_GLASS_PANE
 
-#Place the items in this grid with name of section
+#Place the items in this grid with the name of a section
 grid:
   - ["","","","",        "","",       "","",""]
   - ["","","","survival","","bedwars","","",""]

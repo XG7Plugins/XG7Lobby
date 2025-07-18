@@ -18,8 +18,8 @@ public class PlayerConfigs extends ConfigSection {
     private boolean foodChange;
 
     private boolean interactWithBlocks;
-    private boolean breakBlock;
-    private boolean placeBlock;
+    private boolean breakBlocks;
+    private boolean placeBlocks;
 
     private boolean dropItems;
     private boolean pickupItems;

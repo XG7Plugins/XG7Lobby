@@ -32,7 +32,7 @@ public class CustomCommand {
         this.aliases = config.getList("custom-commands." + path + ".aliases", String.class).orElse(new ArrayList<>());
         this.actions = config.getList("custom-commands." + path + ".actions", String.class).orElse(new ArrayList<>());
 
-        this.enabledWorldOnly = config.get("custom-commands." + path + "execute-only-in-an-enabled-world", Boolean.class).orElse(false);
+        this.enabledWorldOnly = config.get("custom-commands." + path + ".execute-only-in-an-enabled-world", Boolean.class).orElse(false);
 
     }
 

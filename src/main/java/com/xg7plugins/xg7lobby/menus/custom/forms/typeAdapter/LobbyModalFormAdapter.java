@@ -19,10 +19,10 @@ public class LobbyModalFormAdapter implements ConfigTypeAdapter<LobbyModalForm> 
         String button1Text = config.get("first-button-text", String.class).orElse("");
         String button2Text = config.get("second-button-text", String.class).orElse("");
 
-        List<String> onClickButton1 = config.getList("on-click-first-button", String.class).orElse(new ArrayList<>());
-        List<String> onClickButton2 = config.getList("on-click-second-button", String.class).orElse(new ArrayList<>());
+        List<String> onClickButton1 = config.getList("on-click-first-button", String.class, true).orElse(new ArrayList<>());
+        List<String> onClickButton2 = config.getList("on-click-second-button", String.class, true).orElse(new ArrayList<>());
 
-        List<String> onErrorActions = config.getList("on-error", String.class).orElse(new ArrayList<>());
+        List<String> onErrorActions = config.getList("on-error", String.class, true).orElse(new ArrayList<>());
 
         return new LobbyModalForm(id, title, content, button1Text, button2Text, onErrorActions, onClickButton1, onClickButton2);
     }

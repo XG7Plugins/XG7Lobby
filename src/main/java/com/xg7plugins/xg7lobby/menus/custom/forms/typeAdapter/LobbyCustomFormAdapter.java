@@ -20,8 +20,8 @@ public class LobbyCustomFormAdapter implements ConfigTypeAdapter<LobbyCustomForm
         String id = config.get("id", String.class).orElseThrow(() -> new IllegalArgumentException("Missing id for LobbyModalForm"));
         String title = config.get("title", String.class).orElseThrow(() -> new IllegalArgumentException("title is required"));
 
-        List<String> onErrorActions = config.getList("on-error", String.class).orElse(new ArrayList<>());
-        List<String> onCloseActions = config.getList("on-close", String.class).orElse(new ArrayList<>());
+        List<String> onErrorActions = config.getList("on-error", String.class, true).orElse(new ArrayList<>());
+        List<String> onCloseActions = config.getList("on-close", String.class, true).orElse(new ArrayList<>());
         List<String> onSubmitActions = config.getList("on-submit", String.class).orElse(new ArrayList<>());
 
         List<LobbyFormComponent> components = new ArrayList<>();

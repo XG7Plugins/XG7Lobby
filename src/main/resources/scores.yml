@@ -2,7 +2,7 @@ scoreboard:
 
   enabled: true
 
-  #Update time
+  #Delay for update
   update-time: 500ms
 
   #Define the title of the scoreboard
@@ -32,21 +32,28 @@ scoreboard:
     - ""
     - "&8www.example.com"
 
+#Scoreboard hearth display
 health-display:
 
   enabled: true
 
+  #Hearth indicator text
   suffix: "&c❤"
 
 tab-list:
   enabled: true
 
+  #Delay for update
   update-time: 500ms
 
   #You can use the placeholders:
   custom-player-prefix: "&8[%luckperms_prefix%&8]&r "
   custom-player-suffix: " &8[&9XG7&3Lo&bbby&8]&r"
 
+  #Each state of the header or the footer
+  #is a frame of the tablist animation!
+
+  #Top of the tablist
   headers:
 
     - state:
@@ -60,6 +67,7 @@ tab-list:
     - state:
         - "&9XG7Lobby"
 
+  #Bottom of the tablist
   footers:
     - state:
         - "&5&oMade by DaviXG7"
@@ -71,8 +79,10 @@ tab-list:
 boss-bar:
   enabled: true
 
+  #Delay for update
   update-time: 500ms
 
+  #Title animation
   title:
     - "&9XG7Lobby"
     - "&3XG7Lobby"
@@ -80,6 +90,7 @@ boss-bar:
     - "&3XG7Lobby"
     - "&9XG7Lobby"
 
+  #Bossbar health percentage
   progress: 100
 
   #1.9+
@@ -91,11 +102,14 @@ boss-bar:
   #+1.9
   public: false
 
+#Action bar sender
 actionbar:
   enabled: false
 
+  #Delay for update
   update-time: 500ms
 
+  #Animation in the action bar
   text:
     - "&9XG7Lobby"
     - "&3XG7Lobby"
@@ -103,11 +117,14 @@ actionbar:
     - "&3XG7Lobby"
     - "&9XG7Lobby"
 
+#Handles the player's XP-Bar
 xp-bar:
   enabled: true
 
+  #Delay for update
   update-time: 1s
 
+  #Levels to change
   levels:
     - "7, 0.2"
     - "7, 0.4"

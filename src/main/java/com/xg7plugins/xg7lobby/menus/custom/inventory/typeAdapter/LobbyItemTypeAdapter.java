@@ -16,9 +16,9 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
         String material = config.get(path + ".material", String.class).orElse("AIR");
         int amount = config.get(path + ".amount", Integer.class).orElse(1);
         String name = config.get(path + ".name", String.class).orElse("No name");
-        List<String> lore = config.getList(path + ".lore", String.class).orElse(new ArrayList<>());
-        List<String> enchants = config.getList(path + ".enchants", String.class).orElse(new ArrayList<>());
-        List<String> actions = config.getList(path + ".actions", String.class).orElse(new ArrayList<>());
+        List<String> lore = config.getList(path + ".lore", String.class, true).orElse(new ArrayList<>());
+        List<String> enchants = config.getList(path + ".enchants", String.class, true).orElse(new ArrayList<>());
+        List<String> actions = config.getList(path + ".actions", String.class, true).orElse(new ArrayList<>());
 
         Item item = Item.from(material)
                 .amount(amount)
@@ -32,9 +32,9 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
             item.enchant(enchantment, Integer.parseInt(enchant.split(", ")[1]));
         }
 
-        String conditionLine = config.get(path + ".conditional", String.class).orElse(null);
+        String conditionLine = config.get(path + ".conditional", String.class, true).orElse(null);
 
-        String otherItemPath = config.get(path + ".if-false", String.class).orElse(null);
+        String otherItemPath = config.get(path + ".if-false", String.class, true).orElse(null);
 
         return new LobbyItem(item, conditionLine, otherItemPath);
     }

@@ -98,8 +98,6 @@ public class InfractionsMenu extends Menu {
 
     public boolean goPage(int page, InfractionsMenuHolder menuHolder) {
 
-        System.out.println("Going page: " + page);
-
         List<Item> pagedItems = pagedItems(menuHolder.getTarget());
 
         if (page < 0) return false;

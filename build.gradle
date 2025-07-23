@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'com.xg7plugins'
-version = '2.2'
+version = '2.2.1'
 
 repositories {
     mavenCentral()
@@ -19,7 +19,9 @@ repositories {
     maven {
         url = 'https://repo.extendedclip.com/releases/'
     }
-    maven { url = uri("https://maven.elmakers.com/repository/") }
+    maven {
+        url = "https://maven.elmakers.com/repository/"
+    }
 }
 
 dependencies {
@@ -55,8 +57,8 @@ tasks.build {
 processResources {
     def props = [version: version]
     inputs.properties props
-    filteringCharset 'UTF-8'
+    filteringCharset = 'UTF-8'
     filesMatching('plugin.yml') {
-        expand props
+        expand(props)
     }
 }

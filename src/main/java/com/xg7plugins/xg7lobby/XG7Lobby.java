@@ -18,6 +18,7 @@ import com.xg7plugins.help.menu.HelpGUI;
 import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.TimerTask;
+import com.xg7plugins.utils.Metrics;
 import com.xg7plugins.xg7lobby.commands.custom.CustomCommandManager;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
@@ -78,7 +79,6 @@ import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
 import com.xg7plugins.xg7lobby.tasks.EffectsTask;
 import com.xg7plugins.xg7lobby.tasks.WorldCyclesTask;
 import lombok.Getter;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,6 +126,10 @@ public final class XG7Lobby extends Plugin {
     public void onEnable() {
 
         super.onEnable();
+
+        debug.loading("Loading metrics...");
+
+        Metrics.getMetrics(this, 24625);
 
         debug.loading("Loading managers...");
 
@@ -287,7 +291,7 @@ public final class XG7Lobby extends Plugin {
     }
 
     @Override
-    public PlaceholderExpansion loadPlaceholderExpansion() {
+    public Object loadPlaceholderExpansion() {
         return new XG7LobbyPlaceholderExpansion();
     }
 

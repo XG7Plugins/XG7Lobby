@@ -34,6 +34,7 @@ public class GlobalPVPManager implements Manager {
     }
 
     public void addPlayer(Player player) {
+        if (!isEnabled()) return;
         Debug.of(XG7Lobby.getInstance()).info("Adding " + player.getName() + " to lobby pvp");
         this.playersInPVP.add(player.getUniqueId());
         getHandler(JoinPVPHandler.class).handle(player);
@@ -49,6 +50,7 @@ public class GlobalPVPManager implements Manager {
     }
 
     public boolean isInPVP(Player player) {
+        if (!isEnabled()) return false;
         return this.playersInPVP.contains(player.getUniqueId());
     }
 
@@ -57,6 +59,7 @@ public class GlobalPVPManager implements Manager {
     }
 
     public List<Player> getAllPlayersInPVP() {
+        if (!isEnabled()) return Collections.emptyList();
         return playersInPVP.stream().map(Bukkit::getPlayer).collect(Collectors.toList());
     }
 
@@ -64,6 +67,11 @@ public class GlobalPVPManager implements Manager {
         List<Listener> listeners = new ArrayList<>(handlers.values().stream().map(l -> (Listener) l).collect(Collectors.toList()));
        listeners.add(combatLogHandler);
        return listeners;
+    }
+
+    public boolean isEnabled() {
+        return Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isEnabled();
+
     }
 
 

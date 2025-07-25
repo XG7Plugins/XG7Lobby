@@ -138,7 +138,7 @@ public final class XG7Lobby extends Plugin {
                 new LobbyManager(),
                 new LobbyScoreManager(),
                 new CustomCommandManager(),
-                Config.of(this, PVPConfigs.class).isEnabled() ? new GlobalPVPManager() : null
+                new GlobalPVPManager()
         );
 
         if (Config.of(this, MainConfigs.class).isCustomMenusEnabled()) {
@@ -240,7 +240,7 @@ public final class XG7Lobby extends Plugin {
 
         GlobalPVPManager pvpManager = XG7LobbyAPI.globalPVPManager();
 
-        if (pvpManager != null) {
+        if (pvpManager.isEnabled()) {
             listeners.addAll(pvpManager.getAllListenersHandlers());
         }
 

@@ -298,7 +298,7 @@ public class DefaultPlayerEvents implements Listener {
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();
-            lobbyPlayer.applyBuild();
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
             lobbyPlayer.applyHide();
         });
 

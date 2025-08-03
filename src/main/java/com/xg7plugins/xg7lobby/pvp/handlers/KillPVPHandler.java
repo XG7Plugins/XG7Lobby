@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.List;
+import java.util.UUID;
 
 public class KillPVPHandler implements PVPHandler, Listener {
 
@@ -75,7 +76,9 @@ public class KillPVPHandler implements PVPHandler, Listener {
         GlobalPVPManager globalPVPManager = XG7LobbyAPI.globalPVPManager();
 
         Player victim = event.getEntity();
-        Player killer = Bukkit.getPlayer(globalPVPManager.getCombatLogHandler().getDamagerOf(victim));
+        UUID killerUUID = globalPVPManager.getCombatLogHandler().getDamagerOf(victim);
+        if (killerUUID == null) return;
+        Player killer = Bukkit.getPlayer(killerUUID);
 
         DeathCause deathCause = DeathCause.fromCause(victim.getLastDamageCause().getCause());
 

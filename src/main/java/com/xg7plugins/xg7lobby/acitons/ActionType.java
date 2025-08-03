@@ -13,6 +13,7 @@ import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.MenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
 import com.xg7plugins.server.MinecraftVersion;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.Parser;
@@ -494,7 +495,7 @@ public enum ActionType {
             (player, args) -> {
                 XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(true);
-                    lobbyPlayer.applyBuild();
+                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
                 });
             }
     ),
@@ -506,7 +507,7 @@ public enum ActionType {
             (player, args) -> {
                 XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(false);
-                    lobbyPlayer.applyBuild();
+                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
                 });
             }
     );

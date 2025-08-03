@@ -1,7 +1,9 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
+import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.bukkitevents.EventHandler;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
@@ -44,7 +46,7 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
             XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.fly();
-                lobbyPlayer.applyBuild();
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
                 lobbyPlayer.applyHide();
             });
 

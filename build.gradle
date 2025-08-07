@@ -1,10 +1,5 @@
-plugins {
-    id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
-}
-
 group = 'com.xg7plugins'
-version = '2.2.3'
+version = '2.2.4'
 
 repositories {
     mavenCentral()
@@ -25,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly project(":Core")
+    compileOnly files("E:\\Projetos\\XG7Plugins\\plugins\\Core\\build\\libs\\Core-1.2.4.jar")
 }
 
 def targetJavaVersion = 8
@@ -46,12 +41,9 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
-tasks.shadowJar {
-    archiveFileName.set("${project.name}-${project.version}.jar")
-}
-
-tasks.build {
-    dependsOn(shadowJar)
+// Garante que compileJava só rode após shadowJar do Core
+tasks.named('compileJava') {
+    dependsOn ':Core:shadowJar'
 }
 
 processResources {

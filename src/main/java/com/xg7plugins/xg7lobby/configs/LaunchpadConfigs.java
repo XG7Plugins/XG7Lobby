@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.configs;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.data.config.section.ConfigFile;
 import com.xg7plugins.data.config.section.ConfigSection;
 import com.xg7plugins.utils.PlayableSound;

@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.help.gui;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.item.SkullItem;

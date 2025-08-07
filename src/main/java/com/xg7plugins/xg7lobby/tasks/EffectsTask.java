@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.tasks;
 
-import com.cryptomorin.xseries.XPotion;
+import com.xg7plugins.libs.xseries.XPotion;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.tasks.TaskState;

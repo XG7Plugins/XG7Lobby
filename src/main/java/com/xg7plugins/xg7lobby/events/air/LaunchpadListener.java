@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.events.air;
 
-import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XSound;
+import com.xg7plugins.libs.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XSound;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.events.Listener;

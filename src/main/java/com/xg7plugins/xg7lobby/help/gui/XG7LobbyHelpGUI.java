@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.help.gui;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;

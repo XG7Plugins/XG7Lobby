@@ -1,10 +1,10 @@
 package com.xg7plugins.xg7lobby.acitons;
 
-import com.cryptomorin.xseries.XEntityType;
-import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XPotion;
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.particles.XParticle;
+import com.xg7plugins.libs.xseries.XEntityType;
+import com.xg7plugins.libs.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XPotion;
+import com.xg7plugins.libs.xseries.XSound;
+import com.xg7plugins.libs.xseries.particles.XParticle;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;

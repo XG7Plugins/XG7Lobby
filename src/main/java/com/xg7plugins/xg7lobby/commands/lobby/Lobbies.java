@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.lobby;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;

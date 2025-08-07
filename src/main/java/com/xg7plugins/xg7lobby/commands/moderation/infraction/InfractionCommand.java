@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.moderation.infraction;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;

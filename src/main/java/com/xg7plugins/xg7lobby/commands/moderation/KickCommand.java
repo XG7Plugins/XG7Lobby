@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.commands.moderation;
 
 
-import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;

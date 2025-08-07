@@ -1,8 +1,8 @@
 package com.xg7plugins.xg7lobby.events.lobby;
 
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
-import com.github.retrooper.packetevents.protocol.player.User;
+import com.xg7plugins.libs.packetevents.PacketEvents;
+import com.xg7plugins.libs.packetevents.protocol.player.ClientVersion;
+import com.xg7plugins.libs.packetevents.protocol.player.User;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.section.ConfigBoolean;

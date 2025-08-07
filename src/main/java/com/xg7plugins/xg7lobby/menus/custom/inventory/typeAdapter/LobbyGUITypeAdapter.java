@@ -1,8 +1,9 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter;
 
-import com.cryptomorin.xseries.XMaterial;
+
 import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.ConfigTypeAdapter;
+import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;

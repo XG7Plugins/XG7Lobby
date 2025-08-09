@@ -165,7 +165,7 @@ on-join:
   heal: true
 
   # Whether to clear inventory on join  
-  clear-inventory: true
+  clear-inventory: false
 
   # Run join events when returning to the world
   run-events-when-return-to-the-world: true
@@ -235,4 +235,4 @@ on-quit:
   events:
     - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
 
-config-version: 1
+config-version: 1.1

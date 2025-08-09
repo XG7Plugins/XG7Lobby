@@ -11,8 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class MOTDListener implements Listener {

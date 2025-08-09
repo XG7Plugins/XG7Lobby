@@ -150,6 +150,8 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         OfflinePlayer player = getOfflinePlayer();
 
+        if (infractions.isEmpty()) return;
+
         Infraction newInfraction = infractions.get(infractions.size() - 1);
 
         LobbyPlayerManager playerManager = XG7LobbyAPI.lobbyPlayerManager();

@@ -12,6 +12,7 @@ import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.configs.EventConfigs;
 import com.xg7plugins.xg7lobby.configs.MainConfigs;
+import com.xg7plugins.xg7lobby.configs.MultiJumpsConfigs;
 import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
@@ -19,6 +20,7 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -84,10 +86,8 @@ public class LoginAndLogoutEvent implements LobbyListener {
                     if (lobby == null || lobby.getLocation() == null) {
                         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist"
                                 + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
-                        if (previousWorld.getUID().equals(player.getWorld().getUID())) {
+                        if (XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(), previousWorld))
                             onWorldJoin(player, player.getWorld());
-                            return;
-                        }
                         return;
                     }
 
@@ -102,6 +102,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
             return;
         }
 
+        System.out.println("[DEBUG] Not teleporting to lobby, calling onWorldJoin for player: " + player.getName());
         onWorldJoin(player, player.getWorld());
     }
 
@@ -135,32 +136,64 @@ public class LoginAndLogoutEvent implements LobbyListener {
         EventConfigs.OnJoin joinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnJoin.class);
         EventConfigs.OnFirstJoin firstJoinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnFirstJoin.class);
 
-        boolean shouldRunEvents = player.getWorld() == newWorld || joinConfig.isRunEventsWhenReturnToTheWorld()
-                || newWorld == null;
+        World previousBeforeActions = player.getWorld();
+        boolean shouldRunEvents = player.getWorld() == newWorld || joinConfig.isRunEventsWhenReturnToTheWorld();
+
         if (shouldRunEvents) {
-            ActionsProcessor
-                    .process(firstJoinConfig.isEnabled() && !player.hasPlayedBefore() ? firstJoinConfig.getEvents()
-                            : joinConfig.getEvents(), player);
+            ActionsProcessor.process(
+                    firstJoinConfig.isEnabled() && !player.hasPlayedBefore() ? firstJoinConfig.getEvents()
+                            : joinConfig.getEvents(),
+                    player);
         }
 
-        if (joinConfig.isClearInventory())
-            player.getInventory().clear();
+        if (joinConfig.isTpToLobby()) {
 
-        XG7LobbyAPI.customInventoryManager()
-                .openMenu(Config.of(XG7Lobby.getInstance(), MainConfigs.class).getMainSelectorId(), player);
+            if (previousBeforeActions.equals(player.getWorld())) {
 
-        PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
+                String lobbyId = joinConfig.getLobbyToTpId();
 
-        configs.apply(player);
+                CompletableFuture<LobbyLocation> lobbyLocation = lobbyId.equalsIgnoreCase("random")
+                        ? XG7LobbyAPI.requestRandomLobbyLocation()
+                        : XG7LobbyAPI.requestLobbyLocation(lobbyId);
 
-        if (joinConfig.isHeal())
-            player.setHealth(player.getMaxHealth());
+                lobbyLocation.thenAccept(lobby -> {
+                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+                        if (lobby == null || lobby.getLocation() == null) {
+                            Text.sendTextFromLang(player, XG7Lobby.getInstance(),
+                                    "lobby.on-teleport.on-error-doesnt-exist"
+                                            + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
+                            return;
+                        }
+                        lobby.teleport(player);
+                    }));
+                });
+            }
+
+        }
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::fly));
-            lobbyPlayer.applyBuild();
-            lobbyPlayer.applyHide();
-            lobbyPlayer.applyInfractions();
+            XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+                if (joinConfig.isClearInventory())
+                    player.getInventory().clear();
+
+                if (joinConfig.isHeal())
+                    player.setHealth(player.getMaxHealth());
+
+                if (!XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(),
+                        previousBeforeActions.equals(player.getWorld()) ? newWorld : player.getWorld()))
+                    return;
+
+                PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
+                configs.apply(player);
+
+                XG7LobbyAPI.customInventoryManager()
+                        .openMenu(Config.of(XG7Lobby.getInstance(), MainConfigs.class).getMainSelectorId(), player);
+
+                lobbyPlayer.fly();
+                lobbyPlayer.applyBuild();
+                lobbyPlayer.applyHide();
+                lobbyPlayer.applyInfractions();
+            }), 50L);
         });
     }
 
@@ -169,16 +202,16 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         EventConfigs.OnQuit quitConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnQuit.class);
 
+        if (quitConfig.isRunEventsWhenChangeWorld())
+            ActionsProcessor.process(quitConfig.getEvents(), player);
+
         if (XG7LobbyAPI.customInventoryManager() != null)
             XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
-
-        if (newWorld == null
-                || (player.getWorld().getUID().equals(newWorld.getUID()) && quitConfig.isRunEventsWhenChangeWorld())) {
-            ActionsProcessor.process(quitConfig.getEvents(), player);
-        }
 
         PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
 
         configs.reset(player);
+
     }
+
 }

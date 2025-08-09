@@ -1,5 +1,5 @@
 group = 'com.xg7plugins'
-version = '2.2.4'
+version = '2.2.5'
 
 repositories {
     mavenCentral()
@@ -21,6 +21,8 @@ repositories {
 
 dependencies {
     compileOnly files("E:\\Projetos\\XG7Plugins\\plugins\\Core\\build\\libs\\Core-1.2.4.jar")
+    compileOnly files("E:\\Projetos\\XG7Plugins\\plugins\\run\\plugins\\multiverse-inventories-5.1.1.jar")
+
 }
 
 def targetJavaVersion = 8

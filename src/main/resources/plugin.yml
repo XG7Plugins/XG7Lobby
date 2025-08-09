@@ -8,7 +8,8 @@ depend:
 
 softdepend:
   - "LuckPerms"
-
+  - Multiverse-Inventories
+  
 permissions:
   xg7lobby.admin:
     description: Permission to use the admin commands.

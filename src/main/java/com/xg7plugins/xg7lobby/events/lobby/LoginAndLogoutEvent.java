@@ -12,7 +12,6 @@ import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.configs.EventConfigs;
 import com.xg7plugins.xg7lobby.configs.MainConfigs;
-import com.xg7plugins.xg7lobby.configs.MultiJumpsConfigs;
 import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
@@ -20,7 +19,6 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -71,6 +69,8 @@ public class LoginAndLogoutEvent implements LobbyListener {
             });
         }
 
+        boolean runAfterAuth = XG7PluginsAPI.isDependencyEnabled("nLogin") && joinConfig.isApplyConfigsAfterAuthenticate();
+
         if (joinConfig.isTpToLobby()) {
             String lobbyId = joinConfig.getLobbyToTpId();
 
@@ -86,14 +86,14 @@ public class LoginAndLogoutEvent implements LobbyListener {
                     if (lobby == null || lobby.getLocation() == null) {
                         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist"
                                 + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
-                        if (XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(), previousWorld))
-                            onWorldJoin(player, player.getWorld());
+                        if (XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(), previousWorld) && !(runAfterAuth))
+                            handleWorldJoin(player, player.getWorld(), true);
                         return;
                     }
 
                     lobby.teleport(player);
-                    if (previousWorld.getUID().equals(player.getWorld().getUID())) {
-                        onWorldJoin(player, player.getWorld());
+                    if (previousWorld.getUID().equals(player.getWorld().getUID()) && !(runAfterAuth)) {
+                        handleWorldJoin(player, player.getWorld(), true);
                         return;
                     }
                 }));
@@ -102,8 +102,9 @@ public class LoginAndLogoutEvent implements LobbyListener {
             return;
         }
 
-        System.out.println("[DEBUG] Not teleporting to lobby, calling onWorldJoin for player: " + player.getName());
-        onWorldJoin(player, player.getWorld());
+        if (runAfterAuth) return;
+
+        handleWorldJoin(player, player.getWorld(), false);
     }
 
     @EventHandler
@@ -133,6 +134,27 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
     @Override
     public void onWorldJoin(Player player, World newWorld) {
+        handleWorldJoin(player, newWorld, false);
+    }
+
+    @Override
+    public void onWorldLeave(Player player, World newWorld) {
+
+        EventConfigs.OnQuit quitConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnQuit.class);
+
+        if (quitConfig.isRunEventsWhenChangeWorld())
+            ActionsProcessor.process(quitConfig.getEvents(), player);
+
+        if (XG7LobbyAPI.customInventoryManager() != null)
+            XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
+
+        PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
+
+        configs.reset(player);
+
+    }
+
+    protected static void handleWorldJoin(Player player, World newWorld, boolean alreadyTp) {
         EventConfigs.OnJoin joinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnJoin.class);
         EventConfigs.OnFirstJoin firstJoinConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnFirstJoin.class);
 
@@ -146,9 +168,9 @@ public class LoginAndLogoutEvent implements LobbyListener {
                     player);
         }
 
-        if (joinConfig.isTpToLobby()) {
+        if (joinConfig.isTpToLobby() && !alreadyTp) {
 
-            if (previousBeforeActions.equals(player.getWorld())) {
+            if (previousBeforeActions.getUID().equals(player.getWorld().getUID())) {
 
                 String lobbyId = joinConfig.getLobbyToTpId();
 
@@ -195,23 +217,6 @@ public class LoginAndLogoutEvent implements LobbyListener {
                 lobbyPlayer.applyInfractions();
             }), 50L);
         });
-    }
-
-    @Override
-    public void onWorldLeave(Player player, World newWorld) {
-
-        EventConfigs.OnQuit quitConfig = Config.of(XG7Lobby.getInstance(), EventConfigs.OnQuit.class);
-
-        if (quitConfig.isRunEventsWhenChangeWorld())
-            ActionsProcessor.process(quitConfig.getEvents(), player);
-
-        if (XG7LobbyAPI.customInventoryManager() != null)
-            XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
-
-        PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
-
-        configs.reset(player);
-
     }
 
 }

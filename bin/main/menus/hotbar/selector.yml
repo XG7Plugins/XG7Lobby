@@ -1,0 +1,124 @@
+
+#Main hotbar items
+#See games.yml file to menu help
+
+id: "selector"
+
+cooldown-to-use: "2s"
+
+items:
+
+  games:
+
+    material: COMPASS
+    name: "&aGames"
+    lore:
+      - "&7Click to view the games menu!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[OPEN_MENU] (?IF_NOT: %xg7plugins_is_bedrock_player%?) games"
+      - "[OPEN_FORM] (?IF: %xg7plugins_is_bedrock_player%?) games_form"
+
+  profile:
+
+      material: THIS_PLAYER
+      name: "&aProfile"
+      lore:
+        - "&7Click to view your profile!"
+      amount: 1
+      enchants:
+        - "DURABILITY, 1"
+      actions:
+        - "[OPEN_MENU] profile"
+
+  lobbies:
+
+    material: NETHER_STAR
+    name: "&aLobbies"
+    lore:
+      - "&7Click to view the lobbies menu!"
+    amount: 1
+    actions:
+      - "[PLAYER_COMMAND] 7llobbies"
+
+  hidePlayers:
+
+    material: LIME_DYE
+
+    conditional: "?IF_NOT: %xg7lobby_player_is_hiding_players%?"
+    if-false: "showPlayers"
+
+    name: "&aHide Players"
+    lore:
+      - "&7Click to hide players!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[HIDE_PLAYERS] "
+      - "[SWAP] showPlayers"
+
+  showPlayers:
+
+    material: GRAY_DYE
+    name: "&cShow Players"
+    lore:
+      - "&7Click to show players!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[SHOW_PLAYERS] "
+      - "[SWAP] hidePlayers"
+
+  enableFly:
+
+    conditional: "?PERMISSION: xg7lobby.command.fly? ?IF_NOT: %xg7lobby_player_is_flying%?"
+    if-false: "disableFly"
+
+    material: FEATHER
+    name: "&aEnable flight"
+    lore:
+      - "&7Click to &aenable&7!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[FLY_ON] "
+      - "[SWAP] disableFly"
+
+  disableFly:
+
+    conditional: "?PERMISSION: xg7lobby.command.fly?"
+
+    material: FEATHER
+    name: "&cDisable flight"
+    lore:
+      - "&7Click to &bdisable&7!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[FLY_OFF] "
+      - "[SWAP] enableFly"
+
+  enableBuild:
+
+    conditional: "?PERMISSION: xg7lobby.build? ?IF_NOT: %xg7lobby_player_is_build_enabled%?"
+
+    material: IRON_PICKAXE
+    name: "&aEnable build"
+    lore:
+      - "&7Click to &aenable&7!"
+    amount: 1
+    actions:
+      - "[BUILD_ON] "
+      - "[MESSAGE] &aBuild enabled!"
+
+
+row: ["games","profile","","","enableFly","","enableBuild","hidePlayers","lobbies"]
+
+
+config-version: 2.0

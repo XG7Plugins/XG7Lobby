@@ -49,6 +49,7 @@ import com.xg7plugins.xg7lobby.events.lobby.DefaultPlayerEvents;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultWorldEvents;
 import com.xg7plugins.xg7lobby.events.lobby.LoginAndLogoutEvent;
 import com.xg7plugins.xg7lobby.events.lobby.MOTDListener;
+import com.xg7plugins.xg7lobby.events.lobby.NLoginListener;
 import com.xg7plugins.xg7lobby.help.chat.AboutPage;
 import com.xg7plugins.xg7lobby.help.chat.CustomCommandPage;
 import com.xg7plugins.xg7lobby.help.chat.Index;
@@ -236,7 +237,7 @@ public final class XG7Lobby extends Plugin {
     @Override
     public List<Listener> loadEvents() {
 
-        List<Listener> listeners = new ArrayList<>(Arrays.asList(new PVPCommandListener(), new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(), new PVPBlockCommandsListener(), new CommandProcessListener()));
+        List<Listener> listeners = new ArrayList<>(Arrays.asList(new PVPCommandListener(), new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(), new PVPBlockCommandsListener(), new CommandProcessListener(), new NLoginListener()));
 
         GlobalPVPManager pvpManager = XG7LobbyAPI.globalPVPManager();
 

@@ -1,0 +1,91 @@
+
+#See games.yml file to menu help
+
+id: "profile"
+
+title: "&a&lProfile"
+
+rows: 5
+
+items:
+
+  icon:
+
+    material: THIS_PLAYER
+    name: "&aProfile"
+    lore:
+      - "&fFist join: &7%xg7plugins_player_firstjoin_format(dd/MM/yyyy HH:mm:ss)%"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[CLOSE_MENU] "
+
+  tpLobby:
+
+    material: ENDER_PEARL
+    name: "&aLobby"
+    lore:
+      - "&7Click to teleport to the lobby!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[PLAYER_COMMAND] lobby"
+      - "[CLOSE_MENU] "
+      - "[REFRESH_MENU] "
+
+  hidePlayers:
+
+    material: LIME_DYE
+
+    conditional: "?IF_NOT: %xg7lobby_player_is_hiding_players%?"
+    if-false: "showPlayers"
+
+    name: "&aHide Players"
+    lore:
+      - "&7Click to hide players!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[HIDE_PLAYERS] "
+      - "[SWAP] showPlayers"
+      - "[REFRESH_MENU] "
+
+  showPlayers:
+
+    material: GRAY_DYE
+    name: "&cShow Players"
+    lore:
+      - "&7Click to show players!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[SHOW_PLAYERS] "
+      - "[SWAP] hidePlayers"
+  langs:
+
+      material: BOOK
+      name: "&aLanguages"
+      lore:
+        - "&7Click to change your language!"
+      amount: 1
+      enchants:
+        - "DURABILITY, 1"
+      actions:
+        - "[CLOSE_MENU] "
+        - "[PLAYER_COMMAND] lang"
+
+
+
+grid:
+  - ["","","",       "","",           "","",     "",""]
+  - ["","","",       "","icon",       "","",     "",""]
+  - ["","","",       "","",           "","",     "",""]
+  - ["","","tpLobby","","hidePlayers","","langs","",""]
+  - ["","","",       "","",           "","",     "",""]
+
+
+config-version: 2.0

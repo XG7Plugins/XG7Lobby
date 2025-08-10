@@ -1,0 +1,27 @@
+#Commands of XG7Lobby, you can customize args
+
+setlobby: ["7lsetlobby", "7lsetl", "setlobby", "setl", "lobbyset",]
+lobby: ["7llobby", "7ll", "l", "lobby"]
+deletelobby: ["7ldeletelobby", "7ldl", "deletelobby"]
+lobbies: ["7llobbies", "7lls", "lobbies"]
+fly: ["7lfly", "7lf", "fly"]
+gamemode: ["gm", "7lgm"]
+build: ["7lbuild", "7lb", "build"]
+lockchat: ["7llockchat", "7llc", "lockchat"]
+infraction: ["infraction", "7linfraction", "punishment", "7lpunishment", "7lwarn", "7lw", "warn"]
+mute: ["7lmute", "7lm", "mute"]
+unmute: ["7lunmute", "7lum", "unmute"]
+kick: ["7lkick", "7lk", "kick"]
+ban: ["7lban", "7lb", "ban"]
+unban: ["7lunban", "7lub", "unban"]
+banip: ["7lbanip", "7lbi", "banip"]
+unbanip: ["7lunbanip", "7lub", "unbanip"]
+openinv: ["7lopeninv", "7loi", "openinv"]
+openform: ["7lopenform", "7lof", "openform"]
+vanish: ["7lvanish", "7lv", "vanish"]
+execute: ["7lexecute", "7le", "execute"]
+pvp: ["7lpvp", "pvp"]
+infractions: ["infractions", "7lwarns", "warns", "punishments"]
+resetstats: ["7lresetstats", "7lrs", "resetstats"]
+
+config-version: 1.0

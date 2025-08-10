@@ -12,6 +12,7 @@ public class EventConfigs {
     @Getter
     @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-join.")
     public static class OnJoin extends ConfigSection {
+        private boolean applyConfigsAfterAuthenticate;
         private boolean tpToLobby;
         private String lobbyToTpId;
         private boolean heal;

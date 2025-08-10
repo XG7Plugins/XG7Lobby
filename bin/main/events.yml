@@ -155,10 +155,6 @@
 
 #Join events
 on-join:
-
-  # Whether to apply configs after player authentication with nLogin plugin
-  apply-configs-after-authenticate: true
-
   # Whether to teleport players to the lobby on join
   tp-to-lobby: true
 
@@ -239,4 +235,4 @@ on-quit:
   events:
     - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
 
-config-version: 1.2
+config-version: 1.1

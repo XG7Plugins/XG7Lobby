@@ -1,0 +1,50 @@
+enabled: true
+
+# List of custom commands that can be executed in-game
+custom-commands:
+
+  #Example of command creation
+
+  #section-of-the-command:
+  #  name: "Name" <- Command name
+  #  aliases: [ ] <- Command aliases
+  #  permission: "xg7lobby.command.ex" <- Command permission
+  #  description: "Desc" <- Command description
+  #  syntax: "/example" <- Command syntax
+  #  execute-only-in-an-enabled-world: false <- Whether players can execute only in lobby
+  #  actions: <- Command actions
+  #    - "[MESSAGE] TEST"
+
+  clear-chat:
+    name: "clearchat"
+    aliases: [ "cc" ]
+    permission: "xg7lobby.command.clearchat"
+    description: "Clear the chat"
+    syntax: "/clearchat"
+
+    actions:
+      - "[CLEAR_CHAT] "
+
+  discord:
+    name: "discord"
+    permission: ""
+    description: "Join our Discord"
+    aliases: [ "dc" ]
+    syntax: "/discord"
+    actions:
+      - "[MESSAGE]  "
+      - "[MESSAGE] [CENTER:CHAT] &9Join our Discord: &bhttps://discord.gg/jfrn8w92kF"
+      - "[MESSAGE]  "
+
+  site:
+    name: "site"
+    permission: ""
+    description: "Visit our website"
+    syntax: "/site"
+    actions:
+      - "[MESSAGE]  "
+      - "[MESSAGE] [CENTER:CHAT] &9Visit our website: &bhttps://example.com"
+      - "[MESSAGE]  "
+
+#DO NOT CHANGE THIS!
+config-version: 1

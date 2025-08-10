@@ -1,0 +1,36 @@
+enabled: true
+
+#Cooldown for send each message
+cooldown: 3m
+
+#Whether the message will send it only to players in the lobby
+broadcast-only-in-the-lobby: false
+
+#Make the announcement random
+#If true: The ad sending is random
+#If false: The ad sending is in sequence first to last
+random: false
+
+# Sound that will play each advertisement
+sound: "ENTITY_EXPERIENCE_ORB_PICKUP, 5.0, 0.0"
+
+advertisements:
+  #Create your announcement
+  #You can send in actionbars
+  - ad:
+      - "[CENTER:CHAT] &8-------------------&7**&8-------------------"
+      - "[CENTER:CHAT] &e&lANNOUNCEMENT:"
+      - "[CENTER:CHAT] &9This plugin was made by &bDaviXG7"
+      - "[CENTER:CHAT] &8-------------------&7**&8-------------------"
+  - ad:
+      - "[CENTER:CHAT] &8-------------------&7**&8-------------------"
+      - "[CENTER:CHAT] &e&lANNOUNCEMENT:"
+      - "[CENTER:CHAT] &aRate XG7Lobby in &e5 &bstars!"
+      - "[CENTER:CHAT] &8-------------------&7**&8-------------------"
+  - ad:
+      - "[CENTER:CHAT] &8-------------------&7**&8-------------------"
+      - "[CENTER:CHAT] &e&lANNOUNCEMENT:"
+      - "[CENTER:CHAT] &fVisit our website: &bhttps://xg7plugins.com"
+      - "[CENTER:CHAT] &8-------------------&7**&8-------------------"
+
+config-version: 1

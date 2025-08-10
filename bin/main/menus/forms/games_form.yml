@@ -1,0 +1,27 @@
+#See XG7Lobby docs
+
+id: "games_form"
+
+type: "simple"
+
+title: "Games"
+
+content: "Click to choose a game!"
+
+buttons:
+  button1:
+    icon: "URL, https://static.wikia.nocookie.net/minecraft_gamepedia/images/4/44/Diamond_Sword_JE3_BE3.png/revision/latest?cb=20201017135722"
+    text: "Survival"
+    actions:
+      - "[BUNGEE] survival"
+  button2:
+    icon: "URL, https://static.wikia.nocookie.net/minecraft/images/c/c5/Bed.png/revision/latest?cb=20191103220226"
+    text: "Bedwars"
+    actions:
+      - "[BUNGEE] bedwars"
+
+on-close: []
+
+on-error: []
+
+config-version: 1.0

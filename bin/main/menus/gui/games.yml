@@ -152,91 +152,63 @@
 #Sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 #Entities: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Entity.html
 
+#ID of the menu must be unique
+id: "games"
 
-#Join events
-on-join:
+#Title of the menu
+title: "&a&lGames"
 
-  # Whether to apply configs after player authentication with nLogin plugin
-  apply-configs-after-authenticate: true
+#Rows of the menu
+rows: 3
 
-  # Whether to teleport players to the lobby on join
-  tp-to-lobby: true
+#Here you can define the items of the menu
+items:
 
-  # Which lobby to teleport to - "random" for a random lobby
-  lobby-to-tp-id: "random"
+  #Example section:
 
-  # Whether to heal players on join
-  heal: true
+  #name-of-the-item:
+  #  material: MATERIAL <- Material of the item
+  #  name: "&aNAME" <- Name of the item
+  #  lore: <- Lore of the item
+  #    - "&7LORE"
+  #  amount: 1 <- Amount of the item
+  #  glow: true <- If the item should glow
+  #  actions: <- Actions of the item
+  #    - "[PLAYER_COMMAND] COMMAND"
+  #    - "[CLOSE_MENU] "
 
-  # Whether to clear inventory on join  
-  clear-inventory: false
+  survival:
 
-  # Run join events when returning to the world
-  run-events-when-return-to-the-world: true
+    material: DIAMOND_SWORD
+    name: "&aSurvival"
+    lore:
+      - "&7Click to join the survival server!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[BUNGEE] survival"
+      - "[CLOSE_MENU] "
 
-  # Join message settings
-  send-join-message: true
-  send-join-message-only-on-lobby: false
+  bedwars:
 
-  # Events to run when a player joins
-  events:
-    - "[GAMEMODE] survival"
-    - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
-    - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
-    - "[MESSAGE] [CENTER:CHAT] lang:[lobby.on-join-events.title] &f%player_name%"
-    - "[MESSAGE]  "
-    - "[MESSAGE] [CENTER:CHAT] &aSite: &fwww.website.com"
-    - "[MESSAGE] [CENTER:CHAT] &4YT: &fwww.youtube.com"
-    - "[MESSAGE]  "
-    - "[MESSAGE] [CENTER:CHAT] lang:[lobby.on-join-events.message1]"
-    - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
-    - "[SOUND] ENTITY_EXPERIENCE_ORB_PICKUP, 10.0, 0.0"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #FFFF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #00FFFF, true, true, 1"
-    - "[OPEN_MENU] (?NO_PERMISSION: xg7lobby.admin?) profile"
-    - "[PLAYER_COMMAND] (?PERMISSION: xg7lobby.command.help?) 7l help"
+      material: RED_BED
+      name: "&aBedwars"
+      lore:
+        - "&7Click to join the bedwars server!"
+      amount: 1
+      glow: true
+      actions:
+        - "[BUNGEE] bedwars"
+        - "[CLOSE_MENU] "
 
-#First join events
-on-first-join:
-  # Whether to enable first join events
-  enabled: true
-  # Whether to send a first join message
-  send-first-join-message: true
-  # Events to run on player's first join
-  events:
-    - "[GAMEMODE] survival"
-    - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
-    - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
-    - "[MESSAGE] [CENTER:CHAT] &bWelcome for the first time! &f%player_name%"
-    - "[MESSAGE]  "
-    - "[MESSAGE] [CENTER:CHAT] &aSite: &fwww.website.com"
-    - "[MESSAGE] [CENTER:CHAT] &4YT: &fwww.youtube.com"
-    - "[MESSAGE]  "
-    - "[MESSAGE] [CENTER:CHAT] &5&oPlugin made by DaviXG7"
-    - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
-    - "[SOUND] ENTITY_PLAYER_LEVELUP, 10.0, 0.0"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #FFFF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #00FFFF, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #FF00FF, true, true, 1"
-    - "[FIREWORK] BALL_LARGE, #FF00FF, #FFFF00, true, true, 1"
-    - "[OPEN_MENU] (?NO_PERMISSION: xg7lobby.admin?) profile"
-    - "[PLAYER_COMMAND] (?PERMISSION: xg7lobby.command.help?) 7l help"
+#Fill material of the menu
+fill-material: GRAY_STAINED_GLASS_PANE
 
-#Quit events
-on-quit:
-  # Whether to send a quit message
-  send-quit-message: true
+#Place the items in this grid with the name of a section
+grid:
+  - ["","","","",        "","",       "","",""]
+  - ["","","","survival","","bedwars","","",""]
+  - ["","","","",        "","",       "","",""]
 
-  # Only send the quit message if player is in lobby
-  send-quit-message-only-on-lobby: false
-
-  # Run quit events when changing worlds
-  run-events-when-change-world: true
-
-  # Events to run when a player quits
-  events:
-    - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
-
-config-version: 1.2
+config-version: 2

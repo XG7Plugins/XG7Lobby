@@ -8,8 +8,7 @@ depend:
 
 softdepend:
   - "LuckPerms"
-  - "Multiverse-Inventories"
-  - "nLogin"
+  - Multiverse-Inventories
   
 permissions:
   xg7lobby.admin:

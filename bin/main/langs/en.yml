@@ -1,0 +1,525 @@
+formated-name: "English (US)"
+
+commands:
+  not-online: "&cThis player is not online."
+
+  fly:
+    toggle-on: "%prefix% &aFly mode enabled."
+    toggle-off: "%prefix% &cFly mode disabled."
+    toggle-other-on: "%prefix% &aFly mode enabled for &b%target%."
+    toggle-other-off: "%prefix% &cFly mode disabled for &b%target%."
+
+  game-mode:
+    invalid-game-mode: "%prefix% &cInvalid gamemode. &aUse &b(0, s)&8, &b(1, c)&8, &b(2, a) &aor &b(3, sp)."
+    set: "%prefix% &aGamemode set to %gamemode%."
+    set-other: "%prefix% &aGamemode set to %gamemode% for %target%."
+
+  build:
+    toggle-on: "%prefix% &aBuild mode enabled."
+    toggle-off: "%prefix% &cBuild mode disabled."
+    toggle-other-on: "%prefix% &aBuild mode enabled for &b%target%."
+    toggle-other-off: "%prefix% &cBuild mode disabled for &b%target%."
+
+  infraction:
+    level-invalid: "%prefix% &cInvalid infraction level. &eUse a level registered on config."
+
+    warn-admin: "%prefix% &cYou can't warn an admin."
+
+    infraction-not-found: "%prefix% &cInfraction not found!"
+
+    on-pardon: "%prefix% &aWarn with id %id% pardoned successfully."
+
+    on-warn: "%prefix% &cYou have been warned by an admin. Reason: &e%reason%."
+    on-warn-sender: "%prefix% &aPlayer &b%target% &ahas been warned successfully by &e%reason%."
+
+    on-ban: "&cYou have been banned for reaching the maximum number of warns.\n Reason: %reason%."
+    on-mute: "&cYou have been muted for reaching the maximum number of warns.\n Reason: %reason%."
+    on-kick: "&cYou have been kicked for reaching the maximum number of warns.\n Reason: %reason%."
+
+  mute:
+    already-muted: "%prefix% &cThis player is already muted."
+
+    mute-admin: "%prefix% &cYou can't mute an admin."
+
+    on-mute: "%prefix% &cYou have been muted for &b@DAYS_HOURS_MINUTES_SECONDS:%time%@&c."
+    on-mute-sender: "%prefix% &aPlayer &b%target% &chas been muted successfully for &b@DAYS_HOURS_MINUTES_SECONDS:%time%@&c."
+
+  unmute:
+    not-muted: "%prefix% &cThis player is not muted."
+
+    on-unmute: "%prefix% &aYou have been unmuted."
+    on-unmute-sender: "%prefix% &aPlayer &b%target% &ahas been unmuted successfully."
+
+  kick:
+
+    kick-admin: "%prefix% &cYou can't kick an admin."
+
+    on-kick: "&cYou have been kicked by an admin. Reason: %reason%."
+    on-kick-sender: "%prefix% &aPlayer %target% has been kicked successfully by &e%reason%."
+
+  ban:
+    already-banned: "%prefix% &cThis player is already banned."
+
+    ban-admin: "%prefix% &cYou can't ban an admin."
+
+    on-ban: "&cYou have been banned for @DAYS_HOURS_MINUTES_SECONDS:%time%@. Reason: %reason%."
+    on-ban-sender: "%prefix% &aPlayer &b%target%&c has been banned successfully for &b@DAYS_HOURS_MINUTES_SECONDS:%time%@ &cby &e%reason%."
+
+  unban:
+    not-banned: "%prefix% &cThis player is not banned."
+
+    on-unban: "%prefix% &aPlayer &b%target% has been unbanned successfully."
+    on-unban-ip: "%prefix% &b%ip%&a has been unbanned successfully."
+
+  reset-stats:
+    on-reset: "%prefix% &aPlayer &b%target% &astats reset successfully."
+    kills-reset: "%prefix% &aPlayer &b%target% &akills reset successfully."
+    deaths-reset: "%prefix% &aPlayer &b%target% &adeaths reset successfully."
+
+
+lobby:
+
+  on-set:
+    on-error: "%prefix% &cError while setting the lobby location. &f%error%"
+    on-success: "%prefix% &aLobby location &e%id% &aset successfully on &7World&b: &6%world%&b, &6X&b: &6%x%&b, &6Y&b: &6%y%&b, &6Z&b: &6%z%&b, &6YAW&b: &6%yaw%&b, &6PITCH&b: &6%pitch%&b."
+
+  on-teleport:
+    on-error: "%prefix% &cError while trying to teleport to the lobby."
+    on-error-doesnt-exist: "&%prefix% cThe lobby location doesn't exist. Wait for an admin to set it."
+    on-error-doesnt-exist-adm: "%prefix% &cThe lobby location doesn't exist. Use &9/&esetlobby &cto set it."
+    on-success: "%prefix% &aTeleported to the lobby successfully."
+    on-success-other: "%prefix% &aTeleported &b%target% &ato the lobby successfully."
+    on-cooldown: "%prefix% &cYou can't teleport to the lobby for another &e@SECONDS:%time%@&c."
+    on-cooldown-other: "%prefix% &cYou can't teleport to the lobby this player for another &e@SECONDS:%time%@&c."
+
+  on-join-events:
+    title: "&bWelcome"
+    message1: "&5&oPlugin made by DaviXG7"
+
+  delete:
+    id-not-found: "%prefix% &cLobby location with id &e%id% &cnot found."
+    on-error: "%prefix% &cError while trying to delete the lobby location."
+    on-success: "%prefix% &aLobby location &e%id% &cdeleted successfully."
+
+  on-teleporting-message: "[ACTION] %prefix% &7Teleporting to the lobby &b@SECONDS:%time%@&7... &6Don't move!"
+  teleport-cancelled: "%prefix% &cTeleport cancelled!"
+
+messages:
+
+  on-join: "%prefix% &b%target%&7, &ejoined the game!"
+  on-first-join: "%prefix% &b%target%&7, <rainbow>joined the game for the first time!</rainbow>"
+
+  on-quit: "%prefix% &b%target%&7, &cleave the game!"
+
+
+multi-jump-left: "[ACTION] %prefix% &7You have &b%jumps% &7jumps left."
+
+build-not-enabled: "%prefix% &cYou are with build disabled! Use &9/&ebuild &cto enable it."
+
+player-prohibitions:
+  break-blocks: "%prefix% &cYou can't break blocks."
+  place-blocks: "%prefix% &cYou can't place blocks."
+  interact-with-blocks: "%prefix% &cYou can't interact with blocks."
+
+  pickup-items: "%prefix% &cYou can't pick up items."
+  drop-items: "%prefix% &cYou can't drop items."
+
+  attack: "%prefix% &cYou can't attack."
+
+chat:
+
+  on-lock: "%prefix% &cChat locked."
+  on-unlock: "%prefix% &aChat unlocked."
+
+  locked: "%prefix% &cYou can't send messages. The chat is locked."
+
+  swear: "%prefix% &cYou can't swear in the chat."
+  muted: "%prefix% &cYou are muted. You can't send messages for &b@DAYS_HOURS_MINUTES_SECONDS:%time%@&c."
+
+
+  same-message: "%prefix% &cYou can't send the same message twice."
+  message-cooldown: "%prefix% &cYou can't send messages for another &b@SECONDS:%time%@"
+  send-much-messages: "%prefix% &cYou are sending messages too fast. Please slow down."
+
+  prohibited-command: "%prefix% &cCommand not found."
+
+menu-does-not-exist: "%prefix% &cThis menu doesn't exist."
+form-does-not-exist: "%prefix% &cThis form doesn't exist."
+
+selector-cooldown: "[ACTION] %prefix% &cYou can't use the selector for another &b@SECONDS:%time%@"
+
+hide-players:
+  show: "[ACTION] %prefix% &aPlayers are now visible."
+  hide: "[ACTION] %prefix% &cPlayers are now hidden."
+
+pvp:
+  on-join: "%prefix% &aYou are now in global PvP mode."
+  on-leave: "%prefix% &cYou are no longer in global PvP mode."
+
+  on-death: "%prefix% &c%victim% %cause%."
+  on-death-with-killer: "%prefix% &c%victim% %cause% by %killer%."
+
+  on-attack-in-pvp: "%prefix% &cYou can't attack this player. He is not in global PvP mode."
+  on-attack-out-pvp: "%prefix% &cYou can't attack. You are not in pvp mode!"
+
+  pvp-disabling: "[ACTION] %prefix% &cYour pvp is being disabled in &e@SECONDS:%time%@ &cseconds. &lDont move!"
+  disable-cancelled: "%prefix% &cPvP disabling cancelled!"
+
+  pvp-command: "%prefix% You can't use this command in global PvP mode."
+
+  tagged: "%prefix% You are now tagged by &b%target% for &b@SECONDS:%time%@"
+
+  causes:
+    fall: "fell"
+    void: "fell into the void"
+    fire: "burned"
+    lava: "fell into lava"
+    drowning: "drowned"
+    explosion: "exploded"
+    projectile: "was shot"
+    melee: "was slain"
+    magic: "was killed by magic"
+    poison: "was poisoned"
+    starvation: "starved to death"
+    suffocation: "suffocated"
+    lightning: "was struck by lightning"
+    cactus: "was pricked to death"
+    freezing: "froze to death"
+    thorns: "was killed by thorns"
+    anvil: "was crushed by an anvil"
+    block_crushing: "was crushed by a block"
+    end_crystal: "was blown up by an end crystal"
+    fire_tick: "burned"
+    sweet_berry_bush: "was pricked to death"
+    dragon_breath: "was roasted by dragon breath"
+    wither: "withered away"
+    fall_out_of_world: "fell out of the world"
+    generic: "died"
+
+
+scoreboard:
+  player-info: "&e&lPlayer&b:"
+  name: "&7Name&b: &b%player_name%"
+  rank: "&7Rank&b: &r[%luckperms_prefix%]"
+
+  global-pvp: "&e&lGlobal PvP&b:"
+  kills: "&7Kills&b: &9%xg7lobby_player_global_pvp_kills%"
+  deaths: "&7Deaths&b: &c%xg7lobby_player_global_pvp_deaths%"
+
+  players-online: "&7Players online&b: &a%server_online%"
+  players-in-pvp: "&7Players in pvp&b: &a%xg7lobby_players_in_global_pvp%"
+
+warn-menu:
+  title: "&c&lWarns of %target%"
+
+  warn-item:
+    name: "&cWarn %id%"
+    reason: "&7Reason&b: &r%reason%"
+    level: "&7Level&b: &r%level%"
+    date: "&7Date&b: &r%date%  "
+    click-to-copy-id: "&7Click to copy the warn id."
+
+  go-back: "&cPrevious page"
+  go-next: "&aNext page"
+  close: "&cClose"
+
+  id-message: "%prefix% <click:suggest_command:%id%>&7Click to copy the warn id &b%id%.</click>"
+
+lobbies-menu:
+
+  title: "&b&lLobbies"
+
+  lobby-item:
+    name: "&bLobby %id%"
+
+    server: "&7Server&b: &r%server%"
+    location: "&7Location&b: &rWorld: %world%, X: %x%, Y: %y%, Z: %z%, YAW: %yaw%, PITCH: %pitch%"
+    click-to-tp: "&7Click to teleport to the lobby."
+
+    for-admins:
+      click-to-tp: "&7Left click to teleport to the lobby."
+      click-to-remove: "&7Right click to remove the lobby location."
+
+  go-back: "&cPrevious page"
+  go-next: "&aNext page"
+  close: "&cClose"
+
+
+help:
+
+  menu:
+    title: "&rHelp of <rainbow>XG7Lobby</rainbow>"
+
+    close-item: "&cClose"
+    go-back-item: "&cBack"
+    go-next-item: "&aNext"
+
+    profile-item:
+      name: "&bProfile"
+      lore:
+        first-join: "&7First join&b: &9%xg7plugins_player_firstjoin_format(dd/MM/yyyy HH:mm:ss)%"
+        kills: "&7Kills&b: &9%xg7lobby_player_global_pvp_kills%"
+        deaths: "&7Deaths&b: &c%xg7lobby_player_global_pvp_deaths%"
+        kdr: "&7KDR&b: &9%xg7lobby_player_global_pvp_kdr%"
+        build-enabled: "&7Build&b: &r%xg7lobby_player_is_build_enabled%"
+        fly-enabled: "&7Fly&b: &r%xg7lobby_player_is_flying%"
+        chat-locked: "&7Chat locked&b: &r%xg7lobby_chat_locked%"
+
+    commands-item:
+      name: "&bCommands"
+      lore: "Click here to see the commands"
+
+    actions-item:
+      name: "&bActions"
+      lore: "Click here to see the actions"
+
+    set-lobby-item:
+      name: "&cLobby"
+      lore:
+        current-location: "&7Random location&b: %xg7lobby_random_lobby_location%"
+        click: "Click here to set the lobby location"
+
+    menus-guide-item:
+      name: "&bMenus Guide"
+      lore: "Click here to see the menus guide"
+
+    custom-commands-guide-item:
+      name: "&bCustom Commands Guide"
+      lore: "Click here to see the custom commands guide"
+
+    about-item:
+      name: "&bAbout"
+      lore: "Click here to see the plugin information"
+
+    collaborators-item:
+      name: "&bCollaborators"
+      lore: "Click here to see the collaborators"
+
+
+    collaborators-menu-title: "&b&lCollaborators"
+
+    actions-menu:
+      title: "&b&lActions"
+
+      action-item:
+
+        name: "&bAction %id%"
+        lore:
+          description: "&7Description&b: &r%description%"
+          usage: "&7Usage&b: &r%usage%"
+  about:
+    - "About &9XG7Lobby"
+    - ""
+    - "&8Version: &a%version%&r"
+    - "&8Website: &a&n%website%&r"
+    - "&8GitHub: &a&n%github%&r"
+    - "&8Discord: &a&n%discord%&r"
+    - ""
+    - "&8This plugin was made for"
+    - "&8lobby management."
+    - "&8It goal is to give"
+    - "&8fun and security"
+    - "&8to the players"
+    - "&8in lobby worlds."
+    - ""
+    - "&8&oDeveloped by DaviXG7"
+
+  menus-guide:
+    - "&9Menus Guide"
+    - ""
+    - "&7There are 3 types:"
+    - "&81 - Hotbar"
+    - "&82 - GUI"
+    - "&83 - Forms"
+    - ""
+    - "&61 - Hotbar Menus"
+    - "&7Items in inventory"
+    - "&7run actions on click."
+    - ""
+    - "&62 - GUI Menus"
+    - "&7Custom chest menus"
+    - "&7with clickable items."
+    - ""
+    - "&63 - Form Menus"
+    - "&7Floodgate forms only"
+    - "&7work for Bedrock."
+    - "&7See: geysermc.org/wiki/floodgate/"
+    - ""
+    - "&6Creating Menus"
+    - "&71 - Go to folder:"
+    - "&bXG7Lobby/menus/"
+    - "&7Create .yml file"
+    - " "
+    - "&72 - Base Setup"
+    - "&7Every menu needs:"
+    - "&1- id: menu id"
+    - " "
+    - "&6GUI Structure"
+    - "&1- title: GUI Title"
+    - "&1- rows: lines of 9 slots"
+    - ""
+    - "&1- items: GUI items"
+    - "&1- fill-material: "
+    - "&1    background items"
+    - "&1- grid: item map"
+    - " "
+    - "&1Hotbar Structure"
+    - "&1- cooldown-to-use:"
+    - "&1    Time delay per use"
+    - "&1- disable-cooldown:"
+    - "&1    Disables delay"
+    - " "
+    - "&1- items: hotbar list"
+    - "&1- row: hotbar row"
+    - " "
+    - "&6Item Structure"
+    - "&7Inside 'items':"
+    - "&1items:"
+    - "&1  my-item:"
+    - "&1    material: Material type"
+    - "&1    name: Display name"
+    - "&1    lore: Description"
+    - "&1    amount: Quantity"
+    - "&1    enchants: Enchantments"
+    - "&1    actions: Click actions"
+    - "&1    conditional: Add condition"
+    - "&1    if-false: Fallback item"
+    - ""
+    - "&6Form Structure"
+    - "&73 Form types:"
+    - "&81 - Simple"
+    - "&82 - Modal"
+    - "&83 - Custom"
+    - ""
+    - "&7Use 'type' field:"
+    - "&1- type: form type"
+    - ""
+    - "&61 - Simple Form"
+    - "&1- title: form name"
+    - "&1- content: message"
+    - "&1- buttons: list"
+    - "&1- on-close: close actions"
+    - "&1- on-error: error actions"
+    - ""
+    - "&6Buttons"
+    - "&1- icon: image"
+    - "&1- text: label"
+    - "&1- actions: ac of the button"
+    - ""
+    - "&12 - Modal Form"
+    - "&1- title: form name"
+    - "&1- content: text"
+    - "&1- first-button:"
+    - "&1- second-button:"
+    - "&1- on-click-first-button:"
+    - "&1- on-click-second-button:"
+    - "&1- on-error:"
+    - ""
+    - "&63 - Custom Form"
+    - "&1- title: form name"
+    - "&1- on-close: close"
+    - "&1- on-submit: done"
+    - "&1- on-error: error"
+    - ""
+    - "&1- components:"
+    - "&7Each has a type:"
+    - "&11 - Slider"
+    - "&12 - Input"
+    - "&13 - Toggle"
+    - "&14 - Options"
+    - ""
+    - "&6Slider:"
+    - "&1- title: text"
+    - "&1- min/max-value"
+    - "&1- start/increment-value"
+    - ""
+    - "&6Input:"
+    - "&1- title: text"
+    - "&1- placeholder: hint"
+    - "&1- default-text:"
+    - ""
+    - "&6Toggle:"
+    - "&1- text: label"
+    - "&1- default-enabled"
+    - ""
+    - "&6Options:"
+    - "&1- title: text"
+    - "&1- options: choices"
+    - ""
+    - "&aTips:"
+    - "&6/openform <id>"
+    - "&6/openinv <id>"
+    - "&7to test menus"
+    - ""
+    - "&7Use actions:"
+    - "&6[OPEN_FORM]"
+    - "&6[OPEN_INV]"
+    - ""
+    - "&6Test step by step!"
+    - ""
+    - "&8&oMade by &bDaviXG7"
+
+  custom-commands-guide:
+    - "&9Custom Commands Guide"
+    - ""
+    - "&7Learn how to create custom commands"
+    - ""
+    - "&6Important Note:"
+    - "&7Cannot use arguments like:"
+    - "&1- test arg1/arg3 arg2"
+    - ""
+    - "&6Configuration Location:"
+    - "&7Navigate to:"
+    - "&1- custom-commands section"
+    - ""
+    - "&6Command Creation Steps:"
+    - "&7Create a new command section with:"
+    - ""
+    - "&1- description: Command explanation"
+    - ""
+    - "&1- aliases: Alternative command names"
+    - ""
+    - "&1- permission: Required access level"
+    - ""
+    - "&1- actions: Command execution list"
+    - ""
+    - "&7&oTips: Keep commands clear and simple"
+
+  form:
+
+    title: "&rHelp of <rainbow>XG7Lobby</rainbow>"
+
+
+    content:
+      - "&7Welcome to the &6XG7Lobby's &7help!"
+      - "&eXG7Lobby is a plugin that aims to facilitate the lobby management."
+      - "&bSee the options below for more information."
+
+    about: "&aAbout <rainbow>XG7Lobby</rainbow>"
+    commands: "&aCommands"
+    menus-guide: "&aMenus Guide"
+    custom-commands-guide: "&aCustom Commands Guide"
+    collaborators: "&aCollaborators"
+
+    collaborators-title: "Collaborators of XG7Lobby:"
+    collaborators-content: "See who helped on XG7Lobby process"
+
+    click-to-back: "Back to help"
+
+
+  chat:
+
+    title: "&7Welcome to the &6XG7Lobby's &7help!"
+
+    content: "&eXG7Lobby is a plugin that aims to facilitate the lobby \nmanagement.\nClick to see more information."
+
+    back: "&aClick to back to the help"
+
+    lang: "&aLanguages&f: &1click here to change profile lang"
+    commands: "&aCommands&f: &1click here to see the commands"
+    menus-guide: "&aMenus Guide&f: &1click here to see the menus guide"
+    custom-commands-guide: "&aCustom Commands Guide&f: &1click here to see the custom commands guide"
+
+help-in-chat.commands-title: "&7Commands of &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
+
+config-version: 2.0

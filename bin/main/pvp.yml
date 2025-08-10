@@ -1,0 +1,78 @@
+enabled: true
+
+# Cooldown for leaving PvP mode
+leave-command-cooldown: 5s
+
+# Hide players who are not in PvP mode
+hide-players-not-in-pvp: true
+
+# Disable certain features in PvP
+disable-multi-jumps: true
+disable-launchpad: true
+disable-lobby-effects: true
+
+# Time until the combat log removes
+combat-log-remove: 20s
+
+# Enable food level changes
+food-change: true
+
+# Enable item drops on death
+drops-enabled: true
+
+# PvP lobby id
+pvp-lobby: "lobby1"
+
+# Actions when a player joins PvP
+on-join-pvp:
+  # Heal player on join
+  heal: true
+  # Teleport to PvP lobby
+  teleport-to-pvp-lobby: true
+
+  # Actions to perform
+  actions:
+    - "[EQUIP] HELMET, DIAMOND_HELMET"
+    - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"
+    - "[EQUIP] LEGGINGS, DIAMOND_LEGGINGS"
+    - "[EQUIP] BOOTS, DIAMOND_BOOTS"
+    - "[EQUIP] OFFHAND, GOLDEN_APPLE"
+    - "[BROADCAST] &a%player% joined the PvP!"
+
+# Actions on player kill
+on-kill:
+  killer-actions: [ ]
+  victim-actions: [ ]
+
+# Actions on player respawn
+on-respawn:
+  # Teleport back to PvP lobby
+  teleport-to-pvp-lobby: true
+
+  # Clear inventory
+  reset-items: true
+
+  actions: [ ]
+
+# Actions when leaving PvP
+on-leave-pvp:
+  # Prevent movement while disabling
+  dont-move: true
+  actions:
+    - "[BROADCAST] &c%player% left the PvP!"
+
+# Blocked commands in PvP
+commands-blocked:
+  - "/lobby"
+  - "/spawn"
+  - "/hub"
+  - "/warp"
+  - "/fly"
+  - "/gm"
+  - "/gamemode"
+  - "/tp"
+  - "/home"
+  - "/back"
+
+#DO NOT CHANGE THIS!
+config-version: 1

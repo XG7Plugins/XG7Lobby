@@ -1,0 +1,34 @@
+
+#PVP Hotbar items
+#See games.yml file to menu help
+
+
+id: "pvp"
+
+disable-cooldown: true
+
+items:
+
+  sword:
+    material: "DIAMOND_SWORD"
+    name: "&aPvP Sword"
+    amount: 1
+    enchants:
+      - "DAMAGE_ALL, 1"
+
+  bow:
+    material: "BOW"
+    name: "&aPvP Bow"
+    amount: 1
+
+  arrow:
+    material: "ARROW"
+    name: "&aPvP Arrow"
+    amount: 64
+
+
+
+row: ["sword", "bow", "arrow", "", "", "", "", "", ""]
+
+
+config-version: 1.0

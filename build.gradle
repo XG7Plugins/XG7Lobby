@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly files("E:\\Projetos\\XG7Plugins\\plugins\\Core\\build\\libs\\Core-1.2.4.jar")
+    compileOnly files("E:\\Projetos\\XG7Plugins\\plugins\\Core\\build\\libs\\Core-1.2.5.jar")
 
     compileOnly('com.nickuc.login:api:10.4')
 

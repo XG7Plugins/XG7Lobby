@@ -10,7 +10,7 @@ import java.util.List;
 public class EventConfigs {
 
     @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-join.")
+    @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-join")
     public static class OnJoin extends ConfigSection {
         private boolean applyConfigsAfterAuthenticate;
         private boolean tpToLobby;
@@ -24,7 +24,7 @@ public class EventConfigs {
     }
 
     @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-first-join.")
+    @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-first-join")
     public static class OnFirstJoin extends ConfigSection {
         private boolean enabled;
         private boolean sendFirstJoinMessage;
@@ -32,7 +32,7 @@ public class EventConfigs {
     }
 
     @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-quit.")
+    @ConfigFile(plugin = XG7Lobby.class, configName = "events", path = "on-quit")
     public static class OnQuit extends ConfigSection {
         private boolean sendQuitMessage;
         private boolean runEventsWhenChangeWorld;

@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "motd.")
+@ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "motd")
 public class MotdConfig extends ConfigSection {
 
     private boolean enabled;

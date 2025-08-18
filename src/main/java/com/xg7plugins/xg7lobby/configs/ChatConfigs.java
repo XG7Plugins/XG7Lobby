@@ -1,6 +1,7 @@
 package com.xg7plugins.xg7lobby.configs;
 
 import com.xg7plugins.data.config.Config;
+import com.xg7plugins.data.config.section.ConfigField;
 import com.xg7plugins.data.config.section.ConfigFile;
 import com.xg7plugins.data.config.section.ConfigSection;
 import com.xg7plugins.utils.time.Time;
@@ -15,47 +16,44 @@ public class ChatConfigs extends ConfigSection {
 
     private boolean lockChatOnlyOnLobby;
 
-    public AntiSwearing getAntiSwearingConfigs() {
-        return Config.of(XG7Lobby.getInstance(), AntiSwearing.class);
-    }
-    public BlockCommands getBlockCommandsConfigs() {
-        return Config.of(XG7Lobby.getInstance(), BlockCommands.class);
-    }
-    public AntiSpam getAntiSpamConfigs() {
-        return Config.of(XG7Lobby.getInstance(), AntiSpam.class);
-    }
+    @ConfigField(name = "anti-swearing.enabled")
+    private boolean antiSwearEnabled;
+    @ConfigField(name = "anti-swearing.blockedWords")
+    private List<String> blockedWords;
+    @ConfigField(name = "anti-swearing.replacement")
+    private String chatReplacement;
+    @ConfigField(name = "anti-swearing.dont-send-the-message")
+    private boolean dontSendTheSwearMessage;
+    @ConfigField(name = "anti-swearing.anti-swear-only-on-lobby")
+    private boolean antiSwearOnlyOnLobby;
 
-    @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "anti-swearing.")
-    public static class AntiSwearing extends ConfigSection {
-        private boolean enabled;
-        private List<String> blockedWords;
-        private String replacement;
-        private boolean dontSendTheMessage;
-        private boolean antiSwearOnlyOnLobby;
-    }
+    @ConfigField(name = "block-commands.enabled")
+    private boolean blockCommandsEnabled;
+    @ConfigField(name = "block-commands.anti-tab")
+    private boolean antiTabEnabled;
+    @ConfigField(name = "block-commands.blocked-commands")
+    private List<String> blockedCommands;
 
-    @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "block-commands.")
-    public static class BlockCommands extends ConfigSection {
-        private boolean enabled;
-        private boolean antiTab;
-        private List<String> blockedCommands;
-    }
+    @ConfigField(name = "anti-spam.enabled")
+    private boolean antiSpamEnabled;
 
-    @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "anti-spam.")
-    public static class AntiSpam extends ConfigSection {
-        private boolean enabled;
-        private boolean antiSpamOnlyOnLobby;
-        private boolean messageCannotBeTheSame;
-        private Time cooldown;
-        private int spamTolerance;
-        private Time timeForDecrementSpamTolerance;
-        private int sendWarningOnMessage;
-        private boolean muteOnSpamLimit;
-        private Time unmuteDelay;
-        private int spamWarnLevel;
-    }
+    @ConfigField(name = "anti-spam.anti-spam-only-on-lobby")
+    private boolean antiSpamOnlyOnLobby;
+    @ConfigField(name = "anti-spam.message-cannot-be-the-same")
+    private boolean messageCannotBeTheSame;
+    @ConfigField(name = "anti-spam.cooldown")
+    private Time cooldown;
+    @ConfigField(name = "anti-spam.spam-tolerance")
+    private int spamTolerance;
+    @ConfigField(name = "anti-spam.time-for-decrement-spam-tolerance")
+    private Time timeForDecrementSpamTolerance;
+    @ConfigField(name = "anti-spam.send-warning-on-message")
+    private int sendWarningOnMessage;
+    @ConfigField(name = "anti-spam.mute-on-spam-limit")
+    private boolean muteOnSpamLimit;
+    @ConfigField(name = "anti-spam.unmute-delay")
+    private Time unmuteDelay;
+    @ConfigField(name = "anti-spam.spam-warn-level")
+    private int spamWarnLevel;
 
 }

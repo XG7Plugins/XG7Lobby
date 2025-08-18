@@ -39,7 +39,7 @@ public class PVPConfigs extends ConfigSection {
     }
 
     @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-join-pvp.")
+    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-join-pvp")
     public static class OnJoinPvp extends ConfigSection {
         private boolean heal;
         private boolean teleportToPvpLobby;
@@ -47,14 +47,14 @@ public class PVPConfigs extends ConfigSection {
     }
 
     @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-kill.")
+    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-kill")
     public static class OnKill extends ConfigSection {
         private List<String> killerActions;
         private List<String> victimActions;
     }
 
     @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-respawn.")
+    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-respawn")
     public static class OnRespawn extends ConfigSection {
         private boolean teleportToPvpLobby;
         private boolean resetItems;
@@ -62,7 +62,7 @@ public class PVPConfigs extends ConfigSection {
     }
 
     @Getter
-    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-leave-pvp.")
+    @ConfigFile(plugin = XG7Lobby.class, configName = "pvp", path = "on-leave-pvp")
     public static class OnLeavePvp extends ConfigSection {
         private boolean dontMove;
         private List<String> actions;

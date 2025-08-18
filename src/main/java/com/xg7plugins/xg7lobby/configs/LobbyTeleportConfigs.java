@@ -7,7 +7,7 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 
 @Getter
-@ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "lobby-teleport-cooldown.")
+@ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "lobby-teleport-cooldown")
 public class LobbyTeleportConfigs extends ConfigSection {
     private Time beforeTeleport;
     private boolean dontMove;

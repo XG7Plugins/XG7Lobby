@@ -261,7 +261,7 @@ public final class XG7Lobby extends Plugin {
         if (Config.of(this, AdvertisementConfigs.class).isEnabled()) tasks.add(new AutoBroadcastTask());
         tasks.add(new EffectsTask());
         tasks.add(new WorldCyclesTask());
-        if (Config.of(this, ChatConfigs.AntiSpam.class).isEnabled() && Config.of(this, ChatConfigs.AntiSpam.class).getSpamTolerance() > 0) tasks.add(new AntiSpamTask());
+        if (Config.of(this, ChatConfigs.class).isAntiSpamEnabled() && Config.of(this, ChatConfigs.class).getSpamTolerance() > 0) tasks.add(new AntiSpamTask());
 
         return tasks;
     }

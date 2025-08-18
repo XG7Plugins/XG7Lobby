@@ -18,14 +18,14 @@ import java.util.List;
 public class AntiSwearingListener implements Listener {
     @Override
     public boolean isEnabled() {
-        return Config.of(XG7Lobby.getInstance(), ChatConfigs.AntiSwearing.class).isEnabled();
+        return Config.of(XG7Lobby.getInstance(), ChatConfigs.class).isAntiSwearEnabled();
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        ChatConfigs.AntiSwearing config = Config.of(XG7Lobby.getInstance(), ChatConfigs.AntiSwearing.class);
+        ChatConfigs config = Config.of(XG7Lobby.getInstance(), ChatConfigs.class);
 
         if (player.hasPermission("xg7lobby.chat.swear")) return;
 
@@ -36,13 +36,13 @@ public class AntiSwearingListener implements Listener {
         for (String swearingWord : config.getBlockedWords()) {
             if (!message.contains(swearingWord.toLowerCase())) continue;
 
-            if (config.isDontSendTheMessage()) {
+            if (config.isDontSendTheSwearMessage()) {
                 event.setCancelled(true);
                 Text.sendTextFromLang(player,XG7Lobby.getInstance(), "chat.swear");
                 return;
             }
 
-            message = message.replace(swearingWord, Strings.repeat(config.getReplacement(), swearingWord.length()));
+            message = message.replace(swearingWord, Strings.repeat(config.getChatReplacement(), swearingWord.length()));
 
         }
 

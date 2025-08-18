@@ -8,7 +8,7 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 
 @Getter
-@ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "launchpad.")
+@ConfigFile(plugin = XG7Lobby.class, configName = "config", path = "launchpad")
 public class LaunchpadConfigs extends ConfigSection {
 
     private boolean enabled;

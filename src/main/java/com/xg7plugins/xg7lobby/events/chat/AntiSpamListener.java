@@ -28,14 +28,14 @@ public class AntiSpamListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return Config.of(XG7Lobby.getInstance(), ChatConfigs.AntiSpam.class).isEnabled();
+        return Config.of(XG7Lobby.getInstance(), ChatConfigs.class).isAntiSpamEnabled();
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        ChatConfigs.AntiSpam config = Config.of(XG7Lobby.getInstance(), ChatConfigs.AntiSpam.class);
+        ChatConfigs config = Config.of(XG7Lobby.getInstance(), ChatConfigs.class);
 
         if (player.hasPermission("xg7lobby.chat.spam")) return;
 

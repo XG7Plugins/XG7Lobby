@@ -7,7 +7,7 @@ import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.data.config.Config;
-import com.xg7plugins.data.config.section.ConfigBoolean;
+import com.xg7plugins.data.config.section.ConfigVerify;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
@@ -26,7 +26,7 @@ import org.bukkit.entity.Player;
         isInEnabledWorldOnly = true,
         isPlayerOnly = true,
         pluginClass = XG7Lobby.class,
-        isEnabled = @ConfigBoolean(
+        isEnabled = @ConfigVerify(
                 configName = "pvp",
                 path = "enabled"
         )

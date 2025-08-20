@@ -5,7 +5,7 @@ import com.xg7plugins.libs.packetevents.protocol.player.ClientVersion;
 import com.xg7plugins.libs.packetevents.protocol.player.User;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.data.config.Config;
-import com.xg7plugins.data.config.section.ConfigBoolean;
+import com.xg7plugins.data.config.section.ConfigVerify;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
@@ -45,7 +45,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean (
+            isEnabled = @ConfigVerify (
                     configName = "config",
                     path = "break-blocks",
                     invert = true
@@ -58,7 +58,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean (
+            isEnabled = @ConfigVerify (
                     configName = "config",
                     path = "place-blocks",
                     invert = true
@@ -71,7 +71,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean (
+            isEnabled = @ConfigVerify (
                     configName = "config",
                     path = "interact-with-blocks",
                     invert = true
@@ -91,7 +91,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean (
+            isEnabled = @ConfigVerify (
                     configName = "config",
                     path = "drop-items",
                     invert = true
@@ -105,7 +105,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean (
+            isEnabled = @ConfigVerify (
                     configName = "config",
                     path = "pickup-items",
                     invert = true
@@ -142,7 +142,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(
+            isEnabled = @ConfigVerify(
                     configName = "config",
                     path = "take-damage",
                     invert = true
@@ -157,7 +157,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(
+            isEnabled = @ConfigVerify(
                     configName = "config",
                     path = "attack",
                     invert = true
@@ -206,7 +206,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(
+            isEnabled = @ConfigVerify(
                     configName = "config",
                     path = "food-change",
                     invert = true
@@ -219,7 +219,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(
+            isEnabled = @ConfigVerify(
                     configName = "config",
                     path = "cancel-death-by-void"
             )
@@ -245,7 +245,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(
+            isEnabled = @ConfigVerify(
                     configName = "config",
                     path = "cancel-portal-teleport"
             ),
@@ -306,7 +306,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(
+            isEnabled = @ConfigVerify(
                     configName = "config",
                     path = "auto-respawn"
             )

@@ -1,6 +1,5 @@
 package com.xg7plugins.xg7lobby.configs;
 
-import com.xg7plugins.data.config.Config;
 import com.xg7plugins.data.config.section.ConfigField;
 import com.xg7plugins.data.config.section.ConfigFile;
 import com.xg7plugins.data.config.section.ConfigSection;

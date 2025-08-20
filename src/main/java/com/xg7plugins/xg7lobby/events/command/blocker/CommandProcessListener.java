@@ -13,11 +13,11 @@ import java.util.List;
 
 public class CommandProcessListener implements Listener {
 
-    private final ChatConfigs.BlockCommands config = Config.of(XG7Lobby.getInstance(), ChatConfigs.BlockCommands.class);
+    private final ChatConfigs config = Config.of(XG7Lobby.getInstance(), ChatConfigs.class);
 
     @Override
     public boolean isEnabled() {
-        return config.isEnabled();
+        return config.isBlockCommandsEnabled();
     }
 
     @EventHandler

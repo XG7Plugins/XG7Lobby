@@ -104,8 +104,7 @@ import java.util.List;
         mainCommandAliases = {"7l", "xg7l"},
         configs = {"ads", "custom_commands", "events", "pvp", "scores"},
         configSections = {
-                AdvertisementConfigs.class, ChatConfigs.class, ChatConfigs.AntiSwearing.class,
-                ChatConfigs.AntiSpam.class, ChatConfigs.BlockCommands.class, EventConfigs.OnJoin.class,
+                AdvertisementConfigs.class, ChatConfigs.class, EventConfigs.OnJoin.class,
                 EventConfigs.OnFirstJoin.class, EventConfigs.OnQuit.class, LaunchpadConfigs.class,
                 LobbyTeleportConfigs.class, MainConfigs.class, ModerationConfigs.class, MotdConfig.class,
                 MultiJumpsConfigs.class, PlayerConfigs.class, PVPConfigs.class, PVPConfigs.OnJoinPvp.class,

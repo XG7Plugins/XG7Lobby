@@ -33,7 +33,7 @@ public class AntiSpamTask extends TimerTask {
                 XG7Lobby.getInstance(),
                 "anti-spam-tolerance",
                 0,
-                Config.of(XG7Lobby.getInstance(), ChatConfigs.AntiSpam.class).getTimeForDecrementSpamTolerance().getMilliseconds(),
+                Config.of(XG7Lobby.getInstance(), ChatConfigs.class).getTimeForDecrementSpamTolerance().getMilliseconds(),
                 TaskState.RUNNING,
                 null
         );

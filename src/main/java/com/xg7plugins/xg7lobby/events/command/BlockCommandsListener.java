@@ -11,14 +11,14 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class BlockCommandsListener implements Listener {
     @Override
     public boolean isEnabled() {
-        return Config.of(XG7Lobby.getInstance(), ChatConfigs.BlockCommands.class).isEnabled();
+        return Config.of(XG7Lobby.getInstance(), ChatConfigs.class).isBlockCommandsEnabled();
     }
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         if (event.getPlayer().hasPermission("xg7lobby.command.*") || event.getPlayer().hasPermission("xg7lobby.command_block_bypass")) return;
 
-        ChatConfigs.BlockCommands config = Config.of(XG7Lobby.getInstance(), ChatConfigs.BlockCommands.class);
+        ChatConfigs config = Config.of(XG7Lobby.getInstance(), ChatConfigs.class);
 
         if (config.getBlockedCommands().contains(event.getMessage().split(" ")[0])) {
             event.setCancelled(true);

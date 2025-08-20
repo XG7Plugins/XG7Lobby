@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.events.lobby;
 
-import com.xg7plugins.data.config.section.ConfigBoolean;
+import com.xg7plugins.data.config.section.ConfigVerify;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import org.bukkit.entity.Projectile;
@@ -17,7 +17,7 @@ public class DefaultWorldEvents implements Listener {
     }
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "spawn-mobs", invert = true)
+            isEnabled = @ConfigVerify(configName = "config", path = "spawn-mobs", invert = true)
     )
     public void onMobSpawn(CreatureSpawnEvent event) {
         if (event.getEntity() instanceof Projectile) return;
@@ -26,7 +26,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "leaves-decay", invert = true)
+            isEnabled = @ConfigVerify(configName = "config", path = "leaves-decay", invert = true)
     )
     public void onLeavesDecay(LeavesDecayEvent event) {
         event.setCancelled(true);
@@ -34,7 +34,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "burn-blocks", invert = true)
+            isEnabled = @ConfigVerify(configName = "config", path = "burn-blocks", invert = true)
     )
     public void onBlockBurn(BlockBurnEvent event) {
         event.setCancelled(true);
@@ -42,7 +42,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "block-spread", invert = true)
+            isEnabled = @ConfigVerify(configName = "config", path = "block-spread", invert = true)
     )
     public void onBlockSpread(BlockSpreadEvent event) {
         event.setCancelled(true);
@@ -50,7 +50,7 @@ public class DefaultWorldEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigBoolean(configName = "config", path = "cancel-explosions")
+            isEnabled = @ConfigVerify(configName = "config", path = "cancel-explosions")
     )
     public void onExplosion(ExplosionPrimeEvent event) {
         event.setCancelled(true);

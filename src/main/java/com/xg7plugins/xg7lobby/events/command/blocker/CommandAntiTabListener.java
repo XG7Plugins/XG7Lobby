@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 @PacketListenerSetup(packet = PacketEventType.PLAY_SERVER_TAB_COMPLETE)
 public class CommandAntiTabListener implements PacketListener {
 
-    private final ChatConfigs.BlockCommands config = Config.of(XG7Lobby.getInstance(), ChatConfigs.BlockCommands.class);
+    private final ChatConfigs config = Config.of(XG7Lobby.getInstance(), ChatConfigs.class);
 
     @Override
     public boolean isEnabled() {
-        return config.isAntiTab() && config.isEnabled();
+        return config.isAntiTabEnabled() && config.isBlockCommandsEnabled();
     }
 
     @Override

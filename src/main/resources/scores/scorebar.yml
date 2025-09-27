@@ -1,0 +1,55 @@
+boss-bar:
+  enabled: true
+
+  #Delay for update
+  update-time: 500ms
+
+  #Title animation
+  title:
+    - "&9XG7Lobby"
+    - "&3XG7Lobby"
+    - "&bXG7Lobby"
+    - "&3XG7Lobby"
+    - "&9XG7Lobby"
+
+  #Bossbar health percentage
+  progress: 100
+
+  #1.9+
+  color: "BLUE"
+  style: "SOLID"
+
+  #This is a public bossbar
+  #Don't support placeholders
+  #+1.9
+  public: false
+
+#Action bar sender
+actionbar:
+  enabled: true
+
+  #Delay for update
+  update-time: 1s
+
+  #Animation in the action bar
+  text:
+    - "&bTIME&e: &f%localtime_time_HH:mm:ss%&e | &aWorld: &f%player_world%"
+    - "&aTIME&e: &f%localtime_time_HH:mm:ss%&e | &aWorld: &f%player_world%"
+    - "&9TIME&e: &f%localtime_time_HH:mm:ss%&e | &aWorld: &f%player_world%"
+
+#Handles the player's XP-Bar
+xp-bar:
+  enabled: true
+
+  #Delay for update
+  update-time: 1s
+
+  #Levels to change
+  levels:
+    - "7, 0.2"
+    - "7, 0.4"
+    - "7, 0.6"
+    - "7, 0.8"
+    - "7, 1.0"
+
+config-version: 1

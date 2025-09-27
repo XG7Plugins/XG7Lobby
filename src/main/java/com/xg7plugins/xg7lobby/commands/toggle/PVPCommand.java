@@ -1,20 +1,21 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.cooldowns.CooldownManager;
-import com.xg7plugins.data.config.Config;
-import com.xg7plugins.data.config.section.ConfigVerify;
+
+import com.xg7plugins.config.utils.ConfigCheck;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,7 @@ import org.bukkit.entity.Player;
         isInEnabledWorldOnly = true,
         isPlayerOnly = true,
         pluginClass = XG7Lobby.class,
-        isEnabled = @ConfigVerify(
+        isEnabled = @ConfigCheck(
                 configName = "pvp",
                 path = "enabled"
         )
@@ -41,7 +42,7 @@ public class PVPCommand implements Command {
             return;
         }
 
-        PVPConfigs config = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
+        ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
 
         if (XG7PluginsAPI.cooldowns().containsPlayer("pvp-disable", player)) {
             XG7PluginsAPI.cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
@@ -50,7 +51,7 @@ public class PVPCommand implements Command {
 
         XG7PluginsAPI.cooldowns().addCooldown(player, new CooldownManager.CooldownTask(
                 "pvp-disable",
-                config.getLeaveCommandCooldown().getMilliseconds(),
+                config.getTimeInMilliseconds("leave-command-cooldown"),
                 p -> {
 
                     long cooldownToToggle = XG7PluginsAPI.cooldowns().getReamingTime("pvp-disable", p);

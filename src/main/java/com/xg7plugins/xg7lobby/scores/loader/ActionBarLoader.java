@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.scores.loader;
 
+import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.modules.xg7scores.Score;
 import com.xg7plugins.modules.xg7scores.builder.ActionBarBuilder;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class ActionBarLoader extends LobbyScoreLoader {
     public ActionBarLoader() {
-        super(new ScoreConfig("actionbar"), "xg7lobby-ab");
+        super(new ScoreConfig(ConfigFile.of("scores/scorebar", XG7Lobby.getInstance()).section("action-bar")), "xg7lobby-ab");
     }
 
     @Override

@@ -132,15 +132,6 @@ main-selector-id: "selector"
 # PvP selector menu ID
 main-pvp-selector-id: "pvp"
 
-# Delay between player effects task executions
-effects-task-delay: 5s
-
-# List of effects to apply to the player on lobby join
-effects:
-  - "JUMP_BOOST, 2"
-  - "SPEED, 2"
-  - "NIGHT_VISION, 1"
-
 ##################################################################
 #                         PLAYER CONFIGS                         #
 ##################################################################
@@ -271,7 +262,7 @@ infractions-ban-by-ip: false
 ##################################################################
 
 # Lock chat only if the player is in the lobby world
-lock-chat-only-on-lobby: false
+lock-chat-only-in-lobby: false
 
 anti-swearing:
   # Enable anti-swearing system
@@ -287,7 +278,7 @@ anti-swearing:
   dont-send-the-message: false
 
   # Only apply anti-swearing in lobby world
-  anti-swear-only-on-lobby: false
+  anti-swear-only-in-lobby: false
 
 block-commands:
   # Enable command blocking
@@ -315,7 +306,7 @@ anti-spam:
   enabled: true
 
   # Only apply anti-spam in the lobby world
-  anti-spam-only-on-lobby: false
+  anti-spam-only-in-lobby: false
 
   # Block repeated identical messages
   message-cannot-be-the-same: true
@@ -399,4 +390,4 @@ motd:
 
 
 #DO NOT CHANGE THIS!
-config-version: 4
+config-version: 5

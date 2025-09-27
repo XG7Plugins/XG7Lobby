@@ -1,16 +1,17 @@
 package com.xg7plugins.xg7lobby.events.air;
 
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
+import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.MultiJumpsConfigs;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
@@ -22,14 +23,15 @@ public class MultiJumpingListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return Config.of(XG7Lobby.getInstance(), MultiJumpsConfigs.class).isEnabled();
+        return ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+                .section("multi-jumps")
+                .get("enabled", true);
     }
-
 
     @EventHandler
     public void onToggleFlight(PlayerToggleFlightEvent event) {
 
-        MultiJumpsConfigs config = Config.of(XG7Lobby.getInstance(), MultiJumpsConfigs.class);
+        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("multi-jumps");
 
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(event.getPlayer().getUniqueId());
 
@@ -38,28 +40,35 @@ public class MultiJumpingListener implements Listener {
 
         event.setCancelled(true);
 
-        player.getPlayer().setVelocity(player.getPlayer().getLocation().getDirection().multiply(config.getPower()).setY(config.getHeight()));
-        config.getSound().play(player.getPlayer());
+        int power = config.get("power", 2);
+        int height = config.get("height", 1);
+        player.getPlayer().setVelocity(player.getPlayer().getLocation().getDirection().multiply(power).setY(height));
 
-        jumpingPlayers.putIfAbsent(player.getPlayerUUID(), config.getJumpLimit());
+        PlayableSound sound = config.get("sound", PlayableSound.class);
+        if (sound != null) sound.play(player.getPlayer());
+
+        int jumpLimit = config.get("jump-limit", 3);
+        jumpingPlayers.putIfAbsent(player.getPlayerUUID(), jumpLimit);
         jumpingPlayers.put(player.getPlayerUUID(), jumpingPlayers.get(player.getPlayer().getUniqueId()) - 1);
 
         if (jumpingPlayers.get(player.getPlayerUUID()) == 0) player.getPlayer().setAllowFlight(false);
 
-        Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "multi-jump-left", Pair.of("jumps", jumpingPlayers.getOrDefault(player.getPlayerUUID(), config.getJumpLimit()) + ""));
-
+        Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "multi-jump-left", Pair.of("jumps", jumpingPlayers.getOrDefault(player.getPlayerUUID(), jumpLimit) + ""));
     }
 
     @EventHandler(isOnlyInWorld = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (!jumpingPlayers.containsKey(event.getPlayer().getUniqueId())) return;
 
-        if (Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isDisableMultiJumps() && XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        boolean disableMultiJumps = ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+                .section("pvp")
+                .get("disable-multi-jumps", true);
+
+        if (disableMultiJumps && XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
 
         if (event.getPlayer().isOnGround()) {
             event.getPlayer().setAllowFlight(true);
             jumpingPlayers.remove(event.getPlayer().getUniqueId());
         }
-
     }
 }

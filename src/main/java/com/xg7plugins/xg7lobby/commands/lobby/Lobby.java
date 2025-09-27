@@ -6,7 +6,9 @@ import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.tasks.tasks.BukkitTask;
@@ -14,7 +16,6 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.LobbyTeleportConfigs;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -71,8 +72,7 @@ public class Lobby implements Command {
             targetToTeleport = (Player) sender;
         }
 
-
-        LobbyTeleportConfigs config = Config.of(XG7Lobby.getInstance(), LobbyTeleportConfigs.class);
+        ConfigSection teleportConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("lobby-teleport-cooldown");
 
         CooldownManager cooldownManager = XG7PluginsAPI.cooldowns();
 
@@ -110,7 +110,7 @@ public class Lobby implements Command {
             cooldownManager.addCooldown(finalTargetToTeleport,
                     new CooldownManager.CooldownTask(
                             "lobby-cooldown-before",
-                            config.getBeforeTeleport().getMilliseconds(),
+                            teleportConfig.getTimeInMilliseconds("before-teleport", 5000L),
                             player -> Text.fromLang(
                                     player,
                                     XG7Lobby.getInstance(),
@@ -127,7 +127,7 @@ public class Lobby implements Command {
                                     return;
                                 }
                                 XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport)));
-                                cooldownManager.addCooldown(finalTargetToTeleport, "lobby-cooldown-after", config.getAfterTeleport().getMilliseconds());
+                                cooldownManager.addCooldown(finalTargetToTeleport, "lobby-cooldown-after", teleportConfig.getTimeInMilliseconds("after-teleport", 5000L));
                             })
                     )
             );

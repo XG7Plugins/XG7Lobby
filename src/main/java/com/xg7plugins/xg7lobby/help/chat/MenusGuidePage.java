@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.help.chat;
 
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.help.chat.HelpChatPage;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.text.component.ClickEvent;
@@ -25,7 +26,7 @@ public class MenusGuidePage implements HelpChatPage {
         components.add(Text.format("&m-&9&m-&6&m------------------&e*&6&m------------------&9&m-&f&m-"));
 
         if (sender instanceof Player) {
-            Config lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).join().getLangConfiguration();
+            ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).join().getSecond().getLangConfiguration();
 
             String about = lang.getList("help.menus-guide", String.class).orElse(new ArrayList<>()).stream().collect(Collectors.joining("\n"));
 

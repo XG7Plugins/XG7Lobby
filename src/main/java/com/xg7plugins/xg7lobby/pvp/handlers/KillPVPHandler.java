@@ -1,14 +1,13 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
-import com.xg7plugins.data.config.Config;
-import com.xg7plugins.events.Listener;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.pvp.DeathCause;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerKillInPVPEvent;
@@ -19,15 +18,15 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import java.util.List;
 import java.util.UUID;
 
-public class KillPVPHandler implements PVPHandler, Listener {
+public class KillPVPHandler implements PVPHandler {
 
-    private final PVPConfigs.OnKill config = Config.of(XG7Lobby.getInstance(), PVPConfigs.OnKill.class);
-    private final PVPConfigs pvpConfigs = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
+    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).section("on-kill");
 
 
     @Override
     public boolean isEnabled() {
-        return pvpConfigs.isEnabled();
+        return pvpConfigs.get("enabled", false);
     }
 
     @Override
@@ -36,10 +35,10 @@ public class KillPVPHandler implements PVPHandler, Listener {
         Player killer = (Player) args[0];
         DeathCause deathCause = (DeathCause) args[1];
 
-        ActionsProcessor.process(config.getVictimActions(), killer, Pair.of("victim", victim.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
+        ActionsProcessor.process(config.get("victim-actions"), victim, Pair.of("victim", victim.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
 
         if (killer != null) {
-            ActionsProcessor.process(config.getKillerActions(), killer, Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
+            ActionsProcessor.process(config.get("killer-actions"), killer, Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
             XG7LobbyAPI.requestLobbyPlayer(killer.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.setGlobalPVPKills(lobbyPlayer.getGlobalPVPKills() + 1);
                 lobbyPlayer.setGlobalPVPKillStreak(lobbyPlayer.getGlobalPVPKillStreak() + 1);
@@ -47,7 +46,7 @@ public class KillPVPHandler implements PVPHandler, Listener {
             });
         }
         XG7LobbyAPI.requestLobbyPlayer(victim.getUniqueId()).thenAccept(lobbyPlayer -> {
-            lobbyPlayer.setGlobalPVPKills(lobbyPlayer.getGlobalPVPDeaths() + 1);
+            lobbyPlayer.setGlobalPVPDeaths(lobbyPlayer.getGlobalPVPDeaths() + 1);
             lobbyPlayer.setGlobalPVPKillStreak(0);
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
         });
@@ -76,16 +75,23 @@ public class KillPVPHandler implements PVPHandler, Listener {
         GlobalPVPManager globalPVPManager = XG7LobbyAPI.globalPVPManager();
 
         Player victim = event.getEntity();
+
+        if (!XG7LobbyAPI.globalPVPManager().isInPVP(victim)) return;
+
         UUID killerUUID = globalPVPManager.getCombatLogHandler().getDamagerOf(victim);
-        if (killerUUID == null) return;
+
+        event.setDeathMessage(null);
+
+        if (killerUUID == null) {
+            handle(victim, null, victim.getLastDamageCause() != null ? DeathCause.fromCause(victim.getLastDamageCause().getCause()) : DeathCause.GENERIC);
+            return;
+        }
         Player killer = Bukkit.getPlayer(killerUUID);
 
         DeathCause deathCause = DeathCause.fromCause(victim.getLastDamageCause().getCause());
 
-        if (!globalPVPManager.isInPVP(victim)) return;
         if (killer != null && !globalPVPManager.isInPVP(killer)) return;
 
-        event.setDeathMessage(null);
 
         handle(victim, killer, deathCause);
 

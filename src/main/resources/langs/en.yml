@@ -85,7 +85,7 @@ lobby:
 
   on-teleport:
     on-error: "%prefix% &cError while trying to teleport to the lobby."
-    on-error-doesnt-exist: "&%prefix% cThe lobby location doesn't exist. Wait for an admin to set it."
+    on-error-doesnt-exist: "%prefix% &cThe lobby location doesn't exist. Wait for an admin to set it."
     on-error-doesnt-exist-adm: "%prefix% &cThe lobby location doesn't exist. Use &9/&esetlobby &cto set it."
     on-success: "%prefix% &aTeleported to the lobby successfully."
     on-success-other: "%prefix% &aTeleported &b%target% &ato the lobby successfully."
@@ -157,7 +157,7 @@ pvp:
   on-leave: "%prefix% &cYou are no longer in global PvP mode."
 
   on-death: "%prefix% &c%victim% %cause%."
-  on-death-with-killer: "%prefix% &c%victim% %cause% by %killer%."
+  on-death-with-killer: "%prefix% &c%victim% %cause% by &c%killer%."
 
   on-attack-in-pvp: "%prefix% &cYou can't attack this player. He is not in global PvP mode."
   on-attack-out-pvp: "%prefix% &cYou can't attack. You are not in pvp mode!"
@@ -522,4 +522,4 @@ help:
 
 help-in-chat.commands-title: "&7Commands of &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
-config-version: 2.0
+config-version: 3

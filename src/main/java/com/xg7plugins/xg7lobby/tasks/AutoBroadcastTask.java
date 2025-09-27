@@ -1,18 +1,16 @@
 package com.xg7plugins.xg7lobby.tasks;
 
-import com.xg7plugins.libs.xseries.XSound;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
+import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.configs.AdvertisementConfigs;
-import com.xg7plugins.xg7lobby.configs.ChatConfigs;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -20,47 +18,49 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AutoBroadcastTask extends TimerTask {
 
-    private final AtomicInteger index = new AtomicInteger(0);
+    private final ConfigSection config = ConfigFile.of("ads", XG7Lobby.getInstance()).root();
 
-    private final AdvertisementConfigs config;
+    private final AtomicInteger index = new AtomicInteger(0);
 
     public AutoBroadcastTask() {
         super(
                 XG7Lobby.getInstance(),
                 "auto-broadcast",
                 0,
-                Config.of(XG7Lobby.getInstance(), AdvertisementConfigs.class).getCooldown().getMilliseconds(),
+                ConfigFile.of("ads", XG7Lobby.getInstance()).root().getTimeInMilliseconds("cooldown"),
                 TaskState.RUNNING,
                 false
         );
-
-        this.config = Config.of(XG7Lobby.getInstance(), AdvertisementConfigs.class);
 
     }
 
     @Override
     public void run() {
 
-        if (config.getAdvertisements() == null || config.getAdvertisements().isEmpty()) return;
+        List<Map> advertisements = config.getList("advertisements", Map.class).orElse(Collections.emptyList());
 
-        int index = config.isRandom() ? new Random().nextInt(config.getAdvertisements().size()) : this.index.getAndIncrement();
+        if (advertisements.isEmpty()) return;
 
-        if (index >= config.getAdvertisements().size()) {
+        int index = config.get("random", false) ? new Random().nextInt(advertisements.size()) : this.index.getAndIncrement();
+
+        if (index >= advertisements.size()) {
             this.index.set(1);
             index = 0;
         }
 
         int finalIndex = index;
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (config.isBroadcastOnlyInTheLobby() && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
+            if (config.get("broadcast-only-in-the-lobby", false) && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
-            ((List<String>) config.getAdvertisements().get(finalIndex).get("ad")).forEach(message -> Text.detectLangs(
+            ((List<String>) advertisements.get(finalIndex).get("ad")).forEach(message -> Text.detectLangs(
                     player,
                     XG7Lobby.getInstance(),
                     message
             ).join().send(player));
 
-            config.getSound().play(player);
+            PlayableSound sound = config.get("sound", PlayableSound.class);
+
+            if (sound != null) sound.play(player);
         });
 
 

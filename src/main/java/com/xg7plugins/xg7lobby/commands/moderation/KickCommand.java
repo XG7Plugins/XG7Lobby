@@ -7,13 +7,14 @@ import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.apache.logging.log4j.util.Strings;
@@ -58,9 +59,9 @@ public class KickCommand implements Command {
 
         Player target = offlineTarget.getPlayer();
 
-        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
+        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
-        if (target.hasPermission("xg7lobby.moderation.kick") && !config.isKickAdmin()) {
+        if (target.hasPermission("xg7lobby.moderation.kick") && !moderationConfig.get("kick-admin", false)) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.kick-admin");
             return;
         }
@@ -70,7 +71,7 @@ public class KickCommand implements Command {
         lobbyPlayerManager.kickPlayer(target, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.kick.on-kick").join().replace("reason", reason));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
-            int warningLevel = config.getKickWarningLevel();
+            int warningLevel = moderationConfig.get("kick-warning-level", 2);
 
             Infraction infraction = new Infraction(target.getUniqueId(), warningLevel, reason);
             lobbyPlayerManager.addInfraction(infraction);

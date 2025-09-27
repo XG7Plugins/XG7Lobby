@@ -85,7 +85,7 @@ lobby:
 
   on-teleport:
     on-error: "%prefix% &cError al intentar teletransportar al lobby."
-    on-error-doesnt-exist: "&%prefix% cLa ubicación del lobby no existe. Espera a que un administrador la establezca."
+    on-error-doesnt-exist: "%prefix% &cLa ubicación del lobby no existe. Espera a que un administrador la establezca."
     on-error-doesnt-exist-adm: "%prefix% &cLa ubicación del lobby no existe. Usa &9/&esetlobby &cpara establecerla."
     on-success: "%prefix% &aTeletransportado al lobby exitosamente."
     on-success-other: "%prefix% &aTeletransportado &b%target% &aal lobby exitosamente."
@@ -157,7 +157,7 @@ pvp:
   on-leave: "%prefix% &cYa no estás en modo PvP global."
 
   on-death: "%prefix% &c%victim% %cause%."
-  on-death-with-killer: "%prefix% &c%victim% %cause% por %killer%."
+  on-death-with-killer: "%prefix% &c%victim% %cause% por &c%killer%."
 
   on-attack-in-pvp: "%prefix% &cNo puedes atacar a este jugador. No está en modo PvP global."
   on-attack-out-pvp: "%prefix% &c¡No puedes atacar. ¡No estás en modo pvp!"
@@ -523,4 +523,4 @@ help:
 
 help-in-chat.commands-title: "&7Comandos de &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
-config-version: 2.0
+config-version: 3

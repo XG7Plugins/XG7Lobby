@@ -6,14 +6,15 @@ import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.apache.logging.log4j.util.Strings;
@@ -52,9 +53,9 @@ public class BanIPCommand implements Command {
             return;
         }
 
-        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
+        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
-        if (target.isOp() && !config.isBanAdmin()) {
+        if (target.isOp() && !moderationConfig.get("ban-admin", false)) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.ban.ban-admin").thenAccept(text -> text.send(sender));
             return;
         }
@@ -66,16 +67,16 @@ public class BanIPCommand implements Command {
 
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        lobbyPlayerManager.banIpPlayer(target.getPlayer(), time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", String.valueOf(time.getMilliseconds())));
+        lobbyPlayerManager.banIpPlayer(target.getPlayer(), time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", String.valueOf(time.toMilliseconds())));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
 
-            Infraction infraction = new Infraction(target.getUniqueId(), config.getBanWarningLevel(), reason);
+            Infraction infraction = new Infraction(target.getUniqueId(), moderationConfig.get("ban-warning-level", 3), reason);
 
             lobbyPlayerManager.addInfraction(infraction);
         });
 
-        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.on-ban-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).getMilliseconds()) + ""), Pair.of("target", target.getName()));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.on-ban-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + ""), Pair.of("target", target.getName()));
     }
 
     @Override

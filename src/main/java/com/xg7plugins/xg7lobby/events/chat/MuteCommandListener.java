@@ -31,6 +31,6 @@ public class MuteCommandListener implements Listener {
         }
 
         event.setCancelled(true);
-        Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "chat.muted",  Pair.of("time", (player.getUnmuteTime().isZero() ? "ever" : Time.getRemainingTime(player.getUnmuteTime()).getMilliseconds()) + ""));
+        Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "chat.muted",  Pair.of("time", (player.getUnmuteTime().isZero() ? "ever" : Time.getRemainingTime(player.getUnmuteTime()).toMilliseconds()) + ""));
     }
 }

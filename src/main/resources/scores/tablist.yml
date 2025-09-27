@@ -1,0 +1,45 @@
+tab-list-sorter-enabled: true
+
+#A yellow number next to the player's name in the tablist'
+tab-list-score:
+  enabled: true
+
+  update-time: 500ms
+
+  #Must be integer
+  score: "%player_ping%"
+
+tab-list:
+  enabled: true
+
+  #Delay for update
+  update-time: 500ms
+
+  #You can use the placeholders:
+  custom-player-prefix: "&8[%luckperms_prefix%&8]&r "
+  custom-player-suffix: " &8[&9XG7&3Lo&bbby&8]&r"
+
+  #Top of the tablist
+  headers:
+
+    - state:
+        - "&9XG7Lobby"
+    - state:
+        - "&3XG7Lobby"
+    - state:
+        - "&bXG7Lobby"
+    - state:
+        - "&3XG7Lobby"
+    - state:
+        - "&9XG7Lobby"
+
+  #Bottom of the tablist
+  footers:
+    - state:
+        - "&5&oMade by DaviXG7"
+        - "&8www.example.com"
+    - state:
+        - "&3&oMade by DaviXG7"
+        - "&8www.example.com"
+
+config-version: 1

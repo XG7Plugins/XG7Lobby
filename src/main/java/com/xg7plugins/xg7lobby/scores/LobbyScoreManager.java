@@ -2,6 +2,7 @@ package com.xg7plugins.xg7lobby.scores;
 
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
+import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.managers.Manager;
 import com.xg7plugins.modules.xg7scores.XG7Scores;
 import com.xg7plugins.utils.Debug;
@@ -17,16 +18,21 @@ public class LobbyScoreManager implements Manager {
     private final List<LobbyScoreLoader> lobbyScoreLoaders = new ArrayList<>();
 
     public LobbyScoreManager() {
-        lobbyScoreLoaders.add(new ScoreBoardLoader());
+        lobbyScoreLoaders.add(new SidebarLoader());
         lobbyScoreLoaders.add(new TabListLoader());
         lobbyScoreLoaders.add(new BossBarLoader());
         lobbyScoreLoaders.add(new XPBarLoader());
         lobbyScoreLoaders.add(new ActionBarLoader());
+        lobbyScoreLoaders.add(new BelowNameIndicatorLoader());
+        lobbyScoreLoaders.add(new TabListScoreLoader());
     }
 
 
     public void loadScores() {
         Debug.of(XG7Lobby.getInstance()).info("Loading lobby scores");
+
+        if (ConfigFile.of("scores/tablist", XG7Lobby.getInstance()).root().get("tab-list-sorter-enabled")) XG7PluginsAPI.taskManager().runTimerTask(XG7PluginsAPI.taskManager().getTimerTask(XG7Plugins.getInstance(), "tablist-sorter"));
+
         lobbyScoreLoaders.forEach((loader) -> {
             loader.getScoreConfig().load();
             if (!loader.getScoreConfig().isEnabled()) return;

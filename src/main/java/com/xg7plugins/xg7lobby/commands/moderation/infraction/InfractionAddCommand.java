@@ -5,13 +5,14 @@ import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.apache.logging.log4j.util.Strings;
@@ -20,6 +21,8 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @CommandSetup(
@@ -50,15 +53,20 @@ public class InfractionAddCommand implements Command {
             return;
         }
 
-        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
+        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
-
-        if (player.getOfflinePlayer().isOp() && !config.isWarnAdmin()) {
+        if (player.getOfflinePlayer().isOp() && !moderationConfig.get("warn-admin", false)) {
             Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.warn-admin");
             return;
         }
 
-        if (config.getInfractionLevels().stream().noneMatch(map -> (int) map.get("level") == level)) {
+        List<Map> infractionLevels = moderationConfig.getList("infraction-levels", Map.class).orElse(Collections.emptyList());
+        boolean levelExists = infractionLevels.stream().anyMatch(map -> {
+            Object levelObj = map.get("level");
+            return levelObj instanceof Integer && (Integer) levelObj == level;
+        });
+
+        if (!levelExists) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.level-invalid");
             return;
         }

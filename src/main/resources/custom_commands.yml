@@ -46,5 +46,21 @@ custom-commands:
       - "[MESSAGE] [CENTER:CHAT] &9Visit our website: &bhttps://example.com"
       - "[MESSAGE]  "
 
+  pvp-stats:
+    name: "pvpstats"
+    permission: ""
+    description: "See your PvP stats"
+    syntax: "/pvpstats"
+    actions:
+      - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
+      - "[MESSAGE] [CENTER:CHAT] <rainbow>PVP STATS</rainbow>"
+      - "[MESSAGE]  "
+      - "[MESSAGE] &cKILLS: &a%xg7lobby_player_global_pvp_kills%"
+      - "[MESSAGE] &eDEATHS: &a%xg7lobby_player_global_pvp_deaths%"
+      - "[MESSAGE] &bKDR: &a%xg7lobby_player_global_pvp_kdr%"
+      - "[MESSAGE]  "
+      - - "[CENTER:CHAT] &8-------------------&7**&8-------------------"
+
+
 #DO NOT CHANGE THIS!
 config-version: 1

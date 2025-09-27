@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.configs;
+package com.xg7plugins.xg7lobby.environment;
 
 import com.xg7plugins.boot.EnvironmentConfig;
 import lombok.Data;

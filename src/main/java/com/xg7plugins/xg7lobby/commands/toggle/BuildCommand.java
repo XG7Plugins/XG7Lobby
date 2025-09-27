@@ -6,7 +6,9 @@ import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.data.config.section.ConfigVerify;
+
+import com.xg7plugins.config.
+utils.ConfigCheck;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
@@ -34,7 +36,7 @@ import java.util.stream.Collectors;
         isInEnabledWorldOnly = true,
         isAsync = true,
         pluginClass = XG7Lobby.class,
-        isEnabled = @ConfigVerify(
+        isEnabled = @ConfigCheck(
                 configName = "config",
                 path = "build-system-enabled"
         )

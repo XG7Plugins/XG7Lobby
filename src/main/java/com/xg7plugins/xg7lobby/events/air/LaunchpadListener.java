@@ -1,41 +1,52 @@
 package com.xg7plugins.xg7lobby.events.air;
 
-import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.libs.xseries.XSound;
-import com.xg7plugins.XG7Plugins;
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
+import com.xg7plugins.libs.xseries.XMaterial;
+import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.LaunchpadConfigs;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class LaunchpadListener implements Listener {
 
-
     @Override
     public boolean isEnabled() {
-        return Config.of(XG7Lobby.getInstance(), LaunchpadConfigs.class).isEnabled();
+        return ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+                .section("launchpad")
+                .get("enabled", true);
     }
 
     @EventHandler(isOnlyInWorld = true)
     public void onMove(PlayerMoveEvent event) {
 
-        LaunchpadConfigs config = Config.of(XG7Lobby.getInstance(), LaunchpadConfigs.class);
+        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("launchpad");
 
         Player player = event.getPlayer();
 
-        if (Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isDisableLaunchpad() && XG7LobbyAPI.isPlayerInPVP(player)) return;
+        boolean disableLaunchpad = ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+                .section("pvp")
+                .get("disable-launchpad", true);
 
-        if (player.getLocation().getBlock().getType() == config.getTopBlock().get() && player.getLocation().subtract(0, 1, 0).getBlock().getType() == config.getBottomBlock().get()) {
+        if (disableLaunchpad && XG7LobbyAPI.isPlayerInPVP(player)) return;
 
-            player.setVelocity(player.getLocation().getDirection().multiply(config.getPower()).setY(config.getHeight()));
+        XMaterial topBlock = config.get("top-block", XMaterial.STONE_PRESSURE_PLATE);
+        XMaterial bottomBlock = config.get("bottom-block", XMaterial.REDSTONE_BLOCK);
 
-            config.getSound().play(player);
+        if (player.getLocation().getBlock().getType() == topBlock.parseMaterial() &&
+                player.getLocation().subtract(0, 1, 0).getBlock().getType() == bottomBlock.parseMaterial()) {
+
+            int power = config.get("power", 3);
+            int height = config.get("height", 1);
+            player.setVelocity(player.getLocation().getDirection().multiply(power).setY(height));
+
+            PlayableSound sound = config.get("sound", PlayableSound.class);
+            if (sound != null) {
+                sound.play(player);
+            }
         }
     }
 }

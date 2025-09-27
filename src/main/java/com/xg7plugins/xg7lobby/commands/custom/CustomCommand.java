@@ -1,6 +1,7 @@
 package com.xg7plugins.xg7lobby.commands.custom;
 
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import lombok.Getter;
@@ -23,16 +24,19 @@ public class CustomCommand {
 
     public CustomCommand(String path) {
 
-        Config config = Config.of("custom_commands", XG7Lobby.getInstance());
+        ConfigSection config = ConfigFile.of("custom_commands", XG7Lobby.getInstance()).section("custom-commands." + path);
 
-        this.name = config.get("custom-commands." + path + ".name", String.class).orElseThrow(() -> new RuntimeException("This command don't have a name!"));
-        this.syntax = config.get("custom-commands." + path + ".syntax", String.class).orElse("No syntax");
-        this.description = config.get("custom-commands." + path + ".description", String.class).orElse("No description");
-        this.permission = config.get("custom-commands." + path + ".permission", String.class).orElse("");
-        this.aliases = config.getList("custom-commands." + path + ".aliases", String.class).orElse(new ArrayList<>());
-        this.actions = config.getList("custom-commands." + path + ".actions", String.class).orElse(new ArrayList<>());
+        this.name = config.get("name", String.class);
 
-        this.enabledWorldOnly = config.get("custom-commands." + path + ".execute-only-in-an-enabled-world", Boolean.class).orElse(false);
+        if (this.name == null) throw new IllegalArgumentException("The name of the custom command cannot be null!");
+
+        this.syntax = config.get("syntax", "No syntax");
+        this.description = config.get("description", "No description");
+        this.permission = config.get("permission", "");
+        this.aliases = config.getList("aliases", String.class).orElse(new ArrayList<>());
+        this.actions = config.getList("actions", String.class).orElse(new ArrayList<>());
+
+        this.enabledWorldOnly = config.get("execute-only-in-an-enabled-world", false);
 
     }
 

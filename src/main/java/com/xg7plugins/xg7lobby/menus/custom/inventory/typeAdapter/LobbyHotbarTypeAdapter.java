@@ -1,22 +1,29 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter;
 
-import com.xg7plugins.data.config.Config;
-import com.xg7plugins.data.config.ConfigTypeAdapter;
+import com.xg7plugins.config.file.ConfigSection;
+import com.xg7plugins.config.typeadapter.ConfigTypeAdapter;
 import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.utils.time.Time;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class LobbyHotbarTypeAdapter implements ConfigTypeAdapter<LobbyHotbar> {
     @Override
-    public LobbyHotbar fromConfig(Config config, String path, Object... optionalArgs) {
+    public LobbyHotbar fromConfig(ConfigSection config, String path, Object... optionalArgs) {
 
-        String id = config.get("id", String.class).orElseThrow(() -> new IllegalArgumentException("id is required"));
+        String id = config.get("id");
+
+        List<MenuAction> allowedActions = CustomInventoryManager.parseMenuActions(config, "allowed-menu-actions");
+        List<MenuAction> deniedActions = CustomInventoryManager.parseMenuActions(config, "denied-menu-actions");
+
+        long updateDelay = config.getTimeInMilliseconds("update-delay", -1L);
+
+        if (id == null) throw  new NullPointerException("id is required");
 
         HashMap<String, LobbyItem> items = new HashMap<>();
         HashMap<Integer, String> grid = new HashMap<>();
@@ -27,18 +34,18 @@ public class LobbyHotbarTypeAdapter implements ConfigTypeAdapter<LobbyHotbar> {
             grid.put(i, row.get(i));
         }
 
-        ConfigurationSection itemsSection = config.get("items", ConfigurationSection.class).orElse(null);
+        ConfigSection itemsSection = config.child("items");
 
-        if (itemsSection != null) {
+        if (itemsSection.exists()) {
             for (String key : itemsSection.getKeys(false)) {
-                items.put(key, config.get("items." + key, LobbyItem.class).orElse(new LobbyItem(Item.air(), null, null)));
+                items.put(key, itemsSection.child(key).get("", new LobbyItem(Item.air(), key, null, null, allowedActions, deniedActions)));
             }
         }
 
-        Time cooldown = config.getTime("cooldown-to-use", true).orElse(Time.of(2));
-        boolean disableCooldown = config.get("disable-cooldown", Boolean.class, true).orElse(false);
+        Time cooldown = config.getTimeOrDefault("cooldown-to-use", Time.of(2));
+        boolean disableCooldown = config.get("disable-cooldown", false);
 
-        return new LobbyHotbar(config, id, items, grid, cooldown, disableCooldown);
+        return new LobbyHotbar(config.getFile(), id, items, grid, cooldown, disableCooldown, allowedActions, deniedActions, updateDelay);
 
     }
 
@@ -46,4 +53,5 @@ public class LobbyHotbarTypeAdapter implements ConfigTypeAdapter<LobbyHotbar> {
     public Class<LobbyHotbar> getTargetType() {
         return LobbyHotbar.class;
     }
+
 }

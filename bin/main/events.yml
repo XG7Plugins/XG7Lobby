@@ -172,7 +172,7 @@ on-join:
 
   # Join message settings
   send-join-message: true
-  send-join-message-only-on-lobby: false
+  send-join-message-only-in-lobby: false
 
   # Events to run when a player joins
   events:
@@ -226,7 +226,7 @@ on-quit:
   send-quit-message: true
 
   # Only send the quit message if player is in lobby
-  send-quit-message-only-on-lobby: false
+  send-quit-message-only-in-lobby: false
 
   # Run quit events when changing worlds
   run-events-when-change-world: true

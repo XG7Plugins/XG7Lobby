@@ -1,22 +1,27 @@
 package com.xg7plugins.xg7lobby.help.gui;
 
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
-import com.xg7plugins.modules.xg7menus.item.BookItem;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.modules.xg7menus.item.SkullItem;
+
+import com.xg7plugins.modules.xg7menus.item.impl.BookItem;
+import com.xg7plugins.modules.xg7menus.item.impl.SkullItem;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
+import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class XG7LobbyHelpGUI extends Menu {
@@ -25,7 +30,11 @@ public class XG7LobbyHelpGUI extends Menu {
                 XG7Lobby.getInstance(),
                 "xg7lobby-help",
                 "lang:[help.menu.title]",
-                6
+                6,
+                null,
+                true,
+                Collections.emptyList(),
+                50L
         ));
     }
 
@@ -69,7 +78,26 @@ public class XG7LobbyHelpGUI extends Menu {
     }
 
     @Override
+    public void onRepeatingUpdate(BasicMenuHolder holder) {
+        SkullItem profileItem = (SkullItem) SkullItem.newSkull().renderPlayerSkull(true).name("lang:[help.menu.profile-item.name]");
+
+        List<String> profileItemLore = new ArrayList<>();
+
+        profileItemLore.add("lang:[help.menu.profile-item.lore.first-join]");
+        profileItemLore.add("lang:[help.menu.profile-item.lore.build-enabled]");
+        profileItemLore.add("lang:[help.menu.profile-item.lore.chat-locked]");
+        profileItemLore.add("lang:[help.menu.profile-item.lore.fly-enabled]");
+        profileItemLore.add("lang:[help.menu.profile-item.lore.kills]");
+        profileItemLore.add("lang:[help.menu.profile-item.lore.deaths]");
+        profileItemLore.add("lang:[help.menu.profile-item.lore.kdr]");
+
+        profileItem.lore(profileItemLore).slot(13);
+        holder.getInventoryUpdater().addItem(profileItem);
+    }
+
+    @Override
     public void onClick(ActionEvent event) {
+        event.setCancelled(true);
         Player player = event.getHolder().getPlayer();
         switch (event.getClickedSlot().get()) {
             case 45:
@@ -88,7 +116,7 @@ public class XG7LobbyHelpGUI extends Menu {
             case 32:
             case 33:
             case 34:
-                Config lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getLangConfiguration();
+                ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
                 List<String> about = lang.getList("help." + (event.getClickedSlot().equals(32) ? "menus-guide" : event.getClickedSlot().equals(33) ? "about" : "custom-commands-guide"), String.class).orElse(new ArrayList<>());
 

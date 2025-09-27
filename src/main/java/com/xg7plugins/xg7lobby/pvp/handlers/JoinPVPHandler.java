@@ -1,17 +1,18 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
-import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerJoinPVPEvent;
+import com.xg7plugins.xg7lobby.environment.LobbyApplier;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -19,34 +20,35 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.Collections;
+
 public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
-    private final PVPConfigs pvpConfigs = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
+    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).section("on-join-pvp");
 
     @Override
     public void handle(Player player, Object... args) {
 
         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-join");
 
-        PVPConfigs.OnJoinPvp config = Config.of(XG7Lobby.getInstance(), PVPConfigs.OnJoinPvp.class);
-
         player.setGameMode(GameMode.SURVIVAL);
-        Config.of(XG7Lobby.getInstance(), PlayerConfigs.class).reset(player);
+        LobbyApplier.reset(player);
 
         if (XG7LobbyAPI.customInventoryManager() != null) {
             XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
 
-            XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-pvp-selector-id", String.class).orElse("pvp"), player);
+            XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id","pvp"), player);
         }
 
-        if (config.isHeal()) player.setHealth(player.getMaxHealth());
+        if (config.get("heal")) player.setHealth(player.getMaxHealth());
 
-        if (config.isTeleportToPvpLobby()) {
-            XG7LobbyAPI.requestLobbyLocation(pvpConfigs.getPvpLobby()).thenAccept(l -> l.teleport(player));
+        if (config.get("teleport-to-pvp-lobby", false)) {
+            XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> l.teleport(player));
         }
 
         hidePlayers(player);
-        ActionsProcessor.process(config.getActions(), player);
+        ActionsProcessor.process(config.getList("actions", String.class).orElse(Collections.emptyList()), player);
 
         Bukkit.getPluginManager().callEvent(new PlayerJoinPVPEvent(player));
 
@@ -54,7 +56,7 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
     @Override
     public boolean isEnabled() {
-        return pvpConfigs.isEnabled();
+        return pvpConfigs.get("enabled", false);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
     }
 
     private void hidePlayers(Player player) {
-        if (!pvpConfigs.isHidePlayersNotInPvp()) return;
+        if (!pvpConfigs.get("hide-players-not-in-pvp", false)) return;
 
         boolean isInPvP = XG7LobbyAPI.isPlayerInPVP(player);
 

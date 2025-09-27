@@ -102,8 +102,8 @@
 # Ex: [LOBBY] main_lobby
 # Ex random: [LOBBY] random
 
-# [BUNGEE]: Connect to a bungee server
-# Ex: [BUNGEE] survival_server
+# [SERVER]: Connect to a bungee server
+# Ex: [SERVER] survival_server
 
 # [OPEN_MENU]: Opens a custom inventory
 # Ex: [OPEN_MENU] shop_menu
@@ -171,15 +171,15 @@ on-join:
   # Whether to clear inventory on join  
   clear-inventory: false
 
-  # Run join events when returning to the world
-  run-events-when-return-to-the-world: true
+  # Run join actions when returning to the lobby world
+  run-actions-when-return-to-the-lobby: true
 
   # Join message settings
   send-join-message: true
-  send-join-message-only-on-lobby: false
+  send-join-message-only-in-lobby: false
 
-  # Events to run when a player joins
-  events:
+  # Actions to run when a player joins
+  actions:
     - "[GAMEMODE] survival"
     - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
     - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
@@ -203,8 +203,8 @@ on-first-join:
   enabled: true
   # Whether to send a first join message
   send-first-join-message: true
-  # Events to run on player's first join
-  events:
+  # Actions to run on player's first join
+  actions:
     - "[GAMEMODE] survival"
     - "[TITLE] lang:[lobby.on-join-events.title], &f%player_name%"
     - "[MESSAGE] [CENTER:CHAT] &8-------------------&7**&8-------------------"
@@ -230,13 +230,25 @@ on-quit:
   send-quit-message: true
 
   # Only send the quit message if player is in lobby
-  send-quit-message-only-on-lobby: false
+  send-quit-message-only-in-lobby: false
 
-  # Run quit events when changing worlds
-  run-events-when-change-world: true
+  # Run quit actions when changing worlds
+  run-actions-when-change-world: true
 
-  # Events to run when a player quits
-  events:
+  # Actions to run when a player quits
+  actions:
     - "[FIREWORK] BALL_LARGE, #FF0000, #00FF00, true, true, 1"
 
-config-version: 1.2
+repeat-forever:
+
+  enabled: true
+
+  delay-for-repeat: 10s
+
+  actions:
+    - "[EFFECT] clear"
+    - "[EFFECT] (?IF_NOT: %xg7lobby_player_is_in_pvp%?) JUMP_BOOST, 2000, 2"
+    - "[EFFECT] (?IF_NOT: %xg7lobby_player_is_in_pvp%?) SPEED, 2000, 2"
+    - "[EFFECT] (?IF_NOT: %xg7lobby_player_is_in_pvp%?) NIGHT_VISION, 2000, 1"
+
+config-version: 2

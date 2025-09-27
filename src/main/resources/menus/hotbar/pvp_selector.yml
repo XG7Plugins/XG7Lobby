@@ -7,10 +7,13 @@ id: "pvp"
 
 disable-cooldown: true
 
+allowed-menu-actions: "ALL"
+
 items:
 
   sword:
     material: "DIAMOND_SWORD"
+
     name: "&aPvP Sword"
     amount: 1
     enchants:
@@ -26,9 +29,36 @@ items:
     name: "&aPvP Arrow"
     amount: 64
 
+  leave:
+    material: "RED_WOOL"
+
+    name: "&aLeave"
+    lore:
+      - "&7Click to leave the game!"
+
+    amount: 1
+
+    enchants:
+      - "DURABILITY, 1"
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
+    actions:
+      - "[PVP_OFF] "
+
+    denied-menu-actions: "ALL"
+
+  steak:
+    material: "COOKED_BEEF"
+    name: "&aSteak"
+    amount: 64
 
 
-row: ["sword", "bow", "arrow", "", "", "", "", "", ""]
 
 
-config-version: 1.0
+row: ["sword", "bow", "arrow", "", "", "", "", "steak", "leave"]
+
+
+config-version: 2

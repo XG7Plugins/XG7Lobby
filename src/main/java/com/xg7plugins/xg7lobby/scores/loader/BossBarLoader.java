@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.scores.loader;
 
+import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.modules.xg7scores.Score;
 import com.xg7plugins.modules.xg7scores.builder.BossBarBuilder;
 import com.xg7plugins.server.MinecraftVersion;
@@ -13,7 +14,7 @@ import java.util.Collections;
 public class BossBarLoader extends LobbyScoreLoader {
 
     public BossBarLoader() {
-        super(new ScoreConfig("boss-bar"),  "xg7lobby-bb");
+        super(new ScoreConfig(ConfigFile.of("scores/scorebar", XG7Lobby.getInstance()).section("boss-bar")),  "xg7lobby-bb");
     }
 
     @Override

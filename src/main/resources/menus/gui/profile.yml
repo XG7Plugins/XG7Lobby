@@ -5,13 +5,15 @@ id: "profile"
 
 title: "&a&lProfile"
 
+update-delay: 1s
+
 rows: 5
 
 items:
 
   icon:
 
-    material: THIS_PLAYER
+    material: PLAYER_HEAD:THIS_PLAYER
     name: "&aProfile"
     lore:
       - "&fFist join: &7%xg7plugins_player_firstjoin_format(dd/MM/yyyy HH:mm:ss)%"
@@ -88,4 +90,4 @@ grid:
   - ["","","",       "","",           "","",     "",""]
 
 
-config-version: 2.0
+config-version: 3

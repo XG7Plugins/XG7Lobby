@@ -2,7 +2,9 @@ package com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu;
 
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
@@ -11,16 +13,13 @@ import com.xg7plugins.modules.xg7menus.item.Item;
 
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
-import com.xg7plugins.modules.xg7menus.menus.menuholders.PagedMenuHolder;
-import com.xg7plugins.tasks.tasks.AsyncTask;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
-import lombok.SneakyThrows;
+
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -43,7 +42,7 @@ public class InfractionsMenu extends Menu {
 
     public List<Item> pagedItems(OfflinePlayer target) {
 
-        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
+        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
         LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
@@ -51,7 +50,7 @@ public class InfractionsMenu extends Menu {
 
         lobbyPlayer.getInfractions().forEach(infraction -> {
 
-            Map warnLevel = config.getInfractionLevels().stream()
+            Map warnLevel = config.getList("infraction-levels", Map.class).orElse(Collections.emptyList()).stream()
                     .filter(map -> map.get("level").equals(infraction.getLevel()))
                     .findFirst()
                     .orElse(new HashMap<>());

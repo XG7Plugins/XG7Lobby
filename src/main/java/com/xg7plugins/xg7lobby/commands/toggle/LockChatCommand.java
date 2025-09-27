@@ -7,7 +7,7 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
+import com.xg7plugins.xg7lobby.environment.XG7LobbyEnvironment;
 import org.bukkit.command.CommandSender;
 
 @CommandSetup(

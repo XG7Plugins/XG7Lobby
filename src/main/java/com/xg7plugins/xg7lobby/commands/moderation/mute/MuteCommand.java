@@ -6,14 +6,15 @@ import com.xg7plugins.commands.CommandMessages;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.ModerationConfigs;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
@@ -51,7 +52,7 @@ public class MuteCommand implements Command {
 
         if (args.len() > 2) reason = Strings.join(Arrays.asList(Arrays.copyOfRange(args.getArgs(), 2, args.len())), ' ');
 
-        ModerationConfigs config = Config.of(XG7Lobby.getInstance(), ModerationConfigs.class);
+        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
@@ -60,22 +61,22 @@ public class MuteCommand implements Command {
             return;
         }
 
-        if (player.getPlayer().hasPermission("xg7lobby.moderation.mute") && !config.isMuteAdmin()) {
+        if (player.getPlayer().hasPermission("xg7lobby.moderation.mute") && !moderationConfig.get("mute-admin", false)) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.mute.mute-admin").thenAccept(text -> text.send(sender));
             return;
         }
 
         LobbyPlayerManager playerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        playerManager.mutePlayer(player, time, Text.format(reason).replaceAll(Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).getMilliseconds()) + "")));
+        playerManager.mutePlayer(player, time, Text.format(reason).replaceAll(Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + "")));
 
         XG7LobbyAPI.lobbyPlayerManager().updatePlayer(player);
 
-        Infraction infraction = new Infraction(player.getPlayerUUID(), config.getMuteWarningLevel(), reason);
+        Infraction infraction = new Infraction(player.getPlayerUUID(), moderationConfig.get("mute-warning-level", 1), reason);
 
         XG7LobbyAPI.lobbyPlayerManager().addInfraction(infraction);
 
-        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.on-mute-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).getMilliseconds()) + ""), Pair.of("target", target.getName()));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.on-mute-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + ""), Pair.of("target", target.getName()));
 
     }
 

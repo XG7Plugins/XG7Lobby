@@ -1,30 +1,32 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
-import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerLeavePVPEvent;
+import com.xg7plugins.xg7lobby.environment.LobbyApplier;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.Collections;
+
 public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
-    private final PVPConfigs pvpConfigs = Config.of(XG7Lobby.getInstance(), PVPConfigs.class);
+    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).section("on-leave-pvp");
 
     @Override
     public void handle(Player player, Object... args) {
-
-        PVPConfigs.OnLeavePvp config = Config.of(XG7Lobby.getInstance(), PVPConfigs.OnLeavePvp.class);
 
         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-leave");
 
@@ -33,14 +35,14 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
             if (XG7LobbyAPI.customInventoryManager() != null) {
                 XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
 
-                XG7LobbyAPI.customInventoryManager().openMenu(Config.mainConfigOf(XG7Lobby.getInstance()).get("main-selector-id", String.class).orElse("selector"), player);
+                XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id", "selector"), player);
             }
 
-            Config.of(XG7Lobby.getInstance(), PlayerConfigs.class).apply(player);
+            LobbyApplier.apply(player);
 
-            ActionsProcessor.process(config.getActions(), player);
+            ActionsProcessor.process(config.getList("actions", String.class).orElse(Collections.emptyList()), player);
 
-            if (pvpConfigs.isHidePlayersNotInPvp()) {
+            if (pvpConfigs.get("hide-players-not-in-pvp", false)) {
                 Bukkit.getOnlinePlayers().stream().filter(XG7LobbyAPI.globalPVPManager()::isInPVP).forEach(p -> p.hidePlayer(player));
             }
 
@@ -58,7 +60,7 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
     @Override
     public boolean isEnabled() {
-        return pvpConfigs.isEnabled();
+        return pvpConfigs.get("enabled", false);
 
     }
 

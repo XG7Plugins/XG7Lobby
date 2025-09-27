@@ -1,0 +1,48 @@
+sidebar:
+
+  enabled: true
+
+  #Delay for update
+  update-time: 500ms
+
+  #Define the title of the scoreboard
+  title:
+    - "&9XG7Lobby"
+    - "&3XG7Lobby"
+    - "&bXG7Lobby"
+    - "&9XG7&3Lob&bby"
+    - "&1XG7Lobby"
+    - "&9XG7&3Lob&bby"
+    - "&9XG7&3Lob&bby"
+
+  #Define the lines of the scoreboard
+  #Max len 64 characters
+  lines:
+    - ""
+    - "lang:[scoreboard.player-info]"
+    - "  lang:[scoreboard.name]"
+    - "  lang:[scoreboard.rank]"
+    - ""
+    - "lang:[scoreboard.global-pvp]"
+    - "  lang:[scoreboard.kills]"
+    - "  lang:[scoreboard.deaths]"
+    - ""
+    - "lang:[scoreboard.players-online]"
+    - "lang:[scoreboard.players-in-pvp]"
+    - ""
+    - "&8www.example.com"
+
+#Scoreboard below name display
+below-name-display:
+
+  enabled: true
+
+  update-time: 300ms
+
+  suffixes:
+    - "&c❤"
+    - "&f❤"
+
+  indicator: "%player_health%"
+
+config-version: 1

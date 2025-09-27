@@ -1,5 +1,5 @@
 group = 'com.xg7plugins'
-version = '2.2.6.1'
+version = '2.2.7'
 
 repositories {
     mavenCentral()
@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly files("E:\\Projetos\\XG7Plugins\\plugins\\libs\\Core-1.2.5.jar")
+    compileOnly files("/home/davixg7/Documentos/Projetos/XG7Plugins/plugins/libs/Core-1.2.6.jar")
 
     compileOnly('com.nickuc.login:api:10.4')
 

@@ -3,10 +3,11 @@ package com.xg7plugins.xg7lobby;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.boot.PluginSetup;
-import com.xg7plugins.commands.core_commands.reload.ReloadCause;
+import com.xg7plugins.commands.impl.reload.ReloadCause;
 import com.xg7plugins.commands.setup.Command;
-import com.xg7plugins.data.config.Config;
-import com.xg7plugins.data.config.ConfigManager;
+import com.xg7plugins.config.ConfigManager;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.data.database.dao.Repository;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.events.Listener;
@@ -35,7 +36,8 @@ import com.xg7plugins.xg7lobby.commands.moderation.mute.MuteCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle.*;
 import com.xg7plugins.xg7lobby.commands.utils.*;
-import com.xg7plugins.xg7lobby.configs.*;
+import com.xg7plugins.xg7lobby.environment.XG7LobbyEnvironment;
+import com.xg7plugins.xg7lobby.environment.XG7LobbyPlaceholderExpansion;
 import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
 import com.xg7plugins.xg7lobby.events.chat.AntiSpamListener;
@@ -75,10 +77,7 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
-import com.xg7plugins.xg7lobby.tasks.AntiSpamTask;
-import com.xg7plugins.xg7lobby.tasks.AutoBroadcastTask;
-import com.xg7plugins.xg7lobby.tasks.EffectsTask;
-import com.xg7plugins.xg7lobby.tasks.WorldCyclesTask;
+import com.xg7plugins.xg7lobby.tasks.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -102,15 +101,7 @@ import java.util.List;
         },
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
-        configs = {"ads", "custom_commands", "events", "pvp", "scores"},
-        configSections = {
-                AdvertisementConfigs.class, ChatConfigs.class, EventConfigs.OnJoin.class,
-                EventConfigs.OnFirstJoin.class, EventConfigs.OnQuit.class, LaunchpadConfigs.class,
-                LobbyTeleportConfigs.class, MainConfigs.class, ModerationConfigs.class, MotdConfig.class,
-                MultiJumpsConfigs.class, PlayerConfigs.class, PVPConfigs.class, PVPConfigs.OnJoinPvp.class,
-                PVPConfigs.OnKill.class, PVPConfigs.OnLeavePvp.class, PVPConfigs.OnRespawn.class,
-                WorldConfigs.class
-        },
+        configs = {"ads", "custom_commands", "events", "pvp"},
         reloadCauses = {"scores", "menus", "forms"}
 
 )
@@ -141,10 +132,12 @@ public final class XG7Lobby extends Plugin {
                 new GlobalPVPManager()
         );
 
-        if (Config.of(this, MainConfigs.class).isCustomMenusEnabled()) {
+        ConfigSection config = ConfigFile.mainConfigOf(this).root();
+
+        if (config.get("custom-menus-enabled", false)) {
             managerRegistry.registerManager(new CustomInventoryManager());
         }
-        if (Config.of(this, MainConfigs.class).isCustomGeyserFormsEnabled()) {
+        if (config.get("custom-geyser-forms-enabled", false)) {
             managerRegistry.registerManager(new CustomFormsManager());
         }
 
@@ -256,11 +249,15 @@ public final class XG7Lobby extends Plugin {
     public List<TimerTask> loadRepeatingTasks() {
 
         List<TimerTask> tasks = new ArrayList<>();
-
-        if (Config.of(this, AdvertisementConfigs.class).isEnabled()) tasks.add(new AutoBroadcastTask());
-        tasks.add(new EffectsTask());
+        tasks.add(new ForeverActionsTask());
         tasks.add(new WorldCyclesTask());
-        if (Config.of(this, ChatConfigs.class).isAntiSpamEnabled() && Config.of(this, ChatConfigs.class).getSpamTolerance() > 0) tasks.add(new AntiSpamTask());
+
+        if (ConfigFile.of("ads", this).root().get("enabled")) tasks.add(new AutoBroadcastTask());
+
+        ConfigSection config = ConfigFile.mainConfigOf(this).section("anti-spam");
+
+
+        if (config.get("enabled", false) && config.get("spam-tolerance", 0) > 0) tasks.add(new AntiSpamTask());
 
         return tasks;
     }

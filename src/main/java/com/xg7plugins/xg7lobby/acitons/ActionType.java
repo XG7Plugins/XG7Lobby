@@ -1,14 +1,19 @@
 package com.xg7plugins.xg7lobby.acitons;
 
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
+import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.libs.xseries.XEntityType;
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.libs.xseries.XPotion;
 import com.xg7plugins.libs.xseries.XSound;
 import com.xg7plugins.libs.xseries.particles.XParticle;
 import com.xg7plugins.XG7PluginsAPI;
+import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
+import com.xg7plugins.modules.xg7menus.menus.interfaces.player.PlayerMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.MenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
@@ -99,13 +104,18 @@ public enum ActionType {
             }
     ),
     EFFECT(
-            "[EFFECT] potion, duration, amplifier, Optional:[ambient, Optional:[particles, Optional:[icon]]].",
+            "[EFFECT] clear|potion, duration, amplifier, Optional:[ambient, Optional:[particles, Optional:[icon]]].",
             "Gives a effect to a player",
             "POTION",
             true,
             (player, args) -> {
                 try {
                     switch (args.length) {
+                        case 1:
+                            if (!args[0].equalsIgnoreCase("clear"))
+                                throw new ActionException("EFFECT", "Incorrectly amount of args: " + args.length + ". The right way to use is [EFFECT] potion|clear, duration, amplifier, Optional:[ambient, Optional:[particles, Optional:[icon]]].");
+                            player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+                            break;
                         case 3:
                             player.addPotionEffect(new PotionEffect(XPotion.valueOf(args[0]).getPotionEffectType(), Parser.INTEGER.convert(args[1]), Parser.INTEGER.convert(args[2])));
                             break;
@@ -116,12 +126,35 @@ public enum ActionType {
                             player.addPotionEffect(new PotionEffect(XPotion.valueOf(args[0]).getPotionEffectType(), Parser.INTEGER.convert(args[1]), Parser.INTEGER.convert(args[2]), Parser.BOOLEAN.convert(args[3]), Parser.BOOLEAN.convert(args[4])));
                             break;
                         default:
-                            throw new ActionException("EFFECT", "Incorrectly amount of args: " + args.length + ". The right way to use is [EFFECT] potion, duration, amplifier, Optional:[ambient, Optional:[particles, Optional:[icon]]].");
+                            throw new ActionException("EFFECT", "Incorrectly amount of args: " + args.length + ". The right way to use is [EFFECT] potion|clear, duration, amplifier, Optional:[ambient, Optional:[particles, Optional:[icon]]].");
 
                     }
                 } catch (Throwable e) {
-                    throw new ActionException("EFFECT", "Unable to convert text in values, check if the values are correct. potion: TEXT (ENUM_NAME), duration: INTEGER, amplifier: INTEGER, ambient: BOOLEAN, particles: BOOLEAN, icon: BOOLEAN");
+                    throw new ActionException("EFFECT", "Unable to convert text in values, check if the values are correct. \"clear\" or potion: TEXT (ENUM_NAME), duration: INTEGER, amplifier: INTEGER, ambient: BOOLEAN, particles: BOOLEAN, icon: BOOLEAN");
                 }
+            }
+    ),
+    GIVE(
+            "[GIVE] item, amount",
+            "Gives a item to a player",
+            "DIAMOND",
+            true,
+            (player, args) -> {
+                if (args.length != 1 && args.length != 2) throw new ActionException("GIVE", "Incorrectly amount of args: " + args.length + ". The right way to use is [GIVE] item: MATERIAL:ITEM (read docs), amount: INTEGER.");
+
+                String item = args[0];
+                int amount = 1;
+
+                if (args.length == 2) {
+                    amount = Parser.INTEGER.convert(args[1]);
+                }
+
+                Item i = Item.from(item).amount(amount);
+
+                if (i == null) return;
+
+                player.getInventory().addItem(i.getItemStack());
+
             }
     ),
     TP(
@@ -158,7 +191,7 @@ public enum ActionType {
     SOUND(
             "[SOUND] sound, Optional:[volume, Optional:[pitch]]",
             "Plays a sound to a player",
-            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWVjYjQ5Y2NjYzEzNmIyZjQ3OTJhYTE5MDY3ZGM2NDVhNGVmYTEyYzM3NzQxM2QxOGNkMjEyNzM4YjE5NjlhYSJ9fX0",
+            "PLAYER_HEAD:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWVjYjQ5Y2NjYzEzNmIyZjQ3OTJhYTE5MDY3ZGM2NDVhNGVmYTEyYzM3NzQxM2QxOGNkMjEyNzM4YjE5NjlhYSJ9fX0",
             true,
             (player, args) -> {
 
@@ -284,27 +317,48 @@ public enum ActionType {
             "IRON_CHESTPLATE",
             true,
             (player, args) -> {
+
+                if (args.length != 2) throw new ActionException("EQUIP", "Incorrectly amount of args: " + args.length + ". The right way to use is [EQUIP] equipslot: EQUIPSLOT, material: STRING; MATERIAL; OR SELECTOR ITEM.");
+
                 Slot slot = Slot.valueOf(args[0].toUpperCase());
-                XMaterial material = XMaterial.valueOf(args[1]);
+
+                CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
+
+                PlayerMenuHolder hotbar = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
+
+                Item item = null;
+
+                if (hotbar != null && hotbar.getMenu() instanceof LobbyHotbar) {
+
+                    LobbyHotbar lobbyHotbar = (LobbyHotbar) hotbar.getMenu();
+
+                    LobbyItem lobbyItem = lobbyHotbar.items().get(args[1]);
+
+                    if (lobbyItem != null) item = lobbyItem.getItem();
+                }
+
+                if (item == null) item = Item.from(args[1]);
+
+
                 switch (slot) {
                     case HELMET:
-                        player.getInventory().setHelmet(material.parseItem());
+                        player.getInventory().setHelmet(item.getItemFor(player, XG7Lobby.getInstance()));
                         break;
                     case CHESTPLATE:
-                        player.getInventory().setChestplate(material.parseItem());
+                        player.getInventory().setChestplate(item.getItemFor(player, XG7Lobby.getInstance()));
                         break;
                     case LEGGINGS:
-                        player.getInventory().setLeggings(material.parseItem());
+                        player.getInventory().setLeggings(item.getItemFor(player, XG7Lobby.getInstance()));
                         break;
                     case BOOTS:
-                        player.getInventory().setBoots(material.parseItem());
+                        player.getInventory().setBoots(item.getItemFor(player, XG7Lobby.getInstance()));
                         break;
                     case OFFHAND:
                         if (MinecraftVersion.isOlderThan(9)) {
                             Debug.of(XG7Lobby.getInstance()).severe("The offhand slot is only available in 1.9 or higher.");
                             return;
                         }
-                        player.getInventory().setItemInOffHand(material.parseItem());
+                        player.getInventory().setItemInOffHand(item.getItemFor(player, XG7Lobby.getInstance()));
                         break;
                 }
             }
@@ -331,13 +385,13 @@ public enum ActionType {
                     l.teleport(player);
                 });
             }),
-    BUNGEE(
-            "[BUNGEE] server",
-            "Connect to a bungee server",
+    SERVER(
+            "[SERVER] server",
+            "Connect to a proxy server",
             "ENDER_PEARL",
             true, (player, args) -> {
                 if (args.length != 1)
-                    throw new ActionException("BUNGEE", "Incorrectly amount of args: " + args.length + ". The right way to use is [BUNGEE] server.");
+                    throw new ActionException("SERVER", "Incorrectly amount of args: " + args.length + ". The right way to use is [SERVER] server.");
                 try {
                     XG7PluginsAPI.getServerInfo().connectTo(args[0], player);
                 } catch (IOException e) {
@@ -349,7 +403,7 @@ public enum ActionType {
     OPEN_MENU(
             "[OPEN_MENU] menu_id",
             "Opens a custom inventory",
-            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZiOTJlYTJiZDlhNzdhZmJkM2YxNzAzODVhNTdjZGVkNzQ5YWIxNjAxODE0NTkzZTVkZTljYWQ5NTQ5NTkyYyJ9fX0=",
+            "PLAYER_HEAD:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZiOTJlYTJiZDlhNzdhZmJkM2YxNzAzODVhNTdjZGVkNzQ5YWIxNjAxODE0NTkzZTVkZTljYWQ5NTQ5NTkyYyJ9fX0=",
             true,
             (player, args) -> {
                 if (args.length != 1)
@@ -361,7 +415,7 @@ public enum ActionType {
     CLOSE_MENU(
             "[CLOSE_MENU] ",
             "Closes the inventory",
-            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWRjMzZjOWNiNTBhNTI3YWE1NTYwN2EwZGY3MTg1YWQyMGFhYmFhOTAzZThkOWFiZmM3ODI2MDcwNTU0MGRlZiJ9fX0=",
+            "PLAYER_HEAD:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWRjMzZjOWNiNTBhNTI3YWE1NTYwN2EwZGY3MTg1YWQyMGFhYmFhOTAzZThkOWFiZmM3ODI2MDcwNTU0MGRlZiJ9fX0=",
             false,
             (player, args) -> player.closeInventory()
     ),
@@ -380,7 +434,7 @@ public enum ActionType {
     REFRESH_MENU(
             "[REFRESH_MENU] ",
             "Refreshs the menu",
-            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UwNzIzNTVhZmE2MTQyYmFmNTY2MGM5MDY4N2M4YzUwZGM2M2U1Nzc4MWRkYmNhNWNlM2YzNTU0ZDFlMzc1ZSJ9fX0=",
+            "PLAYER_HEAD:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UwNzIzNTVhZmE2MTQyYmFmNTY2MGM5MDY4N2M4YzUwZGM2M2U1Nzc4MWRkYmNhNWNlM2YzNTU0ZDFlMzc1ZSJ9fX0=",
             false,
             (player, args) -> {
                 if (player.getOpenInventory().getTopInventory().getHolder() instanceof BasicMenuHolder) {
@@ -510,6 +564,49 @@ public enum ActionType {
                     XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
                 });
             }
+    ),
+    PVP_ON(
+            "[PVP_ON]",
+            "Enables the pvp fo the player",
+            "DIAMOND_SWORD",
+            false,
+            (player, args) -> XG7LobbyAPI.globalPVPManager().addPlayer(player)
+    ),
+    PVP_OFF(
+            "[PVP_OFF]",
+                    "Disables the pvp fo the player",
+                    "IRON_SWORD",
+                    false,
+                    (player, args) -> {
+
+                        if (!XG7LobbyAPI.isPlayerInPVP(player)) return;
+
+                        ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+
+                        if (XG7PluginsAPI.cooldowns().containsPlayer("pvp-disable", player)) {
+                            XG7PluginsAPI.cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
+                            return;
+                        }
+
+                        XG7PluginsAPI.cooldowns().addCooldown(player, new CooldownManager.CooldownTask(
+                                "pvp-disable",
+                                config.getTimeInMilliseconds("leave-command-cooldown"),
+                                p -> {
+
+                                    long cooldownToToggle = XG7PluginsAPI.cooldowns().getReamingTime("pvp-disable", p);
+
+                                    Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
+                                },
+                                (p, b) -> {
+                                    if (b) {
+                                        Text.fromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
+                                        return;
+                                    }
+                                    XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
+                                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
+                                })
+                        );
+                    }
     );
 
     private final String usage;

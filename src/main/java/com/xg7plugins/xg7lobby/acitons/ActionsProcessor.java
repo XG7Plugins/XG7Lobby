@@ -14,6 +14,7 @@ public class ActionsProcessor {
 
     private static final Pattern conditionPattern = Pattern.compile("\\((.*?)\\) ");
 
+    @SafeVarargs
     public static void process(List<String> actions, Player player, Pair<String, String>... placeholders) {
         process(actions, player, Arrays.asList(placeholders));
     }

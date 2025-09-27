@@ -1,12 +1,10 @@
 package com.xg7plugins.xg7lobby.pvp;
 
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.managers.Manager;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
 import com.xg7plugins.xg7lobby.pvp.handlers.*;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -70,7 +68,7 @@ public class GlobalPVPManager implements Manager {
     }
 
     public boolean isEnabled() {
-        return Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isEnabled();
+        return ConfigFile.of("pvp", XG7Lobby.getInstance()).root().get("enabled");
 
     }
 

@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.data.player;
 
 import com.xg7plugins.data.database.entity.*;
-import com.xg7plugins.utils.ShortUUID;
+import com.xg7plugins.utils.uuid.ShortUUID;
 import lombok.Data;
 
 import java.util.UUID;

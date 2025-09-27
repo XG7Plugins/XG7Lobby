@@ -2,10 +2,10 @@ package com.xg7plugins.xg7lobby.help.form;
 
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.boot.Plugin;
-import com.xg7plugins.data.config.Config;
+
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7geyserforms.forms.SimpleForm;
-import com.xg7plugins.modules.xg7menus.item.BookItem;
+import com.xg7plugins.modules.xg7menus.item.impl.BookItem;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.entity.Player;
@@ -17,7 +17,6 @@ import org.geysermc.cumulus.util.FormImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class XG7LobbyHelpForm extends SimpleForm {
     public XG7LobbyHelpForm() {
@@ -27,7 +26,7 @@ public class XG7LobbyHelpForm extends SimpleForm {
     @Override
     public String content(Player player) {
 
-        Config lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getLangConfiguration();
+        ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
         List<String> content = lang.getList("help.form.content", String.class).orElse(Collections.emptyList());
 
@@ -63,7 +62,7 @@ public class XG7LobbyHelpForm extends SimpleForm {
             case 0:
             case 2:
             case 3:
-                Config lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getLangConfiguration();
+                ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
                 List<String> about = lang.getList("help." + (result.clickedButtonId() == 2 ? "selector-guide" : result.clickedButtonId() == 0 ? "about" : "custom-commands-guide"), String.class).orElse(new ArrayList<>());
 

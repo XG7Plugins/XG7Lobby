@@ -102,8 +102,8 @@
 # Ex: [LOBBY] main_lobby
 # Ex random: [LOBBY] random
 
-# [BUNGEE]: Connect to a bungee server
-# Ex: [BUNGEE] survival_server
+# [SERVER]: Connect to a bungee server
+# Ex: [SERVER] survival_server
 
 # [OPEN_MENU]: Opens a custom inventory
 # Ex: [OPEN_MENU] shop_menu
@@ -161,6 +161,8 @@ title: "&a&lGames"
 #Rows of the menu
 rows: 3
 
+# update-delay: 1s
+
 #Here you can define the items of the menu
 items:
 
@@ -187,7 +189,7 @@ items:
     enchants:
       - "DURABILITY, 1"
     actions:
-      - "[BUNGEE] survival"
+      - "[SERVER] survival"
       - "[CLOSE_MENU] "
 
   bedwars:
@@ -199,7 +201,7 @@ items:
       amount: 1
       glow: true
       actions:
-        - "[BUNGEE] bedwars"
+        - "[SERVER] bedwars"
         - "[CLOSE_MENU] "
 
 #Fill material of the menu

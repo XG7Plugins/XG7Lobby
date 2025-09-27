@@ -1,6 +1,7 @@
 package com.xg7plugins.xg7lobby.menus.custom.forms;
 
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.managers.Manager;
 import com.xg7plugins.modules.xg7geyserforms.XG7GeyserForms;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -30,24 +31,29 @@ public class CustomFormsManager implements Manager {
         List<File> formsFiles = getDefaults(existsBefore, Collections.singletonList("games_form"), folderFile);
 
         for (File file : formsFiles) {
-            Config config = Config.of("menus/forms/" + file.getName().replace(".yml", ""), lobby);
+            ConfigSection config = ConfigFile.of("menus/forms/" + file.getName().replace(".yml", ""), lobby).root();
 
-            String id = config.get("id", String.class).orElseThrow(() -> new IllegalArgumentException("Form id cannot be null!"));
-            FormType type = config.get("type", FormType.class).orElseThrow(() -> new IllegalArgumentException("Form type cannot be null!"));
+            String id = config.get("id", String.class);
+            FormType type = config.get("type", FormType.class);
+
+            if (id == null) throw new IllegalArgumentException("Form id cannot be null!");
+            if (type == null) throw new IllegalArgumentException("Form type cannot be null!");
 
             LobbyForm lobbyForm = null;
 
             switch (type) {
                 case CUSTOM:
-                    lobbyForm = config.get("", LobbyCustomForm.class).orElseThrow(() -> new RuntimeException("LobbyForm corrupted"));
+                    lobbyForm = config.get("", LobbyCustomForm.class);
                     break;
                 case MODAL:
-                    lobbyForm = config.get("", LobbyModalForm.class).orElseThrow(() -> new RuntimeException("LobbyForm corrupted"));
+                    lobbyForm = config.get("", LobbyModalForm.class);
                     break;
                 case SIMPLE:
-                    lobbyForm = config.get("", LobbySimpleForm.class).orElseThrow(() -> new RuntimeException("LobbyForm corrupted"));
+                    lobbyForm = config.get("", LobbySimpleForm.class);
                     break;
             }
+
+            if (lobbyForm == null) throw new IllegalArgumentException("Form malconfigured!");
 
             forms.put(id, lobbyForm);
             XG7GeyserForms.getInstance().registerForm(lobbyForm.getForm());

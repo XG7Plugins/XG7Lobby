@@ -1,7 +1,8 @@
 package com.xg7plugins.xg7lobby.scores;
 
-import com.xg7plugins.data.config.Config;
-import com.xg7plugins.utils.time.Time;
+
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 
@@ -11,25 +12,24 @@ import java.util.Optional;
 @Getter
 public class ScoreConfig {
 
-    private final String scorePath;
+    private final ConfigSection scoreSection;
     private boolean enabled;
     private long delay;
 
-    public ScoreConfig (String scorePath) {
-        this.scorePath = scorePath;
+    public ScoreConfig (ConfigSection scoreSection) {
+        this.scoreSection = scoreSection;
     }
 
     public <T> Optional<T> get(String path, Class<T> clazz) {
-        return Config.of("scores", XG7Lobby.getInstance()).get(scorePath + "." + path,  clazz);
+        return Optional.ofNullable(scoreSection.get(path, clazz));
     }
     public <T> Optional<List<T>> getList(String path, Class<T> clazz) {
-        return Config.of("scores", XG7Lobby.getInstance()).getList(scorePath + "." + path,  clazz);
+        return scoreSection.getList(path, clazz);
     }
 
     public void load() {
-        Config config = Config.of("scores", XG7Lobby.getInstance());
-        this.enabled = config.get(scorePath + ".enabled", Boolean.class).orElse(false);
-        this.delay = config.getTime(scorePath + ".update-time").orElse(Time.of(30)).getMilliseconds();
+        this.enabled = scoreSection.get("enabled",false);
+        this.delay = scoreSection.getTimeInMilliseconds("update-time", 30000L);
     }
 
 }

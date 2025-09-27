@@ -1,8 +1,10 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory;
 
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.managers.Manager;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
@@ -36,24 +38,30 @@ public class CustomInventoryManager implements Manager {
         List<File> hotbars = getDefaults(existsBefore, Arrays.asList("selector", "pvp_selector"), hotbarFolder, "hotbar");
 
         for (File file : guis) {
-            Config config = Config.of("menus/gui/" + file.getName().replace(".yml", ""), lobby);
+            ConfigSection config = ConfigFile.of("menus/gui/" + file.getName().replace(".yml", ""), lobby).root();
 
-            String id = config.get("id", String.class).orElseThrow(() -> new IllegalArgumentException("GUI id cannot be null!"));
+            String id = config.get("id", String.class);
+            if (id == null) throw new IllegalArgumentException("GUI id cannot be null!");
 
-            config.get("", LobbyGUI.class).ifPresent((inv) -> {
-                inventories.put(id, inv);
-                XG7Menus.getInstance().registerMenus(inv);
-            });
+            LobbyGUI lobbyGUI = config.get("", LobbyGUI.class);
+
+            if (lobbyGUI == null) throw new IllegalArgumentException("GUI malconfigured!");
+
+            inventories.put(id, lobbyGUI);
+            XG7Menus.getInstance().registerMenus(lobbyGUI);
         }
         for (File file : hotbars) {
-            Config config = Config.of("menus/hotbar/" + file.getName().replace(".yml", ""), lobby);
+            ConfigSection config = ConfigFile.of("menus/hotbar/" + file.getName().replace(".yml", ""), lobby).root();
 
-            String id = config.get("id", String.class).orElseThrow(() -> new IllegalArgumentException("Hotbar id cannot be null!"));
+            String id = config.get("id", String.class);
+            if (id == null) throw new IllegalArgumentException("Hotbar id cannot be null!");
 
-            config.get("", LobbyHotbar.class).ifPresent((inv) -> {
-                inventories.put(id, inv);
-                XG7Menus.getInstance().registerMenus(inv);
-            });
+            LobbyHotbar lobbyHotbar = config.get("", LobbyHotbar.class);
+
+            if (lobbyHotbar == null) throw new IllegalArgumentException("Hotbar malconfigured!");
+
+            inventories.put(id, lobbyHotbar);
+            XG7Menus.getInstance().registerMenus(lobbyHotbar);
         }
         lobby.getDebug().loading("Loaded " + inventories.size() + " custom inventories.");
         lobby.getDebug().info("Loaded " + inventories.keySet() + " custom inventories.");
@@ -147,6 +155,31 @@ public class CustomInventoryManager implements Manager {
     public void reloadInventories() {
         inventories.clear();
         loadInventories();
+    }
+
+    public static List<MenuAction> parseMenuActions(ConfigSection config, String key) {
+
+        
+        
+        
+
+        if (config.is(key, String.class)) {
+
+            String value = config.get(key,"").trim().toUpperCase();
+
+            
+
+            if ("NONE".equals(value)) return new ArrayList<>(EnumSet.noneOf(MenuAction.class));
+            if ("ALL".equals(value)) return new ArrayList<>(EnumSet.allOf(MenuAction.class));
+
+            try {
+                return Collections.singletonList(MenuAction.valueOf(value));
+            } catch (IllegalArgumentException e) {
+                return new ArrayList<>();
+            }
+        }
+
+        return config.getList(key, MenuAction.class).orElse(new ArrayList<>());
     }
 
 

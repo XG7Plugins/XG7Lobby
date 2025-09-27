@@ -1,13 +1,14 @@
 package com.xg7plugins.xg7lobby.events.lobby;
 
+import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.libs.packetevents.PacketEvents;
 import com.xg7plugins.libs.packetevents.protocol.player.ClientVersion;
 import com.xg7plugins.libs.packetevents.protocol.player.User;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
-import com.xg7plugins.data.config.section.ConfigVerify;
+import com.xg7plugins.config.utils.ConfigCheck;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.server.MinecraftVersion;
 import com.xg7plugins.tasks.tasks.BukkitTask;
@@ -15,11 +16,9 @@ import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.configs.MainConfigs;
-import com.xg7plugins.xg7lobby.configs.PVPConfigs;
-import com.xg7plugins.xg7lobby.configs.PlayerConfigs;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
+import com.xg7plugins.xg7lobby.environment.LobbyApplier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -45,7 +44,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify (
+            isEnabled = @ConfigCheck (
                     configName = "config",
                     path = "break-blocks",
                     invert = true
@@ -58,7 +57,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify (
+            isEnabled = @ConfigCheck (
                     configName = "config",
                     path = "place-blocks",
                     invert = true
@@ -71,7 +70,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify (
+            isEnabled = @ConfigCheck (
                     configName = "config",
                     path = "interact-with-blocks",
                     invert = true
@@ -91,7 +90,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify (
+            isEnabled = @ConfigCheck (
                     configName = "config",
                     path = "drop-items",
                     invert = true
@@ -105,7 +104,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify (
+            isEnabled = @ConfigCheck (
                     configName = "config",
                     path = "pickup-items",
                     invert = true
@@ -122,7 +121,7 @@ public class DefaultPlayerEvents implements Listener {
         Player player = ReflectionObject.of(event).getMethod("getPlayer").invoke();
 
         if (player.hasPermission("xg7lobby.build")) {
-            if (!Config.of(XG7Lobby.getInstance(), MainConfigs.class).isBuildSystemEnabled()) {
+            if (!ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("build-system-enabled", true)) {
                 event.setCancelled(false);
                 return;
             }
@@ -142,7 +141,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify(
+            isEnabled = @ConfigCheck(
                     configName = "config",
                     path = "take-damage",
                     invert = true
@@ -157,7 +156,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify(
+            isEnabled = @ConfigCheck(
                     configName = "config",
                     path = "attack",
                     invert = true
@@ -206,20 +205,21 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify(
+            isEnabled = @ConfigCheck(
                     configName = "config",
                     path = "food-change",
                     invert = true
             )
     )
     public void onFoodChange(FoodLevelChangeEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity()) && Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isFoodChange()) return;
+        if (!(event.getEntity() instanceof Player)) return;
+        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity()) && ConfigFile.of("pvp", XG7Lobby.getInstance()).root().get("food-change", false)) return;
         event.setCancelled(true);
     }
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify(
+            isEnabled = @ConfigCheck(
                     configName = "config",
                     path = "cancel-death-by-void"
             )
@@ -245,7 +245,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify(
+            isEnabled = @ConfigCheck(
                     configName = "config",
                     path = "cancel-portal-teleport"
             ),
@@ -262,14 +262,18 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(isOnlyInWorld = true)
     public void onDeath(PlayerDeathEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP(event.getEntity()) && Config.of(XG7Lobby.getInstance(), PVPConfigs.class).isDropsEnabled()) return;
+        if (XG7LobbyAPI.isPlayerInPVP(event.getEntity()) && ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("drop-items", true)) return;
         event.getDrops().clear();
     }
 
-    @EventHandler(isOnlyInWorld = true, priority = EventPriority.LOW)
+    @EventHandler(isOnlyInWorld = true, ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryClick(InventoryClickEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getWhoClicked())) return;
-        if (!event.getWhoClicked().hasPermission("xg7lobby.inv")) event.setCancelled(true);
+
+        Player player = (Player) event.getWhoClicked();
+
+        if (XG7Menus.hasHolder(player.getUniqueId()) || XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) return;
+
+        event.setCancelled(!player.hasPermission("xg7lobby.inv"));
     }
 
     @EventHandler(isOnlyInWorld = true)
@@ -288,11 +292,9 @@ public class DefaultPlayerEvents implements Listener {
             XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(player)));
         });
 
-        XG7LobbyAPI.customInventoryManager().openMenu(Config.of(XG7Lobby.getInstance(), MainConfigs.class).getMainSelectorId(), player);
+        XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
 
-        PlayerConfigs configs = Config.of(XG7Lobby.getInstance(), PlayerConfigs.class);
-
-        configs.apply(player);
+        LobbyApplier.apply(player);
 
         player.setHealth(player.getMaxHealth());
 
@@ -306,7 +308,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(
             isOnlyInWorld = true,
-            isEnabled = @ConfigVerify(
+            isEnabled = @ConfigCheck(
                     configName = "config",
                     path = "auto-respawn"
             )

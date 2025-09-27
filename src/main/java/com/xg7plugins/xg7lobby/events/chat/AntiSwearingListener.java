@@ -3,12 +3,12 @@ package com.xg7plugins.xg7lobby.events.chat;
 import com.google.common.base.Strings;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.configs.ChatConfigs;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -18,35 +18,40 @@ import java.util.List;
 public class AntiSwearingListener implements Listener {
     @Override
     public boolean isEnabled() {
-        return Config.of(XG7Lobby.getInstance(), ChatConfigs.class).isAntiSwearEnabled();
+        return ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+                .section("anti-swearing")
+                .get("enabled", false);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        ChatConfigs config = Config.of(XG7Lobby.getInstance(), ChatConfigs.class);
+        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("anti-swearing");
 
         if (player.hasPermission("xg7lobby.chat.swear")) return;
 
-        if (config.isAntiSwearOnlyOnLobby() && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
+        boolean antiSwearOnlyInLobby = config.get("anti-swear-only-in-lobby", false);
+        if (antiSwearOnlyInLobby && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
 
         String message = event.getMessage().toLowerCase();
 
-        for (String swearingWord : config.getBlockedWords()) {
+        List<String> blockedWords = config.getList("blocked-words", String.class).orElse(Collections.emptyList());
+
+        for (String swearingWord : blockedWords) {
             if (!message.contains(swearingWord.toLowerCase())) continue;
 
-            if (config.isDontSendTheSwearMessage()) {
+            boolean dontSendMessage = config.get("dont-send-the-message", false);
+            if (dontSendMessage) {
                 event.setCancelled(true);
-                Text.sendTextFromLang(player,XG7Lobby.getInstance(), "chat.swear");
+                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "chat.swear");
                 return;
             }
 
-            message = message.replace(swearingWord, Strings.repeat(config.getChatReplacement(), swearingWord.length()));
-
+            String replacement = config.get("replacement", "*");
+            message = message.replace(swearingWord, Strings.repeat(replacement, swearingWord.length()));
         }
 
         event.setMessage(message);
-
     }
 }

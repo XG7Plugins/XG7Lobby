@@ -1,6 +1,7 @@
-package com.xg7plugins.xg7lobby;
+package com.xg7plugins.xg7lobby.environment;
 
-import com.xg7plugins.xg7lobby.configs.XG7LobbyEnvironment;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;

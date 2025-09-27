@@ -6,6 +6,8 @@ id: "selector"
 
 cooldown-to-use: "2s"
 
+update-delay: 1s
+
 items:
 
   games:
@@ -17,19 +19,29 @@ items:
     amount: 1
     enchants:
       - "DURABILITY, 1"
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
     actions:
       - "[OPEN_MENU] (?IF_NOT: %xg7plugins_is_bedrock_player%?) games"
       - "[OPEN_FORM] (?IF: %xg7plugins_is_bedrock_player%?) games_form"
 
   profile:
 
-      material: THIS_PLAYER
+      material: PLAYER_HEAD:THIS_PLAYER
       name: "&aProfile"
       lore:
         - "&7Click to view your profile!"
       amount: 1
       enchants:
         - "DURABILITY, 1"
+
+      item-flags:
+        - HIDE_ENCHANTS
+        - HIDE_ATTRIBUTES
+
       actions:
         - "[OPEN_MENU] profile"
 
@@ -40,8 +52,34 @@ items:
     lore:
       - "&7Click to view the lobbies menu!"
     amount: 1
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
     actions:
       - "[PLAYER_COMMAND] 7llobbies"
+
+  enablePVP:
+
+    material: DIAMOND_SWORD
+
+    conditional: "?PERMISSION: xg7lobby.pvp?"
+
+    name: "&aEnable PVP"
+    lore:
+      - "&7Click to enable pvp!"
+    amount: 1
+
+    enchants:
+      - "DURABILITY, 1"
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
+    actions:
+      - "[PVP_ON] "
 
   hidePlayers:
 
@@ -56,6 +94,11 @@ items:
     amount: 1
     enchants:
       - "DURABILITY, 1"
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
     actions:
       - "[HIDE_PLAYERS] "
       - "[SWAP] showPlayers"
@@ -69,6 +112,11 @@ items:
     amount: 1
     enchants:
       - "DURABILITY, 1"
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
     actions:
       - "[SHOW_PLAYERS] "
       - "[SWAP] hidePlayers"
@@ -85,6 +133,11 @@ items:
     amount: 1
     enchants:
       - "DURABILITY, 1"
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
     actions:
       - "[FLY_ON] "
       - "[SWAP] disableFly"
@@ -100,6 +153,11 @@ items:
     amount: 1
     enchants:
       - "DURABILITY, 1"
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
     actions:
       - "[FLY_OFF] "
       - "[SWAP] enableFly"
@@ -113,12 +171,17 @@ items:
     lore:
       - "&7Click to &aenable&7!"
     amount: 1
+
+    item-flags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+
     actions:
       - "[BUILD_ON] "
       - "[MESSAGE] &aBuild enabled!"
 
 
-row: ["games","profile","","","enableFly","","enableBuild","hidePlayers","lobbies"]
+row: ["games","profile","enablePVP","","enableFly","","enableBuild","hidePlayers","lobbies"]
 
 
 config-version: 2.0

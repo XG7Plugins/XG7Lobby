@@ -49,10 +49,12 @@ on-respawn:
   # Teleport back to PvP lobby
   teleport-to-pvp-lobby: true
 
-  # Clear inventory
-  reset-items: true
-
-  actions: [ ]
+  actions:
+    - "[EQUIP] HELMET, DIAMOND_HELMET"
+    - "[EQUIP] CHESTPLATE, DIAMOND_CHESTPLATE"
+    - "[EQUIP] LEGGINGS, DIAMOND_LEGGINGS"
+    - "[EQUIP] BOOTS, DIAMOND_BOOTS"
+    - "[EQUIP] OFFHAND, GOLDEN_APPLE"
 
 # Actions when leaving PvP
 on-leave-pvp:
@@ -62,7 +64,7 @@ on-leave-pvp:
     - "[BROADCAST] &c%player% left the PvP!"
 
 # Blocked commands in PvP
-commands-blocked:
+blocked-commands:
   - "/lobby"
   - "/spawn"
   - "/hub"
@@ -75,4 +77,4 @@ commands-blocked:
   - "/back"
 
 #DO NOT CHANGE THIS!
-config-version: 1
+config-version: 2

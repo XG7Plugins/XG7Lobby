@@ -1,11 +1,9 @@
 package com.xg7plugins.xg7lobby.tasks;
 
-import com.xg7plugins.data.config.Config;
+import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
-import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.configs.ChatConfigs;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -33,7 +31,7 @@ public class AntiSpamTask extends TimerTask {
                 XG7Lobby.getInstance(),
                 "anti-spam-tolerance",
                 0,
-                Config.of(XG7Lobby.getInstance(), ChatConfigs.class).getTimeForDecrementSpamTolerance().getMilliseconds(),
+                ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("anti-spam").getTimeInMilliseconds("time-for-decrement-spam-tolerance"),
                 TaskState.RUNNING,
                 null
         );

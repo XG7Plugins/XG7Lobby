@@ -25,7 +25,7 @@ boss-bar:
   public: false
 
 #Action bar sender
-actionbar:
+action-bar:
   enabled: true
 
   #Delay for update

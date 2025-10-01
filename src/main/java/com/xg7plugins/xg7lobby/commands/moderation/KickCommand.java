@@ -3,7 +3,8 @@ package com.xg7plugins.xg7lobby.commands.moderation;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -37,11 +38,15 @@ import java.util.List;
 public class KickCommand implements Command {
 
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 1) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         OfflinePlayer offlineTarget = args.get(0, OfflinePlayer.class);
@@ -53,8 +58,7 @@ public class KickCommand implements Command {
 
 
         if (!offlineTarget.isOnline()) {
-            CommandMessages.NOT_ONLINE.send(sender);
-            return;
+            return CommandState.NOT_ONLINE;
         }
 
         Player target = offlineTarget.getPlayer();
@@ -63,7 +67,7 @@ public class KickCommand implements Command {
 
         if (target.hasPermission("xg7lobby.moderation.kick") && !moderationConfig.get("kick-admin", false)) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.kick-admin");
-            return;
+            return CommandState.ERROR;
         }
 
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
@@ -80,6 +84,7 @@ public class KickCommand implements Command {
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.on-kick-sender", Pair.of("reason", reason), Pair.of("target", target.getName()));
 
+        return CommandState.FINE;
     }
 
     @Override

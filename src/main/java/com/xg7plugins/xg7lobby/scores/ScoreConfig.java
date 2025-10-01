@@ -12,7 +12,7 @@ import java.util.Optional;
 @Getter
 public class ScoreConfig {
 
-    private final ConfigSection scoreSection;
+    private ConfigSection scoreSection;
     private boolean enabled;
     private long delay;
 
@@ -28,6 +28,8 @@ public class ScoreConfig {
     }
 
     public void load() {
+        ConfigFile newFile = ConfigFile.of(scoreSection.getFile().getName(), XG7Lobby.getInstance());
+        this.scoreSection = new ConfigSection(newFile, scoreSection.getPath(), newFile.getConfig());
         this.enabled = scoreSection.get("enabled",false);
         this.delay = scoreSection.getTimeInMilliseconds("update-time", 30000L);
     }

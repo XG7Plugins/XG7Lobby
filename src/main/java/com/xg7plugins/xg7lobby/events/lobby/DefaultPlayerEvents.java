@@ -235,11 +235,11 @@ public class DefaultPlayerEvents implements Listener {
         if (event.getPlayer().getLocation().getY() < layer) {
             LobbyLocation location = XG7LobbyAPI.requestRandomLobbyLocation().join();
             if (location == null || location.getLocation() == null) {
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation())));
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation())));
                 return;
             }
 
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> location.teleport(event.getPlayer())));
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> location.teleport(event.getPlayer())));
         }
     }
 
@@ -289,7 +289,7 @@ public class DefaultPlayerEvents implements Listener {
                 Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
                 return;
             }
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(player)));
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> lobby.teleport(player)));
         });
 
         XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
@@ -300,7 +300,7 @@ public class DefaultPlayerEvents implements Listener {
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
             lobbyPlayer.applyHide();
         });
 
@@ -314,7 +314,7 @@ public class DefaultPlayerEvents implements Listener {
             )
     )
     public void onAutoRespawn(PlayerDeathEvent event) {
-        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> event.getEntity().spigot().respawn()), 100L);
+        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> event.getEntity().spigot().respawn()), 100L);
     }
 
 }

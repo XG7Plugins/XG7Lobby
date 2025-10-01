@@ -1,6 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.lobby;
 
 import com.xg7plugins.libs.xseries.XMaterial;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -18,9 +20,16 @@ import org.bukkit.entity.Player;
         pluginClass = XG7Lobby.class
 )
 public class Lobbies implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         XG7Menus.getInstance().getMenu(XG7Lobby.getInstance(), "lobbies-menu").open((Player) sender);
+        return CommandState.FINE;
     }
 
     @Override

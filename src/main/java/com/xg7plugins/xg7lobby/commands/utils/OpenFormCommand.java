@@ -1,7 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.utils;
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -27,16 +28,21 @@ import java.util.List;
         pluginClass = XG7Lobby.class
 )
 public class OpenFormCommand implements Command {
+
+    @Override
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
     @Override
     public Item getIcon() {
         return Item.commandIcon(XMaterial.CHEST, this);
     }
 
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() != 1) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         Player player = (Player) sender;
@@ -44,11 +50,13 @@ public class OpenFormCommand implements Command {
         String id = args.get(0, String.class);
 
         if (!XG7LobbyAPI.customFormsManager().contains(id)) {
-            Text.sendTextFromLang(player,XG7Lobby.getInstance(), "form-does-not-exist");
-            return;
+            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "form-does-not-exist");
+            return CommandState.ERROR;
         }
 
         XG7LobbyAPI.customFormsManager().sendForm(id, player);
+
+        return CommandState.FINE;
     }
 
     @Override

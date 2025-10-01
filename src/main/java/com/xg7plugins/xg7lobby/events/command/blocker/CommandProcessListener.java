@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.events.command.blocker;
 
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.Listener;
@@ -33,7 +33,7 @@ public class CommandProcessListener implements Listener {
         List<String> commands = config.getList("commands", String.class).orElse(Collections.emptyList());
 
         if (commands.contains(label)) {
-            CommandMessages.COMMAND_NOT_FOUND.send(player);
+            CommandState.COMMAND_NOT_FOUND.send(player);
             event.setCancelled(true);
         }
     }

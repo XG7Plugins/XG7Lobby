@@ -60,12 +60,6 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
         this.allowedActions = allowedActions;
         this.deniedActions = deniedActions;
 
-
-
-        
-        
-
-        
     }
 
     @Override
@@ -107,6 +101,8 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
                     updater.setItem(Slot.fromSlot(finalI), Item.from(Material.AIR));
                     return;
                 }
+
+                if (originalItem.getItem().getItemStack().isSimilar(lobbyItem.getItem().getItemStack())) return;
 
                 updater.setItem(Slot.fromSlot(finalI), lobbyItem.getItem());
             });

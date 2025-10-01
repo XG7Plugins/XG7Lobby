@@ -1,7 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.moderation.ban;
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -28,30 +29,36 @@ import java.util.stream.Collectors;
 public class UnbanCommand implements Command {
 
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() != 1) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         OfflinePlayer target = args.get(0, OfflinePlayer.class);
 
         if (!target.isBanned()) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unban.not-banned");
-            return;
+            return CommandState.ERROR;
         }
 
         Bukkit.getServer().getBanList(org.bukkit.BanList.Type.NAME).pardon(target.getName());
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unban.on-unban", Pair.of("target", target.getName()));
 
+        return CommandState.FINE;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         return args.len() == 1 ? Bukkit.getBanList(org.bukkit.BanList.Type.NAME).getBanEntries().stream().map(BanEntry::getTarget).collect(Collectors.toList()) : new ArrayList<>();
     }
+
     @Override
     public Item getIcon() {
         return Item.commandIcon(XMaterial.EMERALD, this);

@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.commands.utils;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -26,20 +27,24 @@ import java.util.List;
         pluginClass = XG7Lobby.class
 )
 public class ResetStatsCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 2) {
-            Command.super.onCommand(sender, args);
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         String stats = args.get(0, String.class).toUpperCase();
         OfflinePlayer player = args.get(1, OfflinePlayer.class);
 
         if (!player.isOnline() && !player.hasPlayedBefore()) {
-            CommandMessages.NOT_ONLINE.send(sender);
-            return;
+            return CommandState.NOT_ONLINE;
         }
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
@@ -67,11 +72,13 @@ public class ResetStatsCommand implements Command {
                     return;
 
                 default:
-                    Command.super.onCommand(sender, args);
+                    // Sintaxe inválida no argumento
+                    break;
 
             }
         });
 
+        return CommandState.FINE;
     }
 
     @Override

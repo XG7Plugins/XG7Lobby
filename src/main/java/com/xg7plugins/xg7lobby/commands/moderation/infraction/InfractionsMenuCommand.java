@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.commands.moderation.infraction;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -27,20 +28,26 @@ import java.util.List;
         pluginClass = XG7Lobby.class
 )
 public class InfractionsMenuCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         Player player = (Player) sender;
         OfflinePlayer target = args.len() == 0 ? player : args.get(0, OfflinePlayer.class);
 
         if (!target.hasPlayedBefore() && !target.isOnline()) {
-            CommandMessages.PLAYER_NOT_FOUND.send(sender);
-            return;
+            return CommandState.PLAYER_NOT_FOUND;
         }
 
         InfractionsMenu infractionsMenu = XG7Menus.getInstance().getMenu(XG7Lobby.getInstance(), "warns-menu");
 
         infractionsMenu.open(player, target);
 
+        return CommandState.FINE;
     }
 
     @Override

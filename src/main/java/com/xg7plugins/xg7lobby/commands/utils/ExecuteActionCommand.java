@@ -1,7 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.utils;
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -27,21 +28,28 @@ import java.util.stream.Collectors;
         pluginClass = XG7Lobby.class
 )
 public class ExecuteActionCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() == 0) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
-        String actionArgs = args.get(0,String.class) + " ";
+        String actionArgs = args.get(0, String.class) + " ";
 
         if (args.len() > 1) {
             actionArgs = Strings.join(Arrays.asList(args.getArgs()), ' ');
         }
 
         ActionsProcessor.process(Collections.singletonList(actionArgs), (Player) sender);
+
+        return CommandState.FINE;
     }
 
     @Override

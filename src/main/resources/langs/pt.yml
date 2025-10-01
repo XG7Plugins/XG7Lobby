@@ -1,7 +1,6 @@
 formated-name: "Português (BR)"
 
 commands:
-  not-online: "&cEste jogador não está online."
 
   fly:
     toggle-on: "%prefix% &aModo de voo ativado."
@@ -517,4 +516,4 @@ help:
 
 help-in-chat.commands-title: "&7Comandos do &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
-config-version: 3
+config-version: 4

@@ -48,7 +48,7 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
             XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.fly();
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
                 lobbyPlayer.applyHide();
             });
 

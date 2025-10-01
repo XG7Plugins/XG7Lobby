@@ -25,25 +25,25 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
     @Override
     public void handle(Player player, Object... args) {
 
-        System.out.println("LOBBY: " + pvpConfigs.get("pvp-lobby"));
-        System.out.println("ACTIONS: " + config.getList("actions", String.class).orElse(Collections.emptyList()));
-        System.out.println("TP TO LOBBY: " + config.get("teleport-to-pvp-lobby", false));
+        
+        
+        
 
-        XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
-            System.out.println("TELEPORTING TO PVP LOBBY");
-            System.out.println("LOBBY: " + l);
+        XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> {
+            
+            
             if (l == null) {
-                System.out.println("LOCATION IS NULL!");
+                
                 return;
             }
 
-            System.out.println("PLAYER BEFORE TP: " + player.getName() + " at " + player.getLocation());
+            
 
             try {
                 l.teleport(player);
-                System.out.println("PLAYER AFTER TP: " + player.getName() + " at " + player.getLocation());
+                
             } catch (Exception e) {
-                System.out.println("ERROR DURING TELEPORT:");
+                
                 e.printStackTrace();
             }
 

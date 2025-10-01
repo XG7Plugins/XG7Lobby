@@ -84,7 +84,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
                     : XG7LobbyAPI.requestLobbyLocation(lobbyId);
 
             lobbyLocation.thenAccept(lobby -> {
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
 
                     World previousWorld = player.getWorld();
 
@@ -167,7 +167,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
         boolean shouldRunEvents = player.getWorld() == newWorld || joinConfig.get("run-actions-when-return-to-the-lobby", true);
 
         if (shouldRunEvents) {
-            XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> ActionsProcessor.process(
+            XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> ActionsProcessor.process(
                     firstJoinConfig.get("enabled", true) && !player.hasPlayedBefore() ? firstJoinConfig.getList("actions", String.class).orElse(Collections.emptyList())
                             : joinConfig.getList("actions", String.class).orElse(Collections.emptyList()),
                     player)), 100L);
@@ -184,7 +184,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
                         : XG7LobbyAPI.requestLobbyLocation(lobbyId);
 
                 lobbyLocation.thenAccept(lobby -> {
-                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
                         if (lobby == null || lobby.getLocation() == null) {
                             Text.sendTextFromLang(player, XG7Lobby.getInstance(),
                                     "lobby.on-teleport.on-error-doesnt-exist"
@@ -199,7 +199,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
         }
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-            XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+            XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> {
                 if (joinConfig.get("clear-inventory", false))
                     player.getInventory().clear();
 

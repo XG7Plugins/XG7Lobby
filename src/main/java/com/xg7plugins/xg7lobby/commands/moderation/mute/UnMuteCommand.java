@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.commands.moderation.mute;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -29,11 +30,16 @@ import java.util.List;
         pluginClass = XG7Lobby.class
 )
 public class UnMuteCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() != 1) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         OfflinePlayer target = args.get(0, OfflinePlayer.class);
@@ -41,13 +47,12 @@ public class UnMuteCommand implements Command {
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
         if (player == null) {
-            CommandMessages.PLAYER_NOT_FOUND.send(sender);
-            return;
+            return CommandState.PLAYER_NOT_FOUND;
         }
 
         if (!player.isMuted()) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unmute.not-muted", Pair.of("target", target.getName()));
-            return;
+            return CommandState.ERROR;
         }
 
 
@@ -56,10 +61,12 @@ public class UnMuteCommand implements Command {
         XG7LobbyAPI.lobbyPlayerManager().updatePlayer(player);
 
         if (target.isOnline()) {
-            Text.sendTextFromLang(target.getPlayer(),XG7Lobby.getInstance(), "commands.unmute.on-unmute");
+            Text.sendTextFromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.unmute.on-unmute");
         }
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unmute.on-unmute-sender", Pair.of("target", player.getOfflinePlayer().getName()));
+
+        return CommandState.FINE;
     }
 
     @Override

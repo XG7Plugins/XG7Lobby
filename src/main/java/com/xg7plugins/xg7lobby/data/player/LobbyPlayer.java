@@ -133,7 +133,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
                     });
                 });
 
-        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> tasks.forEach(Runnable::run)));
+        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> tasks.forEach(Runnable::run)));
     }
 
     public boolean isBuildEnabled() {
@@ -165,7 +165,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
             int infractionsToKick = (int) map.get("min-to-kick");
             int infractionsToMute = (int) map.get("min-to-mute");
 
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
                 if ((infractionCount >= infractionsToBan && infractionsToBan > -1)) {
                     if (player.isOnline())
                         playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));

@@ -1,6 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
 import com.xg7plugins.libs.xseries.XMaterial;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -18,13 +20,21 @@ import org.bukkit.command.CommandSender;
         pluginClass = XG7Lobby.class
 )
 public class LockChatCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         XG7LobbyEnvironment xg7LobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
 
         xg7LobbyConfig.setChatLocked(!xg7LobbyConfig.isChatLocked());
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "chat.on-" + (xg7LobbyConfig.isChatLocked() ? "lock" : "unlock"));
+
+        return CommandState.FINE;
     }
 
     @Override

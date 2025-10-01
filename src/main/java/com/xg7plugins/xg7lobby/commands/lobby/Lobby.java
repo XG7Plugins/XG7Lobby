@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.commands.lobby;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -35,14 +36,19 @@ import java.util.stream.Collectors;
         pluginClass = XG7Lobby.class
 )
 public class Lobby implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         String id = null;
 
         if (args.len() > 0) {
             if (!sender.hasPermission("xg7lobby.command.lobby.teleport-id")) {
-                CommandMessages.NO_PERMISSION.send(sender);
-                return;
+                return CommandState.NO_PERMISSION;
             }
             id = args.get(0, String.class);
         }
@@ -52,22 +58,19 @@ public class Lobby implements Command {
 
         if (args.len() > 1) {
             if (!sender.hasPermission("xg7lobby.command.lobby.teleport-others")) {
-                CommandMessages.NO_PERMISSION.send(sender);
-                return;
+                return CommandState.NO_PERMISSION;
             }
             OfflinePlayer targetOffline = args.get(1, OfflinePlayer.class);
 
             if (!targetOffline.hasPlayedBefore() || !targetOffline.isOnline()) {
-                CommandMessages.PLAYER_NOT_FOUND.send(sender);
-                return;
+                return CommandState.PLAYER_NOT_FOUND;
             }
 
             targetToTeleport = targetOffline.getPlayer();
             targetIsOther = !targetToTeleport.getName().equals(sender.getName());
         } else {
             if (!(sender instanceof Player)) {
-                CommandMessages.NOT_A_PLAYER.send(sender);
-                return;
+                return CommandState.NOT_A_PLAYER;
             }
             targetToTeleport = (Player) sender;
         }
@@ -83,13 +86,13 @@ public class Lobby implements Command {
                     Pair.of("target", targetToTeleport.getName()),
                     Pair.of("time", String.valueOf(cooldownToToggle))
             );
-            return;
+            return CommandState.ERROR;
         }
 
         if (cooldownManager.containsPlayer("lobby-cooldown-before", targetToTeleport) && !targetIsOther) {
             cooldownManager.removeCooldown("lobby-cooldown-before", targetToTeleport.getUniqueId(), true);
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.teleport-cancelled");
-            return;
+            return CommandState.ERROR;
         }
 
         Player finalTargetToTeleport = targetToTeleport;
@@ -103,7 +106,7 @@ public class Lobby implements Command {
             }
 
             if (finalTargetToTeleport.hasPermission("xg7lobby.command.lobby.bypass-cooldown")) {
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport)));
+                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> lobby.teleport(finalTargetToTeleport)));
                 return;
             }
 
@@ -126,7 +129,7 @@ public class Lobby implements Command {
                                     Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.teleport-cancelled");
                                     return;
                                 }
-                                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> lobby.teleport(finalTargetToTeleport)));
+                                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> lobby.teleport(finalTargetToTeleport)));
                                 cooldownManager.addCooldown(finalTargetToTeleport, "lobby-cooldown-after", teleportConfig.getTimeInMilliseconds("after-teleport", 5000L));
                             })
                     )
@@ -137,17 +140,17 @@ public class Lobby implements Command {
 
         if (id == null) {
             XG7LobbyAPI.requestRandomLobbyLocation().thenAccept(teleportConsumer);
-            return;
+        } else {
+            XG7LobbyAPI.requestLobbyLocation(id).thenAccept(teleportConsumer);
         }
 
-        XG7LobbyAPI.requestLobbyLocation(id).thenAccept(teleportConsumer);
-
+        return CommandState.FINE;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         if (args.len() == 1 && sender.hasPermission("xg7lobby.command.lobby.teleport-id")) {
-            return XG7PluginsAPI.database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation)e).getID()).collect(Collectors.toList());
+            return XG7PluginsAPI.database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation) e).getID()).collect(Collectors.toList());
         }
         if (args.len() == 2 && sender.hasPermission("xg7lobby.command.lobby.teleport-others")) {
             return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());

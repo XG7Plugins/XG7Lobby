@@ -549,7 +549,7 @@ public enum ActionType {
             (player, args) -> {
                 XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(true);
-                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
+                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
                 });
             }
     ),
@@ -561,20 +561,20 @@ public enum ActionType {
             (player, args) -> {
                 XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(false);
-                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
+                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
                 });
             }
     ),
     PVP_ON(
             "[PVP_ON]",
-            "Enables the pvp fo the player",
+            "Enables the pvp of the player",
             "DIAMOND_SWORD",
             false,
             (player, args) -> XG7LobbyAPI.globalPVPManager().addPlayer(player)
     ),
     PVP_OFF(
             "[PVP_OFF]",
-                    "Disables the pvp fo the player",
+                    "Disables the pvp of the player",
                     "IRON_SWORD",
                     false,
                     (player, args) -> {
@@ -603,7 +603,7 @@ public enum ActionType {
                                         return;
                                     }
                                     XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
-                                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
+                                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
                                 })
                         );
                     }

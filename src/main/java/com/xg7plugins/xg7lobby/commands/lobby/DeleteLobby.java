@@ -2,6 +2,8 @@ package com.xg7plugins.xg7lobby.commands.lobby;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -26,10 +28,14 @@ import java.util.stream.Collectors;
 public class DeleteLobby implements Command {
 
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() < 1) {
-            Command.super.onCommand(sender, args);
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         String id = args.get(0, String.class);
@@ -42,17 +48,19 @@ public class DeleteLobby implements Command {
 
             XG7LobbyAPI.lobbyManager().deleteLobbyLocation(lobbyLocation)
                     .exceptionally(throwable -> {
-                        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.on-error", Pair.of("id", id));
-                        throwable.printStackTrace();
-                        return false;
-                    }
+                                Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.on-error", Pair.of("id", id));
+                                throwable.printStackTrace();
+                                return false;
+                            }
                     ).thenRun(() -> Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.on-success", Pair.of("id", id)));
         });
+
+        return CommandState.FINE;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
-        return XG7PluginsAPI.database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation)e).getID()).collect(Collectors.toList());
+        return XG7PluginsAPI.database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation) e).getID()).collect(Collectors.toList());
     }
 
     @Override

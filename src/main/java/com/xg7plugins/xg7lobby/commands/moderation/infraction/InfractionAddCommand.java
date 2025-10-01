@@ -1,7 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.moderation.infraction;
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -33,15 +34,20 @@ import java.util.Map;
         isAsync = true
 )
 public class InfractionAddCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 3) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
-        OfflinePlayer offlinePlayer = args.get(0,  OfflinePlayer.class);
+        OfflinePlayer offlinePlayer = args.get(0, OfflinePlayer.class);
 
         int level = args.get(1, Integer.class);
         String reason = Strings.join(Arrays.asList(Arrays.copyOfRange(args.getArgs(), 2, args.len())), ' ');
@@ -49,15 +55,14 @@ public class InfractionAddCommand implements Command {
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(offlinePlayer.getUniqueId());
 
         if (player == null) {
-            CommandMessages.PLAYER_NOT_FOUND.send(sender);
-            return;
+            return CommandState.PLAYER_NOT_FOUND;
         }
 
         ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
         if (player.getOfflinePlayer().isOp() && !moderationConfig.get("warn-admin", false)) {
             Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.warn-admin");
-            return;
+            return CommandState.ERROR;
         }
 
         List<Map> infractionLevels = moderationConfig.getList("infraction-levels", Map.class).orElse(Collections.emptyList());
@@ -68,7 +73,7 @@ public class InfractionAddCommand implements Command {
 
         if (!levelExists) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.level-invalid");
-            return;
+            return CommandState.ERROR;
         }
 
         Infraction infraction = new Infraction(player.getPlayerUUID(), level, reason);
@@ -77,6 +82,8 @@ public class InfractionAddCommand implements Command {
 
         if (offlinePlayer.isOnline()) Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-warn", Pair.of("reason", reason));
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.on-warn-sender", Pair.of("target", player.getOfflinePlayer().getName()), Pair.of("reason", reason));
+
+        return CommandState.FINE;
     }
 
     @Override

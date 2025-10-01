@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.commands.moderation.ban;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -33,10 +34,14 @@ import java.util.*;
 public class BanIPCommand implements Command {
 
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() < 2) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         OfflinePlayer target = args.get(0, OfflinePlayer.class);
@@ -50,19 +55,18 @@ public class BanIPCommand implements Command {
 
         if (target.isBanned()) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.already-banned");
-            return;
+            return CommandState.ERROR;
         }
 
         ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
         if (target.isOp() && !moderationConfig.get("ban-admin", false)) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.ban.ban-admin").thenAccept(text -> text.send(sender));
-            return;
+            return CommandState.ERROR;
         }
 
         if (!target.isOnline()) {
-            CommandMessages.NOT_ONLINE.send(sender);
-            return;
+            return CommandState.NOT_ONLINE;
         }
 
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
@@ -77,6 +81,8 @@ public class BanIPCommand implements Command {
         });
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.on-ban-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + ""), Pair.of("target", target.getName()));
+
+        return CommandState.FINE;
     }
 
     @Override

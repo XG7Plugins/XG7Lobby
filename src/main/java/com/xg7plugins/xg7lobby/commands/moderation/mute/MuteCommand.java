@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.commands.moderation.mute;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -36,15 +37,20 @@ import java.util.List;
         isAsync = true
 )
 public class MuteCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 2) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
-        OfflinePlayer target = args.get(0,  OfflinePlayer.class);
+        OfflinePlayer target = args.get(0, OfflinePlayer.class);
 
         Time time = args.get(1, String.class).equalsIgnoreCase("forever") ? Time.of(0) : Time.now().add(args.get(1, Time.class));
 
@@ -58,12 +64,12 @@ public class MuteCommand implements Command {
 
         if (player.isMuted()) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.already-muted");
-            return;
+            return CommandState.ERROR;
         }
 
         if (player.getPlayer().hasPermission("xg7lobby.moderation.mute") && !moderationConfig.get("mute-admin", false)) {
             Text.fromLang(sender, XG7Lobby.getInstance(), "commands.mute.mute-admin").thenAccept(text -> text.send(sender));
-            return;
+            return CommandState.ERROR;
         }
 
         LobbyPlayerManager playerManager = XG7LobbyAPI.lobbyPlayerManager();
@@ -78,6 +84,7 @@ public class MuteCommand implements Command {
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.on-mute-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + ""), Pair.of("target", target.getName()));
 
+        return CommandState.FINE;
     }
 
     @Override

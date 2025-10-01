@@ -19,7 +19,7 @@ public class NLoginListener implements Listener {
 
     @EventHandler
     public void onAuthenticationSuccess(AuthenticateEvent event) {
-        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), () -> {
+        XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
             LoginAndLogoutEvent.handleWorldJoin(event.getPlayer(), event.getPlayer().getWorld(), true);
         }));
     }

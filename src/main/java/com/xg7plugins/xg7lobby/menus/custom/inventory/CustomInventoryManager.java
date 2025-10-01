@@ -159,10 +159,6 @@ public class CustomInventoryManager implements Manager {
 
     public static List<MenuAction> parseMenuActions(ConfigSection config, String key) {
 
-        
-        
-        
-
         if (config.is(key, String.class)) {
 
             String value = config.get(key,"").trim().toUpperCase();

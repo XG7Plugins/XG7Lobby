@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby.commands.utils;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -30,19 +31,23 @@ import java.util.List;
         pluginClass = XG7Lobby.class
 )
 public class GamemodeCommand implements Command {
+
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() < 1) {
-            CommandMessages.SYNTAX_ERROR.send(sender, getCommandSetup().syntax());
-            return;
+            return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
         OfflinePlayer target = null;
 
         if (args.len() == 1) {
             if (!(sender instanceof Player)) {
-                CommandMessages.NOT_A_PLAYER.send(sender);
-                return;
+                return CommandState.NOT_A_PLAYER;
             }
             target = (Player) sender;
         }
@@ -51,8 +56,7 @@ public class GamemodeCommand implements Command {
 
         if (args.len() > 1) {
             if (!sender.hasPermission("xg7lobby.command.game-mode-other")) {
-                CommandMessages.NO_PERMISSION.send(sender);
-                return;
+                return CommandState.NO_PERMISSION;
             }
             target = args.get(1, OfflinePlayer.class);
             isOther = true;
@@ -62,19 +66,17 @@ public class GamemodeCommand implements Command {
 
         if (mode == null) {
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.game-mode.invalid-game-mode");
-            return;
+            return CommandState.ERROR;
         }
 
         if (isOther) {
 
             if (target == null || (!target.hasPlayedBefore()) && !target.isOnline()) {
-                CommandMessages.PLAYER_NOT_FOUND.send(sender);
-                return;
+                return CommandState.PLAYER_NOT_FOUND;
             }
 
             if (!target.isOnline()) {
-                CommandMessages.NOT_ONLINE.send(sender);
-                return;
+                return CommandState.NOT_ONLINE;
             }
         }
 
@@ -85,8 +87,10 @@ public class GamemodeCommand implements Command {
         }
 
         OfflinePlayer finalTarget = target;
-        Text.sendTextFromLang(target.getPlayer(),XG7Lobby.getInstance(), "commands.game-mode.set", Pair.of("gamemode", mode.name().toLowerCase()));
+        Text.sendTextFromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.game-mode.set", Pair.of("gamemode", mode.name().toLowerCase()));
         if (isOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.game-mode.set-other", Pair.of("gamemode", mode.name().toLowerCase()));
+
+        return CommandState.FINE;
     }
 
     @Override

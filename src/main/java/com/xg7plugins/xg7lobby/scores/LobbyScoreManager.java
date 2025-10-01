@@ -31,8 +31,6 @@ public class LobbyScoreManager implements Manager {
     public void loadScores() {
         Debug.of(XG7Lobby.getInstance()).info("Loading lobby scores");
 
-        if (ConfigFile.of("scores/tablist", XG7Lobby.getInstance()).root().get("tab-list-sorter-enabled")) XG7PluginsAPI.taskManager().runTimerTask(XG7PluginsAPI.taskManager().getTimerTask(XG7Plugins.getInstance(), "tablist-sorter"));
-
         lobbyScoreLoaders.forEach((loader) -> {
             loader.getScoreConfig().load();
             if (!loader.getScoreConfig().isEnabled()) return;

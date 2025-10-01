@@ -2,6 +2,8 @@ package com.xg7plugins.xg7lobby.commands.lobby;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -32,7 +34,12 @@ import java.util.concurrent.ExecutionException;
 public class SetLobby implements Command {
 
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         String id = null;
 
@@ -43,8 +50,7 @@ public class SetLobby implements Command {
 
         if (!(sender instanceof Player)) {
             if (args.len() < 5) {
-                Command.super.onCommand(sender, args);
-                return;
+                return CommandState.syntaxError(getCommandSetup().syntax());
             }
 
             String world = args.get(1, String.class);
@@ -86,6 +92,7 @@ public class SetLobby implements Command {
             throw new RuntimeException(e);
         }
 
+        return CommandState.FINE;
     }
 
     @Override

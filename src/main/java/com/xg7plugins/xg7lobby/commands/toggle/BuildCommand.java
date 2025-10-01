@@ -2,13 +2,13 @@ package com.xg7plugins.xg7lobby.commands.toggle;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandMessages;
+import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 
-import com.xg7plugins.config.
-utils.ConfigCheck;
+import com.xg7plugins.config.utils.ConfigCheck;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
@@ -44,39 +44,39 @@ import java.util.stream.Collectors;
 public class BuildCommand implements Command {
 
     @Override
-    public void onCommand(CommandSender sender, CommandArgs args) {
+    public Plugin getPlugin() {
+        return XG7Lobby.getInstance();
+    }
+
+    @Override
+    public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         OfflinePlayer target = null;
         boolean isOther = false;
 
         if (!sender.hasPermission("xg7lobby.build")) {
-            CommandMessages.NO_PERMISSION.send(sender);
-            return;
+            return CommandState.NO_PERMISSION;
         }
 
         if (args.len() == 0) {
             if (!(sender instanceof Player)) {
-                CommandMessages.NOT_A_PLAYER.send(sender);
-                return;
+                return CommandState.NOT_A_PLAYER;
             }
             target = (Player) sender;
         }
 
         if (args.len() > 0) {
             if (!sender.hasPermission("xg7lobby.command.build-other")) {
-                CommandMessages.NO_PERMISSION.send(sender);
-                return;
+                return CommandState.NO_PERMISSION;
             }
             target = args.get(0, OfflinePlayer.class);
             isOther = true;
         }
         if (isOther && target == null || (!target.hasPlayedBefore() && !target.isOnline())) {
-            CommandMessages.PLAYER_NOT_FOUND.send(sender);
-            return;
+            return CommandState.PLAYER_NOT_FOUND;
         }
         if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), target.getPlayer())) {
-            CommandMessages.DISABLED_WORLD.send(sender);
-            return;
+            return CommandState.DISABLED_WORLD;
         }
 
         boolean finalIsOther = isOther;
@@ -92,9 +92,9 @@ public class BuildCommand implements Command {
         try {
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
 
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(XG7Lobby.getInstance(), lobbyPlayer::applyBuild));
+            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
 
-            if (finalTarget.isOnline()) Text.sendTextFromLang(lobbyPlayer.getPlayer(),XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-on" : "toggle-off"));
+            if (finalTarget.isOnline()) Text.sendTextFromLang(lobbyPlayer.getPlayer(), XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-on" : "toggle-off"));
             if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
 
             PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(lobbyPlayer.getPlayerUUID());
@@ -103,9 +103,10 @@ public class BuildCommand implements Command {
         } catch (Exception e) {
             lobbyPlayer.setBuildEnabled(before);
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
+        return CommandState.FINE;
     }
 
     @Override

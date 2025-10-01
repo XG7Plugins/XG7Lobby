@@ -61,12 +61,12 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
     @Override
     public void onWorldJoin(Player player, World newWorld) {
-        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> hidePlayers(player)), 1L);
+        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> hidePlayers(player)), 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
-        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of(XG7Lobby.getInstance(), () -> hidePlayers(event.getPlayer())), 1L);
+        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> hidePlayers(event.getPlayer())), 1L);
     }
 
     private void hidePlayers(Player player) {

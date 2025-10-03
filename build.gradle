@@ -1,5 +1,5 @@
 group = 'com.xg7plugins'
-version = '2.3'
+version = '2.3.video'
 
 repositories {
     mavenCentral()
@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly files("/home/davixg7/Documentos/Projetos/XG7Plugins/plugins/libs/Core-1.2.6.jar")
+    compileOnly files("E:\\Projetos\\XG7Plugins\\plugins\\libs\\Core-1.3.jar")
 
     compileOnly('com.nickuc.login:api:10.4')
 

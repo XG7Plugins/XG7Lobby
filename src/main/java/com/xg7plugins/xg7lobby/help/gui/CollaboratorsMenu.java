@@ -28,11 +28,12 @@ public class CollaboratorsMenu extends Menu {
     public List<Item> getItems(Player player) {
 
         return Arrays.asList(
-                SkullItem.newSkull().setSkinByUUID(UUID.fromString("45766b7f-9789-40e1-bd0b-46fa0d032bde")).name("&aDaviXG7").lore("&bCreator of all plugin").slot(11),
-                SkullItem.newSkull().setSkinByUUID(UUID.fromString("f12b8505-8b77-4046-9d86-8b5303690096")).name("&aSadnessSad").lore("&bBeta tester and video helper").slot(12),
-                SkullItem.newSkull().setSkinByUUID(UUID.fromString("696581df-4256-4028-b55e-9452b4de40b6")).name("&aBultzzXG7").lore("&bBeta tester and video helper").slot(13),
+                SkullItem.newSkull().setSkinByUUID(UUID.fromString("45766b7f-9789-40e1-bd0b-46fa0d032bde")).name("&aDaviXG7").lore("&bCreator of all plugin").slot(10),
+                SkullItem.newSkull().setSkinByUUID(UUID.fromString("f12b8505-8b77-4046-9d86-8b5303690096")).name("&aSadnessSad").lore("&bBeta tester").slot(11),
+                SkullItem.newSkull().setSkinByUUID(UUID.fromString("696581df-4256-4028-b55e-9452b4de40b6")).name("&aBultzzXG7").lore("&bBeta tester").slot(12),
                 SkullItem.newSkull().setSkinByUUID(UUID.fromString("f66d01bf-0e1c-4800-9a50-060411bff0bd")).name("&aMintNonExistent (Gorrfy)").lore("&bBeta tester").slot(14),
                 SkullItem.newSkull().setSkinByUUID(UUID.fromString("35e9eeda-84ce-497d-af08-7cf5d68a21c7")).name("&aDanielXG7").lore("&bBeta tester").slot(15),
+                SkullItem.newSkull().setSkinByUUID(UUID.fromString("3b57c818-7cc7-4553-bb58-cf01a09b2dd1")).name("&aAceitou").lore("&bVideo editor").slot(16),
                 Item.from(XMaterial.matchXMaterial("BARRIER").orElse(XMaterial.OAK_DOOR)).name("lang:[help.menu.close-item]").slot(18)
         );
     }

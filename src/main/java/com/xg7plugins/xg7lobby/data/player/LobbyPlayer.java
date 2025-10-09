@@ -8,6 +8,7 @@ import com.xg7plugins.data.database.entity.Column;
 import com.xg7plugins.data.database.entity.Entity;
 import com.xg7plugins.data.database.entity.Pkey;
 import com.xg7plugins.data.database.entity.Table;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
@@ -99,7 +100,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         if (player == null) return;
 
         if (buildEnabled) {
-            if (XG7LobbyAPI.customInventoryManager() != null) XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
+            if (XG7LobbyAPI.customInventoryManager() != null) XG7Menus.getInstance().closeAllMenus(player);
             return;
         }
 

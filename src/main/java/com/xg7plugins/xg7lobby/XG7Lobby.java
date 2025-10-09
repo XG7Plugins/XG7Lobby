@@ -79,6 +79,7 @@ import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.*;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,8 +157,6 @@ public final class XG7Lobby extends Plugin {
         debug.loading("Loading custom commands...");
 
         ManagerRegistry.get(this,  CustomCommandManager.class).registerCommands();
-
-        debug.loading("XG7Lobby enabled.");
     }
 
     @Override
@@ -167,19 +166,24 @@ public final class XG7Lobby extends Plugin {
 
         if (cause.equals("scores")) {
             debug.loading("Reloading scores...");
+
             LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
             lobbyScoreManager.reloadScores();
             debug.loading("Scores reloaded.");
         }
         if (cause.equals("menus")) {
             debug.loading("Reloading menus...");
-
-            XG7Menus menus = XG7Menus.getInstance();
-            menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
-
             CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
 
-            if (inventoryManager != null) inventoryManager.reloadInventories();
+            if (inventoryManager != null) {
+                inventoryManager.reloadInventories();
+
+                Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(this, p))
+                        .forEach(p -> {
+                            XG7Menus.getInstance().closeAllMenus(p);
+                            inventoryManager.openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), p);
+                        });
+            }
 
             debug.loading("Menus reloaded.");
         }

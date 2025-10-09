@@ -3,6 +3,7 @@ package com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.modules.xg7menus.Slot;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
@@ -19,6 +20,7 @@ import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -149,7 +151,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
         boolean shouldCancel = !allowedActions.contains(event.getMenuAction()) || deniedActions.contains(event.getMenuAction());
         event.setCancelled(shouldCancel);
-        
+
 
         Item clickedItem = event.getClickedItem();
         if (clickedItem == null) return;
@@ -175,7 +177,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
         if (XG7PluginsAPI.cooldowns().containsPlayer("selector-cooldown", event.getHolder().getPlayer())) {
             long time = XG7PluginsAPI.cooldowns().getReamingTime("selector-cooldown", event.getHolder().getPlayer());
-            
+
             Text.sendTextFromLang(event.getHolder().getPlayer(), XG7Lobby.getInstance(), "selector-cooldown",
                     Pair.of("time", time + ""));
             return;
@@ -189,10 +191,10 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
                     if (action.toString().startsWith("[SWAP] ")) {
                         String result = "[SWAP] " + getMenuConfigs().getId() + ", " + event.getClickedSlot().get() + ", "
                                 + action.toString().replace("[SWAP] ", "");
-                        
+
                         return result;
                     }
-                    
+
                     return action.toString();
                 })
                 .collect(Collectors.toList());
@@ -202,9 +204,9 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
         if (!disableCooldown) {
             long cd = !cooldown.isZero() ? cooldown.toMilliseconds() : 300L;
             XG7PluginsAPI.cooldowns().addCooldown(event.getHolder().getPlayer(), "selector-cooldown", cd);
-            
+
         }
-        
+
     }
 
     @Override

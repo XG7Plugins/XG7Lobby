@@ -140,19 +140,12 @@ public class CustomInventoryManager implements Manager {
         lobbyInventory.getMenu().open(player);
     }
 
-    public void closeAllMenus(Player player) {
-        player.closeInventory();
-        if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
-            PlayerMenuHolder holder = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
-            holder.getMenu().close(holder);
-        }
-    }
-
     public List<String> getIds() {
         return new ArrayList<>(inventories.keySet());
     }
 
     public void reloadInventories() {
+        inventories.values().forEach(l -> XG7Menus.getInstance().unregisterMenu(XG7Lobby.getInstance(), l.getMenu().getMenuConfigs().getId()));
         inventories.clear();
         loadInventories();
     }
@@ -162,8 +155,6 @@ public class CustomInventoryManager implements Manager {
         if (config.is(key, String.class)) {
 
             String value = config.get(key,"").trim().toUpperCase();
-
-            
 
             if ("NONE".equals(value)) return new ArrayList<>(EnumSet.noneOf(MenuAction.class));
             if ("ALL".equals(value)) return new ArrayList<>(EnumSet.allOf(MenuAction.class));

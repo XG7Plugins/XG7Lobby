@@ -5,6 +5,7 @@ import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
+import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -33,7 +34,7 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
         if (player.isOnline()) {
 
             if (XG7LobbyAPI.customInventoryManager() != null) {
-                XG7LobbyAPI.customInventoryManager().closeAllMenus(player);
+                XG7Menus.getInstance().closeAllMenus(player);
 
                 XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id", "selector"), player);
             }

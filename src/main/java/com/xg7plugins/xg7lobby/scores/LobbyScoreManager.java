@@ -41,7 +41,7 @@ public class LobbyScoreManager implements Manager {
             XG7Scores.loadScores(loader.load());
             Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Scores.getInstance()::addPlayer);
 
-            Debug.of(XG7Lobby.getInstance()).loading("Loaded!");
+            Debug.of(XG7Lobby.getInstance()).info("Loaded " + loader.getScoreID());
         });
     }
 

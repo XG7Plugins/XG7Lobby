@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.events.chat;
 
-import com.xg7plugins.events.Listener;
+import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;

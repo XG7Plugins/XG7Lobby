@@ -4,7 +4,7 @@ import com.xg7plugins.cache.ObjectCache;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.events.Listener;
+import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;

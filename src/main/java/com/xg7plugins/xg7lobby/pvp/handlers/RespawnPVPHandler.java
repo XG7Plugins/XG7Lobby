@@ -4,7 +4,7 @@ package com.xg7plugins.xg7lobby.pvp.handlers;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.events.Listener;
+import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.BukkitTask;

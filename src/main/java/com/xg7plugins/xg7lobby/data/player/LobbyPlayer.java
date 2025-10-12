@@ -146,6 +146,10 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     }
 
     public void applyInfractions() {
+        applyInfractions(true);
+    }
+
+    public void applyInfractions(boolean kick) {
 
         OfflinePlayer player = getOfflinePlayer();
 
@@ -179,7 +183,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
                 }
 
                 if (((infractionCount >= infractionsToKick && infractionsToKick > -1)) && player.isOnline()) {
-                    playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
+                    if (kick) playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
                 }
             }));
             if ((infractionCount >= infractionsToMute && infractionsToMute > -1)) {
@@ -205,7 +209,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         }
 
         if (totalInfractionCount >= config.get("total-infractions-to-kick", 5) && player.isOnline()) {
-            playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
+            if (kick) playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-kick").join().replace("reason", newInfraction.getWarning()));
         }
 
     }

@@ -218,7 +218,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
                 lobbyPlayer.fly();
                 lobbyPlayer.applyBuild();
                 lobbyPlayer.applyHide();
-                lobbyPlayer.applyInfractions();
+                lobbyPlayer.applyInfractions(false);
             }), 50L);
         });
     }

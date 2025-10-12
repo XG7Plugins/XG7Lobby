@@ -294,9 +294,6 @@ help:
       name: "&bColaboradores"
       lore: "Clic aquí para ver los colaboradores"
 
-
-    collaborators-menu-title: "&b&lColaboradores"
-
     actions-menu:
       title: "&b&lAcciones"
 
@@ -307,7 +304,7 @@ help:
           description: "&7Descripción&b: &r%description%"
           usage: "&7Uso&b: &r%usage%"
   about:
-    - "Acerca de &9XG7Lobby"
+    - "&0Acerca de &9XG7Lobby"
     - ""
     - "&8Versión: &a%version%&r"
     - "&8Sitio web: &a&n%website%&r"
@@ -522,4 +519,4 @@ help:
 
 help-in-chat.commands-title: "&7Comandos de &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
-config-version: 4
+config-version: 5

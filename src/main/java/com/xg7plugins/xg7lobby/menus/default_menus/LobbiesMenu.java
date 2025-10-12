@@ -5,6 +5,8 @@ import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.editor.InventoryShaper;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.modules.xg7menus.item.clickable.impl.ChangePageItem;
+import com.xg7plugins.modules.xg7menus.item.clickable.impl.CloseInventoryItem;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PagedMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.PagedMenu;
@@ -15,6 +17,7 @@ import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LobbiesMenu extends PagedMenu {
@@ -45,7 +48,8 @@ public class LobbiesMenu extends PagedMenu {
 
             lore.add("lang:[lobbies-menu.lobby-item.server]");
             lore.add("lang:[lobbies-menu.lobby-item.location]");
-            if (!player.hasPermission("xg7lobby.command.lobby.delete")) lore.add("lang:[lobbies-menu.lobby-item.click-to-tp]");
+            if (!player.hasPermission("xg7lobby.command.lobby.delete"))
+                lore.add("lang:[lobbies-menu.lobby-item.click-to-tp]");
             else {
                 lore.add("lang:[lobbies-menu.lobby-item.for-admins.click-to-tp]");
                 lore.add("lang:[lobbies-menu.lobby-item.for-admins.click-to-remove]");
@@ -65,9 +69,17 @@ public class LobbiesMenu extends PagedMenu {
                     )
             );
 
-            lobbyItem.setNBTTag("lobby-id", lobby.getID());
+            pagedItems.add(lobbyItem.clickable(event -> {
+                Player p = event.getHolder().getPlayer();
 
-            pagedItems.add(lobbyItem);
+                if (p.hasPermission("xg7lobby.command.lobby.delete") && event.getMenuAction().isRightClick()) {
+                    p.closeInventory();
+                    p.performCommand("deletelobby " + lobby.getID());
+                    return;
+                }
+
+                p.getServer().dispatchCommand(p.getServer().getConsoleSender(), "lobby " + lobby.getID() + " " + p.getName());
+            }));
         });
 
         return pagedItems;
@@ -75,50 +87,10 @@ public class LobbiesMenu extends PagedMenu {
 
     @Override
     public List<Item> getItems(Player player) {
-
-        InventoryShaper editor = new InventoryShaper(getMenuConfigs());
-
-        editor.setItem(Slot.fromSlot(45), Item.from(XMaterial.ARROW).name("lang:[lobbies-menu.go-back]").slot(45));
-        editor.setItem(Slot.fromSlot(49), Item.from(XMaterial.matchXMaterial("BARRIER").orElse(XMaterial.OAK_DOOR)).name("lang:[lobbies-menu.close]").slot(49));
-        editor.setItem(Slot.fromSlot(53), Item.from(XMaterial.ARROW).name("lang:[lobbies-menu.go-next]").slot(53));
-
-        return editor.getItems();
-    }
-
-    @Override
-    public void onClick(ActionEvent event) {
-        if (event.getClickedItem().isAir()) return;
-
-        PagedMenuHolder menuHolder = (PagedMenuHolder) event.getHolder();
-
-        Player player = menuHolder.getPlayer();
-
-        switch (event.getClickedSlot().get()) {
-            case 45:
-                menuHolder.previousPage();
-                break;
-            case 49:
-                player.closeInventory();
-                break;
-            case 53:
-                menuHolder.nextPage();
-                break;
-            default:
-
-                Item item = event.getClickedItem();
-
-                if (!item.getTag("lobby-id",String.class).isPresent()) return;
-
-                String lobbyId = item.getTag("lobby-id",String.class).get();
-
-                if (player.hasPermission("xg7lobby.command.lobby.delete") && event.getMenuAction().isRightClick()) {
-                    player.closeInventory();
-                    player.performCommand("deletelobby " + lobbyId);
-                    return;
-                }
-
-                player.getServer().dispatchCommand(player.getServer().getConsoleSender(), "lobby " + lobbyId + " " + player.getName());
-
-        }
+        return Arrays.asList(
+                ChangePageItem.previousPageItem().name("lang:[lobbies-menu.go-back]").slot(45),
+                CloseInventoryItem.get().name("lang:[lobbies-menu.close]").slot(49),
+                ChangePageItem.nextPageItem().name("lang:[lobbies-menu.go-next]").slot(53)
+        );
     }
 }

@@ -294,9 +294,6 @@ help:
       name: "&bCollaborators"
       lore: "Click here to see the collaborators"
 
-
-    collaborators-menu-title: "&b&lCollaborators"
-
     actions-menu:
       title: "&b&lActions"
 
@@ -307,7 +304,7 @@ help:
           description: "&7Description&b: &r%description%"
           usage: "&7Usage&b: &r%usage%"
   about:
-    - "About &9XG7Lobby"
+    - "&0About &9XG7Lobby"
     - ""
     - "&8Version: &a%version%&r"
     - "&8Website: &a&n%website%&r"
@@ -521,4 +518,4 @@ help:
 
 help-in-chat.commands-title: "&7Commands of &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
-config-version: 4
+config-version: 5

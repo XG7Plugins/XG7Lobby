@@ -2,7 +2,8 @@ package com.xg7plugins.xg7lobby;
 
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
-import com.xg7plugins.boot.PluginSetup;
+import com.xg7plugins.boot.setup.Collaborator;
+import com.xg7plugins.boot.setup.PluginSetup;
 import com.xg7plugins.commands.impl.reload.ReloadCause;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.config.ConfigManager;
@@ -59,7 +60,6 @@ import com.xg7plugins.xg7lobby.help.chat.MenusGuidePage;
 import com.xg7plugins.xg7lobby.help.form.CollaboratorsForm;
 import com.xg7plugins.xg7lobby.help.form.XG7LobbyHelpForm;
 import com.xg7plugins.xg7lobby.help.gui.ActionsMenu;
-import com.xg7plugins.xg7lobby.help.gui.CollaboratorsMenu;
 import com.xg7plugins.xg7lobby.help.gui.XG7LobbyHelpGUI;
 import com.xg7plugins.xg7lobby.menus.custom.forms.CustomFormsManager;
 import com.xg7plugins.xg7lobby.menus.custom.forms.typeAdapter.LobbyCustomFormAdapter;
@@ -103,7 +103,14 @@ import java.util.List;
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
         configs = {"ads", "custom_commands", "events", "pvp"},
-        reloadCauses = {"scores", "menus", "forms"}
+        reloadCauses = {"scores", "menus", "forms"},
+        collaborators = {
+                @Collaborator(uuid = "45766b7f-9789-40e1-bd0b-46fa0d032bde", name = "&aDaviXG7", role = "&bCreator of all plugin"),
+                @Collaborator(uuid = "f12b8505-8b77-4046-9d86-8b5303690096", name = "&aSadnessSad", role = "&bBeta tester"),
+                @Collaborator(uuid = "696581df-4256-4028-b55e-9452b4de40b6", name = "&aBultzzXG7", role = "&bBeta tester"),
+                @Collaborator(uuid = "f66d01bf-0e1c-4800-9a50-060411bff0bd", name = "&aMintNonExistent (Gorrfy)", role = "&bBeta tester"),
+                @Collaborator(uuid = "35e9eeda-84ce-497d-af08-7cf5d68a21c7", name = "&aDanielXG7", role = "&bBeta tester")
+        }
 
 )
 public final class XG7Lobby extends Plugin {
@@ -272,7 +279,6 @@ public final class XG7Lobby extends Plugin {
         HelpGUI helpCommandGUI = new HelpGUI(this, new XG7LobbyHelpGUI());
 
         helpCommandGUI.registerMenu("actions", new ActionsMenu());
-        helpCommandGUI.registerMenu("collaborators", new CollaboratorsMenu());
 
         HelpForm helpCommandForm = null;
 

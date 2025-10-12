@@ -46,6 +46,7 @@ items:
       - HIDE_ATTRIBUTES
 
     actions:
+      - "[MESSAGE] %prefix% &cDisabling pvp..."
       - "[PVP_OFF] "
 
     denied-menu-actions: "ALL"
@@ -61,4 +62,4 @@ items:
 row: ["sword", "bow", "arrow", "", "", "", "", "steak", "leave"]
 
 
-config-version: 2
+config-version: 3

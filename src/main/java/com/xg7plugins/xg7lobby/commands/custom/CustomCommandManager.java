@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.commands.custom;
 
-import com.xg7plugins.boot.PluginSetup;
 
+import com.xg7plugins.boot.setup.PluginSetup;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.managers.Manager;

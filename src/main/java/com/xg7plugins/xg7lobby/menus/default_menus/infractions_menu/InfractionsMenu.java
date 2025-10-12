@@ -11,6 +11,8 @@ import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 
+import com.xg7plugins.modules.xg7menus.item.clickable.impl.ChangePageItem;
+import com.xg7plugins.modules.xg7menus.item.clickable.impl.CloseInventoryItem;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.tasks.tasks.BukkitTask;
@@ -26,6 +28,7 @@ import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InfractionsMenu extends Menu {
 
@@ -40,58 +43,45 @@ public class InfractionsMenu extends Menu {
 
     }
 
+    @SuppressWarnings("unchecked")
     public List<Item> pagedItems(OfflinePlayer target) {
 
-        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
+        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
 
         LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
-        List<Item> items = new ArrayList<>();
-
-        lobbyPlayer.getInfractions().forEach(infraction -> {
-
+        return lobbyPlayer.getInfractions().stream().map(i -> {
             Map warnLevel = config.getList("infraction-levels", Map.class).orElse(Collections.emptyList()).stream()
-                    .filter(map -> map.get("level").equals(infraction.getLevel()))
+                    .filter(map -> map.get("level").equals(i.getLevel()))
                     .findFirst()
                     .orElse(new HashMap<>());
+            return Item.from((String) warnLevel.get("menu-material"))
+                    .name("lang:[warn-menu.warn-item.name]")
+                    .lore(Arrays.asList("lang:[warn-menu.warn-item.reason]", "lang:[warn-menu.warn-item.date]", "lang:[warn-menu.warn-item.level]", "lang:[warn-menu.warn-item.click-to-copy-id]"))
+                    .setBuildPlaceholders(
+                            Pair.of("target", target.getName()),
+                            Pair.of("reason", i.getWarning()),
+                            Pair.of("date", new SimpleDateFormat("dd/MM/yy HH:mm").format(i.getDate())),
+                            Pair.of("level", String.valueOf(i.getLevel())),
+                            Pair.of("id", String.valueOf(i.getID()))
+                    )
+                    .clickable(event -> {
+                        Player player = event.getHolder().getPlayer();
+                        Text.format(" ").send(player);
 
-            String material = (String) warnLevel.get("menu-material");
+                        Text.sendTextFromLang(player, XG7Lobby.getInstance(), "warn-menu.id-message", Pair.of("id", i.getID()));
 
-            Item item = Item.from(material);
-
-            item.name("lang:[warn-menu.warn-item.name]");
-
-            List<String> lore = new ArrayList<>();
-
-            lore.add("lang:[warn-menu.warn-item.reason]");
-            lore.add("lang:[warn-menu.warn-item.date]");
-            lore.add("lang:[warn-menu.warn-item.level]");
-            lore.add("lang:[warn-menu.warn-item.click-to-copy-id]");
-
-            item.lore(lore);
-
-            item.setBuildPlaceholders(
-                    Pair.of("target", target.getName()),
-                    Pair.of("reason", infraction.getWarning()),
-                    Pair.of("date", new SimpleDateFormat("dd/MM/yy HH:mm").format(infraction.getDate())),
-                    Pair.of("level", String.valueOf(infraction.getLevel())),
-                    Pair.of("id", String.valueOf(infraction.getID()))
-            );
-
-            item.setNBTTag("warn-id", String.valueOf(infraction.getID()));
-
-            items.add(item);
-        });
-
-        return items;
+                        Text.format(" ").send(player);
+                    });
+        }).collect(Collectors.toList());
     }
 
     @Override
     public List<Item> getItems(Player player) {
         return Arrays.asList(
-                Item.from(Material.ARROW).name("lang:[warn-menu.go-back]").slot(45),
-                Item.from(Material.BARRIER).name("lang:[warn-menu.close]").slot(49),
-                Item.from(Material.ARROW).name("lang:[warn-menu.go-next]").slot(53)
+                ChangePageItem.previousPageItem().name("lang:[warn-menu.go-back]").slot(45),
+                CloseInventoryItem.get().name("lang:[warn-menu.close]").slot(49),
+                ChangePageItem.nextPageItem().name("lang:[warn-menu.go-next]").slot(53)
         );
     }
 
@@ -137,39 +127,6 @@ public class InfractionsMenu extends Menu {
         XG7Menus.registerHolder(menuHolder);
     }
 
-    @Override
-    public void onClick(ActionEvent event) {
-        event.setCancelled(true);
-
-        Player player = event.getHolder().getPlayer();
-
-        InfractionsMenuHolder holder = (InfractionsMenuHolder) event.getHolder();
-
-        if (event.getClickedItem().isAir()) return;
-
-        switch (event.getClickedSlot().get()) {
-            case 45:
-                holder.previousPage();
-                break;
-            case 49:
-                player.closeInventory();
-                break;
-            case 53:
-                holder.nextPage();
-                break;
-            default:
-
-                String id = event.getClickedItem().getTag("warn-id", String.class).orElse(null);
-
-                Text.format(" ").send(player);
-
-                Text.sendTextFromLang(player,XG7Lobby.getInstance(), "warn-menu.id-message", Pair.of("id", id));
-
-                Text.format(" ").send(player);
-
-        }
-
-    }
 
     public static void refresh(InfractionsMenuHolder menuHolder) {
         BasicMenu.refresh(menuHolder);

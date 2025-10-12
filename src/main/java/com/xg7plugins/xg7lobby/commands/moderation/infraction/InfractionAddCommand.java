@@ -58,14 +58,14 @@ public class InfractionAddCommand implements Command {
             return CommandState.PLAYER_NOT_FOUND;
         }
 
-        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
+        ConfigSection rootSection = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
 
-        if (player.getOfflinePlayer().isOp() && !moderationConfig.get("warn-admin", false)) {
+        if (player.getOfflinePlayer().isOp() && !rootSection.get("warn-admin", false)) {
             Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.warn-admin");
             return CommandState.ERROR;
         }
 
-        List<Map> infractionLevels = moderationConfig.getList("infraction-levels", Map.class).orElse(Collections.emptyList());
+        List<Map> infractionLevels = rootSection.getList("infraction-levels", Map.class).orElse(Collections.emptyList());
         boolean levelExists = infractionLevels.stream().anyMatch(map -> {
             Object levelObj = map.get("level");
             return levelObj instanceof Integer && (Integer) levelObj == level;

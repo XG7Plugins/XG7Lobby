@@ -482,7 +482,7 @@ public enum ActionType {
 
                 LobbyItem item = lobbyHotbar.items().get(args[2]);
 
-                PlayerMenuHolder holder = XG7Menus.getInstance().getPlayerMenuHolder(player.getUniqueId());
+                PlayerMenuHolder holder = XG7PluginsAPI.menus().getPlayerMenuHolder(player.getUniqueId());
 
                 if (item == null) {
                     throw new ActionException("SWAP", "The item with path: " + args[1] + " doesn't exist in the menu with id: " + args[0]);

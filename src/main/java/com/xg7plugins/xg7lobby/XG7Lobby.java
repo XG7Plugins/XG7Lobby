@@ -187,7 +187,7 @@ public final class XG7Lobby extends Plugin {
 
                 Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(this, p))
                         .forEach(p -> {
-                            XG7Menus.getInstance().closeAllMenus(p);
+                            XG7PluginsAPI.menus().closeAllMenus(p);
                             inventoryManager.openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), p);
                         });
             }
@@ -304,7 +304,7 @@ public final class XG7Lobby extends Plugin {
 
     public void loadMenus() {
 
-        XG7Menus menus = XG7Menus.getInstance();
+        XG7Menus menus = XG7PluginsAPI.menus();
 
         menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
 

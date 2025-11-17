@@ -2,9 +2,9 @@ package com.xg7plugins.xg7lobby.commands.utils;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.boot.Plugin;
-import com.xg7plugins.commands.CommandState;
+import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
-import com.xg7plugins.commands.setup.CommandArgs;
+import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.xg7lobby.XG7Lobby;

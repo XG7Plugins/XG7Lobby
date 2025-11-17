@@ -100,7 +100,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         if (player == null) return;
 
         if (buildEnabled) {
-            if (XG7LobbyAPI.customInventoryManager() != null) XG7Menus.getInstance().closeAllMenus(player);
+            if (XG7LobbyAPI.customInventoryManager() != null) XG7PluginsAPI.menus().closeAllMenus(player);
             return;
         }
 

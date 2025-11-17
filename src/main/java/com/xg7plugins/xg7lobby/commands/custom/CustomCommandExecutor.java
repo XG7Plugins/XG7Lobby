@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.commands.custom;
 
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.commands.CommandState;
+import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.AllArgsConstructor;
 import org.bukkit.command.Command;

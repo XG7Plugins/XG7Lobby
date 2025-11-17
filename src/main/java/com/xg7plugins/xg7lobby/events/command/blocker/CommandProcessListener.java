@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.events.command.blocker;
 
-import com.xg7plugins.commands.CommandState;
+import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.Listener;

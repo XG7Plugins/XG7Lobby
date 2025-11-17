@@ -37,7 +37,7 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
         LobbyApplier.reset(player);
 
         if (XG7LobbyAPI.customInventoryManager() != null) {
-            XG7Menus.getInstance().closeAllMenus(player);
+            XG7PluginsAPI.menus().closeAllMenus(player);
 
             XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id","pvp"), player);
         }

@@ -5,9 +5,9 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
-import com.xg7plugins.commands.CommandState;
+import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
-import com.xg7plugins.commands.setup.CommandArgs;
+import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.cooldowns.CooldownManager;
 

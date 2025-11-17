@@ -48,7 +48,7 @@ public class CustomInventoryManager implements Manager {
             if (lobbyGUI == null) throw new IllegalArgumentException("GUI malconfigured!");
 
             inventories.put(id, lobbyGUI);
-            XG7Menus.getInstance().registerMenus(lobbyGUI);
+            XG7PluginsAPI.menus().registerMenus(lobbyGUI);
         }
         for (File file : hotbars) {
             ConfigSection config = ConfigFile.of("menus/hotbar/" + file.getName().replace(".yml", ""), lobby).root();
@@ -61,7 +61,7 @@ public class CustomInventoryManager implements Manager {
             if (lobbyHotbar == null) throw new IllegalArgumentException("Hotbar malconfigured!");
 
             inventories.put(id, lobbyHotbar);
-            XG7Menus.getInstance().registerMenus(lobbyHotbar);
+            XG7PluginsAPI.menus().registerMenus(lobbyHotbar);
         }
         lobby.getDebug().loading("Loaded " + inventories.size() + " custom inventories.");
         lobby.getDebug().info("Loaded " + inventories.keySet() + " custom inventories.");
@@ -145,7 +145,7 @@ public class CustomInventoryManager implements Manager {
     }
 
     public void reloadInventories() {
-        inventories.values().forEach(l -> XG7Menus.getInstance().unregisterMenu(XG7Lobby.getInstance(), l.getMenu().getMenuConfigs().getId()));
+        inventories.values().forEach(l -> XG7PluginsAPI.menus().unregisterMenu(XG7Lobby.getInstance(), l.getMenu().getMenuConfigs().getId()));
         inventories.clear();
         loadInventories();
     }

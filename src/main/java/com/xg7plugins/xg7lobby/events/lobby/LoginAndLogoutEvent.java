@@ -151,7 +151,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
             ActionsProcessor.process(quitConfig.getList("actions", String.class).orElse(Collections.emptyList()), player);
 
         if (XG7LobbyAPI.customInventoryManager() != null)
-            XG7Menus.getInstance().closeAllMenus(player);
+            XG7PluginsAPI.menus().closeAllMenus(player);
 
         LobbyApplier.reset(player);
 

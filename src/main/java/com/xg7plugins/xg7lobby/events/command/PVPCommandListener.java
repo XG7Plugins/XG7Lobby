@@ -23,7 +23,7 @@ public class PVPCommandListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
 
-        CooldownManager cooldownManager = XG7PluginsAPI.cooldowns();
+        CooldownManager cooldownManager = XG7Plugins.getAPI().cooldowns();
 
         if (cooldownManager.containsPlayer("pvp-disable", event.getPlayer())) {
             if (

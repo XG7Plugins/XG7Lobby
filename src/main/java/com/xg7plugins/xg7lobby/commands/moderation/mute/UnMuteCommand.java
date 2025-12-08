@@ -71,7 +71,7 @@ public class UnMuteCommand implements Command {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
-        return args.len() == 1 ? new ArrayList<>(XG7PluginsAPI.getAllPlayerNames()) : Collections.emptyList();
+        return args.len() == 1 ? new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames()) : Collections.emptyList();
     }
 
     @Override

@@ -13,13 +13,13 @@ public class NLoginListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return XG7PluginsAPI.isDependencyEnabled("nLogin")
+        return XG7Plugins.getAPI().isDependencyEnabled("nLogin")
          && ConfigFile.of("events", XG7Lobby.getInstance()).section("on-join").get("apply-configs-after-authenticate", false);
     }
 
     @EventHandler
     public void onAuthenticationSuccess(AuthenticateEvent event) {
-        XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
+        XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> {
             LoginAndLogoutEvent.handleWorldJoin(event.getPlayer(), event.getPlayer().getWorld(), true);
         }));
     }

@@ -36,7 +36,7 @@ public class ForeverActionsTask extends TimerTask {
         List<String> actions = config.getList("actions", String.class).orElse(Collections.emptyList());
 
         Bukkit.getOnlinePlayers().stream()
-                .filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).
+                .filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p)).
                 forEach(player -> ActionsProcessor.process(actions, player));
     }
 }

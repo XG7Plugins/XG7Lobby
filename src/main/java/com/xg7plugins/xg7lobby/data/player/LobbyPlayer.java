@@ -81,7 +81,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         if (player == null) return;
 
-        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
+        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
         player.setAllowFlight(flying || (
                         (
@@ -100,7 +100,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         if (player == null) return;
 
         if (buildEnabled) {
-            if (XG7LobbyAPI.customInventoryManager() != null) XG7PluginsAPI.menus().closeAllMenus(player);
+            if (XG7LobbyAPI.customInventoryManager() != null) XG7Plugins.getAPI().menus().closeAllMenus(player);
             return;
         }
 
@@ -117,7 +117,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         List<Runnable> tasks = new ArrayList<>();
 
         Bukkit.getOnlinePlayers().stream()
-                .filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p))
+                .filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p))
                 .filter(p -> !p.getUniqueId().equals(player.getUniqueId()))
                 .forEach(p -> {
                     LobbyPlayer otherPlayer = XG7LobbyAPI.getLobbyPlayer(p.getUniqueId());
@@ -134,7 +134,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
                     });
                 });
 
-        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> tasks.forEach(Runnable::run)));
+        XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> tasks.forEach(Runnable::run)));
     }
 
     public boolean isBuildEnabled() {
@@ -170,7 +170,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
             int infractionsToKick = (int) map.get("min-to-kick");
             int infractionsToMute = (int) map.get("min-to-mute");
 
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
+            XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> {
                 if ((infractionCount >= infractionsToBan && infractionsToBan > -1)) {
                     if (player.isOnline())
                         playerManager.kickPlayer(player.getPlayer(), Text.fromLang(getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-ban").join().replace("reason", newInfraction.getWarning()));

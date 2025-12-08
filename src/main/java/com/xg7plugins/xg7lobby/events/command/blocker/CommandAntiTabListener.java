@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.events.command.blocker;
 
-import com.xg7plugins.libs.packetevents.event.PacketSendEvent;
-import com.xg7plugins.libs.packetevents.wrapper.play.server.WrapperPlayServerTabComplete;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTabComplete;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;

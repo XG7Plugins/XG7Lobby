@@ -57,7 +57,7 @@ public class VanishCommand implements Command {
         PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(lobbyPlayer.getPlayerUUID());
         if (playerMenu != null) BasicMenu.refresh(playerMenu);
 
-        XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> {
+        XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> {
             lobbyPlayer.applyHide();
             Text.sendTextFromLang(sender, XG7Lobby.getInstance(), lobbyPlayer.isHidingPlayers() ? "hide-players.hide" : "hide-players.show");
         }));

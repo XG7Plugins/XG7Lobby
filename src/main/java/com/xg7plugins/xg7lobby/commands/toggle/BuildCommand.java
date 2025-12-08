@@ -75,7 +75,7 @@ public class BuildCommand implements Command {
         if (isOther && target == null || (!target.hasPlayedBefore() && !target.isOnline())) {
             return CommandState.PLAYER_NOT_FOUND;
         }
-        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), target.getPlayer())) {
+        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), target.getPlayer())) {
             return CommandState.DISABLED_WORLD;
         }
 
@@ -92,7 +92,7 @@ public class BuildCommand implements Command {
         try {
             XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
 
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
+            XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
 
             if (finalTarget.isOnline()) Text.sendTextFromLang(lobbyPlayer.getPlayer(), XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-on" : "toggle-off"));
             if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.build." + (lobbyPlayer.isBuildEnabled() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
@@ -112,7 +112,7 @@ public class BuildCommand implements Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         if (!sender.hasPermission("xg7lobby.command.build-other")) return Collections.emptyList();
-        return Bukkit.getOnlinePlayers().stream().filter(player -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream().filter(player -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
     }
 
     @Override

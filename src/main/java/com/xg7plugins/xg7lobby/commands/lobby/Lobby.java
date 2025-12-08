@@ -77,7 +77,7 @@ public class Lobby implements Command {
 
         ConfigSection teleportConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("lobby-teleport-cooldown");
 
-        CooldownManager cooldownManager = XG7PluginsAPI.cooldowns();
+        CooldownManager cooldownManager = XG7Plugins.getAPI().cooldowns();
 
         if (cooldownManager.containsPlayer("lobby-cooldown-after", targetToTeleport)) {
 
@@ -106,7 +106,7 @@ public class Lobby implements Command {
             }
 
             if (finalTargetToTeleport.hasPermission("xg7lobby.command.lobby.bypass-cooldown")) {
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> lobby.teleport(finalTargetToTeleport)));
+                XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> lobby.teleport(finalTargetToTeleport)));
                 return;
             }
 
@@ -129,7 +129,7 @@ public class Lobby implements Command {
                                     Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.teleport-cancelled");
                                     return;
                                 }
-                                XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> lobby.teleport(finalTargetToTeleport)));
+                                XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> lobby.teleport(finalTargetToTeleport)));
                                 cooldownManager.addCooldown(finalTargetToTeleport, "lobby-cooldown-after", teleportConfig.getTimeInMilliseconds("after-teleport", 5000L));
                             })
                     )
@@ -150,7 +150,7 @@ public class Lobby implements Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         if (args.len() == 1 && sender.hasPermission("xg7lobby.command.lobby.teleport-id")) {
-            return XG7PluginsAPI.database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation) e).getID()).collect(Collectors.toList());
+            return XG7Plugins.getAPI().database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation) e).getID()).collect(Collectors.toList());
         }
         if (args.len() == 2 && sender.hasPermission("xg7lobby.command.lobby.teleport-others")) {
             return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());

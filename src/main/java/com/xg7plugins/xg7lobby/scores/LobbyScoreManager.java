@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.scores;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.file.ConfigFile;
-import com.xg7plugins.managers.Manager;
+
 import com.xg7plugins.modules.xg7scores.XG7Scores;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -13,7 +13,7 @@ import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LobbyScoreManager implements Manager {
+public class LobbyScoreManager {
 
     private final List<LobbyScoreLoader> lobbyScoreLoaders = new ArrayList<>();
 
@@ -37,9 +37,9 @@ public class LobbyScoreManager implements Manager {
 
             Debug.of(XG7Lobby.getInstance()).info("Loading " + loader.getClass().getSimpleName());
 
-            XG7PluginsAPI.taskManager().runTimerTask(XG7PluginsAPI.taskManager().getTimerTask(XG7Plugins.getInstance(), "score-task"));
+            XG7Plugins.getAPI().taskManager().runTimerTask(XG7Plugins.getAPI().taskManager().getTimerTask(XG7Plugins.getInstance(), "score-task"));
             XG7Scores.loadScores(loader.load());
-            Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7PluginsAPI.scores()::addPlayer);
+            Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Plugins.getAPI().scores()::addPlayer);
 
             Debug.of(XG7Lobby.getInstance()).info("Loaded " + loader.getScoreID());
         });
@@ -47,7 +47,7 @@ public class LobbyScoreManager implements Manager {
 
     public void unloadScores() {
 
-        Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7PluginsAPI.scores()::removePlayer);
+        Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Plugins.getAPI().scores()::removePlayer);
         lobbyScoreLoaders.forEach((loader) -> XG7Scores.unloadScore(loader.getScoreID()));
     }
 

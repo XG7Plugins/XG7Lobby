@@ -34,7 +34,7 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
         if (player.isOnline()) {
 
             if (XG7LobbyAPI.customInventoryManager() != null) {
-                XG7PluginsAPI.menus().closeAllMenus(player);
+                XG7Plugins.getAPI().menus().closeAllMenus(player);
 
                 XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id", "selector"), player);
             }
@@ -49,7 +49,7 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
             XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.fly();
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
+                XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
                 lobbyPlayer.applyHide();
             });
 

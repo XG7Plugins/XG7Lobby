@@ -14,7 +14,7 @@ import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.MenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
-import com.xg7plugins.server.MinecraftVersion;
+import com.xg7plugins.server.MinecraftServerVersion;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;
@@ -351,7 +351,7 @@ public enum ActionType {
                         player.getInventory().setBoots(item.getItemFor(player, XG7Lobby.getInstance()));
                         break;
                     case OFFHAND:
-                        if (MinecraftVersion.isOlderThan(9)) {
+                        if (MinecraftServerVersion.isOlderThan(9)) {
                             Debug.of(XG7Lobby.getInstance()).severe("The offhand slot is only available in 1.9 or higher.");
                             return;
                         }
@@ -390,7 +390,7 @@ public enum ActionType {
                 if (args.length != 1)
                     throw new ActionException("SERVER", "Incorrectly amount of args: " + args.length + ". The right way to use is [SERVER] server.");
                 try {
-                    XG7PluginsAPI.getServerInfo().connectTo(args[0], player);
+                    XG7Plugins.getAPI().getServerInfo().connectTo(args[0], player);
                 } catch (IOException e) {
                     Debug.of(XG7Lobby.getInstance()).severe("Error while connecting to the server: " + args[0]);
                     throw new RuntimeException(e);
@@ -482,7 +482,7 @@ public enum ActionType {
 
                 LobbyItem item = lobbyHotbar.items().get(args[2]);
 
-                PlayerMenuHolder holder = XG7PluginsAPI.menus().getPlayerMenuHolder(player.getUniqueId());
+                PlayerMenuHolder holder = XG7Plugins.getAPI().menus().getPlayerMenuHolder(player.getUniqueId());
 
                 if (item == null) {
                     throw new ActionException("SWAP", "The item with path: " + args[1] + " doesn't exist in the menu with id: " + args[0]);
@@ -546,7 +546,7 @@ public enum ActionType {
             (player, args) -> {
                 XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(true);
-                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
+                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
                 });
             }
     ),
@@ -558,7 +558,7 @@ public enum ActionType {
             (player, args) -> {
                 XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(false);
-                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
+                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
                 });
             }
     ),
@@ -580,17 +580,17 @@ public enum ActionType {
 
                         ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
 
-                        if (XG7PluginsAPI.cooldowns().containsPlayer("pvp-disable", player)) {
-                            XG7PluginsAPI.cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
+                        if (XG7Plugins.getAPI().cooldowns().containsPlayer("pvp-disable", player)) {
+                            XG7Plugins.getAPI().cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
                             return;
                         }
 
-                        XG7PluginsAPI.cooldowns().addCooldown(player, new CooldownManager.CooldownTask(
+                        XG7Plugins.getAPI().cooldowns().addCooldown(player, new CooldownManager.CooldownTask(
                                 "pvp-disable",
                                 config.getTimeInMilliseconds("leave-command-cooldown"),
                                 p -> {
 
-                                    long cooldownToToggle = XG7PluginsAPI.cooldowns().getReamingTime("pvp-disable", p);
+                                    long cooldownToToggle = XG7Plugins.getAPI().cooldowns().getReamingTime("pvp-disable", p);
 
                                     Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
                                 },
@@ -600,7 +600,7 @@ public enum ActionType {
                                         return;
                                     }
                                     XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
-                                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
+                                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
                                 })
                         );
                     }

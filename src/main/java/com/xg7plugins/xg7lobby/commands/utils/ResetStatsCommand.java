@@ -86,7 +86,7 @@ public class ResetStatsCommand implements Command {
 
         if (args.len() == 1) return Arrays.asList("deaths", "kills", "all");
 
-        return new ArrayList<>(XG7PluginsAPI.getAllPlayerNames());
+        return new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames());
     }
 
     @Override

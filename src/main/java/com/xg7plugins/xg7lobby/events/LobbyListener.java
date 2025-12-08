@@ -16,7 +16,7 @@ public interface LobbyListener extends Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     default void onWorldChange(PlayerTeleportEvent event) {
 
-        List<String> enabledWorlds = XG7PluginsAPI.getEnabledWorldsOf(XG7Lobby.getInstance());
+        List<String> enabledWorlds = XG7Plugins.getAPI().getEnabledWorldsOf(XG7Lobby.getInstance());
         if (!enabledWorlds.contains(event.getFrom().getWorld().getName()) && enabledWorlds.contains(event.getTo().getWorld().getName())) {
             onWorldJoin(event.getPlayer(), event.getTo().getWorld());
             return;

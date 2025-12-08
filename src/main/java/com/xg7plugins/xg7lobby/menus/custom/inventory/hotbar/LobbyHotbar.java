@@ -175,8 +175,8 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
         if (event.getMenuAction().isPlayerInteract() && !event.getMenuAction().isRightClick()) return;
         if (event.getMenuAction().isMenuInteract() && !event.getMenuAction().isLeftClick()) return;
 
-        if (XG7PluginsAPI.cooldowns().containsPlayer("selector-cooldown", event.getHolder().getPlayer())) {
-            long time = XG7PluginsAPI.cooldowns().getReamingTime("selector-cooldown", event.getHolder().getPlayer());
+        if (XG7Plugins.getAPI().cooldowns().containsPlayer("selector-cooldown", event.getHolder().getPlayer())) {
+            long time = XG7Plugins.getAPI().cooldowns().getReamingTime("selector-cooldown", event.getHolder().getPlayer());
 
             Text.sendTextFromLang(event.getHolder().getPlayer(), XG7Lobby.getInstance(), "selector-cooldown",
                     Pair.of("time", time + ""));
@@ -203,7 +203,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
         if (!disableCooldown) {
             long cd = !cooldown.isZero() ? cooldown.toMilliseconds() : 300L;
-            XG7PluginsAPI.cooldowns().addCooldown(event.getHolder().getPlayer(), "selector-cooldown", cd);
+            XG7Plugins.getAPI().cooldowns().addCooldown(event.getHolder().getPlayer(), "selector-cooldown", cd);
 
         }
 

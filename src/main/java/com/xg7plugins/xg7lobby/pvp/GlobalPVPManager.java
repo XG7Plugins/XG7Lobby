@@ -2,7 +2,7 @@ package com.xg7plugins.xg7lobby.pvp;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.events.Listener;
-import com.xg7plugins.managers.Manager;
+
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.pvp.handlers.*;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GlobalPVPManager implements Manager {
+public class GlobalPVPManager {
 
     private final Set<UUID> playersInPVP = new HashSet<>();
 

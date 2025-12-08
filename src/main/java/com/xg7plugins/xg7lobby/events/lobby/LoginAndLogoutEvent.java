@@ -65,7 +65,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         if (joinConfig.get("send-join-message")) {
             Bukkit.getOnlinePlayers().forEach(p -> {
-                boolean inEnabledWorld = XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player);
+                boolean inEnabledWorld = XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player);
                 if (!inEnabledWorld && joinConfig.get("send-join-message-only-in-lobby", false))
                     return;
                 String langKey = firstJoinConfig.get("enabled", false) && !player.hasPlayedBefore() ? "messages.on-first-join"
@@ -74,7 +74,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
             });
         }
 
-        boolean runAfterAuth = XG7PluginsAPI.isDependencyEnabled("nLogin") && joinConfig.get("apply-configs-after-authenticate", false);
+        boolean runAfterAuth = XG7Plugins.getAPI().isDependencyEnabled("nLogin") && joinConfig.get("apply-configs-after-authenticate", false);
 
         if (joinConfig.get("tp-to-lobby")) {
             String lobbyId = joinConfig.get("tp-to-lobby-id", "random");
@@ -84,14 +84,14 @@ public class LoginAndLogoutEvent implements LobbyListener {
                     : XG7LobbyAPI.requestLobbyLocation(lobbyId);
 
             lobbyLocation.thenAccept(lobby -> {
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
+                XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> {
 
                     World previousWorld = player.getWorld();
 
                     if (lobby == null || lobby.getLocation() == null) {
                         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist"
                                 + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
-                        if (XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(), previousWorld) && !(runAfterAuth))
+                        if (XG7Plugins.getAPI().isEnabledWorld(XG7Lobby.getInstance(), previousWorld) && !(runAfterAuth))
                             handleWorldJoin(player, player.getWorld(), true);
                         return;
                     }
@@ -126,7 +126,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         if (quitConfig.get("send-quit-message")) {
             Bukkit.getOnlinePlayers().forEach(p -> {
-                boolean inEnabledWorld = XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player);
+                boolean inEnabledWorld = XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player);
                 if (!inEnabledWorld && quitConfig.get("send-quit-message-only-in-lobby", false))
                     return;
                 Text.sendTextFromLang(p, XG7Lobby.getInstance(), "messages.on-quit",
@@ -151,7 +151,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
             ActionsProcessor.process(quitConfig.getList("actions", String.class).orElse(Collections.emptyList()), player);
 
         if (XG7LobbyAPI.customInventoryManager() != null)
-            XG7PluginsAPI.menus().closeAllMenus(player);
+            XG7Plugins.getAPI().menus().closeAllMenus(player);
 
         LobbyApplier.reset(player);
 
@@ -167,7 +167,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
         boolean shouldRunEvents = player.getWorld() == newWorld || joinConfig.get("run-actions-when-return-to-the-lobby", true);
 
         if (shouldRunEvents) {
-            XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> ActionsProcessor.process(
+            XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> ActionsProcessor.process(
                     firstJoinConfig.get("enabled", true) && !player.hasPlayedBefore() ? firstJoinConfig.getList("actions", String.class).orElse(Collections.emptyList())
                             : joinConfig.getList("actions", String.class).orElse(Collections.emptyList()),
                     player)), 100L);
@@ -184,7 +184,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
                         : XG7LobbyAPI.requestLobbyLocation(lobbyId);
 
                 lobbyLocation.thenAccept(lobby -> {
-                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> {
+                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> {
                         if (lobby == null || lobby.getLocation() == null) {
                             Text.sendTextFromLang(player, XG7Lobby.getInstance(),
                                     "lobby.on-teleport.on-error-doesnt-exist"
@@ -199,14 +199,14 @@ public class LoginAndLogoutEvent implements LobbyListener {
         }
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-            XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> {
+            XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> {
                 if (joinConfig.get("clear-inventory", false))
                     player.getInventory().clear();
 
                 if (joinConfig.get("heal", true))
                     player.setHealth(player.getMaxHealth());
 
-                if (!XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(),
+                if (!XG7Plugins.getAPI().isEnabledWorld(XG7Lobby.getInstance(),
                         previousBeforeActions.equals(player.getWorld()) ? newWorld : player.getWorld()))
                     return;
 

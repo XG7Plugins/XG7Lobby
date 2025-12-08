@@ -2,7 +2,7 @@ package com.xg7plugins.xg7lobby.menus.custom.inventory;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.managers.Manager;
+
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.*;
 
-public class CustomInventoryManager implements Manager {
+public class CustomInventoryManager {
 
     private final HashMap<String, LobbyInventory> inventories = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class CustomInventoryManager implements Manager {
             if (lobbyGUI == null) throw new IllegalArgumentException("GUI malconfigured!");
 
             inventories.put(id, lobbyGUI);
-            XG7PluginsAPI.menus().registerMenus(lobbyGUI);
+            XG7Plugins.getAPI().menus().registerMenus(lobbyGUI);
         }
         for (File file : hotbars) {
             ConfigSection config = ConfigFile.of("menus/hotbar/" + file.getName().replace(".yml", ""), lobby).root();
@@ -61,7 +61,7 @@ public class CustomInventoryManager implements Manager {
             if (lobbyHotbar == null) throw new IllegalArgumentException("Hotbar malconfigured!");
 
             inventories.put(id, lobbyHotbar);
-            XG7PluginsAPI.menus().registerMenus(lobbyHotbar);
+            XG7Plugins.getAPI().menus().registerMenus(lobbyHotbar);
         }
         lobby.getDebug().loading("Loaded " + inventories.size() + " custom inventories.");
         lobby.getDebug().info("Loaded " + inventories.keySet() + " custom inventories.");
@@ -145,7 +145,7 @@ public class CustomInventoryManager implements Manager {
     }
 
     public void reloadInventories() {
-        inventories.values().forEach(l -> XG7PluginsAPI.menus().unregisterMenu(XG7Lobby.getInstance(), l.getMenu().getMenuConfigs().getId()));
+        inventories.values().forEach(l -> XG7Plugins.getAPI().menus().unregisterMenu(XG7Lobby.getInstance(), l.getMenu().getMenuConfigs().getId()));
         inventories.clear();
         loadInventories();
     }

@@ -20,7 +20,7 @@ public class LobbyCommandListener implements Listener {
     public void onMove(PlayerMoveEvent event) {
         if (event.getPlayer().hasPermission("xg7lobby.command.lobby.bypass-cooldown")) return;
 
-        CooldownManager cooldownManager = XG7PluginsAPI.cooldowns();
+        CooldownManager cooldownManager = XG7Plugins.getAPI().cooldowns();
 
         if (cooldownManager.containsPlayer("lobby-cooldown-before", event.getPlayer())) {
             if (

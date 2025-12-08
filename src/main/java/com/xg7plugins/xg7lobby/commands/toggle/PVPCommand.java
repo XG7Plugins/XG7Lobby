@@ -52,17 +52,17 @@ public class PVPCommand implements Command {
 
         ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
 
-        if (XG7PluginsAPI.cooldowns().containsPlayer("pvp-disable", player)) {
-            XG7PluginsAPI.cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
+        if (XG7Plugins.getAPI().cooldowns().containsPlayer("pvp-disable", player)) {
+            XG7Plugins.getAPI().cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
             return CommandState.FINE;
         }
 
-        XG7PluginsAPI.cooldowns().addCooldown(player, new CooldownManager.CooldownTask(
+        XG7Plugins.getAPI().cooldowns().addCooldown(player, new CooldownManager.CooldownTask(
                 "pvp-disable",
                 config.getTimeInMilliseconds("leave-command-cooldown"),
                 p -> {
 
-                    long cooldownToToggle = XG7PluginsAPI.cooldowns().getReamingTime("pvp-disable", p);
+                    long cooldownToToggle = XG7Plugins.getAPI().cooldowns().getReamingTime("pvp-disable", p);
 
                     Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
                 },
@@ -72,7 +72,7 @@ public class PVPCommand implements Command {
                         return;
                     }
                     XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
-                    XG7PluginsAPI.taskManager().runSync(BukkitTask.of(() -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
+                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
                 })
         );
 

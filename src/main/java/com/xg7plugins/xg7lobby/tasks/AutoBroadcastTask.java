@@ -50,7 +50,7 @@ public class AutoBroadcastTask extends TimerTask {
 
         int finalIndex = index;
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (config.get("broadcast-only-in-the-lobby", false) && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
+            if (config.get("broadcast-only-in-the-lobby", false) && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
             ((List<String>) advertisements.get(finalIndex).get("ad")).forEach(message -> Text.detectLangs(
                     player,

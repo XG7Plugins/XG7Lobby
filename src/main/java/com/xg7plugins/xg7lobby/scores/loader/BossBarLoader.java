@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.scores.loader;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.modules.xg7scores.Score;
 import com.xg7plugins.modules.xg7scores.builder.BossBarBuilder;
-import com.xg7plugins.server.MinecraftVersion;
+import com.xg7plugins.server.MinecraftServerVersion;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.scores.ScoreConfig;
 import org.bukkit.boss.BarColor;
@@ -21,7 +21,7 @@ public class BossBarLoader extends LobbyScoreLoader {
     public Score load() {
         if (!scoreConfig.isEnabled()) return null;
 
-        if (MinecraftVersion.isNewerThan(8)) {
+        if (MinecraftServerVersion.isNewerThan(8)) {
             boolean isPublic = scoreConfig.get("public", Boolean.class).orElse(false);
 
             BarColor color = scoreConfig.get("color", BarColor.class).orElse(BarColor.WHITE);

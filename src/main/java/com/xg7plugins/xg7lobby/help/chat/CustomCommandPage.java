@@ -26,7 +26,7 @@ public class CustomCommandPage implements HelpChatPage {
         components.add(Text.format("&m-&9&m-&6&m------------------&e*&6&m------------------&9&m-&f&m-"));
 
         if (sender instanceof Player) {
-            ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).join().getSecond().getLangConfiguration();
+            ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).join().getSecond().getLangConfiguration();
 
             String about = lang.getList("help.custom-commands-guide", String.class).orElse(new ArrayList<>()).stream().collect(Collectors.joining("\n"));
 

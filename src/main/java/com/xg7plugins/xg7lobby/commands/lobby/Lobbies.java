@@ -28,7 +28,7 @@ public class Lobbies implements Command {
 
     @Override
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
-        XG7PluginsAPI.menus().getMenu(XG7Lobby.getInstance(), "lobbies-menu").open((Player) sender);
+        XG7Plugins.getAPI().menus().getMenu(XG7Lobby.getInstance(), "lobbies-menu").open((Player) sender);
         return CommandState.FINE;
     }
 

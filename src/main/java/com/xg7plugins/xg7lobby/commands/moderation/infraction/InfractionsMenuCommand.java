@@ -43,7 +43,7 @@ public class InfractionsMenuCommand implements Command {
             return CommandState.PLAYER_NOT_FOUND;
         }
 
-        InfractionsMenu infractionsMenu = XG7PluginsAPI.menus().getMenu(XG7Lobby.getInstance(), "warns-menu");
+        InfractionsMenu infractionsMenu = XG7Plugins.getAPI().menus().getMenu(XG7Lobby.getInstance(), "warns-menu");
 
         infractionsMenu.open(player, target);
 
@@ -52,7 +52,7 @@ public class InfractionsMenuCommand implements Command {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
-        return sender.hasPermission("xg7lobby.command.infractions-other") ? new ArrayList<>(XG7PluginsAPI.getAllPlayerNames()) : Collections.emptyList();
+        return sender.hasPermission("xg7lobby.command.infractions-other") ? new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames()) : Collections.emptyList();
     }
 
     @Override

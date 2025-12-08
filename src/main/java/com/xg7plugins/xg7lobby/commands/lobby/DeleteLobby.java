@@ -60,7 +60,7 @@ public class DeleteLobby implements Command {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
-        return XG7PluginsAPI.database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation) e).getID()).collect(Collectors.toList());
+        return XG7Plugins.getAPI().database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation) e).getID()).collect(Collectors.toList());
     }
 
     @Override

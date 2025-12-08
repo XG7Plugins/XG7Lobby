@@ -50,7 +50,7 @@ public class LobbyLocation implements Entity<String, LobbyLocation> {
         Objects.requireNonNull(location, "Location is null");
         Objects.requireNonNull(serverInfo, "ServerInfo is null");
 
-        if (!XG7PluginsAPI.getServerInfo().equals(serverInfo)) {
+        if (!XG7Plugins.getAPI().getServerInfo().equals(serverInfo)) {
             try {
                 serverInfo.connectPlayer(player);
             } catch (IOException e) {

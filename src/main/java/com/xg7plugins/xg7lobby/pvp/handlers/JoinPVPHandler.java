@@ -37,7 +37,7 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
         LobbyApplier.reset(player);
 
         if (XG7LobbyAPI.customInventoryManager() != null) {
-            XG7PluginsAPI.menus().closeAllMenus(player);
+            XG7Plugins.getAPI().menus().closeAllMenus(player);
 
             XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id","pvp"), player);
         }
@@ -62,12 +62,12 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
     @Override
     public void onWorldJoin(Player player, World newWorld) {
-        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> hidePlayers(player)), 1L);
+        XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> hidePlayers(player)), 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
-        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> hidePlayers(event.getPlayer())), 1L);
+        XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> hidePlayers(event.getPlayer())), 1L);
     }
 
     private void hidePlayers(Player player) {

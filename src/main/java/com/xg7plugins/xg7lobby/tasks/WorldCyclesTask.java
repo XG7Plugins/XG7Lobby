@@ -4,7 +4,7 @@ import com.xg7plugins.XG7PluginsAPI;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.server.MinecraftVersion;
+import com.xg7plugins.server.MinecraftServerVersion;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -37,11 +37,11 @@ public class WorldCyclesTask extends TimerTask {
     @Override
     public void run() {
 
-        Bukkit.getWorlds().stream().filter(world -> XG7PluginsAPI.isEnabledWorld(XG7Lobby.getInstance(), world)).forEach(world -> {
+        Bukkit.getWorlds().stream().filter(world -> XG7Plugins.getAPI().isEnabledWorld(XG7Lobby.getInstance(), world)).forEach(world -> {
 
             boolean dayLightCycle = config.get("day-cycle", false);
 
-            if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, dayLightCycle);
+            if (MinecraftServerVersion.isOlderThan(ServerVersion.V_1_13)) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, dayLightCycle);
             else world.setGameRuleValue("doDaylightCycle", dayLightCycle + "");
 
             if (!dayLightCycle) {
@@ -50,7 +50,7 @@ public class WorldCyclesTask extends TimerTask {
 
             boolean weatherCycle = config.get("weather-cycle", false);
 
-            if (MinecraftVersion.isNewerOrEqual(13)) world.setGameRule(GameRule.DO_WEATHER_CYCLE, weatherCycle);
+            if (MinecraftServerVersion.isOlderThan(ServerVersion.V_1_13)) world.setGameRule(GameRule.DO_WEATHER_CYCLE, weatherCycle);
             else world.setGameRuleValue("doWeatherCycle", String.valueOf(weatherCycle));
 
             if (!weatherCycle) world.setStorm(config.get("storm", false));

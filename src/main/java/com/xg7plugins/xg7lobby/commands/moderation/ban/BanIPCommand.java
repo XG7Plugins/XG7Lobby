@@ -89,7 +89,7 @@ public class BanIPCommand implements Command {
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         switch (args.len()) {
             case 1:
-                return new ArrayList<>(XG7PluginsAPI.getAllPlayerNames());
+                return new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames());
             case 2:
                 return Arrays.asList("time", "forever");
             case 3:

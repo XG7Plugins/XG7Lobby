@@ -40,12 +40,12 @@ public class AntiSpamListener implements Listener {
         if (player.hasPermission("xg7lobby.chat.spam")) return;
 
         boolean antiSpamOnlyInLobby = config.get("anti-spam-only-in-lobby", false);
-        if (antiSpamOnlyInLobby && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
+        if (antiSpamOnlyInLobby && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
 
         String message = event.getMessage().toLowerCase();
 
-        if (XG7PluginsAPI.cooldowns().containsPlayer("lobby-chat-spam", player)) {
-            long cooldown = XG7PluginsAPI.cooldowns().getReamingTime("lobby-chat-spam", player);
+        if (XG7Plugins.getAPI().cooldowns().containsPlayer("lobby-chat-spam", player)) {
+            long cooldown = XG7Plugins.getAPI().cooldowns().getReamingTime("lobby-chat-spam", player);
             Text.sendTextFromLang(player, XG7Lobby.getInstance(), "chat.message-cooldown", Pair.of("time", cooldown + ""));
             event.setCancelled(true);
             return;
@@ -63,12 +63,12 @@ public class AntiSpamListener implements Listener {
         }
 
         Time cooldownTime = config.getTime("cooldown");
-        XG7PluginsAPI.cooldowns().addCooldown(player, "lobby-chat-spam", cooldownTime.toMilliseconds());
+        XG7Plugins.getAPI().cooldowns().addCooldown(player, "lobby-chat-spam", cooldownTime.toMilliseconds());
 
         int spamTolerance = config.get("spam-tolerance", 5);
         if (spamTolerance <= 0) return;
 
-        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7PluginsAPI.taskManager().getTimerTask(XG7Lobby.getInstance(), "anti-spam-tolerance");
+        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7Plugins.getAPI().taskManager().getTimerTask(XG7Lobby.getInstance(), "anti-spam-tolerance");
 
         antiSpamTask.incrementTolerance(player.getUniqueId());
 

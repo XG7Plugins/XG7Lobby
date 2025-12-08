@@ -2,7 +2,7 @@ package com.xg7plugins.xg7lobby.menus.custom.forms;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.managers.Manager;
+
 import com.xg7plugins.modules.xg7geyserforms.XG7GeyserForms;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.forms.custom.LobbyCustomForm;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.*;
 
-public class CustomFormsManager implements Manager {
+public class CustomFormsManager {
 
     private final HashMap<String, LobbyForm> forms = new HashMap<>();
 

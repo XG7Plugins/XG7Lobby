@@ -4,7 +4,7 @@ package com.xg7plugins.xg7lobby.commands.custom;
 import com.xg7plugins.boot.setup.PluginSetup;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.managers.Manager;
+
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.reflection.ReflectionClass;
 import com.xg7plugins.utils.reflection.ReflectionObject;
@@ -15,7 +15,7 @@ import org.bukkit.command.PluginCommand;
 
 import java.util.HashMap;
 
-public class CustomCommandManager implements Manager {
+public class CustomCommandManager {
 
     private final CustomCommandExecutor  customCommandExecutor = new CustomCommandExecutor(this);
 

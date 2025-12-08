@@ -50,7 +50,7 @@ public class InfractionCommand implements Command {
 
         switch (args.len()) {
             case 2:
-                return new ArrayList<>(XG7PluginsAPI.getAllPlayerNames());
+                return new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames());
             case 3:
                 return Arrays.asList("1", "2", "3", "level");
             case 4:

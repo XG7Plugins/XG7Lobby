@@ -25,7 +25,7 @@ public class CustomCommandExecutor implements CommandExecutor {
 
         Player player = (Player) commandSender;
 
-        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player)) {
+        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)) {
             CommandState.DISABLED_WORLD.send(player);
             return true;
         }
@@ -37,7 +37,7 @@ public class CustomCommandExecutor implements CommandExecutor {
             return true;
         }
 
-        if (!XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), player) && customCommand.isEnabledWorldOnly()) {
+        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player) && customCommand.isEnabledWorldOnly()) {
             CommandState.DISABLED_WORLD.send(player);
             return true;
         }

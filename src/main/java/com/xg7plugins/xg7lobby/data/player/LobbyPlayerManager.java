@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.data.player;
 
 import com.xg7plugins.XG7PluginsAPI;
-import com.xg7plugins.managers.Manager;
+
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class LobbyPlayerManager implements Manager {
+public class LobbyPlayerManager {
 
     @Getter
     private final LobbyPlayerRepository lobbyPlayerRepository;
@@ -62,7 +62,7 @@ public class LobbyPlayerManager implements Manager {
     }
 
     public boolean isLoaded(UUID id) {
-        return XG7PluginsAPI.database().containsCachedEntity(XG7Lobby.getInstance(), id.toString()).join();
+        return XG7Plugins.getAPI().database().containsCachedEntity(XG7Lobby.getInstance(), id.toString()).join();
     }
 
     public void addInfraction(Infraction infraction) {

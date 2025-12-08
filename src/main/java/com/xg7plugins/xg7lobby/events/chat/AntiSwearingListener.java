@@ -32,7 +32,7 @@ public class AntiSwearingListener implements Listener {
         if (player.hasPermission("xg7lobby.chat.swear")) return;
 
         boolean antiSwearOnlyInLobby = config.get("anti-swear-only-in-lobby", false);
-        if (antiSwearOnlyInLobby && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
+        if (antiSwearOnlyInLobby && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
 
         String message = event.getMessage().toLowerCase();
 

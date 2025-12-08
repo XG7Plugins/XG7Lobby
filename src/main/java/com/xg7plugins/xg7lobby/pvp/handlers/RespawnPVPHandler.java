@@ -30,7 +30,7 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
         
         
 
-        XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> {
+        XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> {
             
             
             if (l == null) {
@@ -51,7 +51,7 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
         }), 2000L));
 
         if (XG7LobbyAPI.customInventoryManager() != null) {
-            XG7PluginsAPI.menus().closeAllMenus(player);
+            XG7Plugins.getAPI().menus().closeAllMenus(player);
             XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id", "pvp"), player);
         }
 

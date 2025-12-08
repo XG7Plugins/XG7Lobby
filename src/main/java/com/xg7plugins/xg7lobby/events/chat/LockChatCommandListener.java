@@ -23,7 +23,7 @@ public class LockChatCommandListener implements Listener {
         if (event.getPlayer().hasPermission("xg7lobby.chat.ignore-lock")) return;
         if (xg7LobbyConfig.isChatLocked()) {
 
-            if (ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("lock-chat-only-in-lobby", false) && !XG7PluginsAPI.isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
+            if (ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("lock-chat-only-in-lobby", false) && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
 
             Text.sendTextFromLang(event.getPlayer(),XG7Lobby.getInstance(), "chat.locked");
             event.setCancelled(true);

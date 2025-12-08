@@ -1,16 +1,16 @@
 package com.xg7plugins.xg7lobby.events.lobby;
 
 import com.xg7plugins.config.file.ConfigFile;
-import com.xg7plugins.libs.packetevents.PacketEvents;
-import com.xg7plugins.libs.packetevents.protocol.player.ClientVersion;
-import com.xg7plugins.libs.packetevents.protocol.player.User;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.player.User;
 import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.utils.ConfigCheck;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
-import com.xg7plugins.server.MinecraftVersion;
+import com.xg7plugins.server.MinecraftServerVersion;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.utils.text.Text;
@@ -230,16 +230,16 @@ public class DefaultPlayerEvents implements Listener {
 
         User user = PacketEvents.getAPI().getPlayerManager().getUser(event.getPlayer());
 
-        int layer = user.getClientVersion().isNewerThan(ClientVersion.V_1_17) && MinecraftVersion.isNewerOrEqual(17) ? -66 : -2;
+        int layer = user.getClientVersion().isNewerThan(ClientVersion.V_1_17) && MinecraftServerVersion.isNewerOrEqual(17) ? -66 : -2;
 
         if (event.getPlayer().getLocation().getY() < layer) {
             LobbyLocation location = XG7LobbyAPI.requestRandomLobbyLocation().join();
             if (location == null || location.getLocation() == null) {
-                XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation())));
+                XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation())));
                 return;
             }
 
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> location.teleport(event.getPlayer())));
+            XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> location.teleport(event.getPlayer())));
         }
     }
 
@@ -289,7 +289,7 @@ public class DefaultPlayerEvents implements Listener {
                 Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
                 return;
             }
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( () -> lobby.teleport(player)));
+            XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> lobby.teleport(player)));
         });
 
         XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
@@ -300,7 +300,7 @@ public class DefaultPlayerEvents implements Listener {
 
         XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();
-            XG7PluginsAPI.taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
+            XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
             lobbyPlayer.applyHide();
         });
 
@@ -314,7 +314,7 @@ public class DefaultPlayerEvents implements Listener {
             )
     )
     public void onAutoRespawn(PlayerDeathEvent event) {
-        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> event.getEntity().spigot().respawn()), 100L);
+        XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> event.getEntity().spigot().respawn()), 100L);
     }
 
 }

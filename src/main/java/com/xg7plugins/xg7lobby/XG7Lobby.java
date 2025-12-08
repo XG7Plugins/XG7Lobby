@@ -185,9 +185,9 @@ public final class XG7Lobby extends Plugin {
             if (inventoryManager != null) {
                 inventoryManager.reloadInventories();
 
-                Bukkit.getOnlinePlayers().stream().filter(p -> XG7PluginsAPI.isInAnEnabledWorld(this, p))
+                Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(this, p))
                         .forEach(p -> {
-                            XG7PluginsAPI.menus().closeAllMenus(p);
+                            XG7Plugins.getAPI().menus().closeAllMenus(p);
                             inventoryManager.openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), p);
                         });
             }
@@ -196,7 +196,7 @@ public final class XG7Lobby extends Plugin {
         }
         if (cause.equals("forms")) {
 
-            if (!XG7PluginsAPI.isGeyserFormsEnabled()) return;
+            if (!XG7Plugins.getAPI().isGeyserFormsEnabled()) return;
             if (XG7LobbyAPI.customFormsManager() == null) return;
 
             debug.loading("Reloading forms...");
@@ -282,7 +282,7 @@ public final class XG7Lobby extends Plugin {
 
         HelpForm helpCommandForm = null;
 
-        if (XG7PluginsAPI.isGeyserFormsEnabled()) {
+        if (XG7Plugins.getAPI().isGeyserFormsEnabled()) {
             helpCommandForm = new HelpForm(new XG7LobbyHelpForm());
 
             helpCommandForm.registerForm("lobby-collaborators-help", new CollaboratorsForm());
@@ -304,13 +304,13 @@ public final class XG7Lobby extends Plugin {
 
     public void loadMenus() {
 
-        XG7Menus menus = XG7PluginsAPI.menus();
+        XG7Menus menus = XG7Plugins.getAPI().menus();
 
         menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
 
         if (XG7LobbyAPI.customInventoryManager() == null) return;
 
-        ConfigManager configManager = XG7PluginsAPI.configManager(this);
+        ConfigManager configManager = XG7Plugins.getAPI().configManager(this);
 
         configManager.registerAdapter(new LobbyItemTypeAdapter());
         configManager.registerAdapter(new LobbyGUITypeAdapter());
@@ -322,10 +322,10 @@ public final class XG7Lobby extends Plugin {
 
     public void loadGeyserForms() {
 
-        if (!XG7PluginsAPI.isGeyserFormsEnabled()) return;
+        if (!XG7Plugins.getAPI().isGeyserFormsEnabled()) return;
         if (XG7LobbyAPI.customFormsManager() == null) return;
 
-        ConfigManager configManager = XG7PluginsAPI.configManager(this);
+        ConfigManager configManager = XG7Plugins.getAPI().configManager(this);
 
         configManager.registerAdapter(new LobbyCustomFormAdapter());
         configManager.registerAdapter(new LobbyModalFormAdapter());

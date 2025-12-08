@@ -70,7 +70,7 @@ public class SetLobby implements Command {
 
         } else location = Location.fromPlayer((Player) sender);
 
-        LobbyLocation lobbyLocation = new LobbyLocation(id, location, XG7PluginsAPI.getServerInfo());
+        LobbyLocation lobbyLocation = new LobbyLocation(id, location, XG7Plugins.getAPI().getServerInfo());
 
         LobbyManager lobbyManager = XG7LobbyAPI.lobbyManager();
 
@@ -106,7 +106,7 @@ public class SetLobby implements Command {
 
         switch (args.len()) {
             case 2:
-                return XG7PluginsAPI.getEnabledWorldsOf(XG7Lobby.getInstance());
+                return XG7Plugins.getAPI().getEnabledWorldsOf(XG7Lobby.getInstance());
             case 3:
                 return Collections.singletonList("x");
             case 4:

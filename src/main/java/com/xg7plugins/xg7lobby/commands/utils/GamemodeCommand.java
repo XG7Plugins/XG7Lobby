@@ -100,7 +100,7 @@ public class GamemodeCommand implements Command {
                 return Arrays.asList("s", "c", "a", "sp");
             case 2:
                 if (!sender.hasPermission("xg7lobby.command.gamemode-other")) return Collections.emptyList();
-                return new ArrayList<>(XG7PluginsAPI.getAllPlayerNames());
+                return new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames());
         }
 
         return Collections.emptyList();

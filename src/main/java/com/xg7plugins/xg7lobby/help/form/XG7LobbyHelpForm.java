@@ -26,7 +26,7 @@ public class XG7LobbyHelpForm extends SimpleForm {
     @Override
     public String content(Player player) {
 
-        ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
+        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
         List<String> content = lang.getList("help.form.content", String.class).orElse(Collections.emptyList());
 
@@ -62,7 +62,7 @@ public class XG7LobbyHelpForm extends SimpleForm {
             case 0:
             case 2:
             case 3:
-                ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
+                ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
                 List<String> about = lang.getList("help." + (result.clickedButtonId() == 2 ? "selector-guide" : result.clickedButtonId() == 0 ? "about" : "custom-commands-guide"), String.class).orElse(new ArrayList<>());
 

@@ -94,7 +94,7 @@ public class InfractionsMenu extends Menu {
         List<Item> itemsToAdd = pagedItems.subList(page * (Slot.areaOf(pos1, pos2)), pagedItems.size());
 
 
-        XG7PluginsAPI.taskManager().scheduleSync(BukkitTask.of( () -> {
+        XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> {
             int index = 0;
 
             InventoryUpdater inventory = menuHolder.getInventoryUpdater();

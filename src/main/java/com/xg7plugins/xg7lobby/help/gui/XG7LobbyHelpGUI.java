@@ -54,7 +54,7 @@ public class XG7LobbyHelpGUI extends Menu {
         profileItemLore.add("lang:[help.menu.profile-item.lore.deaths]");
         profileItemLore.add("lang:[help.menu.profile-item.lore.kdr]");
 
-        ConfigSection lang = XG7PluginsAPI.langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
+        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
         return Arrays.asList(
                 SkullItem.newSkull().renderPlayerSkull(true)

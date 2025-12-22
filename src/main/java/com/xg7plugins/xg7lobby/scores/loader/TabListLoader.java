@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.scores.loader;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.modules.xg7scores.Score;
 import com.xg7plugins.modules.xg7scores.builder.TablistBuilder;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.scores.ScoreConfig;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class TabListLoader extends LobbyScoreLoader {
     public TabListLoader() {
-        super(new ScoreConfig(ConfigFile.of("scores/tablist", XG7Lobby.getInstance()).section("tab-list")), "xg7lobby-tb");
+        super(new ScoreConfig(ConfigFile.of("scores/tablist", XG7LobbyLoader.getInstance()).section("tab-list")), "xg7lobby-tb");
     }
 
     @Override
@@ -31,6 +31,6 @@ public class TabListLoader extends LobbyScoreLoader {
                 .playerSuffix(scoreConfig.get("custom-player-suffix", String.class).orElse(""))
                 .delay(scoreConfig.getDelay())
                 .condition(condition)
-                .build(XG7Lobby.getInstance());
+                .build(XG7LobbyLoader.getInstance());
     }
 }

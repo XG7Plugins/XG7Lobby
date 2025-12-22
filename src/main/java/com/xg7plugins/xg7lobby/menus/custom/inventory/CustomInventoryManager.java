@@ -6,7 +6,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public class CustomInventoryManager {
     private final HashMap<String, LobbyInventory> inventories = new HashMap<>();
 
     public void loadInventories() {
-        XG7Lobby lobby = XG7Lobby.getInstance();
+        XG7LobbyLoader lobby = XG7LobbyLoader.getInstance();
 
         lobby.getDebug().loading("Loading custom inventories...");
 
@@ -75,7 +75,7 @@ public class CustomInventoryManager {
         for (String inv : invs) {
             File file = new File(folder, "menus/" + path + "/" + inv + ".yml");
             if (!file.exists() && !existsBefore) {
-                XG7Lobby.getInstance().saveResource("menus/" + path + "/" + inv + ".yml", false);
+                XG7LobbyLoader.getInstance().saveResource("menus/" + path + "/" + inv + ".yml", false);
                 invsFiles.add(file);
             }
         }
@@ -145,7 +145,7 @@ public class CustomInventoryManager {
     }
 
     public void reloadInventories() {
-        inventories.values().forEach(l -> XG7Plugins.getAPI().menus().unregisterMenu(XG7Lobby.getInstance(), l.getMenu().getMenuConfigs().getId()));
+        inventories.values().forEach(l -> XG7Plugins.getAPI().menus().unregisterMenu(XG7LobbyLoader.getInstance(), l.getMenu().getMenuConfigs().getId()));
         inventories.clear();
         loadInventories();
     }

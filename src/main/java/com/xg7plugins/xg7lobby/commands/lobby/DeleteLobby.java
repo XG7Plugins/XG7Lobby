@@ -1,7 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.lobby;
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -10,7 +9,7 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.command.CommandSender;
@@ -23,13 +22,13 @@ import java.util.stream.Collectors;
         syntax = "/7ldeletelobby <id>",
         description = "Deletes a lobby",
         permission = "xg7lobby.command.lobby.delete",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7LobbyLoader.class
 )
 public class DeleteLobby implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
+        return XG7LobbyLoader.getInstance();
     }
 
     @Override
@@ -42,17 +41,17 @@ public class DeleteLobby implements Command {
 
         XG7LobbyAPI.requestLobbyLocation(id).thenAccept(lobbyLocation -> {
             if (lobbyLocation == null) {
-                Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.id-not-found", Pair.of("id", id));
+                Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.delete.id-not-found", Pair.of("id", id));
                 return;
             }
 
             XG7LobbyAPI.lobbyManager().deleteLobbyLocation(lobbyLocation)
                     .exceptionally(throwable -> {
-                                Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.on-error", Pair.of("id", id));
+                                Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.delete.on-error", Pair.of("id", id));
                                 throwable.printStackTrace();
                                 return false;
                             }
-                    ).thenRun(() -> Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.on-success", Pair.of("id", id)));
+                    ).thenRun(() -> Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.delete.on-success", Pair.of("id", id)));
         });
 
         return CommandState.FINE;

@@ -1,7 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -13,7 +12,7 @@ import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.command.CommandSender;
@@ -29,13 +28,13 @@ import java.util.List;
         isPlayerOnly = true,
         isInEnabledWorldOnly = true,
         isAsync = true,
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7LobbyLoader.class
 )
 public class VanishCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
+        return XG7LobbyLoader.getInstance();
     }
 
     @Override
@@ -59,7 +58,7 @@ public class VanishCommand implements Command {
 
         XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> {
             lobbyPlayer.applyHide();
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), lobbyPlayer.isHidingPlayers() ? "hide-players.hide" : "hide-players.show");
+            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), lobbyPlayer.isHidingPlayers() ? "hide-players.hide" : "hide-players.show");
         }));
 
         return CommandState.FINE;

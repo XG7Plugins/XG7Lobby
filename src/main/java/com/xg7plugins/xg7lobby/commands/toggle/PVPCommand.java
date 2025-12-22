@@ -3,7 +3,6 @@ package com.xg7plugins.xg7lobby.commands.toggle;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -16,7 +15,7 @@ import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,7 +27,7 @@ import org.bukkit.entity.Player;
         description = "Enable or disable PVP",
         isInEnabledWorldOnly = true,
         isPlayerOnly = true,
-        pluginClass = XG7Lobby.class,
+        pluginClass = XG7LobbyLoader.class,
         isEnabled = @ConfigCheck(
                 configName = "pvp",
                 path = "enabled"
@@ -38,7 +37,7 @@ public class PVPCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
+        return XG7LobbyLoader.getInstance();
     }
 
     @Override
@@ -50,7 +49,7 @@ public class PVPCommand implements Command {
             return CommandState.FINE;
         }
 
-        ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+        ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
 
         if (XG7Plugins.getAPI().cooldowns().containsPlayer("pvp-disable", player)) {
             XG7Plugins.getAPI().cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
@@ -64,11 +63,11 @@ public class PVPCommand implements Command {
 
                     long cooldownToToggle = XG7Plugins.getAPI().cooldowns().getReamingTime("pvp-disable", p);
 
-                    Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
+                    Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
                 },
                 (p, b) -> {
                     if (b) {
-                        Text.fromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
+                        Text.fromLang(player, XG7LobbyLoader.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
                         return;
                     }
                     XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);

@@ -1,6 +1,5 @@
-package com.xg7plugins.xg7lobby;
+package com.xg7plugins.xg7lobby.plugin;
 
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.boot.setup.Collaborator;
 import com.xg7plugins.boot.setup.PluginSetup;
@@ -21,6 +20,7 @@ import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.utils.Metrics;
+import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.commands.custom.CustomCommandManager;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
@@ -113,7 +113,7 @@ import java.util.List;
         }
 
 )
-public final class XG7Lobby extends Plugin {
+public final class XG7LobbyLoader extends Plugin {
 
     @Override
     public void onLoad() {
@@ -188,7 +188,7 @@ public final class XG7Lobby extends Plugin {
                 Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(this, p))
                         .forEach(p -> {
                             XG7Plugins.getAPI().menus().closeAllMenus(p);
-                            inventoryManager.openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), p);
+                            inventoryManager.openMenu(ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().get("main-selector-id"), p);
                         });
             }
 
@@ -218,8 +218,8 @@ public final class XG7Lobby extends Plugin {
         lobbyScoreManager.unloadScores();
     }
 
-    public static XG7Lobby getInstance() {
-        return getPlugin(XG7Lobby.class);
+    public static XG7LobbyLoader getInstance() {
+        return getPlugin(XG7LobbyLoader.class);
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.reflection.ReflectionClass;
 import com.xg7plugins.utils.reflection.ReflectionObject;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -22,9 +22,9 @@ public class CustomCommandManager {
     private final HashMap<String, CustomCommand> commands = new HashMap<>();
 
     public void registerCommands() {
-        ConfigSection config = ConfigFile.of("custom_commands", XG7Lobby.getInstance()).root();
+        ConfigSection config = ConfigFile.of("custom_commands", XG7LobbyLoader.getInstance()).root();
 
-        Debug.of(XG7Lobby.getInstance()).info("Registering custom commands");
+        Debug.of(XG7LobbyLoader.getInstance()).info("Registering custom commands");
 
         if (!config.get("enabled", false)) return;
 
@@ -34,17 +34,17 @@ public class CustomCommandManager {
             CustomCommand customCommand = new CustomCommand(path);
             PluginCommand pluginCommand = (PluginCommand) ReflectionClass.of(PluginCommand.class)
                     .getConstructor(String.class, org.bukkit.plugin.Plugin.class)
-                    .newInstance(customCommand.getName(), XG7Lobby.getInstance())
+                    .newInstance(customCommand.getName(), XG7LobbyLoader.getInstance())
                     .getObject();
             pluginCommand.setAliases(customCommand.getAliases());
             pluginCommand.setDescription(customCommand.getDescription());
             pluginCommand.setPermission(customCommand.getPermission());
             pluginCommand.setUsage(customCommand.getSyntax());
             pluginCommand.setExecutor(customCommandExecutor);
-            commandMap.register(XG7Lobby.getInstance().getClass().getAnnotation(PluginSetup.class).mainCommandName(), pluginCommand);
+            commandMap.register(XG7LobbyLoader.getInstance().getClass().getAnnotation(PluginSetup.class).mainCommandName(), pluginCommand);
             commands.put(customCommand.getName(), customCommand);
 
-            Debug.of(XG7Lobby.getInstance()).info("Registered " + customCommand.getName() + " command with succes!");
+            Debug.of(XG7LobbyLoader.getInstance()).info("Registered " + customCommand.getName() + " command with succes!");
         }
     }
 

@@ -1,14 +1,11 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
-import com.xg7plugins.XG7PluginsAPI;
-
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
-import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
@@ -23,20 +20,20 @@ import java.util.Collections;
 
 public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
-    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
-    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).section("on-leave-pvp");
+    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).section("on-leave-pvp");
 
     @Override
     public void handle(Player player, Object... args) {
 
-        Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-leave");
+        Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "pvp.on-leave");
 
         if (player.isOnline()) {
 
             if (XG7LobbyAPI.customInventoryManager() != null) {
                 XG7Plugins.getAPI().menus().closeAllMenus(player);
 
-                XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id", "selector"), player);
+                XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().get("main-selector-id", "selector"), player);
             }
 
             LobbyApplier.apply(player);

@@ -5,7 +5,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 public class MOTDListener implements Listener {
     @Override
     public boolean isEnabled() {
-         return ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("motd").get("enabled", false);
+         return ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("motd").get("enabled", false);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onServerPing(ServerListPingEvent event) {
 
-        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("motd");
+        ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("motd");
 
         String motd = config.getList("text", String.class).orElse(Collections.emptyList()).stream()
                 .map(line -> {
@@ -35,7 +35,7 @@ public class MOTDListener implements Listener {
         event.setMotd(motd);
         event.setMaxPlayers(config.get("max-players", 20));
 
-        File file =  new File(XG7Lobby.getInstance().getDataFolder(), "icon.png");
+        File file =  new File(XG7LobbyLoader.getInstance().getDataFolder(), "icon.png");
 
         if (!file.exists()) return;
 

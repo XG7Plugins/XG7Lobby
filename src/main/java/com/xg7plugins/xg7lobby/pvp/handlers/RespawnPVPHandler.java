@@ -1,14 +1,12 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
 
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
-import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.BukkitTask;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerRespawnInPVPEvent;
@@ -20,8 +18,8 @@ import java.util.Collections;
 
 public class RespawnPVPHandler implements PVPHandler, Listener {
 
-    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).section("on-respawn");
-    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).section("on-respawn");
+    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
 
     @Override
     public void handle(Player player, Object... args) {
@@ -52,7 +50,7 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
 
         if (XG7LobbyAPI.customInventoryManager() != null) {
             XG7Plugins.getAPI().menus().closeAllMenus(player);
-            XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id", "pvp"), player);
+            XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().get("main-pvp-selector-id", "pvp"), player);
         }
 
         ActionsProcessor.process(config.getList("actions", String.class).orElse(Collections.emptyList()), player);

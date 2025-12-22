@@ -1,8 +1,7 @@
 package com.xg7plugins.xg7lobby.commands.custom;
 
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.commands.utils.CommandState;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import lombok.AllArgsConstructor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +24,7 @@ public class CustomCommandExecutor implements CommandExecutor {
 
         Player player = (Player) commandSender;
 
-        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)) {
+        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7LobbyLoader.getInstance(), player)) {
             CommandState.DISABLED_WORLD.send(player);
             return true;
         }
@@ -37,7 +36,7 @@ public class CustomCommandExecutor implements CommandExecutor {
             return true;
         }
 
-        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player) && customCommand.isEnabledWorldOnly()) {
+        if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7LobbyLoader.getInstance(), player) && customCommand.isEnabledWorldOnly()) {
             CommandState.DISABLED_WORLD.send(player);
             return true;
         }

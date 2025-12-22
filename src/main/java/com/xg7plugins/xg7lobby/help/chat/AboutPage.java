@@ -1,14 +1,13 @@
 package com.xg7plugins.xg7lobby.help.chat;
 
 import com.xg7plugins.XG7Plugins;
-import com.xg7plugins.XG7PluginsAPI;
 
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.help.chat.HelpChatPage;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.text.component.ClickEvent;
 import com.xg7plugins.utils.text.component.TextComponentBuilder;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,7 +25,7 @@ public class AboutPage implements HelpChatPage {
         components.add(Text.format("&m-&9&m-&6&m------------------&e*&6&m------------------&9&m-&f&m-"));
 
         if (sender instanceof Player) {
-            ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).join().getSecond().getLangConfiguration();
+            ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7LobbyLoader.getInstance(), (Player) sender).join().getSecond().getLangConfiguration();
 
             String about = lang.getList("help.about", String.class).orElse(new ArrayList<>()).stream().collect(Collectors.joining("\n"));
 

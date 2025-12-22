@@ -4,7 +4,7 @@ import com.xg7plugins.modules.xg7geyserforms.forms.Form;
 import com.xg7plugins.modules.xg7geyserforms.forms.customform.CustomForm;
 import com.xg7plugins.modules.xg7geyserforms.forms.customform.IComponent;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.forms.FormType;
 import com.xg7plugins.xg7lobby.menus.custom.forms.LobbyForm;
@@ -29,7 +29,7 @@ public class LobbyCustomForm extends CustomForm implements LobbyForm {
     private final List<LobbyFormComponent> components;
 
     public LobbyCustomForm(String id, String title, List<String> closeActions, List<String> errorActions, List<String> onSubmitActions, List<LobbyFormComponent> components) {
-        super("lobby-custom-form:" + id, title, XG7Lobby.getInstance());
+        super("lobby-custom-form:" + id, title, XG7LobbyLoader.getInstance());
         this.closeActions = closeActions;
         this.errorActions = errorActions;
         this.onSubmitActions = onSubmitActions;

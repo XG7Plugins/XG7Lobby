@@ -6,7 +6,7 @@ import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.utils.PlayableSound;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -15,7 +15,7 @@ public class LaunchpadListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+        return ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance())
                 .section("launchpad")
                 .get("enabled", true);
     }
@@ -23,11 +23,11 @@ public class LaunchpadListener implements Listener {
     @EventHandler(isOnlyInWorld = true)
     public void onMove(PlayerMoveEvent event) {
 
-        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("launchpad");
+        ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("launchpad");
 
         Player player = event.getPlayer();
 
-        boolean disableLaunchpad = ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+        boolean disableLaunchpad = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance())
                 .section("pvp")
                 .get("disable-launchpad", true);
 

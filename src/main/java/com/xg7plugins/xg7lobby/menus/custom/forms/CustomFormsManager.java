@@ -4,7 +4,7 @@ import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 
 import com.xg7plugins.modules.xg7geyserforms.XG7GeyserForms;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.menus.custom.forms.custom.LobbyCustomForm;
 import com.xg7plugins.xg7lobby.menus.custom.forms.modal.LobbyModalForm;
 import com.xg7plugins.xg7lobby.menus.custom.forms.simple.LobbySimpleForm;
@@ -18,7 +18,7 @@ public class CustomFormsManager {
     private final HashMap<String, LobbyForm> forms = new HashMap<>();
 
     public void loadForms() {
-        XG7Lobby lobby = XG7Lobby.getInstance();
+        XG7LobbyLoader lobby = XG7LobbyLoader.getInstance();
 
         lobby.getDebug().loading("Loading custom forms...");
 
@@ -71,7 +71,7 @@ public class CustomFormsManager {
         for (String form : forms) {
             File file = new File(folder, "menus/forms/" + form + ".yml");
             if (!file.exists() && !existsBefore) {
-                XG7Lobby.getInstance().saveResource("menus/forms/" + form + ".yml", false);
+                XG7LobbyLoader.getInstance().saveResource("menus/forms/" + form + ".yml", false);
                 formsFiles.add(file);
             }
         }

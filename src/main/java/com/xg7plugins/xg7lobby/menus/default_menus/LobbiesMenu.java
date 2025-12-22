@@ -2,16 +2,13 @@ package com.xg7plugins.xg7lobby.menus.default_menus;
 
 import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.modules.xg7menus.Slot;
-import com.xg7plugins.modules.xg7menus.editor.InventoryShaper;
-import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.ChangePageItem;
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.CloseInventoryItem;
-import com.xg7plugins.modules.xg7menus.menus.menuholders.PagedMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.PagedMenu;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.entity.Player;
@@ -24,7 +21,7 @@ public class LobbiesMenu extends PagedMenu {
     public LobbiesMenu() {
         super(
                 MenuConfigurations.of(
-                        XG7Lobby.getInstance(),
+                        XG7LobbyLoader.getInstance(),
                         "lobbies-menu",
                         "lang:[lobbies-menu.title]",
                         6

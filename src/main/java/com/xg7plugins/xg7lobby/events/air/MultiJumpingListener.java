@@ -7,11 +7,10 @@ import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.GameMode;
-import org.bukkit.Sound;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
@@ -23,7 +22,7 @@ public class MultiJumpingListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+        return ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance())
                 .section("multi-jumps")
                 .get("enabled", true);
     }
@@ -31,7 +30,7 @@ public class MultiJumpingListener implements Listener {
     @EventHandler
     public void onToggleFlight(PlayerToggleFlightEvent event) {
 
-        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("multi-jumps");
+        ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("multi-jumps");
 
         LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(event.getPlayer().getUniqueId());
 
@@ -53,14 +52,14 @@ public class MultiJumpingListener implements Listener {
 
         if (jumpingPlayers.get(player.getPlayerUUID()) == 0) player.getPlayer().setAllowFlight(false);
 
-        Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "multi-jump-left", Pair.of("jumps", jumpingPlayers.getOrDefault(player.getPlayerUUID(), jumpLimit) + ""));
+        Text.sendTextFromLang(player.getPlayer(), XG7LobbyLoader.getInstance(), "multi-jump-left", Pair.of("jumps", jumpingPlayers.getOrDefault(player.getPlayerUUID(), jumpLimit) + ""));
     }
 
     @EventHandler(isOnlyInWorld = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (!jumpingPlayers.containsKey(event.getPlayer().getUniqueId())) return;
 
-        boolean disableMultiJumps = ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+        boolean disableMultiJumps = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance())
                 .section("pvp")
                 .get("disable-multi-jumps", true);
 

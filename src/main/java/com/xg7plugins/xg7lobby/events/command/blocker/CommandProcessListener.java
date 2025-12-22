@@ -5,7 +5,7 @@ import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CommandProcessListener implements Listener {
 
-    private final ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("block-commands");
+    private final ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("block-commands");
 
     @Override
     public boolean isEnabled() {

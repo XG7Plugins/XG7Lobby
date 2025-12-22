@@ -1,6 +1,5 @@
 package com.xg7plugins.xg7lobby.events.chat;
 
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.Listener;
@@ -8,7 +7,7 @@ import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
@@ -26,7 +25,7 @@ public class AntiSpamListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return ConfigFile.mainConfigOf(XG7Lobby.getInstance())
+        return ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance())
                 .section("anti-spam")
                 .get("enabled", false);
     }
@@ -35,18 +34,18 @@ public class AntiSpamListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("anti-spam");
+        ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("anti-spam");
 
         if (player.hasPermission("xg7lobby.chat.spam")) return;
 
         boolean antiSpamOnlyInLobby = config.get("anti-spam-only-in-lobby", false);
-        if (antiSpamOnlyInLobby && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
+        if (antiSpamOnlyInLobby && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7LobbyLoader.getInstance(), event.getPlayer())) return;
 
         String message = event.getMessage().toLowerCase();
 
         if (XG7Plugins.getAPI().cooldowns().containsPlayer("lobby-chat-spam", player)) {
             long cooldown = XG7Plugins.getAPI().cooldowns().getReamingTime("lobby-chat-spam", player);
-            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "chat.message-cooldown", Pair.of("time", cooldown + ""));
+            Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "chat.message-cooldown", Pair.of("time", cooldown + ""));
             event.setCancelled(true);
             return;
         }
@@ -55,7 +54,7 @@ public class AntiSpamListener implements Listener {
         if (messageCannotBeTheSame) {
             String lastMessage = this.lastMessages.get(player.getUniqueId());
             if (lastMessage != null && lastMessage.equalsIgnoreCase(message)) {
-                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "chat.same-message");
+                Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "chat.same-message");
                 event.setCancelled(true);
                 return;
             }
@@ -68,7 +67,7 @@ public class AntiSpamListener implements Listener {
         int spamTolerance = config.get("spam-tolerance", 5);
         if (spamTolerance <= 0) return;
 
-        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7Plugins.getAPI().taskManager().getTimerTask(XG7Lobby.getInstance(), "anti-spam-tolerance");
+        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7Plugins.getAPI().taskManager().getTimerTask(XG7LobbyLoader.getInstance(), "anti-spam-tolerance");
 
         antiSpamTask.incrementTolerance(player.getUniqueId());
 
@@ -96,7 +95,7 @@ public class AntiSpamListener implements Listener {
 
         int sendWarningOnMessage = config.get("send-warning-on-message", 3);
         if (antiSpamTask.getTolerance(player.getUniqueId()) >= sendWarningOnMessage) {
-            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "chat.send-much-messages");
+            Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "chat.send-much-messages");
         }
     }
 }

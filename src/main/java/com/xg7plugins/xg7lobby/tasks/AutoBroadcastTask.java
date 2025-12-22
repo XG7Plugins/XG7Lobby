@@ -1,13 +1,12 @@
 package com.xg7plugins.xg7lobby.tasks;
 
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import org.bukkit.Bukkit;
 
 import java.util.Collections;
@@ -18,16 +17,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AutoBroadcastTask extends TimerTask {
 
-    private final ConfigSection config = ConfigFile.of("ads", XG7Lobby.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("ads", XG7LobbyLoader.getInstance()).root();
 
     private final AtomicInteger index = new AtomicInteger(0);
 
     public AutoBroadcastTask() {
         super(
-                XG7Lobby.getInstance(),
+                XG7LobbyLoader.getInstance(),
                 "auto-broadcast",
                 0,
-                ConfigFile.of("ads", XG7Lobby.getInstance()).root().getTimeInMilliseconds("cooldown"),
+                ConfigFile.of("ads", XG7LobbyLoader.getInstance()).root().getTimeInMilliseconds("cooldown"),
                 TaskState.RUNNING,
                 false
         );
@@ -50,11 +49,11 @@ public class AutoBroadcastTask extends TimerTask {
 
         int finalIndex = index;
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (config.get("broadcast-only-in-the-lobby", false) && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
+            if (config.get("broadcast-only-in-the-lobby", false) && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7LobbyLoader.getInstance(), player)) return;
 
             ((List<String>) advertisements.get(finalIndex).get("ad")).forEach(message -> Text.detectLangs(
                     player,
-                    XG7Lobby.getInstance(),
+                    XG7LobbyLoader.getInstance(),
                     message
             ).join().send(player));
 

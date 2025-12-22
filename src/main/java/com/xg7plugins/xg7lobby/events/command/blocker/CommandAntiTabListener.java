@@ -8,7 +8,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.PacketListener;
 import com.xg7plugins.events.packetevents.PacketEventType;
 import com.xg7plugins.events.packetevents.PacketListenerSetup;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @PacketListenerSetup(packet = PacketEventType.PLAY_SERVER_TAB_COMPLETE)
 public class CommandAntiTabListener implements PacketListener {
 
-    private final ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("block-commands");
+    private final ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("block-commands");
 
     @Override
     public boolean isEnabled() {

@@ -7,7 +7,6 @@ import com.xg7plugins.libs.xseries.XEntityType;
 import com.xg7plugins.libs.xseries.XPotion;
 import com.xg7plugins.libs.xseries.XSound;
 import com.xg7plugins.libs.xseries.particles.XParticle;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
@@ -21,7 +20,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.Parser;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
@@ -53,28 +52,28 @@ public enum ActionType {
             "Sends a message to a player",
             "WRITABLE_BOOK",
             false,
-            (player, args) -> Text.detectLangsAndSend(player, XG7Lobby.getInstance(), args[0]).join()
+            (player, args) -> Text.detectLangsAndSend(player, XG7LobbyLoader.getInstance(), args[0]).join()
     ),
     BROADCAST(
             "[BROADCAST] message...",
             "Broadcasts a message to all players",
             "PAPER",
             false,
-            (player, args) -> Bukkit.broadcastMessage(Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getText())
+            (player, args) -> Bukkit.broadcastMessage(Text.detectLangs(player, XG7LobbyLoader.getInstance(),args[0]).join().getText())
     ),
     PLAYER_COMMAND(
             "[PLAYER_COMMAND] command...",
             "Makes a player execute a command",
             "COMMAND_BLOCK",
             false,
-            (player, args) -> player.performCommand(Text.detectLangs(player, XG7Lobby.getInstance(), args[0]).join().getPlainText())
+            (player, args) -> player.performCommand(Text.detectLangs(player, XG7LobbyLoader.getInstance(), args[0]).join().getPlainText())
     ),
     CONSOLE_COMMAND(
             "[CONSOLE_COMMAND] command...",
             "Executes a command from console",
             "COMMAND_BLOCK",
             false,
-            (player, args) -> player.getServer().dispatchCommand(player.getServer().getConsoleSender(), Text.detectLangs(player, XG7Lobby.getInstance(), args[0]).join().getPlainText())
+            (player, args) -> player.getServer().dispatchCommand(player.getServer().getConsoleSender(), Text.detectLangs(player, XG7LobbyLoader.getInstance(), args[0]).join().getPlainText())
     ),
     TITLE(
             "[TITLE] title...",
@@ -83,15 +82,15 @@ public enum ActionType {
             true,
             (player, args) -> {
                 if (args.length == 1) {
-                    player.sendTitle(Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getText(), "");
+                    player.sendTitle(Text.detectLangs(player, XG7LobbyLoader.getInstance(),args[0]).join().getText(), "");
                     return;
                 }
                 if (args.length == 2) {
-                    player.sendTitle(Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getText(), Text.detectLangs(player,XG7Lobby.getInstance(),args[1]).join().getText());
+                    player.sendTitle(Text.detectLangs(player, XG7LobbyLoader.getInstance(),args[0]).join().getText(), Text.detectLangs(player, XG7LobbyLoader.getInstance(),args[1]).join().getText());
                     return;
                 }
                 if (args.length == 5) {
-                    player.sendTitle(args[0].equals("_") ? "" : Text.detectLangs(player,XG7Lobby.getInstance(),args[0]).join().getText(), args[1].equals("_") ? "" : Text.detectLangs(player,XG7Lobby.getInstance(),args[1]).join().getText(), Parser.INTEGER.convert(args[2]), Parser.INTEGER.convert(args[3]), Parser.INTEGER.convert(args[4]));
+                    player.sendTitle(args[0].equals("_") ? "" : Text.detectLangs(player, XG7LobbyLoader.getInstance(),args[0]).join().getText(), args[1].equals("_") ? "" : Text.detectLangs(player, XG7LobbyLoader.getInstance(),args[1]).join().getText(), Parser.INTEGER.convert(args[2]), Parser.INTEGER.convert(args[3]), Parser.INTEGER.convert(args[4]));
                     return;
                 }
 
@@ -339,23 +338,23 @@ public enum ActionType {
 
                 switch (slot) {
                     case HELMET:
-                        player.getInventory().setHelmet(item.getItemFor(player, XG7Lobby.getInstance()));
+                        player.getInventory().setHelmet(item.getItemFor(player, XG7LobbyLoader.getInstance()));
                         break;
                     case CHESTPLATE:
-                        player.getInventory().setChestplate(item.getItemFor(player, XG7Lobby.getInstance()));
+                        player.getInventory().setChestplate(item.getItemFor(player, XG7LobbyLoader.getInstance()));
                         break;
                     case LEGGINGS:
-                        player.getInventory().setLeggings(item.getItemFor(player, XG7Lobby.getInstance()));
+                        player.getInventory().setLeggings(item.getItemFor(player, XG7LobbyLoader.getInstance()));
                         break;
                     case BOOTS:
-                        player.getInventory().setBoots(item.getItemFor(player, XG7Lobby.getInstance()));
+                        player.getInventory().setBoots(item.getItemFor(player, XG7LobbyLoader.getInstance()));
                         break;
                     case OFFHAND:
                         if (MinecraftServerVersion.isOlderThan(9)) {
-                            Debug.of(XG7Lobby.getInstance()).severe("The offhand slot is only available in 1.9 or higher.");
+                            Debug.of(XG7LobbyLoader.getInstance()).severe("The offhand slot is only available in 1.9 or higher.");
                             return;
                         }
-                        player.getInventory().setItemInOffHand(item.getItemFor(player, XG7Lobby.getInstance()));
+                        player.getInventory().setItemInOffHand(item.getItemFor(player, XG7LobbyLoader.getInstance()));
                         break;
                 }
             }
@@ -392,7 +391,7 @@ public enum ActionType {
                 try {
                     XG7Plugins.getAPI().getServerInfo().connectTo(args[0], player);
                 } catch (IOException e) {
-                    Debug.of(XG7Lobby.getInstance()).severe("Error while connecting to the server: " + args[0]);
+                    Debug.of(XG7LobbyLoader.getInstance()).severe("Error while connecting to the server: " + args[0]);
                     throw new RuntimeException(e);
                 }
             }
@@ -578,7 +577,7 @@ public enum ActionType {
 
                         if (!XG7LobbyAPI.isPlayerInPVP(player)) return;
 
-                        ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+                        ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
 
                         if (XG7Plugins.getAPI().cooldowns().containsPlayer("pvp-disable", player)) {
                             XG7Plugins.getAPI().cooldowns().removeCooldown("pvp-disable", player.getUniqueId(), true);
@@ -592,11 +591,11 @@ public enum ActionType {
 
                                     long cooldownToToggle = XG7Plugins.getAPI().cooldowns().getReamingTime("pvp-disable", p);
 
-                                    Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
+                                    Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "pvp.pvp-disabling", Pair.of("player", p.getName()), Pair.of("time", cooldownToToggle + ""));
                                 },
                                 (p, b) -> {
                                     if (b) {
-                                        Text.fromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
+                                        Text.fromLang(player, XG7LobbyLoader.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
                                         return;
                                     }
                                     XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);

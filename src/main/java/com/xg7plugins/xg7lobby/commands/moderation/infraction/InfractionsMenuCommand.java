@@ -1,15 +1,13 @@
 package com.xg7plugins.xg7lobby.commands.moderation.infraction;
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,13 +23,13 @@ import java.util.List;
         syntax = "/7linfractions (player)",
         permission = "xg7lobby.command.infractions",
         isPlayerOnly = true,
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7LobbyLoader.class
 )
 public class InfractionsMenuCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
+        return XG7LobbyLoader.getInstance();
     }
 
     @Override
@@ -43,7 +41,7 @@ public class InfractionsMenuCommand implements Command {
             return CommandState.PLAYER_NOT_FOUND;
         }
 
-        InfractionsMenu infractionsMenu = XG7Plugins.getAPI().menus().getMenu(XG7Lobby.getInstance(), "warns-menu");
+        InfractionsMenu infractionsMenu = XG7Plugins.getAPI().menus().getMenu(XG7LobbyLoader.getInstance(), "warns-menu");
 
         infractionsMenu.open(player, target);
 

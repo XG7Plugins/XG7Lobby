@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.environment;
 
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -38,7 +38,7 @@ public class XG7LobbyPlaceholderExpansion extends PlaceholderExpansion {
 
         switch (identifier) {
             case "chat_locked":
-                return ((XG7LobbyEnvironment) XG7Lobby.getInstance().getEnvironmentConfig()).isChatLocked() + "";
+                return ((XG7LobbyEnvironment) XG7LobbyLoader.getInstance().getEnvironmentConfig()).isChatLocked() + "";
             case "random_lobby_location":
                 return XG7LobbyAPI.lobbyManager().getRandomLobbyLocation().join() + "";
             case "player_warns":

@@ -1,14 +1,11 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
-import com.xg7plugins.XG7PluginsAPI;
-
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
-import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
@@ -25,13 +22,13 @@ import java.util.Collections;
 
 public class JoinPVPHandler implements PVPHandler, LobbyListener {
 
-    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
-    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).section("on-join-pvp");
+    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).section("on-join-pvp");
 
     @Override
     public void handle(Player player, Object... args) {
 
-        Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-join");
+        Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "pvp.on-join");
 
         player.setGameMode(GameMode.SURVIVAL);
         LobbyApplier.reset(player);
@@ -39,7 +36,7 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
         if (XG7LobbyAPI.customInventoryManager() != null) {
             XG7Plugins.getAPI().menus().closeAllMenus(player);
 
-            XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id","pvp"), player);
+            XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().get("main-pvp-selector-id","pvp"), player);
         }
 
         if (config.get("heal")) player.setHealth(player.getMaxHealth());

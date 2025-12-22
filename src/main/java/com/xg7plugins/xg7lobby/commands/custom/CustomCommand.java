@@ -2,7 +2,7 @@ package com.xg7plugins.xg7lobby.commands.custom;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class CustomCommand {
 
     public CustomCommand(String path) {
 
-        ConfigSection config = ConfigFile.of("custom_commands", XG7Lobby.getInstance()).section("custom-commands." + path);
+        ConfigSection config = ConfigFile.of("custom_commands", XG7LobbyLoader.getInstance()).section("custom-commands." + path);
 
         this.name = config.get("name", String.class);
 

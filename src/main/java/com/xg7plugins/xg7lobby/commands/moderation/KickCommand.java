@@ -2,7 +2,6 @@ package com.xg7plugins.xg7lobby.commands.moderation;
 
 
 import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.XG7PluginsAPI;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -14,7 +13,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
@@ -33,13 +32,13 @@ import java.util.List;
         description = "Kicks a player",
         syntax = "/7lkick <player> (reason)",
         permission = "xg7lobby.moderation.kick",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7LobbyLoader.class
 )
 public class KickCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
+        return XG7LobbyLoader.getInstance();
     }
 
     @Override
@@ -63,16 +62,16 @@ public class KickCommand implements Command {
 
         Player target = offlineTarget.getPlayer();
 
-        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
+        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("moderation");
 
         if (target.hasPermission("xg7lobby.moderation.kick") && !moderationConfig.get("kick-admin", false)) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.kick-admin");
+            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.kick.kick-admin");
             return CommandState.ERROR;
         }
 
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        lobbyPlayerManager.kickPlayer(target, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.kick.on-kick").join().replace("reason", reason));
+        lobbyPlayerManager.kickPlayer(target, Text.fromLang(target.getPlayer(), XG7LobbyLoader.getInstance(), "commands.kick.on-kick").join().replace("reason", reason));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
             int warningLevel = moderationConfig.get("kick-warning-level", 2);
@@ -82,7 +81,7 @@ public class KickCommand implements Command {
 
         });
 
-        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.on-kick-sender", Pair.of("reason", reason), Pair.of("target", target.getName()));
+        Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.kick.on-kick-sender", Pair.of("reason", reason), Pair.of("target", target.getName()));
 
         return CommandState.FINE;
     }

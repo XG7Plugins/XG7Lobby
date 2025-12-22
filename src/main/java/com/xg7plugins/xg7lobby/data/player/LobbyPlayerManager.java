@@ -1,10 +1,8 @@
 package com.xg7plugins.xg7lobby.data.player;
 
-import com.xg7plugins.XG7PluginsAPI;
-
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.data.player.dao.InfractionRepository;
 import com.xg7plugins.xg7lobby.data.player.dao.LobbyPlayerRepository;
 import lombok.Getter;
@@ -62,7 +60,7 @@ public class LobbyPlayerManager {
     }
 
     public boolean isLoaded(UUID id) {
-        return XG7Plugins.getAPI().database().containsCachedEntity(XG7Lobby.getInstance(), id.toString()).join();
+        return XG7Plugins.getAPI().database().containsCachedEntity(XG7LobbyLoader.getInstance(), id.toString()).join();
     }
 
     public void addInfraction(Infraction infraction) {

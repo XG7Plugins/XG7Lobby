@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.menus.custom.forms.simple;
 import com.xg7plugins.modules.xg7geyserforms.forms.Form;
 import com.xg7plugins.modules.xg7geyserforms.forms.SimpleForm;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.forms.FormType;
 import com.xg7plugins.xg7lobby.menus.custom.forms.LobbyForm;
@@ -29,7 +29,7 @@ public class LobbySimpleForm extends SimpleForm implements LobbyForm {
     private final HashMap<Integer, LobbySimpleFormButton> buttons;
 
     public LobbySimpleForm(String id, String title, String content, List<LobbySimpleFormButton> buttons, List<String> closeActions, List<String> errorActions) {
-        super("lobby-custom-form:" + id, title, XG7Lobby.getInstance());
+        super("lobby-custom-form:" + id, title, XG7LobbyLoader.getInstance());
         this.content = content;
         this.buttons = new HashMap<>();
         this.closeActions = closeActions;

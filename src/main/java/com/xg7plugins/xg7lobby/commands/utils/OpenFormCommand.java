@@ -8,10 +8,8 @@ import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
-import com.xg7plugins.xg7lobby.menus.custom.forms.LobbyForm;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,13 +23,13 @@ import java.util.List;
         description = "Opens a custom geyser form",
         syntax = "/7lopenform <id>",
         isPlayerOnly = true,
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7LobbyLoader.class
 )
 public class OpenFormCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
+        return XG7LobbyLoader.getInstance();
     }
 
     @Override
@@ -50,7 +48,7 @@ public class OpenFormCommand implements Command {
         String id = args.get(0, String.class);
 
         if (!XG7LobbyAPI.customFormsManager().contains(id)) {
-            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "form-does-not-exist");
+            Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "form-does-not-exist");
             return CommandState.ERROR;
         }
 

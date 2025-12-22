@@ -1,14 +1,12 @@
 package com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu;
 
 import com.xg7plugins.XG7Plugins;
-import com.xg7plugins.XG7PluginsAPI;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
-import com.xg7plugins.modules.xg7menus.events.ActionEvent;
 import com.xg7plugins.modules.xg7menus.item.Item;
 
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.ChangePageItem;
@@ -18,11 +16,10 @@ import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -46,7 +43,7 @@ public class InfractionsMenu extends Menu {
     @SuppressWarnings("unchecked")
     public List<Item> pagedItems(OfflinePlayer target) {
 
-        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
+        ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root();
 
         LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
@@ -69,7 +66,7 @@ public class InfractionsMenu extends Menu {
                         Player player = event.getHolder().getPlayer();
                         Text.format(" ").send(player);
 
-                        Text.sendTextFromLang(player, XG7Lobby.getInstance(), "warn-menu.id-message", Pair.of("id", i.getID()));
+                        Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "warn-menu.id-message", Pair.of("id", i.getID()));
 
                         Text.format(" ").send(player);
                     });

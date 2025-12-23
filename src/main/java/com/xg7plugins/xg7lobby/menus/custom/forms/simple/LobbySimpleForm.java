@@ -14,6 +14,7 @@ import org.geysermc.cumulus.component.ButtonComponent;
 import org.geysermc.cumulus.response.SimpleFormResponse;
 import org.geysermc.cumulus.response.result.InvalidFormResponseResult;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ public class LobbySimpleForm extends SimpleForm implements LobbyForm {
     private final HashMap<Integer, LobbySimpleFormButton> buttons;
 
     public LobbySimpleForm(String id, String title, String content, List<LobbySimpleFormButton> buttons, List<String> closeActions, List<String> errorActions) {
-        super("lobby-custom-form:" + id, title, XG7Lobby.getInstance());
+        super("lobby-custom-form:" + id, title, XG7Lobby.getInstance(), Collections.emptyList());
         this.content = content;
         this.buttons = new HashMap<>();
         this.closeActions = closeActions;

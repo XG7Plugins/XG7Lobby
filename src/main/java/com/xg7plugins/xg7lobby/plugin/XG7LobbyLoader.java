@@ -42,7 +42,7 @@ public class XG7LobbyLoader extends JavaPlugin {
         corePlugin.disablePlugin(plugin);
     }
 
-    public static Plugin getPluginInstance() {
+    public static XG7Lobby getPluginInstance() {
         return getPlugin(XG7LobbyLoader.class).getPlugin();
     }
     

@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.data.player;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;

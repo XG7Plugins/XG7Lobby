@@ -1,12 +1,13 @@
 package com.xg7plugins.xg7lobby.commands.moderation.mute;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
@@ -25,8 +26,8 @@ import java.util.List;
         description = "Unmutes a player",
         syntax = "/7plunmute <player>",
         permission = "xg7lobby.moderation.unmute",
-        isAsync = true,
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.IRON_DOOR
 )
 public class UnMuteCommand implements Command {
 
@@ -35,7 +36,7 @@ public class UnMuteCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig(isAsync = true)
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() != 1) {
             return CommandState.syntaxError(getCommandSetup().syntax());
@@ -71,11 +72,6 @@ public class UnMuteCommand implements Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         return args.len() == 1 ? new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames()) : Collections.emptyList();
-    }
-
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.IRON_DOOR, this);
     }
 
 }

@@ -1,8 +1,9 @@
 package com.xg7plugins.xg7lobby.events.chat;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.events.bukkitevents.Listener;
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
@@ -67,7 +68,7 @@ public class AntiSpamListener implements Listener {
         int spamTolerance = config.get("spam-tolerance", 5);
         if (spamTolerance <= 0) return;
 
-        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7Plugins.getAPI().taskManager().getTimerTask(XG7Lobby.getInstance(), "anti-spam-tolerance");
+        AntiSpamTask antiSpamTask = (AntiSpamTask) XG7Plugins.getAPI().taskManager().getTimerTask(XG7Lobby.keyOf("anti-spam-tolerance"));
 
         antiSpamTask.incrementTolerance(player.getUniqueId());
 

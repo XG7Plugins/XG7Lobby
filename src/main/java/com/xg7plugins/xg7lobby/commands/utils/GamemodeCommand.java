@@ -1,12 +1,14 @@
 package com.xg7plugins.xg7lobby.commands.utils;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -27,7 +29,8 @@ import java.util.List;
         permission = "xg7lobby.command.gamemode",
         syntax = "/7lgamemode <gamemode> (player)",
         description = "Change player's gamemode",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.GRASS_BLOCK
 )
 public class GamemodeCommand implements Command {
 
@@ -36,7 +39,7 @@ public class GamemodeCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() < 1) {
             return CommandState.syntaxError(getCommandSetup().syntax());
@@ -103,11 +106,6 @@ public class GamemodeCommand implements Command {
         }
 
         return Collections.emptyList();
-    }
-
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.GRASS_BLOCK, this);
     }
 
     enum Mode {

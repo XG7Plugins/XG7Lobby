@@ -1,9 +1,10 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.events.bukkitevents.Listener;
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -24,28 +25,13 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
     @Override
     public void handle(Player player, Object... args) {
 
-        
-        
-        
-
         XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> {
-            
-            
-            if (l == null) {
-                
-                return;
-            }
-
-            
-
+            if (l == null) return;
             try {
                 l.teleport(player);
-                
             } catch (Exception e) {
-                
                 e.printStackTrace();
             }
-
         }), 2000L));
 
         if (XG7LobbyAPI.customInventoryManager() != null) {

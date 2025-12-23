@@ -1,12 +1,14 @@
 package com.xg7plugins.xg7lobby.commands.utils;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -23,7 +25,8 @@ import java.util.List;
         permission = "xg7lobby.command.resetstats",
         syntax = "/7lresetstats <ALL | DEATHS | KILLS> <player>",
         description = "Reset a player pvp statistics",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.LAVA_BUCKET
 )
 public class ResetStatsCommand implements Command {
 
@@ -32,7 +35,7 @@ public class ResetStatsCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 2) {
@@ -71,7 +74,7 @@ public class ResetStatsCommand implements Command {
                     return;
 
                 default:
-                    // Sintaxe inválida no argumento
+                    // Invalid syntax
                     break;
 
             }
@@ -88,8 +91,4 @@ public class ResetStatsCommand implements Command {
         return new ArrayList<>(XG7Plugins.getAPI().getAllPlayerNames());
     }
 
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.LAVA_BUCKET, this);
-    }
 }

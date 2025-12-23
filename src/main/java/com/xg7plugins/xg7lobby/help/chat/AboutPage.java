@@ -25,16 +25,16 @@ public class AboutPage implements HelpChatPage {
         components.add(Text.format("&m-&9&m-&6&m------------------&e*&6&m------------------&9&m-&f&m-"));
 
         if (sender instanceof Player) {
-            ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).join().getSecond().getLangConfiguration();
+            ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).getSecond().getLangConfiguration();
 
             String about = lang.getList("help.about", String.class).orElse(new ArrayList<>()).stream().collect(Collectors.joining("\n"));
 
             components.add(
-                    Text.detectLangs(sender, XG7Plugins.getInstance(),about).join()
+                    Text.detectLangs(sender, XG7Plugins.getInstance(),about)
                     .replace("discord", "discord.gg/jfrn8w92kF")
                     .replace("github", "github.com/DaviXG7")
                     .replace("website", "xg7plugins.com")
-                    .replace("version", XG7Plugins.getInstance().getDescription().getVersion())
+                    .replace("version", XG7Plugins.getInstance().getJavaPlugin().getDescription().getVersion())
             );
         } else {
             components.add(Text.format("Unable to access about text in console"));

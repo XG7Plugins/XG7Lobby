@@ -29,7 +29,7 @@ public class ScoreConfig {
 
     public void load() {
         ConfigFile newFile = ConfigFile.of(scoreSection.getFile().getName(), XG7Lobby.getInstance());
-        this.scoreSection = new ConfigSection(newFile, scoreSection.getPath(), newFile.getConfig());
+        this.scoreSection = newFile.section(scoreSection.getPath());
         this.enabled = scoreSection.get("enabled",false);
         this.delay = scoreSection.getTimeInMilliseconds("update-time", 30000L);
     }

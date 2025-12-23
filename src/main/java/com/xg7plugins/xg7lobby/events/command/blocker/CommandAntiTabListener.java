@@ -1,21 +1,23 @@
 package com.xg7plugins.xg7lobby.events.command.blocker;
 
 import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTabComplete;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.PacketListener;
-import com.xg7plugins.events.packetevents.PacketEventType;
 import com.xg7plugins.events.packetevents.PacketListenerSetup;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-@PacketListenerSetup(packet = PacketEventType.PLAY_SERVER_TAB_COMPLETE)
+@PacketListenerSetup
 public class CommandAntiTabListener implements PacketListener {
 
     private final ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("block-commands");
@@ -23,6 +25,11 @@ public class CommandAntiTabListener implements PacketListener {
     @Override
     public boolean isEnabled() {
         return config.get("enabled", false) && config.get("anti-tab", false);
+    }
+
+    @Override
+    public Set<PacketTypeCommon> getHandledEvents() {
+        return Collections.singleton(PacketType.Play.Server.TAB_COMPLETE);
     }
 
     @Override

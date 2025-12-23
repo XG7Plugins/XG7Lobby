@@ -24,7 +24,7 @@ public class CustomCommandManager {
     public void registerCommands() {
         ConfigSection config = ConfigFile.of("custom_commands", XG7Lobby.getInstance()).root();
 
-        Debug.of(XG7Lobby.getInstance()).info("Registering custom commands");
+        Debug.of(XG7Lobby.getInstance()).info("load", "Registering custom commands");
 
         if (!config.get("enabled", false)) return;
 
@@ -44,7 +44,7 @@ public class CustomCommandManager {
             commandMap.register(XG7Lobby.getInstance().getClass().getAnnotation(PluginSetup.class).mainCommandName(), pluginCommand);
             commands.put(customCommand.getName(), customCommand);
 
-            Debug.of(XG7Lobby.getInstance()).info("Registered " + customCommand.getName() + " command with succes!");
+            Debug.of(XG7Lobby.getInstance()).info("load", "Registered " + customCommand.getName() + " command with succes!");
         }
     }
 

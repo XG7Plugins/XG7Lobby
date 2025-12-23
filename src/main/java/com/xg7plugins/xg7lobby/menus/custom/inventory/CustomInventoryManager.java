@@ -1,17 +1,21 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 
 import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
+import com.xg7plugins.utils.FileUtil;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class CustomInventoryManager {
@@ -21,11 +25,11 @@ public class CustomInventoryManager {
     public void loadInventories() {
         XG7Lobby lobby = XG7Lobby.getInstance();
 
-        lobby.getDebug().loading("Loading custom inventories...");
+        lobby.getDebug().info("load", "Loading custom inventories...");
 
-        File folderFile = new File(lobby.getDataFolder(), "menus");
-        File guiFolder = new File(lobby.getDataFolder(), "menus/gui");
-        File hotbarFolder = new File(lobby.getDataFolder(), "menus/hotbar");
+        File folderFile = new File(lobby.getJavaPlugin().getDataFolder(), "menus");
+        File guiFolder = new File(lobby.getJavaPlugin().getDataFolder(), "menus/gui");
+        File hotbarFolder = new File(lobby.getJavaPlugin().getDataFolder(), "menus/hotbar");
 
         boolean existsBefore = folderFile.exists();
 
@@ -36,6 +40,8 @@ public class CustomInventoryManager {
 
         List<File> guis = getDefaults(existsBefore, Arrays.asList("games", "profile"), guiFolder, "gui");
         List<File> hotbars = getDefaults(existsBefore, Arrays.asList("selector", "pvp_selector"), hotbarFolder, "hotbar");
+
+        List<BasicMenu> menusToRegister = new ArrayList<>();
 
         for (File file : guis) {
             ConfigSection config = ConfigFile.of("menus/gui/" + file.getName().replace(".yml", ""), lobby).root();
@@ -48,7 +54,7 @@ public class CustomInventoryManager {
             if (lobbyGUI == null) throw new IllegalArgumentException("GUI malconfigured!");
 
             inventories.put(id, lobbyGUI);
-            XG7Plugins.getAPI().menus().registerMenus(lobbyGUI);
+            menusToRegister.add(lobbyGUI);
         }
         for (File file : hotbars) {
             ConfigSection config = ConfigFile.of("menus/hotbar/" + file.getName().replace(".yml", ""), lobby).root();
@@ -61,10 +67,12 @@ public class CustomInventoryManager {
             if (lobbyHotbar == null) throw new IllegalArgumentException("Hotbar malconfigured!");
 
             inventories.put(id, lobbyHotbar);
-            XG7Plugins.getAPI().menus().registerMenus(lobbyHotbar);
+            menusToRegister.add(lobbyHotbar);
         }
-        lobby.getDebug().loading("Loaded " + inventories.size() + " custom inventories.");
-        lobby.getDebug().info("Loaded " + inventories.keySet() + " custom inventories.");
+        XG7Plugins.getAPI().menus().registerMenus(menusToRegister);
+
+        lobby.getDebug().info("load", "Loaded " + inventories.size() + " custom inventories.");
+        lobby.getDebug().info("menus", "Loaded " + inventories.keySet() + " custom inventories.");
 
     }
 
@@ -75,7 +83,11 @@ public class CustomInventoryManager {
         for (String inv : invs) {
             File file = new File(folder, "menus/" + path + "/" + inv + ".yml");
             if (!file.exists() && !existsBefore) {
-                XG7Lobby.getInstance().saveResource("menus/" + path + "/" + inv + ".yml", false);
+                try {
+                    FileUtil.saveResource(XG7Lobby.getInstance(), "menus/" + path + "/" + inv + ".yml", false);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 invsFiles.add(file);
             }
         }

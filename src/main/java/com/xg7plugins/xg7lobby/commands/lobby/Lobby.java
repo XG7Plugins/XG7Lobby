@@ -1,7 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.lobby;
 
-import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.boot.Plugin;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
@@ -9,7 +10,6 @@ import com.xg7plugins.commands.setup.CommandSetup;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
@@ -32,16 +32,12 @@ import java.util.stream.Collectors;
         syntax = "/7llobby (id) (<id> <player>)",
         description = "Teleport to the lobby",
         permission = "xg7lobby.command.lobby.teleport",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.BLAZE_ROD
 )
 public class Lobby implements Command {
 
-    @Override
-    public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
-    }
-
-    @Override
+    @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         String id = null;
 
@@ -109,20 +105,19 @@ public class Lobby implements Command {
                 return;
             }
 
+            long cooldownToToggle = cooldownManager.getReamingTime("lobby-cooldown-before", finalTargetToTeleport);
+
             cooldownManager.addCooldown(finalTargetToTeleport,
                     new CooldownManager.CooldownTask(
                             "lobby-cooldown-before",
                             teleportConfig.getTimeInMilliseconds("before-teleport", 5000L),
-                            player -> Text.fromLang(
+                            player -> Text.sendTextFromLang(
                                     player,
                                     XG7Lobby.getInstance(),
-                                    "lobby.on-teleporting-message"
-                            ).thenAccept(text -> {
-                                long cooldownToToggle = cooldownManager.getReamingTime("lobby-cooldown-before", finalTargetToTeleport);
-                                text.replace("target", finalTargetToTeleport.getName())
-                                        .replace("time", String.valueOf(cooldownToToggle))
-                                        .send(player);
-                            }),
+                                    "lobby.on-teleporting-message",
+                                    Pair.of("target", finalTargetToTeleport.getName()),
+                                    Pair.of("time", String.valueOf(cooldownToToggle))
+                            ),
                             ((player, error) -> {
                                 if (error) {
                                     Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.teleport-cancelled");
@@ -157,8 +152,4 @@ public class Lobby implements Command {
         return Collections.emptyList();
     }
 
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.BLAZE_ROD, this);
-    }
 }

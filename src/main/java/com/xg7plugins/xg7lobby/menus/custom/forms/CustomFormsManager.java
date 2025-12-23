@@ -1,9 +1,11 @@
 package com.xg7plugins.xg7lobby.menus.custom.forms;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 
 import com.xg7plugins.modules.xg7geyserforms.XG7GeyserForms;
+import com.xg7plugins.utils.FileUtil;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.forms.custom.LobbyCustomForm;
 import com.xg7plugins.xg7lobby.menus.custom.forms.modal.LobbyModalForm;
@@ -11,18 +13,19 @@ import com.xg7plugins.xg7lobby.menus.custom.forms.simple.LobbySimpleForm;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class CustomFormsManager {
 
     private final HashMap<String, LobbyForm> forms = new HashMap<>();
 
-    public void loadForms() {
+    public void loadForms() throws IOException {
         XG7Lobby lobby = XG7Lobby.getInstance();
 
-        lobby.getDebug().loading("Loading custom forms...");
+        lobby.getDebug().info("load", "Loading custom forms...");
 
-        File folderFile = new File(lobby.getDataFolder(), "menus/forms");
+        File folderFile = new File(lobby.getJavaPlugin().getDataFolder(), "menus/forms");
 
         boolean existsBefore = folderFile.exists();
 
@@ -56,22 +59,22 @@ public class CustomFormsManager {
             if (lobbyForm == null) throw new IllegalArgumentException("Form malconfigured!");
 
             forms.put(id, lobbyForm);
-            XG7GeyserForms.getInstance().registerForm(lobbyForm.getForm());
+            XG7Plugins.getAPI().geyserForms().registerForm(lobbyForm.getForm());
         }
 
-        lobby.getDebug().loading("Loaded " + forms.size() + " custom forms.");
-        lobby.getDebug().info("Loaded " + forms.keySet() + " custom forms.");
+        lobby.getDebug().info("load", "Loaded " + forms.size() + " custom forms.");
+        lobby.getDebug().info("forms", "Loaded " + forms.keySet() + " custom forms.");
     }
 
 
-    private List<File> getDefaults(boolean existsBefore, List<String> forms, File folder) {
+    private List<File> getDefaults(boolean existsBefore, List<String> forms, File folder) throws IOException {
 
         List<File> formsFiles = new ArrayList<>(Arrays.asList(Objects.requireNonNull(folder.listFiles())));
 
         for (String form : forms) {
             File file = new File(folder, "menus/forms/" + form + ".yml");
             if (!file.exists() && !existsBefore) {
-                XG7Lobby.getInstance().saveResource("menus/forms/" + form + ".yml", false);
+                FileUtil.saveResource(XG7Lobby.getInstance(), "menus/forms/" + form + ".yml",false);
                 formsFiles.add(file);
             }
         }
@@ -114,12 +117,16 @@ public class CustomFormsManager {
     public void sendForm(String id, Player player) {
         if (!forms.containsKey(id)) return;
 
-        XG7GeyserForms.getInstance().sendForm(player, "lobby-custom-form:" + id);
+        XG7Plugins.getAPI().geyserForms().sendForm(player, "lobby-custom-form:" + id);
     }
 
     public void reloadForms() {
         forms.clear();
-        loadForms();
+        try {
+            loadForms();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

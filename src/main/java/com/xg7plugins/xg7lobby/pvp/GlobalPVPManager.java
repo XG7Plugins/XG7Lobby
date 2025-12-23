@@ -33,7 +33,7 @@ public class GlobalPVPManager {
 
     public void addPlayer(Player player) {
         if (!isEnabled()) return;
-        Debug.of(XG7Lobby.getInstance()).info("Adding " + player.getName() + " to lobby pvp");
+        Debug.of(XG7Lobby.getInstance()).info("pvp","Adding " + player.getName() + " to lobby pvp");
         this.playersInPVP.add(player.getUniqueId());
         getHandler(JoinPVPHandler.class).handle(player);
     }
@@ -41,7 +41,7 @@ public class GlobalPVPManager {
     public void removePlayer(Player player) {
         if (!playersInPVP.contains(player.getUniqueId())) return;
 
-        Debug.of(XG7Lobby.getInstance()).info("Removing " + player.getName() + " from lobby pvp");
+        Debug.of(XG7Lobby.getInstance()).info("pvp","Removing " + player.getName() + " from lobby pvp");
 
         this.playersInPVP.remove(player.getUniqueId());
         getHandler(LeavePVPHandler.class).handle(player);

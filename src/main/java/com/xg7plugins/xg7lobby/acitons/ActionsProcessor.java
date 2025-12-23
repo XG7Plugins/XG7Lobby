@@ -22,7 +22,7 @@ public class ActionsProcessor {
     public static void process(List<String> actions, Player player, List<Pair<String, String>> placeholders) {
         actions.forEach(action -> {
             try {
-                Debug.of(XG7Lobby.getInstance()).info("Executing actions for " + player.getName() + ". Actions: " + actions.toString());
+                Debug.of(XG7Lobby.getInstance()).info("actions", "Executing actions for " + player.getName() + ". Actions: " + actions);
                 getActionOf(action, placeholders).execute(player);
             } catch (Exception e) {
                 e.printStackTrace();

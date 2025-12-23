@@ -1,8 +1,8 @@
 package com.xg7plugins.xg7lobby.menus.default_menus;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.modules.xg7menus.Slot;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.ChangePageItem;
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.CloseInventoryItem;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;

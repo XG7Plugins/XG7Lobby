@@ -1,13 +1,15 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
 import com.xg7plugins.tasks.tasks.BukkitTask;
@@ -25,10 +27,8 @@ import java.util.List;
         permission = "xg7lobby.command.vanish",
         description = "Vanish command",
         syntax = "/vanish",
-        isPlayerOnly = true,
-        isInEnabledWorldOnly = true,
-        isAsync = true,
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.ENDER_EYE
 )
 public class VanishCommand implements Command {
 
@@ -37,7 +37,11 @@ public class VanishCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig(
+            isPlayerOnly = true,
+            isInEnabledWorldOnly = true,
+            isAsync = true
+    )
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(((Player) sender).getUniqueId());
 
@@ -69,8 +73,4 @@ public class VanishCommand implements Command {
         return Command.super.onTabComplete(sender, args);
     }
 
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.ENDER_EYE, this);
-    }
 }

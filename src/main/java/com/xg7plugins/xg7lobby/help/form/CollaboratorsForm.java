@@ -10,11 +10,17 @@ import org.geysermc.cumulus.response.result.InvalidFormResponseResult;
 import org.geysermc.cumulus.util.FormImage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CollaboratorsForm extends SimpleForm {
     public CollaboratorsForm() {
-        super("lobby-collaborators-help", "lang:[help.form.collaborators-title]", XG7Lobby.getInstance());
+        super(
+                "lobby-collaborators-help",
+                "lang:[help.form.collaborators-title]",
+                XG7Lobby.getInstance(),
+                Collections.emptyList()
+        );
     }
 
     @Override
@@ -31,7 +37,7 @@ public class CollaboratorsForm extends SimpleForm {
         buttons.add(ButtonComponent.of("§aBultzzXG7 &bBeta tester and video helper", FormImage.Type.URL, "https://crafatar.com/avatars/696581df-4256-4028-b55e-9452b4de40b6"));
         buttons.add(ButtonComponent.of("§aMintNonExistent (Gorrfy) &bBeta tester", FormImage.Type.URL, "https://crafatar.com/avatars/f66d01bf-0e1c-4800-9a50-060411bff0bd"));
         buttons.add(ButtonComponent.of("§aDanielXG7 &bBeta tester", FormImage.Type.URL, "https://crafatar.com/avatars/35e9eeda-84ce-497d-af08-7cf5d68a21c7"));
-        buttons.add(ButtonComponent.of(Text.fromLang(player, XG7Lobby.getInstance(), "help.form.click-to-back").join().getText()));
+        buttons.add(ButtonComponent.of(Text.fromLang(player, XG7Lobby.getInstance(), "help.form.click-to-back").getText()));
 
         return buttons;
     }

@@ -27,20 +27,22 @@ public class LobbyScoreManager {
 
 
     public void loadScores() {
-        Debug.of(XG7Lobby.getInstance()).info("Loading lobby scores");
+        Debug.of(XG7Lobby.getInstance()).info("load","Loading lobby scores");
 
         lobbyScoreLoaders.forEach((loader) -> {
             loader.getScoreConfig().load();
             if (!loader.getScoreConfig().isEnabled()) return;
 
-            Debug.of(XG7Lobby.getInstance()).info("Loading " + loader.getClass().getSimpleName());
+            Debug.of(XG7Lobby.getInstance()).info("scores","Loading " + loader.getClass().getSimpleName());
 
-            XG7Plugins.getAPI().taskManager().runTimerTask(XG7Plugins.getAPI().taskManager().getTimerTask(XG7Plugins.getInstance(), "score-task"));
+            XG7Plugins.getAPI().taskManager().runTimerTask(XG7Plugins.getAPI().taskManager().getTimerTask(XG7Plugins.getPluginID("score-task")));
             XG7Scores.loadScores(loader.load());
             Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Plugins.getAPI().scores()::addPlayer);
 
-            Debug.of(XG7Lobby.getInstance()).info("Loaded " + loader.getScoreID());
+            Debug.of(XG7Lobby.getInstance()).info("scores","Loaded " + loader.getScoreID());
         });
+
+        Debug.of(XG7Lobby.getInstance()).info("load","Finished loading lobby scores");
     }
 
     public void unloadScores() {

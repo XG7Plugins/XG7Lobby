@@ -1,10 +1,12 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.modules.xg7menus.item.InventoryItem;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.player.PlayerMenu;
@@ -78,7 +80,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
                 if (lobbyItem == null) continue;
 
-                updater.addItem(lobbyItem.getItem().slot(i));
+                updater.addItem(lobbyItem.getItem().toInventoryItem(i));
 
                 continue;
             }
@@ -111,8 +113,8 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
     }
 
     @Override
-    public List<Item> getItems(Player player) {
-        List<Item> invItems = new ArrayList<>();
+    public List<InventoryItem> getItems(Player player) {
+        List<InventoryItem> invItems = new ArrayList<>();
 
         for (int i = 0; i < 9; i++) {
             if (!grid.containsKey(i)) continue;
@@ -123,7 +125,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
             if (lobbyItem == null) continue;
 
-            invItems.add(lobbyItem.getItem().slot(i));
+            invItems.add(lobbyItem.getItem().toInventoryItem(i));
         }
 
         return invItems;
@@ -180,6 +182,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
             return;
         }
 
+        @SuppressWarnings("unchecked")
         List<String> actions = (List<String>) clickedItem
                 .getTag("lobby-item_actions", List.class)
                 .orElse(Collections.emptyList())

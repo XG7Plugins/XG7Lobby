@@ -1,15 +1,17 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.config.file.ConfigSection;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.environment.XG7LobbyEnvironment;
 import org.bukkit.command.CommandSender;
 
 @CommandSetup(
@@ -17,7 +19,8 @@ import org.bukkit.command.CommandSender;
         description = "Locks the chat",
         syntax = "/7llockchat",
         permission = "xg7lobby.command.lockchat",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.OAK_FENCE
 )
 public class LockChatCommand implements Command {
 
@@ -26,19 +29,16 @@ public class LockChatCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
-        XG7LobbyEnvironment xg7LobbyConfig = XG7Lobby.getInstance().getEnvironmentConfig();
+        ConfigSection data = ConfigFile.of("data/data.yml", XG7Lobby.getInstance()).root();
 
-        xg7LobbyConfig.setChatLocked(!xg7LobbyConfig.isChatLocked());
+        data.set("chat-locked", !data.get("chat-locked", false));
+        data.getFile().save();
 
-        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "chat.on-" + (xg7LobbyConfig.isChatLocked() ? "lock" : "unlock"));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "chat.on-" + (data.get("chat-locked", false) ? "lock" : "unlock"));
 
         return CommandState.FINE;
     }
 
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.OAK_FENCE, this);
-    }
 }

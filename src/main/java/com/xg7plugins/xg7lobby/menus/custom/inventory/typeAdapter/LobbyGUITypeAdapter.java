@@ -1,14 +1,13 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.config.typeadapter.ConfigTypeAdapter;
-import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.*;
 
@@ -34,7 +33,7 @@ public class LobbyGUITypeAdapter implements ConfigTypeAdapter<LobbyGUI> {
         HashMap<String, LobbyItem> items = new HashMap<>();
         HashMap<Integer, String> grid = new HashMap<>();
 
-        List<List<String>> slots = (List<List<String>>) config.getConfig().getList("grid");
+        List<List<String>> slots = config.get("grid");
 
         if (slots != null) {
             int index = 0;

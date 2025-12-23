@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.boot.setup.Collaborator;
 import com.xg7plugins.boot.setup.PluginSetup;
@@ -10,14 +11,16 @@ import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.data.database.dao.Repository;
 import com.xg7plugins.data.database.entity.Entity;
+import com.xg7plugins.events.Listener;
+import com.xg7plugins.events.PacketListener;
 import com.xg7plugins.help.HelpMessenger;
 import com.xg7plugins.help.chat.HelpChat;
 import com.xg7plugins.help.form.HelpForm;
 import com.xg7plugins.help.menu.HelpGUI;
-import com.xg7plugins.managers.ManagerRegistry;
-import com.xg7plugins.modules.xg7menus.XG7Menus;
+import com.xg7plugins.modules.xg7geyserforms.forms.Form;
+import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.tasks.tasks.TimerTask;
-import com.xg7plugins.utils.Metrics;
+import com.xg7plugins.utils.PluginKey;
 import com.xg7plugins.xg7lobby.commands.custom.CustomCommandManager;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
@@ -34,8 +37,7 @@ import com.xg7plugins.xg7lobby.commands.moderation.mute.MuteCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle.*;
 import com.xg7plugins.xg7lobby.commands.utils.*;
-import com.xg7plugins.xg7lobby.environment.XG7LobbyEnvironment;
-import com.xg7plugins.xg7lobby.environment.XG7LobbyPlaceholderExpansion;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyPlaceholderExpansion;
 import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
 import com.xg7plugins.xg7lobby.events.chat.AntiSpamListener;
@@ -73,6 +75,7 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.*;
@@ -80,6 +83,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -87,7 +91,7 @@ import java.util.List;
 
 @Getter
 @PluginSetup(
-    prefix = "§1X§9G§37§bLobby§r",
+        prefix = "§1X§9G§37§bLobby§r",
         onEnableDraw = {
                 "§1 __   §9_______ §3______ §b_           _     _           ",
                 "§1 \\ \\ §9/ / ____§3|____  §b| |         | |   | |          ",
@@ -101,7 +105,7 @@ import java.util.List;
         },
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
-        configs = {"ads", "custom_commands", "events", "pvp"},
+        configs = {"ads", "custom_commands", "events", "pvp", "data/data"},
         reloadCauses = {"scores", "menus", "forms"},
         collaborators = {
                 @Collaborator(uuid = "45766b7f-9789-40e1-bd0b-46fa0d032bde", name = "&aDaviXG7", role = "&bCreator of all plugin"),
@@ -109,8 +113,8 @@ import java.util.List;
                 @Collaborator(uuid = "696581df-4256-4028-b55e-9452b4de40b6", name = "&aBultzzXG7", role = "&bBeta tester"),
                 @Collaborator(uuid = "f66d01bf-0e1c-4800-9a50-060411bff0bd", name = "&aMintNonExistent (Gorrfy)", role = "&bBeta tester"),
                 @Collaborator(uuid = "35e9eeda-84ce-497d-af08-7cf5d68a21c7", name = "&aDanielXG7", role = "&bBeta tester")
-        }
-
+        },
+        metricsId = 24625
 )
 public final class XG7Lobby extends Plugin {
 
@@ -121,8 +125,6 @@ public final class XG7Lobby extends Plugin {
     private GlobalPVPManager globalPVPManager;
     private CustomInventoryManager customInventoryManager;
     private CustomFormsManager customFormsManager;
-
-    private HelpMessenger helpMessenger;
 
     /**
      * Constructor for the Plugin class.
@@ -139,9 +141,6 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public void onEnable() {
-        debug.info("load", "Loading metrics...");
-
-        Metrics.getMetrics(javaPlugin, 24625);
 
         debug.info("load", "Loading managers...");
 
@@ -162,15 +161,7 @@ public final class XG7Lobby extends Plugin {
 
         debug.info("load", "Loading scores...");
 
-        loadScores();
-
-        debug.info("load", "Loading menus...");
-
-        loadMenus();
-
-        debug.info("load", "Loading forms...");
-
-        loadGeyserForms();
+        lobbyScoreManager.loadScores();
 
         debug.info("load", "Loading custom commands...");
         this.customCommandManager = new CustomCommandManager();
@@ -184,8 +175,6 @@ public final class XG7Lobby extends Plugin {
 
         if (cause.equals("scores")) {
             debug.info("load", "Reloading scores...");
-
-            LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
             lobbyScoreManager.reloadScores();
             debug.info("load", "Scores reloaded.");
         }
@@ -222,19 +211,15 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public void onDisable() {
-
-        super.onDisable();
-
-        LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
         lobbyScoreManager.unloadScores();
     }
 
     public static XG7Lobby getInstance() {
-        return getPlugin(XG7Lobby.class);
+        return XG7LobbyLoader.getPluginInstance();
     }
 
     @Override
-    public Class<? extends Entity<?,?>>[] loadEntities() {
+    public Class<? extends Entity<?,?>>[] loadDBEntities() {
         return new Class[]{LobbyPlayer.class, LobbyLocation.class};
     }
 
@@ -251,7 +236,13 @@ public final class XG7Lobby extends Plugin {
     @Override
     public List<Listener> loadEvents() {
 
-        List<Listener> listeners = new ArrayList<>(Arrays.asList(new PVPCommandListener(), new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(), new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(), new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(), new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(), new PVPBlockCommandsListener(), new CommandProcessListener(), new NLoginListener()));
+        List<Listener> listeners = new ArrayList<>(Arrays.asList(new PVPCommandListener(),
+                new LoginAndLogoutEvent(), new DefaultWorldEvents(), new DefaultPlayerEvents(),
+                new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(),
+                new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(),
+                new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(),
+                new PVPBlockCommandsListener(), new CommandProcessListener(), new NLoginListener()
+        ));
 
         GlobalPVPManager pvpManager = XG7LobbyAPI.globalPVPManager();
 
@@ -285,8 +276,7 @@ public final class XG7Lobby extends Plugin {
     }
 
     @Override
-    public void loadHelp() {
-
+    public HelpMessenger loadHelp() {
         HelpGUI helpCommandGUI = new HelpGUI(this, new XG7LobbyHelpGUI());
 
         helpCommandGUI.registerMenu("actions", new ActionsMenu());
@@ -304,8 +294,7 @@ public final class XG7Lobby extends Plugin {
         helpInChat.registerPage(new CustomCommandPage());
         helpInChat.registerPage(new AboutPage());
 
-        this.helpMessenger = new HelpMessenger(this, helpCommandGUI, helpCommandForm, helpInChat);
-
+        return new HelpMessenger(this, helpCommandGUI, helpCommandForm, helpInChat);
     }
 
     @Override
@@ -313,13 +302,16 @@ public final class XG7Lobby extends Plugin {
         return new XG7LobbyPlaceholderExpansion();
     }
 
-    public void loadMenus() {
+    @Override
+    public List<BasicMenu> loadMenus() {
 
-        XG7Menus menus = XG7Plugins.getAPI().menus();
+        List<BasicMenu> menus = new ArrayList<>();
+        menus.add(new LobbiesMenu());
+        menus.add(new InfractionsMenu());
 
-        menus.registerMenus(new LobbiesMenu(), new InfractionsMenu());
-
-        if (XG7LobbyAPI.customInventoryManager() == null) return;
+        if (XG7LobbyAPI.customInventoryManager() == null) {
+            return menus;
+        }
 
         ConfigManager configManager = XG7Plugins.getAPI().configManager(this);
 
@@ -329,12 +321,13 @@ public final class XG7Lobby extends Plugin {
 
         XG7LobbyAPI.customInventoryManager().loadInventories();
 
+        return menus;
     }
 
-    public void loadGeyserForms() {
+    @Override
+    public List<Form<?,?>> loadForms() {
 
-        if (!XG7Plugins.getAPI().isGeyserFormsEnabled()) return;
-        if (XG7LobbyAPI.customFormsManager() == null) return;
+        if (XG7LobbyAPI.customFormsManager() == null) return Collections.emptyList();
 
         ConfigManager configManager = XG7Plugins.getAPI().configManager(this);
 
@@ -342,13 +335,16 @@ public final class XG7Lobby extends Plugin {
         configManager.registerAdapter(new LobbyModalFormAdapter());
         configManager.registerAdapter(new LobbySimpleFormAdapter());
 
-        XG7LobbyAPI.customFormsManager().loadForms();
+        try {
+            XG7LobbyAPI.customFormsManager().loadForms();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        return Collections.emptyList();
     }
 
-    public void loadScores() {
-        LobbyScoreManager lobbyScoreManager = ManagerRegistry.get(this,  LobbyScoreManager.class);
-        lobbyScoreManager.loadScores();
-
+    public static PluginKey keyOf(String id) {
+        return new PluginKey(XG7Lobby.getInstance(), id);
     }
 }

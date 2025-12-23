@@ -2,13 +2,12 @@ package com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter;
 
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.config.typeadapter.ConfigTypeAdapter;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.*;
 

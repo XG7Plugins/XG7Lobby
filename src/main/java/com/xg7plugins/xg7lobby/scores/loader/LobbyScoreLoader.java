@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.scores.loader;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.modules.xg7scores.Score;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.scores.ScoreConfig;

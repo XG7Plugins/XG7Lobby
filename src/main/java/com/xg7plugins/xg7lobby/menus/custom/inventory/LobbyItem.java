@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory;
 
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
+import com.xg7plugins.utils.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

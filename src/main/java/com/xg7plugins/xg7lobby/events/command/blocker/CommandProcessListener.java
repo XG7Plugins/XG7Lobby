@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.events.command.blocker;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.events.bukkitevents.Listener;
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.entity.Player;

@@ -1,5 +1,7 @@
 package com.xg7plugins.xg7lobby.tasks;
 
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.server.MinecraftServerVersion;

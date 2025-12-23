@@ -1,10 +1,10 @@
 package com.xg7plugins.xg7lobby.events.air;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.events.bukkitevents.Listener;
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
-import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;

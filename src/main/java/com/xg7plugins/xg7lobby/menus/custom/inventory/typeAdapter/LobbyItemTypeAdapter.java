@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.menus.custom.inventory.typeAdapter;
 
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.config.typeadapter.ConfigTypeAdapter;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
@@ -42,10 +42,8 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
 
                 material += settings.getSettings(config.child("material-settings"));
 
-                
-
             } catch (Exception ig) {
-                XG7Lobby.getInstance().getDebug().warn("Invalid material settings type: " + type + ". Using default material settings");
+                XG7Lobby.getInstance().getDebug().warn("menus", "Invalid material settings type: " + type + ". Using default material settings");
             }
         }
 
@@ -68,11 +66,6 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
         String conditionLine = config.get("conditional");
 
         String otherItemPath = config.get("if-false");
-
-        
-
-        
-        
 
         return new LobbyItem(item, id, conditionLine, otherItemPath, allowedActions, deniedActions);
     }

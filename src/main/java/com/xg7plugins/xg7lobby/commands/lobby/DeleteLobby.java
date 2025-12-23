@@ -1,12 +1,12 @@
 package com.xg7plugins.xg7lobby.commands.lobby;
 
-import com.xg7plugins.libs.xseries.XMaterial;
-import com.xg7plugins.boot.Plugin;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -22,16 +22,12 @@ import java.util.stream.Collectors;
         syntax = "/7ldeletelobby <id>",
         description = "Deletes a lobby",
         permission = "xg7lobby.command.lobby.delete",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.LAVA_BUCKET
 )
 public class DeleteLobby implements Command {
 
-    @Override
-    public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
-    }
-
-    @Override
+    @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         if (args.len() < 1) {
             return CommandState.syntaxError(getCommandSetup().syntax());
@@ -60,10 +56,5 @@ public class DeleteLobby implements Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
         return XG7Plugins.getAPI().database().getCachedEntities().asMap().join().values().stream().filter(ob -> ob instanceof LobbyLocation).map(e -> ((LobbyLocation) e).getID()).collect(Collectors.toList());
-    }
-
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.LAVA_BUCKET, this);
     }
 }

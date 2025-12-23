@@ -1,18 +1,20 @@
 package com.xg7plugins.xg7lobby.help.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.XG7Plugins;
 
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.modules.xg7menus.Slot;
+import com.xg7plugins.modules.xg7menus.item.InventoryItem;
+import com.xg7plugins.utils.item.Item;
 
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.CloseInventoryItem;
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.OpenBookClickableItem;
-import com.xg7plugins.modules.xg7menus.item.impl.SkullItem;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.utils.Pair;
+import com.xg7plugins.utils.item.impl.SkullItem;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import org.bukkit.entity.Player;
@@ -36,7 +38,7 @@ public class XG7LobbyHelpGUI extends Menu {
     }
 
     @Override
-    public List<Item> getItems(Player player) {
+    public List<InventoryItem> getItems(Player player) {
 
         List<String> profileItemLore = new ArrayList<>();
 
@@ -48,63 +50,57 @@ public class XG7LobbyHelpGUI extends Menu {
         profileItemLore.add("lang:[help.menu.profile-item.lore.deaths]");
         profileItemLore.add("lang:[help.menu.profile-item.lore.kdr]");
 
-        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
+        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).getSecond().getLangConfiguration();
 
         return Arrays.asList(
                 SkullItem.newSkull().renderPlayerSkull(true)
                         .name("lang:[help.menu.profile-item.name]")
                         .lore(profileItemLore)
-                        .slot(13),
+                        .toInventoryItem(13),
 
                 Item.from(XMaterial.matchXMaterial("COMMAND_BLOCK").orElse(XMaterial.ENDER_PEARL))
                         .name("lang:[help.menu.commands-item.name]")
                         .lore("lang:[help.menu.commands-item.lore]")
-                        .slot(28)
-                        .clickable(actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("commands").open(player)),
+                        .toClickableInventoryItem(28,actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("commands").open(player)),
 
                 Item.from(XMaterial.COMPASS)
                         .name("lang:[help.menu.set-lobby-item.name]")
                         .lore("lang:[help.menu.set-lobby-item.lore.current-location]", "lang:[help.menu.set-lobby-item.lore.click]")
                         .setBuildPlaceholders(Pair.of("location", XG7LobbyAPI.lobbyManager().getRandomLobbyLocation().toString()))
-                        .slot(29)
-                        .clickable(actionEvent -> { player.performCommand("xg7lobby setlobby"); BasicMenu.refresh(actionEvent.getHolder()); }),
+                        .toClickableInventoryItem(29, actionEvent -> { player.performCommand("xg7lobby setlobby"); BasicMenu.refresh(actionEvent.getHolder()); }),
 
                 Item.from(XMaterial.OAK_SIGN)
                         .name("lang:[help.menu.actions-item.name]")
                         .lore("lang:[help.menu.actions-item.lore]")
-                        .slot(30)
-                        .clickable(actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("actions").open(player)),
+                        .toClickableInventoryItem(30, actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("actions").open(player)),
 
                 OpenBookClickableItem.get(
+                        Slot.fromSlot(32),
                         Item.from(XMaterial.BOOK).name("lang:[help.menu.menus-guide-item.name]").lore("lang:[help.menu.menus-guide-item.lore]"),
                         player,
                         lang.get("help.menus-guide")
-                ).slot(32),
+                ),
+
 
                 OpenBookClickableItem.get(
-                        Item.from(XMaterial.BOOK).name("lang:[help.menu.menus-guide-item.name]").lore("lang:[help.menu.menus-guide-item.lore]"),
-                        player,
-                        lang.get("help.menus-guide")
-                ).slot(33),
-
-                OpenBookClickableItem.get(
+                        Slot.fromSlot(33),
                         Item.from(XMaterial.WRITABLE_BOOK).name("lang:[help.menu.about-item.name]").lore("lang:[help.menu.about-item.lore]"),
                         player,
                         lang.get("help.about")
-                ).slot(32),
+                ),
 
                 OpenBookClickableItem.get(
+                        Slot.fromSlot(34),
                         Item.from(XMaterial.BLAZE_ROD).name("lang:[help.menu.custom-commands-guide-item.name]").lore("lang:[help.menu.custom-commands-guide-item.lore]"),
                         player,
                         lang.get("help.custom-commands-guide")
-                ).slot(34),
+                ),
 
-                CloseInventoryItem.get().slot(45),
+                CloseInventoryItem.get(Slot.fromSlot(45)),
 
                 Item.from(XMaterial.PAPER)
                         .name("lang:[help.menu.collaborators-item.name]")
-                        .slot(53)
-                        .clickable(actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("collaborators").open(player))
+                        .toClickableInventoryItem(53, actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("collaborators").open(player))
         );
     }
 }

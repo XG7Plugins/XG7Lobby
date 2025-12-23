@@ -1,16 +1,15 @@
 package com.xg7plugins.xg7lobby.commands.utils;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.boot.Plugin;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionType;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
-import org.apache.logging.log4j.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,8 +23,8 @@ import java.util.stream.Collectors;
         permission = "xg7lobby.command.execute",
         description = "Execute an action",
         syntax = "/7lexecute \"[ACTIONNAME] [args...]\"",
-        isPlayerOnly = true,
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.CRAFTING_TABLE
 )
 public class ExecuteActionCommand implements Command {
 
@@ -34,18 +33,14 @@ public class ExecuteActionCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig(isPlayerOnly = true)
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() == 0) {
             return CommandState.syntaxError(getCommandSetup().syntax());
         }
 
-        String actionArgs = args.get(0, String.class) + " ";
-
-        if (args.len() > 1) {
-            actionArgs = Strings.join(Arrays.asList(args.getArgs()), ' ');
-        }
+        String actionArgs = args.toString();
 
         ActionsProcessor.process(Collections.singletonList(actionArgs), (Player) sender);
 
@@ -57,8 +52,4 @@ public class ExecuteActionCommand implements Command {
         return args.len() == 1 ? Arrays.stream(ActionType.values()).map(type -> "[" + type.name() + "] ").collect(Collectors.toList()) : Collections.emptyList();
     }
 
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.matchXMaterial("COMMAND_BLOCK").orElse(XMaterial.CRAFTING_TABLE), this);
-    }
 }

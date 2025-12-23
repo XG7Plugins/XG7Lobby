@@ -9,6 +9,7 @@ import com.xg7plugins.xg7lobby.menus.custom.forms.LobbyForm;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,7 @@ public class LobbyModalForm extends ModalForm implements LobbyForm {
     private final List<String> secondButtonActions;
 
     public LobbyModalForm(String id, String title, String content, String button1, String button2, List<String> errorActions, List<String> firstButtonActions, List<String> secondButtonActions) {
-        super(XG7Plugins.getInstance(), "lobby-custom-form:" + id, title, content, button1, button2);
+        super(XG7Plugins.getInstance(), "lobby-custom-form:" + id, title, content, button1, button2, Collections.emptyList());
         this.firstButtonActions = firstButtonActions;
         this.secondButtonActions = secondButtonActions;
         this.errorActions = errorActions;

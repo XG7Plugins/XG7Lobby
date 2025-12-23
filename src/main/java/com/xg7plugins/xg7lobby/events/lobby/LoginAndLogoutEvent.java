@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.events.lobby;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
@@ -15,7 +16,7 @@ import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
-import com.xg7plugins.xg7lobby.environment.LobbyApplier;
+import com.xg7plugins.xg7lobby.events.LobbyApplier;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -128,7 +129,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
                 if (!inEnabledWorld && quitConfig.get("send-quit-message-only-in-lobby", false))
                     return;
                 Text.sendTextFromLang(p, XG7Lobby.getInstance(), "messages.on-quit",
-                        Pair.of("target", player.getName())).join();
+                        Pair.of("target", player.getName()));
             });
         }
 

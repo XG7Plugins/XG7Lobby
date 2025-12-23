@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.scores.loader;
 
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.modules.xg7scores.Score;
 import com.xg7plugins.modules.xg7scores.builder.BossBarBuilder;
@@ -21,7 +22,7 @@ public class BossBarLoader extends LobbyScoreLoader {
     public Score load() {
         if (!scoreConfig.isEnabled()) return null;
 
-        if (MinecraftServerVersion.isNewerThan(8)) {
+        if (MinecraftServerVersion.isNewerThan(ServerVersion.V_1_8_8)) {
             boolean isPublic = scoreConfig.get("public", Boolean.class).orElse(false);
 
             BarColor color = scoreConfig.get("color", BarColor.class).orElse(BarColor.WHITE);

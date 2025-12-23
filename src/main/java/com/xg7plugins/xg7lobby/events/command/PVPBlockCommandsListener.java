@@ -1,9 +1,8 @@
 package com.xg7plugins.xg7lobby.events.command;
 
-
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.events.bukkitevents.Listener;
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -27,7 +26,7 @@ public class PVPBlockCommandsListener implements Listener {
 
         if (config.getList("blocked-commands", String.class).orElse(Collections.emptyList()).contains(event.getMessage().split(" ")[0])) {
             event.setCancelled(true);
-            Text.fromLang(event.getPlayer(), XG7Lobby.getInstance(), "pvp.pvp-command").thenAccept(text -> text.send(event.getPlayer()));
+            Text.sendTextFromLang(event.getPlayer(), XG7Lobby.getInstance(), "pvp.pvp-command");
         }
     }
 }

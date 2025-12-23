@@ -1,5 +1,7 @@
 package com.xg7plugins.xg7lobby.events.lobby;
 
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -17,7 +19,7 @@ import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
-import com.xg7plugins.xg7lobby.environment.LobbyApplier;
+import com.xg7plugins.xg7lobby.events.LobbyApplier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -229,7 +231,7 @@ public class DefaultPlayerEvents implements Listener {
 
         User user = PacketEvents.getAPI().getPlayerManager().getUser(event.getPlayer());
 
-        int layer = user.getClientVersion().isNewerThan(ClientVersion.V_1_17) && MinecraftServerVersion.isNewerOrEqual(17) ? -66 : -2;
+        int layer = user.getClientVersion().isNewerThan(ClientVersion.V_1_17) && MinecraftServerVersion.isNewerOrEqual(ServerVersion.V_1_17_1) ? -66 : -2;
 
         if (event.getPlayer().getLocation().getY() < layer) {
             LobbyLocation location = XG7LobbyAPI.requestRandomLobbyLocation().join();

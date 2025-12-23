@@ -1,6 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.custom;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.commands.utils.CommandState;
+import com.xg7plugins.utils.Debug;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.AllArgsConstructor;
 import org.bukkit.command.Command;
@@ -41,6 +43,7 @@ public class CustomCommandExecutor implements CommandExecutor {
             return true;
         }
 
+        Debug.of(XG7Lobby.getInstance()).info("custom-commands", "Executing custom command " + command.getName() + " for player " + player.getName());
         customCommand.execute(player);
 
         return true;

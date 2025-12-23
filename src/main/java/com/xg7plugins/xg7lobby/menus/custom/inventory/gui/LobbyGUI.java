@@ -1,12 +1,13 @@
 package com.xg7plugins.xg7lobby.menus.custom.inventory.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.config.file.ConfigFile;
-import com.xg7plugins.libs.xseries.XMaterial;
 import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.editor.InventoryShaper;
 import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
 import com.xg7plugins.modules.xg7menus.events.ActionEvent;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.modules.xg7menus.item.InventoryItem;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
@@ -93,7 +94,7 @@ public class LobbyGUI extends Menu implements LobbyInventory {
 
                 if (lobbyItem == null) continue;
 
-                updater.addItem(lobbyItem.getItem().slot(i));
+                updater.addItem(lobbyItem.getItem().toInventoryItem(i));
 
                 continue;
             }
@@ -129,7 +130,7 @@ public class LobbyGUI extends Menu implements LobbyInventory {
     }
 
     @Override
-    public List<Item> getItems(Player player) {
+    public List<InventoryItem> getItems(Player player) {
         InventoryShaper editor = new InventoryShaper(getMenuConfigs());
 
         Item fillItem = Item.from(this.fillItem);
@@ -176,6 +177,7 @@ public class LobbyGUI extends Menu implements LobbyInventory {
 
         event.setCancelled(shouldCancelLobby);
 
+        @SuppressWarnings("unchecked")
         List<String> actions = (List<String>) clickedItem.getTag("lobby-item_actions", List.class).orElse(Collections.emptyList()).stream().map(action -> {
             if (action.toString().startsWith("[SWAP] ")) {
                 return "[SWAP] " + getMenuConfigs().getId() + ", " + event.getClickedSlot().get() + ", " + action.toString().replace("[SWAP] ", "");

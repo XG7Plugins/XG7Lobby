@@ -1,16 +1,17 @@
 package com.xg7plugins.xg7lobby.commands.lobby;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.ShortUUID;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.utils.uuid.ShortUUID;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
@@ -27,17 +28,12 @@ import java.util.concurrent.ExecutionException;
         description = "Sets a new lobby location",
         syntax = "/7lsetlobby (id) (On console: <id> ([world,x,y,z] or [world,x,y,z,yaw,pitch]))",
         permission = "xg7lobby.command.lobby.set",
-        isInEnabledWorldOnly = true,
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.BLAZE_ROD
 )
 public class SetLobby implements Command {
 
-    @Override
-    public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
-    }
-
-    @Override
+    @CommandConfig(isInEnabledWorldOnly = true)
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         String id = null;
@@ -119,10 +115,5 @@ public class SetLobby implements Command {
             default:
                 return Collections.emptyList();
         }
-    }
-
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.BLAZE_ROD, this);
     }
 }

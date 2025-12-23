@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.events.lobby;
 
 import com.xg7plugins.config.
 utils.ConfigCheck;
-import com.xg7plugins.events.bukkitevents.Listener;
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.block.BlockBurnEvent;

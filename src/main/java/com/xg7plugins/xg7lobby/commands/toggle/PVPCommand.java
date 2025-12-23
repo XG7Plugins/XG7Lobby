@@ -1,8 +1,10 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -11,7 +13,7 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.cooldowns.CooldownManager;
 
 import com.xg7plugins.config.utils.ConfigCheck;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
@@ -25,13 +27,12 @@ import org.bukkit.entity.Player;
         permission = "xg7lobby.pvp",
         syntax = "/7lpvp",
         description = "Enable or disable PVP",
-        isInEnabledWorldOnly = true,
-        isPlayerOnly = true,
         pluginClass = XG7Lobby.class,
         isEnabled = @ConfigCheck(
                 configName = "pvp",
                 path = "enabled"
-        )
+        ),
+        iconMaterial = XMaterial.DIAMOND_SWORD
 )
 public class PVPCommand implements Command {
 
@@ -40,7 +41,7 @@ public class PVPCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig(isInEnabledWorldOnly = true, isPlayerOnly = true)
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         Player player = (Player) sender;
 
@@ -67,7 +68,7 @@ public class PVPCommand implements Command {
                 },
                 (p, b) -> {
                     if (b) {
-                        Text.fromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
+                        Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled");
                         return;
                     }
                     XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
@@ -76,10 +77,5 @@ public class PVPCommand implements Command {
         );
 
         return CommandState.FINE;
-    }
-
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.DIAMOND_SWORD, this);
     }
 }

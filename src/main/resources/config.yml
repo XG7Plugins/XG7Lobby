@@ -81,11 +81,15 @@ debug:
   database: false
   load: false
   commands: false
-  http-requests: false
-  tasks: false
   config: false
+
+  custom-commands: false
   menus: false
+  forms: false
+  lobby-locations: false
   scores: false
+  actions: false
+  pvp: false
 
 ##################################################################
 #                              SQL                               #
@@ -179,6 +183,19 @@ cancel-death-by-void: true
 
 # Prevent teleportation through portals
 cancel-portal-teleport: true
+
+on-world-leave:
+  reset-hearts: true
+  hearts: 10
+  heal: true
+
+  reset-flight: true
+  flying: false
+
+  reset-food: true
+  food-level: 20
+
+  remove-potion-effects: true
 
 ##################################################################
 #                          WORLD CONFIGS                         #
@@ -401,4 +418,4 @@ motd:
 
 
 #DO NOT CHANGE THIS!
-config-version: 5
+config-version: 6

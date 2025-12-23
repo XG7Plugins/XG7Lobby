@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.pvp.handlers;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
@@ -10,7 +11,7 @@ import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerJoinPVPEvent;
-import com.xg7plugins.xg7lobby.environment.LobbyApplier;
+import com.xg7plugins.xg7lobby.events.LobbyApplier;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;

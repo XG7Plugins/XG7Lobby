@@ -1,14 +1,15 @@
 package com.xg7plugins.xg7lobby.acitons;
 
+import com.cryptomorin.xseries.XEntityType;
+import com.cryptomorin.xseries.XPotion;
+import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.particles.XParticle;
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.cooldowns.CooldownManager;
-import com.xg7plugins.libs.xseries.XEntityType;
-import com.xg7plugins.libs.xseries.XPotion;
-import com.xg7plugins.libs.xseries.XSound;
-import com.xg7plugins.libs.xseries.particles.XParticle;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.MenuHolder;
@@ -18,6 +19,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.Parser;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -52,28 +54,28 @@ public enum ActionType {
             "Sends a message to a player",
             "WRITABLE_BOOK",
             false,
-            (player, args) -> Text.detectLangsAndSend(player, XG7Lobby.getInstance(), args[0]).join()
+            (player, args) -> Text.detectLangsAndSend(player, XG7Lobby.getInstance(), args[0])
     ),
     BROADCAST(
             "[BROADCAST] message...",
             "Broadcasts a message to all players",
             "PAPER",
             false,
-            (player, args) -> Bukkit.broadcastMessage(Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).join().getText())
+            (player, args) -> Bukkit.broadcastMessage(Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).getText())
     ),
     PLAYER_COMMAND(
             "[PLAYER_COMMAND] command...",
             "Makes a player execute a command",
             "COMMAND_BLOCK",
             false,
-            (player, args) -> player.performCommand(Text.detectLangs(player, XG7Lobby.getInstance(), args[0]).join().getPlainText())
+            (player, args) -> player.performCommand(Text.detectLangs(player, XG7Lobby.getInstance(), args[0]).getPlainText())
     ),
     CONSOLE_COMMAND(
             "[CONSOLE_COMMAND] command...",
             "Executes a command from console",
             "COMMAND_BLOCK",
             false,
-            (player, args) -> player.getServer().dispatchCommand(player.getServer().getConsoleSender(), Text.detectLangs(player, XG7Lobby.getInstance(), args[0]).join().getPlainText())
+            (player, args) -> player.getServer().dispatchCommand(player.getServer().getConsoleSender(), Text.detectLangs(player, XG7Lobby.getInstance(), args[0]).getPlainText())
     ),
     TITLE(
             "[TITLE] title...",
@@ -82,15 +84,15 @@ public enum ActionType {
             true,
             (player, args) -> {
                 if (args.length == 1) {
-                    player.sendTitle(Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).join().getText(), "");
+                    player.sendTitle(Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).getText(), "");
                     return;
                 }
                 if (args.length == 2) {
-                    player.sendTitle(Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).join().getText(), Text.detectLangs(player, XG7Lobby.getInstance(),args[1]).join().getText());
+                    player.sendTitle(Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).getText(), Text.detectLangs(player, XG7Lobby.getInstance(),args[1]).getText());
                     return;
                 }
                 if (args.length == 5) {
-                    player.sendTitle(args[0].equals("_") ? "" : Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).join().getText(), args[1].equals("_") ? "" : Text.detectLangs(player, XG7Lobby.getInstance(),args[1]).join().getText(), Parser.INTEGER.convert(args[2]), Parser.INTEGER.convert(args[3]), Parser.INTEGER.convert(args[4]));
+                    player.sendTitle(args[0].equals("_") ? "" : Text.detectLangs(player, XG7Lobby.getInstance(),args[0]).getText(), args[1].equals("_") ? "" : Text.detectLangs(player, XG7Lobby.getInstance(),args[1]).getText(), Parser.INTEGER.convert(args[2]), Parser.INTEGER.convert(args[3]), Parser.INTEGER.convert(args[4]));
                     return;
                 }
 
@@ -350,7 +352,7 @@ public enum ActionType {
                         player.getInventory().setBoots(item.getItemFor(player, XG7Lobby.getInstance()));
                         break;
                     case OFFHAND:
-                        if (MinecraftServerVersion.isOlderThan(9)) {
+                        if (MinecraftServerVersion.isOlderThan(ServerVersion.V_1_9)) {
                             Debug.of(XG7Lobby.getInstance()).severe("The offhand slot is only available in 1.9 or higher.");
                             return;
                         }
@@ -595,7 +597,7 @@ public enum ActionType {
                                 },
                                 (p, b) -> {
                                     if (b) {
-                                        Text.fromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled").thenAccept(text -> text.send(player));
+                                        Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled");
                                         return;
                                     }
                                     XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);

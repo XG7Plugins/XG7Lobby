@@ -15,6 +15,7 @@ import org.geysermc.cumulus.response.CustomFormResponse;
 import org.geysermc.cumulus.response.result.InvalidFormResponseResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class LobbyCustomForm extends CustomForm implements LobbyForm {
     private final List<LobbyFormComponent> components;
 
     public LobbyCustomForm(String id, String title, List<String> closeActions, List<String> errorActions, List<String> onSubmitActions, List<LobbyFormComponent> components) {
-        super("lobby-custom-form:" + id, title, XG7Lobby.getInstance());
+        super("lobby-custom-form:" + id, title, XG7Lobby.getInstance(), Collections.emptyList());
         this.closeActions = closeActions;
         this.errorActions = errorActions;
         this.onSubmitActions = onSubmitActions;

@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.events;
 
-import com.xg7plugins.events.bukkitevents.Listener;
+import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.World;

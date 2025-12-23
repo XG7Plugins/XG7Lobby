@@ -1,6 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.moderation.mute;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -9,7 +11,6 @@ import com.xg7plugins.commands.setup.CommandSetup;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
@@ -18,7 +19,6 @@ import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
-import org.apache.logging.log4j.util.Strings;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
@@ -33,7 +33,7 @@ import java.util.List;
         syntax = "/7lmute <player> <time> (reason)",
         permission = "xg7lobby.moderation.mute",
         pluginClass = XG7Lobby.class,
-        isAsync = true
+        iconMaterial = XMaterial.IRON_DOOR
 )
 public class MuteCommand implements Command {
 
@@ -42,7 +42,7 @@ public class MuteCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig(isAsync = true)
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 2) {
@@ -55,7 +55,7 @@ public class MuteCommand implements Command {
 
         String reason = "Muted by an admin";
 
-        if (args.len() > 2) reason = Strings.join(Arrays.asList(Arrays.copyOfRange(args.getArgs(), 2, args.len())), ' ');
+        if (args.len() > 2) reason = args.toString(2);
 
         ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
@@ -67,7 +67,7 @@ public class MuteCommand implements Command {
         }
 
         if (player.getPlayer().hasPermission("xg7lobby.moderation.mute") && !moderationConfig.get("mute-admin", false)) {
-            Text.fromLang(sender, XG7Lobby.getInstance(), "commands.mute.mute-admin").thenAccept(text -> text.send(sender));
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.mute-admin");
             return CommandState.ERROR;
         }
 
@@ -98,10 +98,5 @@ public class MuteCommand implements Command {
             default:
                 return Collections.emptyList();
         }
-    }
-
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.IRON_DOOR, this);
     }
 }

@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.data.location;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
@@ -21,17 +22,17 @@ public class LobbyLocationManager {
     }
 
     public CompletableFuture<Boolean> saveLobbyLocation(LobbyLocation lobbyLocation) throws ExecutionException, InterruptedException {
-        Debug.of(XG7Lobby.getInstance()).info("Saving LobbyLocation: " + lobbyLocation);
+        Debug.of(XG7Lobby.getInstance()).info("lobby-locations", "Saving LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.addAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> deleteLobbyLocation(LobbyLocation lobbyLocation) {
-        Debug.of(XG7Lobby.getInstance()).info("Deleting LobbyLocation: " + lobbyLocation);
+        Debug.of(XG7Lobby.getInstance()).info("lobby-locations", "Deleting LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.deleteAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> updateLobbyLocation(LobbyLocation lobbyLocation) {
-        Debug.of(XG7Lobby.getInstance()).info("Updating LobbyLocation: " + lobbyLocation);
+        Debug.of(XG7Lobby.getInstance()).info("lobby-locations", "Updating LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.updateAsync(lobbyLocation);
     }
 
@@ -40,14 +41,14 @@ public class LobbyLocationManager {
     }
 
     public CompletableFuture<LobbyLocation> getLobbyLocation(String name) {
-        Debug.of(XG7Lobby.getInstance()).info("Getting LobbyLocation with id: " + name);
+        Debug.of(XG7Lobby.getInstance()).info("lobby-locations", "Getting LobbyLocation with id: " + name);
         return this.lobbyLocationRepository.getAsync(name);
     }
 
     public CompletableFuture<LobbyLocation> getRandomLobbyLocation() {
         return CompletableFuture.supplyAsync(() -> {
 
-            List<LobbyLocation> cachedLobbies = XG7Plugins.getAPI().database().getCachedEntities().asMap().join().values().stream().filter(entity -> entity instanceof LobbyLocation).map(entity -> (LobbyLocation) entity).collect(Collectors.toList());
+            List<LobbyLocation> cachedLobbies = XG7Plugins.getAPI().database().getAllCachedEntities(LobbyLocation.class).join();
 
             List<LobbyLocation> cachedLocalLobbies = cachedLobbies.stream().filter(location -> location.getServerInfo().equals(XG7Plugins.getAPI().getServerInfo())).collect(Collectors.toList());
 

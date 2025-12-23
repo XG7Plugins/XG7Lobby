@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.tasks;
 
+import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.tasks.TaskState;
@@ -51,11 +52,11 @@ public class AutoBroadcastTask extends TimerTask {
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (config.get("broadcast-only-in-the-lobby", false) && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
-            ((List<String>) advertisements.get(finalIndex).get("ad")).forEach(message -> Text.detectLangs(
+            ((List<String>) advertisements.get(finalIndex).get("ad")).forEach(message -> Text.detectLangsAndSend(
                     player,
                     XG7Lobby.getInstance(),
                     message
-            ).join().send(player));
+            ));
 
             PlayableSound sound = config.get("sound", PlayableSound.class);
 

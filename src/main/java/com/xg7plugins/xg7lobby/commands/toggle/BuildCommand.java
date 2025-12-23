@@ -1,6 +1,8 @@
 package com.xg7plugins.xg7lobby.commands.toggle;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -9,7 +11,6 @@ import com.xg7plugins.commands.setup.CommandSetup;
 
 import com.xg7plugins.config.utils.ConfigCheck;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
 import com.xg7plugins.tasks.tasks.BukkitTask;
@@ -32,13 +33,12 @@ import java.util.stream.Collectors;
         permission = "xg7lobby.command.build",
         syntax = "/7lbuild (player)",
         description = "Toggle build mode",
-        isInEnabledWorldOnly = true,
-        isAsync = true,
         pluginClass = XG7Lobby.class,
         isEnabled = @ConfigCheck(
                 configName = "config",
                 path = "build-system-enabled"
-        )
+        ),
+        iconMaterial = XMaterial.IRON_AXE
 )
 public class BuildCommand implements Command {
 
@@ -47,7 +47,7 @@ public class BuildCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig(isInEnabledWorldOnly = true, isAsync = true)
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         OfflinePlayer target = null;
@@ -114,8 +114,4 @@ public class BuildCommand implements Command {
         return Bukkit.getOnlinePlayers().stream().filter(player -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)).map(Player::getName).collect(Collectors.toList());
     }
 
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.IRON_AXE, this);
-    }
 }

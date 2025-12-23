@@ -1,8 +1,14 @@
 group = 'com.xg7plugins'
-version = '2.3.1'
+version = '2.4'
+
+repositories {
+    maven {
+        url = uri('https://repo.nickuc.com/maven-releases/')
+    }
+}
 
 dependencies {
-
+    compileOnly('com.nickuc.login:api:10.4')
 }
 
 tasks.named('compileJava') {

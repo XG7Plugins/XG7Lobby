@@ -1,12 +1,13 @@
 package com.xg7plugins.xg7lobby.commands.moderation.ban;
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.modules.xg7menus.item.Item;
+import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -24,16 +25,12 @@ import java.util.stream.Collectors;
         description = "Unbans a player",
         syntax = "/7lunban <player>",
         permission = "xg7lobby.moderation.unban",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.EMERALD
 )
 public class UnbanCommand implements Command {
 
-    @Override
-    public Plugin getPlugin() {
-        return XG7Lobby.getInstance();
-    }
-
-    @Override
+    @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() != 1) {
@@ -59,8 +56,4 @@ public class UnbanCommand implements Command {
         return args.len() == 1 ? Bukkit.getBanList(org.bukkit.BanList.Type.NAME).getBanEntries().stream().map(BanEntry::getTarget).collect(Collectors.toList()) : new ArrayList<>();
     }
 
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.EMERALD, this);
-    }
 }

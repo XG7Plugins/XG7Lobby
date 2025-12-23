@@ -1,7 +1,9 @@
 package com.xg7plugins.xg7lobby.commands.moderation;
 
 
-import com.xg7plugins.libs.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
@@ -10,14 +12,12 @@ import com.xg7plugins.commands.setup.CommandSetup;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
-import org.apache.logging.log4j.util.Strings;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,7 +32,8 @@ import java.util.List;
         description = "Kicks a player",
         syntax = "/7lkick <player> (reason)",
         permission = "xg7lobby.moderation.kick",
-        pluginClass = XG7Lobby.class
+        pluginClass = XG7Lobby.class,
+        iconMaterial = XMaterial.GOLDEN_BOOTS
 )
 public class KickCommand implements Command {
 
@@ -41,7 +42,7 @@ public class KickCommand implements Command {
         return XG7Lobby.getInstance();
     }
 
-    @Override
+    @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
 
         if (args.len() < 1) {
@@ -52,7 +53,7 @@ public class KickCommand implements Command {
 
         String reason;
 
-        if (args.len() > 1) reason = Strings.join(Arrays.asList(Arrays.copyOfRange(args.getArgs(), 1, args.len())), ' ');
+        if (args.len() > 1) reason = args.toString(1);
         else reason = "Kicked by an admin";
 
 
@@ -71,7 +72,7 @@ public class KickCommand implements Command {
 
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        lobbyPlayerManager.kickPlayer(target, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.kick.on-kick").join().replace("reason", reason));
+        lobbyPlayerManager.kickPlayer(target, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.kick.on-kick").replace("reason", reason));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
             int warningLevel = moderationConfig.get("kick-warning-level", 2);
@@ -96,11 +97,6 @@ public class KickCommand implements Command {
             default:
                 return Collections.emptyList();
         }
-    }
-
-    @Override
-    public Item getIcon() {
-        return Item.commandIcon(XMaterial.GOLDEN_BOOTS, this);
     }
 
 }

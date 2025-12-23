@@ -6,7 +6,7 @@ import com.xg7plugins.cooldowns.CooldownManager;
 
 import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PVPCommandListener implements Listener {
@@ -14,7 +14,7 @@ public class PVPCommandListener implements Listener {
     @Override
     public boolean isEnabled() {
 
-        ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
+        ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
 
         return config.get("enabled", true) && config.child("on-leave-pvp").get("dont-move", true);
     }

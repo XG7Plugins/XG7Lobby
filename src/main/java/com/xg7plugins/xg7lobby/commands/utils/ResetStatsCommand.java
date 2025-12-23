@@ -9,8 +9,8 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
@@ -23,13 +23,13 @@ import java.util.List;
         permission = "xg7lobby.command.resetstats",
         syntax = "/7lresetstats <ALL | DEATHS | KILLS> <player>",
         description = "Reset a player pvp statistics",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class ResetStatsCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -51,14 +51,14 @@ public class ResetStatsCommand implements Command {
                 case "DEATHS":
                     lobbyPlayer.setGlobalPVPDeaths(0);
                     XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
-                    Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.reset-stats.deaths-reset", Pair.of("target", player.getName()));
+                    Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.reset-stats.deaths-reset", Pair.of("target", player.getName()));
                     return;
                 case "KILLS":
 
                     lobbyPlayer.setGlobalPVPKills(0);
                     lobbyPlayer.setGlobalPVPKillStreak(0);
                     XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
-                    Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.reset-stats.kills-reset", Pair.of("target", player.getName()));
+                    Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.reset-stats.kills-reset", Pair.of("target", player.getName()));
                     return;
 
                 case "ALL":
@@ -67,7 +67,7 @@ public class ResetStatsCommand implements Command {
                     lobbyPlayer.setGlobalPVPKills(0);
                     lobbyPlayer.setGlobalPVPKillStreak(0);
                     XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
-                    Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.reset-stats.on-reset", Pair.of("target", player.getName()));
+                    Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.reset-stats.on-reset", Pair.of("target", player.getName()));
                     return;
 
                 default:

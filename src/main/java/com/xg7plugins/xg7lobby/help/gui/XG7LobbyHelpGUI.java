@@ -13,8 +13,8 @@ import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.List;
 public class XG7LobbyHelpGUI extends Menu {
     public XG7LobbyHelpGUI() {
         super(MenuConfigurations.of(
-                XG7LobbyLoader.getInstance(),
+                XG7Lobby.getInstance(),
                 "xg7lobby-help",
                 "lang:[help.menu.title]",
                 6,
@@ -48,7 +48,7 @@ public class XG7LobbyHelpGUI extends Menu {
         profileItemLore.add("lang:[help.menu.profile-item.lore.deaths]");
         profileItemLore.add("lang:[help.menu.profile-item.lore.kdr]");
 
-        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7LobbyLoader.getInstance(), player).join().getSecond().getLangConfiguration();
+        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
         return Arrays.asList(
                 SkullItem.newSkull().renderPlayerSkull(true)
@@ -60,7 +60,7 @@ public class XG7LobbyHelpGUI extends Menu {
                         .name("lang:[help.menu.commands-item.name]")
                         .lore("lang:[help.menu.commands-item.lore]")
                         .slot(28)
-                        .clickable(actionEvent -> XG7LobbyLoader.getInstance().getHelpMessenger().getGui().getMenu("commands").open(player)),
+                        .clickable(actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("commands").open(player)),
 
                 Item.from(XMaterial.COMPASS)
                         .name("lang:[help.menu.set-lobby-item.name]")
@@ -73,7 +73,7 @@ public class XG7LobbyHelpGUI extends Menu {
                         .name("lang:[help.menu.actions-item.name]")
                         .lore("lang:[help.menu.actions-item.lore]")
                         .slot(30)
-                        .clickable(actionEvent -> XG7LobbyLoader.getInstance().getHelpMessenger().getGui().getMenu("actions").open(player)),
+                        .clickable(actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("actions").open(player)),
 
                 OpenBookClickableItem.get(
                         Item.from(XMaterial.BOOK).name("lang:[help.menu.menus-guide-item.name]").lore("lang:[help.menu.menus-guide-item.lore]"),
@@ -104,7 +104,7 @@ public class XG7LobbyHelpGUI extends Menu {
                 Item.from(XMaterial.PAPER)
                         .name("lang:[help.menu.collaborators-item.name]")
                         .slot(53)
-                        .clickable(actionEvent -> XG7LobbyLoader.getInstance().getHelpMessenger().getGui().getMenu("collaborators").open(player))
+                        .clickable(actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("collaborators").open(player))
         );
     }
 }

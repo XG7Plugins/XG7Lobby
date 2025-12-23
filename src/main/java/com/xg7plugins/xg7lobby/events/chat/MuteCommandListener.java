@@ -5,8 +5,8 @@ import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -31,6 +31,6 @@ public class MuteCommandListener implements Listener {
         }
 
         event.setCancelled(true);
-        Text.sendTextFromLang(player.getPlayer(), XG7LobbyLoader.getInstance(), "chat.muted",  Pair.of("time", (player.getUnmuteTime().isZero() ? "ever" : Time.getRemainingTime(player.getUnmuteTime()).toMilliseconds()) + ""));
+        Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "chat.muted",  Pair.of("time", (player.getUnmuteTime().isZero() ? "ever" : Time.getRemainingTime(player.getUnmuteTime()).toMilliseconds()) + ""));
     }
 }

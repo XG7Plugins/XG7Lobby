@@ -5,8 +5,8 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.pvp.DeathCause;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
@@ -20,8 +20,8 @@ import java.util.UUID;
 
 public class KillPVPHandler implements PVPHandler {
 
-    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
-    private final ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).section("on-kill");
+    private final ConfigSection pvpConfigs = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).section("on-kill");
 
 
     @Override
@@ -58,11 +58,11 @@ public class KillPVPHandler implements PVPHandler {
 
         playersInPVP.forEach(player -> {
             if (killer != null) {
-                Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "pvp.on-death-with-killer", Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", Text.fromLang(player, XG7LobbyLoader.getInstance(), deathCause.getLangPath()).join().getText()));
+                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death-with-killer", Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", Text.fromLang(player, XG7Lobby.getInstance(), deathCause.getLangPath()).join().getText()));
                 return;
             }
 
-            Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "pvp.on-death", Pair.of("victim", victim.getName()), Pair.of("cause", Text.fromLang(player, XG7LobbyLoader.getInstance(), deathCause.getLangPath()).join().getText()));
+            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.on-death", Pair.of("victim", victim.getName()), Pair.of("cause", Text.fromLang(player, XG7Lobby.getInstance(), deathCause.getLangPath()).join().getText()));
         });
 
         Bukkit.getPluginManager().callEvent(new PlayerKillInPVPEvent(killer, victim, deathCause));

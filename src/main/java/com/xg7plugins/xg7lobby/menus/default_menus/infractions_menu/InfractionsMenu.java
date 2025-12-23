@@ -16,8 +16,8 @@ import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 
 import org.bukkit.OfflinePlayer;
@@ -43,7 +43,7 @@ public class InfractionsMenu extends Menu {
     @SuppressWarnings("unchecked")
     public List<Item> pagedItems(OfflinePlayer target) {
 
-        ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root();
+        ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
 
         LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
 
@@ -66,7 +66,7 @@ public class InfractionsMenu extends Menu {
                         Player player = event.getHolder().getPlayer();
                         Text.format(" ").send(player);
 
-                        Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "warn-menu.id-message", Pair.of("id", i.getID()));
+                        Text.sendTextFromLang(player, XG7Lobby.getInstance(), "warn-menu.id-message", Pair.of("id", i.getID()));
 
                         Text.format(" ").send(player);
                     });

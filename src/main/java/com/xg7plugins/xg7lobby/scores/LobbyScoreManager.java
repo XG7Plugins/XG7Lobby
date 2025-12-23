@@ -4,7 +4,7 @@ import com.xg7plugins.XG7Plugins;
 
 import com.xg7plugins.modules.xg7scores.XG7Scores;
 import com.xg7plugins.utils.Debug;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.scores.loader.*;
 import org.bukkit.Bukkit;
 
@@ -27,25 +27,25 @@ public class LobbyScoreManager {
 
 
     public void loadScores() {
-        Debug.of(XG7LobbyLoader.getInstance()).info("Loading lobby scores");
+        Debug.of(XG7Lobby.getInstance()).info("Loading lobby scores");
 
         lobbyScoreLoaders.forEach((loader) -> {
             loader.getScoreConfig().load();
             if (!loader.getScoreConfig().isEnabled()) return;
 
-            Debug.of(XG7LobbyLoader.getInstance()).info("Loading " + loader.getClass().getSimpleName());
+            Debug.of(XG7Lobby.getInstance()).info("Loading " + loader.getClass().getSimpleName());
 
             XG7Plugins.getAPI().taskManager().runTimerTask(XG7Plugins.getAPI().taskManager().getTimerTask(XG7Plugins.getInstance(), "score-task"));
             XG7Scores.loadScores(loader.load());
-            Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7LobbyLoader.getInstance(), p)).forEach(XG7Plugins.getAPI().scores()::addPlayer);
+            Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Plugins.getAPI().scores()::addPlayer);
 
-            Debug.of(XG7LobbyLoader.getInstance()).info("Loaded " + loader.getScoreID());
+            Debug.of(XG7Lobby.getInstance()).info("Loaded " + loader.getScoreID());
         });
     }
 
     public void unloadScores() {
 
-        Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7LobbyLoader.getInstance(), p)).forEach(XG7Plugins.getAPI().scores()::removePlayer);
+        Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p)).forEach(XG7Plugins.getAPI().scores()::removePlayer);
         lobbyScoreLoaders.forEach((loader) -> XG7Scores.unloadScore(loader.getScoreID()));
     }
 

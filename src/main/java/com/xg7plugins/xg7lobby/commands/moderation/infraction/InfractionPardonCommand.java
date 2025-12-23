@@ -9,8 +9,8 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.bukkit.command.CommandSender;
@@ -19,7 +19,7 @@ import org.bukkit.command.CommandSender;
         name = "pardon",
         description = "Removes an infraction to a player",
         syntax = "/7linfraction pardon <infraction id>",
-        pluginClass = XG7LobbyLoader.class,
+        pluginClass = XG7Lobby.class,
         permission = "xg7lobby.moderation.infraction.pardon",
         isAsync = true
 )
@@ -27,7 +27,7 @@ public class InfractionPardonCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -43,13 +43,13 @@ public class InfractionPardonCommand implements Command {
         Infraction infraction = playerManager.getInfraction(id);
 
         if (infraction == null) {
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.infraction.infraction-not-found");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.infraction-not-found");
             return CommandState.ERROR;
         }
 
         playerManager.deleteInfraction(infraction);
 
-        Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.infraction.on-pardon", Pair.of("id", id));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.on-pardon", Pair.of("id", id));
 
         return CommandState.FINE;
     }

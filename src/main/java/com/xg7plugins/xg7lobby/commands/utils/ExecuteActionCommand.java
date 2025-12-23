@@ -7,7 +7,7 @@ import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionType;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import org.apache.logging.log4j.util.Strings;
@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
         description = "Execute an action",
         syntax = "/7lexecute \"[ACTIONNAME] [args...]\"",
         isPlayerOnly = true,
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class ExecuteActionCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override

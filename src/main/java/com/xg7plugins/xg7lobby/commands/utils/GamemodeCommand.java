@@ -9,8 +9,8 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
@@ -27,13 +27,13 @@ import java.util.List;
         permission = "xg7lobby.command.gamemode",
         syntax = "/7lgamemode <gamemode> (player)",
         description = "Change player's gamemode",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class GamemodeCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class GamemodeCommand implements Command {
         Mode mode = Mode.getMode(args.get(0, String.class));
 
         if (mode == null) {
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.game-mode.invalid-game-mode");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.game-mode.invalid-game-mode");
             return CommandState.ERROR;
         }
 
@@ -86,8 +86,8 @@ public class GamemodeCommand implements Command {
         }
 
         OfflinePlayer finalTarget = target;
-        Text.sendTextFromLang(target.getPlayer(), XG7LobbyLoader.getInstance(), "commands.game-mode.set", Pair.of("gamemode", mode.name().toLowerCase()));
-        if (isOther) Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.game-mode.set-other", Pair.of("gamemode", mode.name().toLowerCase()));
+        Text.sendTextFromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.game-mode.set", Pair.of("gamemode", mode.name().toLowerCase()));
+        if (isOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.game-mode.set-other", Pair.of("gamemode", mode.name().toLowerCase()));
 
         return CommandState.FINE;
     }

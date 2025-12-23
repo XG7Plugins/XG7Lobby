@@ -8,8 +8,8 @@ import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,13 +23,13 @@ import java.util.List;
         description = "Opens a custom inventory",
         syntax = "/7lopeninv <id>",
         isPlayerOnly = true,
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class OpenInventoryCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class OpenInventoryCommand implements Command {
         String id = args.get(0, String.class);
 
         if (!XG7LobbyAPI.customInventoryManager().isMenu(id)) {
-            Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "menu-does-not-exist");
+            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "menu-does-not-exist");
             return CommandState.ERROR;
         }
 

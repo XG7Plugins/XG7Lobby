@@ -9,7 +9,7 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.BanEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
         description = "Unbans a player by ip",
         syntax = "/7lunbanip <ip>",
         permission = "xg7lobby.moderation.unban",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class UnbanIPCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -42,13 +42,13 @@ public class UnbanIPCommand implements Command {
         String ip = args.get(0, String.class);
 
         if (!Bukkit.getServer().getBanList(org.bukkit.BanList.Type.IP).isBanned(ip)) {
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.unban.not-banned");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unban.not-banned");
             return CommandState.ERROR;
         }
 
         Bukkit.getServer().getBanList(org.bukkit.BanList.Type.IP).pardon(ip);
 
-        Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.unban.on-unban", Pair.of("ip", ip));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unban.on-unban", Pair.of("ip", ip));
 
         return CommandState.FINE;
     }

@@ -1,6 +1,6 @@
 package com.xg7plugins.xg7lobby.pvp.event;
 
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;

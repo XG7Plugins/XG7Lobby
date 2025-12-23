@@ -14,8 +14,8 @@ import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -32,13 +32,13 @@ import java.util.stream.Collectors;
         syntax = "/7llobby (id) (<id> <player>)",
         description = "Teleport to the lobby",
         permission = "xg7lobby.command.lobby.teleport",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class Lobby implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -74,14 +74,14 @@ public class Lobby implements Command {
             targetToTeleport = (Player) sender;
         }
 
-        ConfigSection teleportConfig = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("lobby-teleport-cooldown");
+        ConfigSection teleportConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("lobby-teleport-cooldown");
 
         CooldownManager cooldownManager = XG7Plugins.getAPI().cooldowns();
 
         if (cooldownManager.containsPlayer("lobby-cooldown-after", targetToTeleport)) {
 
             long cooldownToToggle = cooldownManager.getReamingTime("lobby-cooldown-after", targetToTeleport);
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.on-teleport.on-cooldown" + (targetIsOther ? "-other" : ""),
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-teleport.on-cooldown" + (targetIsOther ? "-other" : ""),
                     Pair.of("target", targetToTeleport.getName()),
                     Pair.of("time", String.valueOf(cooldownToToggle))
             );
@@ -90,7 +90,7 @@ public class Lobby implements Command {
 
         if (cooldownManager.containsPlayer("lobby-cooldown-before", targetToTeleport) && !targetIsOther) {
             cooldownManager.removeCooldown("lobby-cooldown-before", targetToTeleport.getUniqueId(), true);
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.teleport-cancelled");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.teleport-cancelled");
             return CommandState.ERROR;
         }
 
@@ -100,7 +100,7 @@ public class Lobby implements Command {
         Consumer<LobbyLocation> teleportConsumer = lobby -> {
 
             if (lobby == null) {
-                Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (sender.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
+                Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (sender.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
                 return;
             }
 
@@ -115,7 +115,7 @@ public class Lobby implements Command {
                             teleportConfig.getTimeInMilliseconds("before-teleport", 5000L),
                             player -> Text.fromLang(
                                     player,
-                                    XG7LobbyLoader.getInstance(),
+                                    XG7Lobby.getInstance(),
                                     "lobby.on-teleporting-message"
                             ).thenAccept(text -> {
                                 long cooldownToToggle = cooldownManager.getReamingTime("lobby-cooldown-before", finalTargetToTeleport);
@@ -125,7 +125,7 @@ public class Lobby implements Command {
                             }),
                             ((player, error) -> {
                                 if (error) {
-                                    Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "lobby.teleport-cancelled");
+                                    Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.teleport-cancelled");
                                     return;
                                 }
                                 XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> lobby.teleport(finalTargetToTeleport)));
@@ -133,7 +133,7 @@ public class Lobby implements Command {
                             })
                     )
             );
-            if (finalTargetIsOther) Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.on-teleport.on-success-other", Pair.of("target", finalTargetToTeleport.getName()));
+            if (finalTargetIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-teleport.on-success-other", Pair.of("target", finalTargetToTeleport.getName()));
 
         };
 

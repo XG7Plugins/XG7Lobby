@@ -5,7 +5,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.config.typeadapter.ConfigTypeAdapter;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import org.bukkit.enchantments.Enchantment;
@@ -45,7 +45,7 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
                 
 
             } catch (Exception ig) {
-                XG7LobbyLoader.getInstance().getDebug().warn("Invalid material settings type: " + type + ". Using default material settings");
+                XG7Lobby.getInstance().getDebug().warn("Invalid material settings type: " + type + ". Using default material settings");
             }
         }
 

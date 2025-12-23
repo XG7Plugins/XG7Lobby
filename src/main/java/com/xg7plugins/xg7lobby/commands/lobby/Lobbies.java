@@ -7,7 +7,7 @@ import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,18 +16,18 @@ import org.bukkit.entity.Player;
         syntax = "/7llobbies",
         description = "See all lobbies",
         permission = "xg7lobby.command.lobby.see-lobbies",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class Lobbies implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
-        XG7Plugins.getAPI().menus().getMenu(XG7LobbyLoader.getInstance(), "lobbies-menu").open((Player) sender);
+        XG7Plugins.getAPI().menus().getMenu(XG7Lobby.getInstance(), "lobbies-menu").open((Player) sender);
         return CommandState.FINE;
     }
 

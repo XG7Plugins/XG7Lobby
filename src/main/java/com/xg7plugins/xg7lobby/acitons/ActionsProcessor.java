@@ -2,7 +2,7 @@ package com.xg7plugins.xg7lobby.acitons;
 
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class ActionsProcessor {
     public static void process(List<String> actions, Player player, List<Pair<String, String>> placeholders) {
         actions.forEach(action -> {
             try {
-                Debug.of(XG7LobbyLoader.getInstance()).info("Executing actions for " + player.getName() + ". Actions: " + actions.toString());
+                Debug.of(XG7Lobby.getInstance()).info("Executing actions for " + player.getName() + ". Actions: " + actions.toString());
                 getActionOf(action, placeholders).execute(player);
             } catch (Exception e) {
                 e.printStackTrace();

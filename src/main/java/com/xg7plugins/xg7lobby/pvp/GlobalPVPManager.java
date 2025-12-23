@@ -4,7 +4,7 @@ import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.events.Listener;
 
 import com.xg7plugins.utils.Debug;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.pvp.handlers.*;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -33,7 +33,7 @@ public class GlobalPVPManager {
 
     public void addPlayer(Player player) {
         if (!isEnabled()) return;
-        Debug.of(XG7LobbyLoader.getInstance()).info("Adding " + player.getName() + " to lobby pvp");
+        Debug.of(XG7Lobby.getInstance()).info("Adding " + player.getName() + " to lobby pvp");
         this.playersInPVP.add(player.getUniqueId());
         getHandler(JoinPVPHandler.class).handle(player);
     }
@@ -41,7 +41,7 @@ public class GlobalPVPManager {
     public void removePlayer(Player player) {
         if (!playersInPVP.contains(player.getUniqueId())) return;
 
-        Debug.of(XG7LobbyLoader.getInstance()).info("Removing " + player.getName() + " from lobby pvp");
+        Debug.of(XG7Lobby.getInstance()).info("Removing " + player.getName() + " from lobby pvp");
 
         this.playersInPVP.remove(player.getUniqueId());
         getHandler(LeavePVPHandler.class).handle(player);
@@ -68,7 +68,7 @@ public class GlobalPVPManager {
     }
 
     public boolean isEnabled() {
-        return ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root().get("enabled");
+        return ConfigFile.of("pvp", XG7Lobby.getInstance()).root().get("enabled");
 
     }
 

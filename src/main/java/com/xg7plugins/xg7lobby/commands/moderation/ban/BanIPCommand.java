@@ -13,8 +13,8 @@ import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.apache.logging.log4j.util.Strings;
@@ -28,13 +28,13 @@ import java.util.*;
         description = "Bans a player by ip",
         syntax = "/7lbanip <player> <time> (reason)",
         permission = "xg7lobby.moderation.ban",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class BanIPCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -53,14 +53,14 @@ public class BanIPCommand implements Command {
         else reason = "Banned by an admin";
 
         if (target.isBanned()) {
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.ban.already-banned");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.already-banned");
             return CommandState.ERROR;
         }
 
-        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).section("moderation");
+        ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
         if (target.isOp() && !moderationConfig.get("ban-admin", false)) {
-            Text.fromLang(sender, XG7LobbyLoader.getInstance(), "commands.ban.ban-admin").thenAccept(text -> text.send(sender));
+            Text.fromLang(sender, XG7Lobby.getInstance(), "commands.ban.ban-admin").thenAccept(text -> text.send(sender));
             return CommandState.ERROR;
         }
 
@@ -70,7 +70,7 @@ public class BanIPCommand implements Command {
 
         LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
 
-        lobbyPlayerManager.banIpPlayer(target.getPlayer(), time, Text.fromLang(target.getPlayer(), XG7LobbyLoader.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", String.valueOf(time.toMilliseconds())));
+        lobbyPlayerManager.banIpPlayer(target.getPlayer(), time, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.ban.on-ban").join().replace("reason", reason).replace("time", String.valueOf(time.toMilliseconds())));
 
         XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
 
@@ -79,7 +79,7 @@ public class BanIPCommand implements Command {
             lobbyPlayerManager.addInfraction(infraction);
         });
 
-        Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.ban.on-ban-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + ""), Pair.of("target", target.getName()));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.ban.on-ban-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + ""), Pair.of("target", target.getName()));
 
         return CommandState.FINE;
     }

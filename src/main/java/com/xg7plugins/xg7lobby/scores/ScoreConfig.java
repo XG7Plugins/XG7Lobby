@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.scores;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class ScoreConfig {
     }
 
     public void load() {
-        ConfigFile newFile = ConfigFile.of(scoreSection.getFile().getName(), XG7LobbyLoader.getInstance());
+        ConfigFile newFile = ConfigFile.of(scoreSection.getFile().getName(), XG7Lobby.getInstance());
         this.scoreSection = new ConfigSection(newFile, scoreSection.getPath(), newFile.getConfig());
         this.enabled = scoreSection.get("enabled",false);
         this.delay = scoreSection.getTimeInMilliseconds("update-time", 30000L);

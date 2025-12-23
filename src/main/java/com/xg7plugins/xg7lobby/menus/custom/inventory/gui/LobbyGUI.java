@@ -13,7 +13,7 @@ import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
@@ -45,7 +45,7 @@ public class LobbyGUI extends Menu implements LobbyInventory {
     public LobbyGUI(ConfigFile menuConfig, String id, String title, int rows, @NotNull XMaterial fillItem, HashMap<String, LobbyItem> items, HashMap<Integer, String> grid, List<MenuAction> allowedActions, List<MenuAction> deniedActions, long updateInterval) {
         super(
                 MenuConfigurations.of(
-                        XG7LobbyLoader.getInstance(),
+                        XG7Lobby.getInstance(),
                         "lobby-custom-menu:" + id,
                         title,
                         rows,

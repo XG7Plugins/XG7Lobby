@@ -11,10 +11,10 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.uuid.ShortUUID;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
-import com.xg7plugins.xg7lobby.data.location.LobbyManager;
+import com.xg7plugins.xg7lobby.data.location.LobbyLocationManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -28,13 +28,13 @@ import java.util.concurrent.ExecutionException;
         syntax = "/7lsetlobby (id) (On console: <id> ([world,x,y,z] or [world,x,y,z,yaw,pitch]))",
         permission = "xg7lobby.command.lobby.set",
         isInEnabledWorldOnly = true,
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class SetLobby implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -71,12 +71,12 @@ public class SetLobby implements Command {
 
         LobbyLocation lobbyLocation = new LobbyLocation(id, location, XG7Plugins.getAPI().getServerInfo());
 
-        LobbyManager lobbyManager = XG7LobbyAPI.lobbyManager();
+        LobbyLocationManager lobbyManager = XG7LobbyAPI.lobbyManager();
 
         try {
             String finalId = id;
             lobbyManager.saveLobbyLocation(lobbyLocation).thenRun(() -> {
-                Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.on-set.on-success",
+                Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-set.on-success",
                         Pair.of("id", finalId),
                         Pair.of("world", location.getWorldName()),
                         Pair.of("x", String.format("%.2f", location.getX())),
@@ -87,7 +87,7 @@ public class SetLobby implements Command {
                 );
             });
         } catch (ExecutionException | InterruptedException e) {
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "lobby.on-set.on-error", Pair.of("error", e.getMessage()));
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.on-set.on-error", Pair.of("error", e.getMessage()));
             throw new RuntimeException(e);
         }
 
@@ -105,7 +105,7 @@ public class SetLobby implements Command {
 
         switch (args.len()) {
             case 2:
-                return XG7Plugins.getAPI().getEnabledWorldsOf(XG7LobbyLoader.getInstance());
+                return XG7Plugins.getAPI().getEnabledWorldsOf(XG7Lobby.getInstance());
             case 3:
                 return Collections.singletonList("x");
             case 4:

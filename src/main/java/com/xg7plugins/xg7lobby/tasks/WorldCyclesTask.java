@@ -5,7 +5,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.server.MinecraftServerVersion;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -18,14 +18,14 @@ import java.util.List;
 
 public class WorldCyclesTask extends TimerTask {
 
-    private final ConfigSection config = ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root();
+    private final ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
 
     public WorldCyclesTask() {
         super(
-                XG7LobbyLoader.getInstance(),
+                XG7Lobby.getInstance(),
                 "world-cycles",
                 0,
-                ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().getTimeInMilliseconds("world-task-delay", 10000L),
+                ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().getTimeInMilliseconds("world-task-delay", 10000L),
                 TaskState.RUNNING,
                 false
         );
@@ -35,7 +35,7 @@ public class WorldCyclesTask extends TimerTask {
     @Override
     public void run() {
 
-        Bukkit.getWorlds().stream().filter(world -> XG7Plugins.getAPI().isEnabledWorld(XG7LobbyLoader.getInstance(), world)).forEach(world -> {
+        Bukkit.getWorlds().stream().filter(world -> XG7Plugins.getAPI().isEnabledWorld(XG7Lobby.getInstance(), world)).forEach(world -> {
 
             boolean dayLightCycle = config.get("day-cycle", false);
 

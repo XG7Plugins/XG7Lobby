@@ -1,7 +1,7 @@
 package com.xg7plugins.xg7lobby.data.location;
 
 import com.xg7plugins.utils.Debug;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 
 import java.util.List;
@@ -10,28 +10,28 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-public class LobbyManager {
+public class LobbyLocationManager {
 
     @Getter
     private final LobbyLocationRepository lobbyLocationRepository;
 
 
-    public LobbyManager() {
+    public LobbyLocationManager() {
         this.lobbyLocationRepository = new LobbyLocationRepository();
     }
 
     public CompletableFuture<Boolean> saveLobbyLocation(LobbyLocation lobbyLocation) throws ExecutionException, InterruptedException {
-        Debug.of(XG7LobbyLoader.getInstance()).info("Saving LobbyLocation: " + lobbyLocation);
+        Debug.of(XG7Lobby.getInstance()).info("Saving LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.addAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> deleteLobbyLocation(LobbyLocation lobbyLocation) {
-        Debug.of(XG7LobbyLoader.getInstance()).info("Deleting LobbyLocation: " + lobbyLocation);
+        Debug.of(XG7Lobby.getInstance()).info("Deleting LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.deleteAsync(lobbyLocation);
     }
 
     public CompletableFuture<Boolean> updateLobbyLocation(LobbyLocation lobbyLocation) {
-        Debug.of(XG7LobbyLoader.getInstance()).info("Updating LobbyLocation: " + lobbyLocation);
+        Debug.of(XG7Lobby.getInstance()).info("Updating LobbyLocation: " + lobbyLocation);
         return this.lobbyLocationRepository.updateAsync(lobbyLocation);
     }
 
@@ -40,7 +40,7 @@ public class LobbyManager {
     }
 
     public CompletableFuture<LobbyLocation> getLobbyLocation(String name) {
-        Debug.of(XG7LobbyLoader.getInstance()).info("Getting LobbyLocation with id: " + name);
+        Debug.of(XG7Lobby.getInstance()).info("Getting LobbyLocation with id: " + name);
         return this.lobbyLocationRepository.getAsync(name);
     }
 

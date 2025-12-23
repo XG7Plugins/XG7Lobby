@@ -8,8 +8,8 @@ import com.xg7plugins.events.bukkitevents.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 
 import com.xg7plugins.xg7lobby.pvp.DeathCause;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerLeavePVPEvent;
@@ -25,12 +25,12 @@ public class CombatLogHandler implements Listener {
 
     private final ObjectCache<UUID, UUID> log;
 
-    private final ConfigSection config = ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root();
+    private final ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
 
     public CombatLogHandler() {
 
         log = new ObjectCache<>(
-                XG7LobbyLoader.getInstance(),
+                XG7Lobby.getInstance(),
                 config.getTimeInMilliseconds("combat-log-remove"),
                 true,
                 "lobby-combat-log",
@@ -45,7 +45,7 @@ public class CombatLogHandler implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root().get("enabled", false);
+        return ConfigFile.of("pvp", XG7Lobby.getInstance()).root().get("enabled", false);
     }
 
     @EventHandler
@@ -70,8 +70,8 @@ public class CombatLogHandler implements Listener {
         log.put(victim.getUniqueId(), damager.getUniqueId());
         log.put(damager.getUniqueId(), victim.getUniqueId());
 
-        Text.sendTextFromLang(damager, XG7LobbyLoader.getInstance(), "pvp.tagged", Pair.of("target", victim.getName()), Pair.of("time", config.getTimeInMilliseconds("combat-log-remove") + ""));
-        Text.sendTextFromLang(victim, XG7LobbyLoader.getInstance(), "pvp.tagged", Pair.of("target", damager.getName()), Pair.of("time", config.getTimeInMilliseconds("combat-log-remove") + ""));
+        Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.tagged", Pair.of("target", victim.getName()), Pair.of("time", config.getTimeInMilliseconds("combat-log-remove") + ""));
+        Text.sendTextFromLang(victim, XG7Lobby.getInstance(), "pvp.tagged", Pair.of("target", damager.getName()), Pair.of("time", config.getTimeInMilliseconds("combat-log-remove") + ""));
     }
 
     private Player getDamager(Entity damager) {

@@ -5,8 +5,8 @@ import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import org.bukkit.command.CommandSender;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
         description = "Manages the infractions of a player",
         permission = "xg7lobby.moderation.infraction.*",
         syntax = "/7linfraction <add|pardon>",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class InfractionCommand implements Command {
 

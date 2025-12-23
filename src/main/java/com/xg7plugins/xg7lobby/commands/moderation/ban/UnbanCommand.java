@@ -9,7 +9,7 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.BanEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
         description = "Unbans a player",
         syntax = "/7lunban <player>",
         permission = "xg7lobby.moderation.unban",
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class UnbanCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -43,13 +43,13 @@ public class UnbanCommand implements Command {
         OfflinePlayer target = args.get(0, OfflinePlayer.class);
 
         if (!target.isBanned()) {
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.unban.not-banned");
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unban.not-banned");
             return CommandState.ERROR;
         }
 
         Bukkit.getServer().getBanList(org.bukkit.BanList.Type.NAME).pardon(target.getName());
 
-        Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.unban.on-unban", Pair.of("target", target.getName()));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unban.on-unban", Pair.of("target", target.getName()));
 
         return CommandState.FINE;
     }

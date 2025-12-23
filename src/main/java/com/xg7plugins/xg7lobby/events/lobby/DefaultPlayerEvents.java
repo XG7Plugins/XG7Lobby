@@ -13,8 +13,8 @@ import com.xg7plugins.server.MinecraftServerVersion;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.environment.LobbyApplier;
@@ -120,7 +120,7 @@ public class DefaultPlayerEvents implements Listener {
         Player player = ReflectionObject.of(event).getMethod("getPlayer").invoke();
 
         if (player.hasPermission("xg7lobby.build")) {
-            if (!ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().get("build-system-enabled", true)) {
+            if (!ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("build-system-enabled", true)) {
                 event.setCancelled(false);
                 return;
             }
@@ -129,12 +129,12 @@ public class DefaultPlayerEvents implements Listener {
                 event.setCancelled(false);
                 return;
             }
-            Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "build-not-enabled");
+            Text.sendTextFromLang(player, XG7Lobby.getInstance(), "build-not-enabled");
             event.setCancelled(true);
             return;
         }
         event.setCancelled(true);
-        Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), path);
+        Text.sendTextFromLang(player, XG7Lobby.getInstance(), path);
 
     }
 
@@ -177,18 +177,18 @@ public class DefaultPlayerEvents implements Listener {
 
         if (XG7LobbyAPI.isPlayerInPVP(damager) && !XG7LobbyAPI.isPlayerInPVP(victim)) {
             event.setCancelled(true);
-            Text.sendTextFromLang(damager, XG7LobbyLoader.getInstance(), "pvp.on-attack-in-pvp");
+            Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-in-pvp");
             return;
         }
 
         if (!XG7LobbyAPI.isPlayerInPVP(damager) && damager.hasPermission("xg7lobby.pvp")) {
             event.setCancelled(true);
-            Text.sendTextFromLang(damager, XG7LobbyLoader.getInstance(), "pvp.on-attack-out-pvp");
+            Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-out-pvp");
             return;
         }
 
         event.setCancelled(true);
-        Text.sendTextFromLang(damager, XG7LobbyLoader.getInstance(), "player-prohibitions.attack");
+        Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "player-prohibitions.attack");
     }
 
     private Player getDamager(Entity damager) {
@@ -212,7 +212,7 @@ public class DefaultPlayerEvents implements Listener {
     )
     public void onFoodChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
-        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity()) && ConfigFile.of("pvp", XG7LobbyLoader.getInstance()).root().get("food-change", false)) return;
+        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity()) && ConfigFile.of("pvp", XG7Lobby.getInstance()).root().get("food-change", false)) return;
         event.setCancelled(true);
     }
 
@@ -261,7 +261,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(isOnlyInWorld = true)
     public void onDeath(PlayerDeathEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP(event.getEntity()) && ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().get("drop-items", true)) return;
+        if (XG7LobbyAPI.isPlayerInPVP(event.getEntity()) && ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("drop-items", true)) return;
         event.getDrops().clear();
     }
 
@@ -285,13 +285,13 @@ public class DefaultPlayerEvents implements Listener {
 
         lobbyLocation.thenAccept(lobby -> {
             if (lobby.getLocation() == null) {
-                Text.sendTextFromLang(player, XG7LobbyLoader.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
+                Text.sendTextFromLang(player, XG7Lobby.getInstance(), "lobby.on-teleport.on-error-doesnt-exist" + (player.hasPermission("xg7lobby.command.lobby.set") ? "-adm" : ""));
                 return;
             }
             XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> lobby.teleport(player)));
         });
 
-        XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7LobbyLoader.getInstance()).root().get("main-selector-id"), player);
+        XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
 
         LobbyApplier.apply(player);
 

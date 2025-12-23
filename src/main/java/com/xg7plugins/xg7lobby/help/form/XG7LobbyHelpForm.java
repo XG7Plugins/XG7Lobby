@@ -6,7 +6,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7geyserforms.forms.SimpleForm;
 import com.xg7plugins.modules.xg7menus.item.impl.BookItem;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.entity.Player;
 import org.geysermc.cumulus.component.ButtonComponent;
 import org.geysermc.cumulus.response.SimpleFormResponse;
@@ -19,13 +19,13 @@ import java.util.List;
 
 public class XG7LobbyHelpForm extends SimpleForm {
     public XG7LobbyHelpForm() {
-        super("lobby-help-form", "lang:[help.form.title]", XG7LobbyLoader.getInstance());
+        super("lobby-help-form", "lang:[help.form.title]", XG7Lobby.getInstance());
     }
 
     @Override
     public String content(Player player) {
 
-        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7LobbyLoader.getInstance(), player).join().getSecond().getLangConfiguration();
+        ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
         List<String> content = lang.getList("help.form.content", String.class).orElse(Collections.emptyList());
 
@@ -56,12 +56,12 @@ public class XG7LobbyHelpForm extends SimpleForm {
     public void onFinish(org.geysermc.cumulus.form.SimpleForm form, SimpleFormResponse result, Player player) {
         switch (result.clickedButtonId()) {
             case 1:
-                XG7LobbyLoader.getInstance().getHelpMessenger().getForm().getForm("commands").send(player);
+                XG7Lobby.getInstance().getHelpMessenger().getForm().getForm("commands").send(player);
                 return;
             case 0:
             case 2:
             case 3:
-                ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7LobbyLoader.getInstance(), player).join().getSecond().getLangConfiguration();
+                ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), player).join().getSecond().getLangConfiguration();
 
                 List<String> about = lang.getList("help." + (result.clickedButtonId() == 2 ? "selector-guide" : result.clickedButtonId() == 0 ? "about" : "custom-commands-guide"), String.class).orElse(new ArrayList<>());
 
@@ -76,7 +76,7 @@ public class XG7LobbyHelpForm extends SimpleForm {
                             .replace("discord", "discord.gg/jfrn8w92kF")
                             .replace("github", "github.com/DaviXG7")
                             .replace("website", "xg7plugins.com")
-                            .replace("version", XG7LobbyLoader.getInstance().getDescription().getVersion())
+                            .replace("version", XG7Lobby.getInstance().getDescription().getVersion())
                             .getText());
                     if (currentPage.size() == 10) {
                         pages.add(new ArrayList<>(currentPage));
@@ -91,7 +91,7 @@ public class XG7LobbyHelpForm extends SimpleForm {
                 bookItem.openBook(player);
                 return;
             case 4:
-                XG7LobbyLoader.getInstance().getHelpMessenger().getForm().getForm("lobby-collaborators-help").send(player);
+                XG7Lobby.getInstance().getHelpMessenger().getForm().getForm("lobby-collaborators-help").send(player);
         }
     }
 

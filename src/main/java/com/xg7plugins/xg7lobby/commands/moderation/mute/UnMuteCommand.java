@@ -10,8 +10,8 @@ import com.xg7plugins.modules.xg7menus.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
-import com.xg7plugins.xg7lobby.XG7LobbyAPI;
+import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -26,13 +26,13 @@ import java.util.List;
         syntax = "/7plunmute <player>",
         permission = "xg7lobby.moderation.unmute",
         isAsync = true,
-        pluginClass = XG7LobbyLoader.class
+        pluginClass = XG7Lobby.class
 )
 public class UnMuteCommand implements Command {
 
     @Override
     public Plugin getPlugin() {
-        return XG7LobbyLoader.getInstance();
+        return XG7Lobby.getInstance();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UnMuteCommand implements Command {
         }
 
         if (!player.isMuted()) {
-            Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.unmute.not-muted", Pair.of("target", target.getName()));
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unmute.not-muted", Pair.of("target", target.getName()));
             return CommandState.ERROR;
         }
 
@@ -60,10 +60,10 @@ public class UnMuteCommand implements Command {
         XG7LobbyAPI.lobbyPlayerManager().updatePlayer(player);
 
         if (target.isOnline()) {
-            Text.sendTextFromLang(target.getPlayer(), XG7LobbyLoader.getInstance(), "commands.unmute.on-unmute");
+            Text.sendTextFromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.unmute.on-unmute");
         }
 
-        Text.sendTextFromLang(sender, XG7LobbyLoader.getInstance(), "commands.unmute.on-unmute-sender", Pair.of("target", player.getOfflinePlayer().getName()));
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unmute.on-unmute-sender", Pair.of("target", player.getOfflinePlayer().getName()));
 
         return CommandState.FINE;
     }

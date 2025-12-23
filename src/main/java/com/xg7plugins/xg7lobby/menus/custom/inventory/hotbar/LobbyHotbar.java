@@ -13,7 +13,7 @@ import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
+import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
@@ -40,7 +40,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
 
     public LobbyHotbar(ConfigFile menuConfig, String id, HashMap<String, LobbyItem> items, HashMap<Integer, String> grid, Time cooldown, boolean disableCooldown, List<MenuAction> allowedActions, List<MenuAction> deniedActions, long updateInterval) {
         super(PlayerMenuConfigurations.of(
-                XG7LobbyLoader.getInstance(),
+                XG7Lobby.getInstance(),
                 "lobby-custom-hotbar:" + id,
                 EnumSet.noneOf(MenuAction.class),
                 true,
@@ -175,7 +175,7 @@ public class LobbyHotbar extends PlayerMenu implements LobbyInventory {
         if (XG7Plugins.getAPI().cooldowns().containsPlayer("selector-cooldown", event.getHolder().getPlayer())) {
             long time = XG7Plugins.getAPI().cooldowns().getReamingTime("selector-cooldown", event.getHolder().getPlayer());
 
-            Text.sendTextFromLang(event.getHolder().getPlayer(), XG7LobbyLoader.getInstance(), "selector-cooldown",
+            Text.sendTextFromLang(event.getHolder().getPlayer(), XG7Lobby.getInstance(), "selector-cooldown",
                     Pair.of("time", time + ""));
             return;
         }

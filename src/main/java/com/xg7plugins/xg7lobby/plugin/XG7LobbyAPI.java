@@ -1,6 +1,5 @@
 package com.xg7plugins.xg7lobby.plugin;
 
-import com.xg7plugins.managers.ManagerRegistry;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocationManager;

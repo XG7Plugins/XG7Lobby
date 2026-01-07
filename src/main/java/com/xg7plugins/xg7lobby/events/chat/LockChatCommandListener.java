@@ -17,7 +17,7 @@ public class LockChatCommandListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onChatWhenLock(AsyncPlayerChatEvent event) {
         if (event.getPlayer().hasPermission("xg7lobby.chat.ignore-lock")) return;
-        if (ConfigFile.of("data/data.yml", XG7Lobby.getInstance()).root().get("chat-locked")) {
+        if (ConfigFile.of("data/data", XG7Lobby.getInstance()).root().get("chat-locked")) {
 
             if (ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("lock-chat-only-in-lobby", false) && !XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), event.getPlayer())) return;
 

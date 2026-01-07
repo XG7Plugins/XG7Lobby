@@ -56,10 +56,4 @@ items:
     name: "&aSteak"
     amount: 64
 
-
-
-
-row: ["sword", "bow", "arrow", "", "", "", "", "steak", "leave"]
-
-
-config-version: 3
+hotbar: ["sword", "bow", "arrow", "", "", "", "", "steak", "leave"]

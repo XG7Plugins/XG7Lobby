@@ -10,7 +10,6 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.command.CommandSender;
 
@@ -35,13 +34,13 @@ public class DeleteLobby implements Command {
 
         String id = args.get(0, String.class);
 
-        XG7LobbyAPI.requestLobbyLocation(id).thenAccept(lobbyLocation -> {
+        XG7Lobby.getAPI().requestLobbyLocation(id).thenAccept(lobbyLocation -> {
             if (lobbyLocation == null) {
                 Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.id-not-found", Pair.of("id", id));
                 return;
             }
 
-            XG7LobbyAPI.lobbyManager().deleteLobbyLocation(lobbyLocation)
+            XG7Lobby.getAPI().lobbyManager().deleteLobbyLocation(lobbyLocation)
                     .exceptionally(throwable -> {
                                 Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "lobby.delete.on-error", Pair.of("id", id));
                                 throwable.printStackTrace();

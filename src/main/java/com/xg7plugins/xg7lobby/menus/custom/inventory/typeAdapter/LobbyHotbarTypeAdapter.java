@@ -7,7 +7,7 @@ import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyHotbar;
 
 import java.util.*;
 
@@ -27,7 +27,7 @@ public class LobbyHotbarTypeAdapter implements ConfigTypeAdapter<LobbyHotbar> {
         HashMap<String, LobbyItem> items = new HashMap<>();
         HashMap<Integer, String> grid = new HashMap<>();
 
-        List<String> row = config.getList("row", String.class).orElse(new ArrayList<>());
+        List<String> row = config.getList("hotbar", String.class).orElse(new ArrayList<>());
 
         for (int i = 0; i < row.size(); i++) {
             grid.put(i, row.get(i));

@@ -9,7 +9,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 
@@ -28,9 +28,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
-public class LoginAndLogoutEvent implements LobbyListener {
+public class  LoginAndLogoutEvent implements LobbyListener {
 
-    private final LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
+    private final LobbyPlayerManager lobbyPlayerManager = XG7Lobby.getAPI().lobbyPlayerManager();
 
     @Override
     public boolean isEnabled() {
@@ -79,8 +79,8 @@ public class LoginAndLogoutEvent implements LobbyListener {
             String lobbyId = joinConfig.get("tp-to-lobby-id", "random");
 
             CompletableFuture<LobbyLocation> lobbyLocation = lobbyId.equalsIgnoreCase("random")
-                    ? XG7LobbyAPI.requestRandomLobbyLocation()
-                    : XG7LobbyAPI.requestLobbyLocation(lobbyId);
+                    ? XG7Lobby.getAPI().requestRandomLobbyLocation()
+                    : XG7Lobby.getAPI().requestLobbyLocation(lobbyId);
 
             lobbyLocation.thenAccept(lobby -> {
                 XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> {
@@ -118,11 +118,6 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         ConfigSection quitConfig = ConfigFile.of("events", XG7Lobby.getInstance()).section("on-quit");
 
-        if (XG7Menus.hasPlayerMenuHolder(player.getUniqueId())) {
-            player.getInventory().clear();
-            XG7Menus.removePlayerMenuHolder(player.getUniqueId());
-        }
-
         if (quitConfig.get("send-quit-message")) {
             Bukkit.getOnlinePlayers().forEach(p -> {
                 boolean inEnabledWorld = XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player);
@@ -149,7 +144,8 @@ public class LoginAndLogoutEvent implements LobbyListener {
         if (quitConfig.get("run-actions-when-change-world", true))
             ActionsProcessor.process(quitConfig.getList("actions", String.class).orElse(Collections.emptyList()), player);
 
-        if (XG7LobbyAPI.customInventoryManager() != null)
+        System.out.println("Closing menus for " + player.getName() + " on world leave.");
+        if (XG7Lobby.getAPI().customInventoryManager() != null)
             XG7Plugins.getAPI().menus().closeAllMenus(player);
 
         LobbyApplier.reset(player);
@@ -179,8 +175,8 @@ public class LoginAndLogoutEvent implements LobbyListener {
                 String lobbyId = joinConfig.get("tp-to-lobby-id", "random");
 
                 CompletableFuture<LobbyLocation> lobbyLocation = lobbyId.equalsIgnoreCase("random")
-                        ? XG7LobbyAPI.requestRandomLobbyLocation()
-                        : XG7LobbyAPI.requestLobbyLocation(lobbyId);
+                        ? XG7Lobby.getAPI().requestRandomLobbyLocation()
+                        : XG7Lobby.getAPI().requestLobbyLocation(lobbyId);
 
                 lobbyLocation.thenAccept(lobby -> {
                     XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> {
@@ -197,7 +193,7 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
         }
 
-        XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+        XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> {
                 if (joinConfig.get("clear-inventory", false))
                     player.getInventory().clear();
@@ -211,11 +207,10 @@ public class LoginAndLogoutEvent implements LobbyListener {
 
                 LobbyApplier.apply(player);
 
-                XG7LobbyAPI.customInventoryManager()
+                if (!lobbyPlayer.isBuildEnabled()) XG7Lobby.getAPI().customInventoryManager()
                         .openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
 
                 lobbyPlayer.fly();
-                lobbyPlayer.applyBuild();
                 lobbyPlayer.applyHide();
                 lobbyPlayer.applyInfractions(false);
             }), 50L);

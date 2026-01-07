@@ -34,7 +34,7 @@ public class CustomCommandManager {
             CustomCommand customCommand = new CustomCommand(path);
             PluginCommand pluginCommand = (PluginCommand) ReflectionClass.of(PluginCommand.class)
                     .getConstructor(String.class, org.bukkit.plugin.Plugin.class)
-                    .newInstance(customCommand.getName(), XG7Lobby.getInstance())
+                    .newInstance(customCommand.getName(), XG7Lobby.getInstance().getJavaPlugin())
                     .getObject();
             pluginCommand.setAliases(customCommand.getAliases());
             pluginCommand.setDescription(customCommand.getDescription());
@@ -44,7 +44,7 @@ public class CustomCommandManager {
             commandMap.register(XG7Lobby.getInstance().getClass().getAnnotation(PluginSetup.class).mainCommandName(), pluginCommand);
             commands.put(customCommand.getName(), customCommand);
 
-            Debug.of(XG7Lobby.getInstance()).info("load", "Registered " + customCommand.getName() + " command with succes!");
+            Debug.of(XG7Lobby.getInstance()).info("load", "Registered " + customCommand.getName() + " command with success!");
         }
     }
 

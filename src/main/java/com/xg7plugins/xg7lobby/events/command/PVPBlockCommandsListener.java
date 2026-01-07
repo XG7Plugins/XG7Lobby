@@ -6,7 +6,7 @@ import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.Collections;
@@ -20,7 +20,7 @@ public class PVPBlockCommandsListener implements Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
 
-        if (!XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        if (!XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) return;
 
         ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
 

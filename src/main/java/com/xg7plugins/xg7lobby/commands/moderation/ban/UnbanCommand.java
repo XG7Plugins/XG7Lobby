@@ -2,12 +2,10 @@ package com.xg7plugins.xg7lobby.commands.moderation.ban;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.commands.node.CommandConfig;
-import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
@@ -40,8 +38,7 @@ public class UnbanCommand implements Command {
         OfflinePlayer target = args.get(0, OfflinePlayer.class);
 
         if (!target.isBanned()) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unban.not-banned");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "not-banned");
         }
 
         Bukkit.getServer().getBanList(org.bukkit.BanList.Type.NAME).pardon(target.getName());

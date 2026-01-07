@@ -8,7 +8,7 @@ import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerRespawnInPVPEvent;
 import org.bukkit.Bukkit;
@@ -25,7 +25,7 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
     @Override
     public void handle(Player player, Object... args) {
 
-        XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> {
+        XG7Lobby.getAPI().requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of( () -> {
             if (l == null) return;
             try {
                 l.teleport(player);
@@ -34,9 +34,9 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
             }
         }), 2000L));
 
-        if (XG7LobbyAPI.customInventoryManager() != null) {
+        if (XG7Lobby.getAPI().customInventoryManager() != null) {
             XG7Plugins.getAPI().menus().closeAllMenus(player);
-            XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id", "pvp"), player);
+            XG7Lobby.getAPI().customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id", "pvp"), player);
         }
 
         ActionsProcessor.process(config.getList("actions", String.class).orElse(Collections.emptyList()), player);
@@ -53,7 +53,7 @@ public class RespawnPVPHandler implements PVPHandler, Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event){
         Player player = event.getPlayer();
-        if (!XG7LobbyAPI.globalPVPManager().isInPVP(player)) return;
+        if (!XG7Lobby.getAPI().globalPVPManager().isInPVP(player)) return;
         handle(player);
     }
 }

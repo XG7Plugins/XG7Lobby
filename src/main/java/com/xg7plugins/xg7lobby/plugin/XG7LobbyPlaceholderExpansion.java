@@ -31,16 +31,16 @@ public class XG7LobbyPlaceholderExpansion extends PlaceholderExpansion {
         if (player == null) {
             return null;
         }
-        LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(player.getUniqueId());
+        LobbyPlayer lobbyPlayer = XG7Lobby.getAPI().getLobbyPlayer(player.getUniqueId());
         if (lobbyPlayer == null) {
             return null;
         }
 
         switch (identifier) {
             case "chat_locked":
-                return ConfigFile.of("data/data.yml", XG7Lobby.getInstance()).root().get("chat-locked") + "";
+                return ConfigFile.of("data/data", XG7Lobby.getInstance()).root().get("chat-locked") + "";
             case "random_lobby_location":
-                return XG7LobbyAPI.lobbyManager().getRandomLobbyLocation().join() + "";
+                return XG7Lobby.getAPI().lobbyManager().getRandomLobbyLocation().join() + "";
             case "player_warns":
                 return lobbyPlayer.getInfractions().size() + "";
             case "player_is_hiding_players":
@@ -54,9 +54,9 @@ public class XG7LobbyPlaceholderExpansion extends PlaceholderExpansion {
             case "player_is_flying":
                 return lobbyPlayer.isFlying() + "";
             case "player_is_in_pvp":
-                return XG7LobbyAPI.globalPVPManager().isInPVP(player) + "";
+                return XG7Lobby.getAPI().globalPVPManager().isInPVP(player) + "";
             case "players_in_global_pvp":
-                return XG7LobbyAPI.globalPVPManager().getAllPlayersInPVP().size() + "";
+                return XG7Lobby.getAPI().globalPVPManager().getAllPlayersInPVP().size() + "";
             case "player_global_pvp_kills":
                 return lobbyPlayer.getGlobalPVPKills() + "";
             case "player_global_pvp_deaths":

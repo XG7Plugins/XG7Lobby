@@ -15,7 +15,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import org.bukkit.OfflinePlayer;
@@ -23,7 +23,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class KickCommand implements Command {
 
         String reason;
 
-        if (args.len() > 1) reason = args.toString(1);
+        if (args.len() > 1) reason = args.join(1);
         else reason = "Kicked by an admin";
 
 
@@ -66,15 +65,14 @@ public class KickCommand implements Command {
         ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
         if (target.hasPermission("xg7lobby.moderation.kick") && !moderationConfig.get("kick-admin", false)) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.kick.kick-admin");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "kick-admin");
         }
 
-        LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
+        LobbyPlayerManager lobbyPlayerManager = XG7Lobby.getAPI().lobbyPlayerManager();
 
         lobbyPlayerManager.kickPlayer(target, Text.fromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.kick.on-kick").replace("reason", reason));
 
-        XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
+        XG7Lobby.getAPI().requestLobbyPlayer(target.getUniqueId()).thenAccept(lobbyPlayer -> {
             int warningLevel = moderationConfig.get("kick-warning-level", 2);
 
             Infraction infraction = new Infraction(target.getUniqueId(), warningLevel, reason);

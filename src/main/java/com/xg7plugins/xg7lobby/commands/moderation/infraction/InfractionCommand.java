@@ -14,7 +14,7 @@ import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -31,6 +31,11 @@ import java.util.stream.Collectors;
         iconMaterial = XMaterial.IRON_AXE
 )
 public class InfractionCommand implements Command {
+
+    @CommandConfig
+    public CommandState root(CommandSender sender) {
+        return CommandState.SYNTAX_ERROR;
+    }
 
     @CommandConfig(
             name = "add",
@@ -49,8 +54,8 @@ public class InfractionCommand implements Command {
         OfflinePlayer offlinePlayer = args.get(0, OfflinePlayer.class);
 
         int level = args.get(1, Integer.class);
-        String reason = args.toString(2);
-        LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(offlinePlayer.getUniqueId());
+        String reason = args.join(2);
+        LobbyPlayer player = XG7Lobby.getAPI().getLobbyPlayer(offlinePlayer.getUniqueId());
 
         if (player == null) {
             return CommandState.PLAYER_NOT_FOUND;
@@ -59,8 +64,7 @@ public class InfractionCommand implements Command {
         ConfigSection rootSection = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
 
         if (player.getOfflinePlayer().isOp() && !rootSection.get("warn-admin", false)) {
-            Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.warn-admin");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "warn-admin");
         }
 
         List<Map> infractionLevels = rootSection.getList("infraction-levels", Map.class).orElse(Collections.emptyList());
@@ -70,13 +74,12 @@ public class InfractionCommand implements Command {
         });
 
         if (!levelExists) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.level-invalid");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "invalid-infraction-level:");
         }
 
         Infraction infraction = new Infraction(player.getPlayerUUID(), level, reason);
 
-        XG7LobbyAPI.lobbyPlayerManager().addInfraction(infraction);
+        XG7Lobby.getAPI().lobbyPlayerManager().addInfraction(infraction);
 
         if (offlinePlayer.isOnline()) Text.sendTextFromLang(player.getPlayer(), XG7Lobby.getInstance(), "commands.infraction.on-warn", Pair.of("reason", reason));
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.on-warn-sender", Pair.of("target", player.getOfflinePlayer().getName()), Pair.of("reason", reason));
@@ -99,13 +102,12 @@ public class InfractionCommand implements Command {
 
         String id = args.get(0, String.class);
 
-        LobbyPlayerManager playerManager = XG7LobbyAPI.lobbyPlayerManager();
+        LobbyPlayerManager playerManager = XG7Lobby.getAPI().lobbyPlayerManager();
 
         Infraction infraction = playerManager.getInfraction(id);
 
         if (infraction == null) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.infraction.infraction-not-found");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "infraction-not-found");
         }
 
         playerManager.deleteInfraction(infraction);
@@ -118,13 +120,13 @@ public class InfractionCommand implements Command {
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
 
-        if (args.len() == 1) {
+        if (args.len() <= 1) {
             return Command.super.onTabComplete(sender, args);
         }
 
         if (args.get(0, String.class).equalsIgnoreCase("pardon") && args.len() == 2) {
             if (!sender.hasPermission("xg7lobby.command.infraction.pardon")) return Collections.emptyList();
-            return XG7LobbyAPI.lobbyPlayerManager().getAllInfractions().stream().map(Infraction::getID).collect(Collectors.toList());
+            return XG7Lobby.getAPI().lobbyPlayerManager().getAllInfractions().stream().map(Infraction::getID).collect(Collectors.toList());
         }
 
         if (!sender.hasPermission("xg7lobby.command.infraction.add")) return Collections.emptyList();

@@ -23,12 +23,12 @@ import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyGUI;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyHotbar;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -320,7 +320,7 @@ public enum ActionType {
 
                 Slot slot = Slot.valueOf(args[0].toUpperCase());
 
-                CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
+                CustomInventoryManager inventoryManager = XG7Lobby.getAPI().customInventoryManager();
 
                 PlayerMenuHolder hotbar = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
 
@@ -371,14 +371,14 @@ public enum ActionType {
                 String id = args[0];
 
                 if (id.equalsIgnoreCase("random")) {
-                    XG7LobbyAPI.requestRandomLobbyLocation().thenAccept(l -> {
+                    XG7Lobby.getAPI().requestRandomLobbyLocation().thenAccept(l -> {
                         if (l == null) return;
                         l.teleport(player);
                     });
                     return;
                 }
 
-                XG7LobbyAPI.requestLobbyLocation(args[0]).thenAccept(l -> {
+                XG7Lobby.getAPI().requestLobbyLocation(args[0]).thenAccept(l -> {
                     if (l == null) return;
                     l.teleport(player);
                 });
@@ -407,7 +407,7 @@ public enum ActionType {
                 if (args.length != 1)
                     throw new ActionException("OPEN", "Incorrectly amount of args: " + args.length + ". The right way to use is [OPEN_MENU] menu_id.");
 
-                XG7LobbyAPI.customInventoryManager().openMenu(args[0], player);
+                XG7Lobby.getAPI().customInventoryManager().openMenu(args[0], player);
             }
     ),
     CLOSE_MENU(
@@ -426,7 +426,7 @@ public enum ActionType {
                 if (args.length != 1)
                     throw new ActionException("OPEN_FORM", "Incorrectly amount of args: " + args.length + ". The right way to use is [OPEN_FORM] form_id.");
 
-                XG7LobbyAPI.customFormsManager().sendForm(args[0], player);
+                XG7Lobby.getAPI().customFormsManager().sendForm(args[0], player);
             }
     ),
     REFRESH_MENU(
@@ -453,7 +453,7 @@ public enum ActionType {
                     throw new ActionException("SWAP", "Incorrectly amount of args: " + args.length + ". The right way to use is [SWAP] menuId, slot, itemPath.");
                 }
 
-                CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
+                CustomInventoryManager inventoryManager = XG7Lobby.getAPI().customInventoryManager();
 
                 LobbyInventory menu = inventoryManager.isGUI(args[0].substring(args[0].indexOf(":") + 1)) ? inventoryManager.getGUIByXG7MenusId(args[0]) : inventoryManager.getHotbarByXG7MenusId(args[0]);
 
@@ -499,9 +499,10 @@ public enum ActionType {
             "ENDER_PEARL",
             false,
             (player, args) -> {
-                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setHidingPlayers(true);
                     lobbyPlayer.applyHide();
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
             }),
     SHOW_PLAYERS(
@@ -510,9 +511,10 @@ public enum ActionType {
             "ENDER_EYE",
             false,
             (player, args) -> {
-                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setHidingPlayers(false);
                     lobbyPlayer.applyHide();
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
             }),
     FLY_ON(
@@ -521,9 +523,10 @@ public enum ActionType {
             "FEATHER",
             false,
             (player, args) -> {
-                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setFlying(true);
                     lobbyPlayer.fly();
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
             }
     ),
@@ -533,9 +536,10 @@ public enum ActionType {
             "FEATHER",
             false,
             (player, args) -> {
-                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setFlying(false);
                     lobbyPlayer.fly();
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
             }
     ),
@@ -545,9 +549,10 @@ public enum ActionType {
             "IRON_SHOVEL",
             false,
             (player, args) -> {
-                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(true);
-                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
+                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
                 });
             }
     ),
@@ -557,9 +562,10 @@ public enum ActionType {
             "IRON_SHOVEL",
             false,
             (player, args) -> {
-                XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                     lobbyPlayer.setBuildEnabled(false);
-                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
+                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
                 });
             }
     ),
@@ -568,7 +574,7 @@ public enum ActionType {
             "Enables the pvp of the player",
             "DIAMOND_SWORD",
             false,
-            (player, args) -> XG7LobbyAPI.globalPVPManager().addPlayer(player)
+            (player, args) -> XG7Lobby.getAPI().globalPVPManager().addPlayer(player)
     ),
     PVP_OFF(
             "[PVP_OFF]",
@@ -577,7 +583,7 @@ public enum ActionType {
                     false,
                     (player, args) -> {
 
-                        if (!XG7LobbyAPI.isPlayerInPVP(player)) return;
+                        if (!XG7Lobby.getAPI().isPlayerInPVP(player)) return;
 
                         ConfigSection config = ConfigFile.of("pvp", XG7Lobby.getInstance()).root();
 
@@ -600,8 +606,8 @@ public enum ActionType {
                                         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled");
                                         return;
                                     }
-                                    XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
-                                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
+                                    XG7Lobby.getAPI().globalPVPManager().getCombatLogHandler().removeFromLog(player);
+                                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> XG7Lobby.getAPI().globalPVPManager().removePlayer(player)));
                                 })
                         );
                     }

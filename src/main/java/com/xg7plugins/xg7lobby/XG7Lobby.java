@@ -18,10 +18,12 @@ import com.xg7plugins.help.chat.HelpChat;
 import com.xg7plugins.help.form.HelpForm;
 import com.xg7plugins.help.menu.HelpGUI;
 import com.xg7plugins.modules.xg7geyserforms.forms.Form;
+import com.xg7plugins.modules.xg7holograms.hologram.Hologram;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.utils.PluginKey;
 import com.xg7plugins.xg7lobby.commands.custom.CustomCommandManager;
+import com.xg7plugins.xg7lobby.commands.entities.HologramsCommand;
 import com.xg7plugins.xg7lobby.commands.lobby.DeleteLobby;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobbies;
 import com.xg7plugins.xg7lobby.commands.lobby.Lobby;
@@ -37,6 +39,8 @@ import com.xg7plugins.xg7lobby.commands.moderation.mute.MuteCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle.*;
 import com.xg7plugins.xg7lobby.commands.utils.*;
+import com.xg7plugins.xg7lobby.holograms.HologramsManager;
+import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyPlaceholderExpansion;
 import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
@@ -74,7 +78,6 @@ import com.xg7plugins.xg7lobby.data.location.LobbyLocationManager;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
@@ -106,7 +109,7 @@ import java.util.List;
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
         configs = {"ads", "custom_commands", "events", "pvp", "data/data"},
-        reloadCauses = {"scores", "menus", "forms"},
+        reloadCauses = {"scores", "menus", "forms", "holograms"},
         collaborators = {
                 @Collaborator(uuid = "45766b7f-9789-40e1-bd0b-46fa0d032bde", name = "&aDaviXG7", role = "&bCreator of all plugin"),
                 @Collaborator(uuid = "f12b8505-8b77-4046-9d86-8b5303690096", name = "&aSadnessSad", role = "&bBeta tester"),
@@ -125,6 +128,7 @@ public final class XG7Lobby extends Plugin {
     private GlobalPVPManager globalPVPManager;
     private CustomInventoryManager customInventoryManager;
     private CustomFormsManager customFormsManager;
+    private HologramsManager hologramsManager;
 
     /**
      * Constructor for the Plugin class.
@@ -133,6 +137,7 @@ public final class XG7Lobby extends Plugin {
      */
     public XG7Lobby(JavaPlugin plugin) {
         super(plugin);
+        this.api = new XG7LobbyAPI(this);
     }
 
     @Override
@@ -158,9 +163,11 @@ public final class XG7Lobby extends Plugin {
         if (config.get("custom-geyser-forms-enabled", false)) {
             this.customFormsManager = new CustomFormsManager();
         }
+        if (config.get("holograms-enabled", false)) {
+            this.hologramsManager = new HologramsManager(this);
+        }
 
         debug.info("load", "Loading scores...");
-
         lobbyScoreManager.loadScores();
 
         debug.info("load", "Loading custom commands...");
@@ -180,7 +187,7 @@ public final class XG7Lobby extends Plugin {
         }
         if (cause.equals("menus")) {
             debug.info("load", "Reloading menus...");
-            CustomInventoryManager inventoryManager = XG7LobbyAPI.customInventoryManager();
+            CustomInventoryManager inventoryManager = XG7Lobby.getAPI().customInventoryManager();
 
             if (inventoryManager != null) {
                 inventoryManager.reloadInventories();
@@ -194,14 +201,27 @@ public final class XG7Lobby extends Plugin {
 
             debug.info("load", "Menus reloaded.");
         }
+
+        if (cause.equals("holograms")) {
+            if (XG7Lobby.getAPI().hologramsManager() != null) {
+                debug.info("load", "Reloading holograms...");
+
+                HologramsManager hologramsManager = XG7Lobby.getAPI().hologramsManager();
+                hologramsManager.unregisterAllHolograms();
+                hologramsManager.loadHolograms();
+
+                debug.info("load", "Holograms reloaded.");
+            }
+        }
+
         if (cause.equals("forms")) {
 
             if (!XG7Plugins.getAPI().isGeyserFormsEnabled()) return;
-            if (XG7LobbyAPI.customFormsManager() == null) return;
+            if (XG7Lobby.getAPI().customFormsManager() == null) return;
 
             debug.info("load", "Reloading forms...");
 
-            CustomFormsManager formsManager = XG7LobbyAPI.customFormsManager();
+            CustomFormsManager formsManager = XG7Lobby.getAPI().customFormsManager();
             if (formsManager != null) formsManager.reloadForms();
 
             debug.info("load", "Forms reloaded.");
@@ -225,12 +245,21 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<Repository<?,?>> loadRepositories() {
-        return Arrays.asList(XG7LobbyAPI.lobbyManager().getLobbyLocationRepository(), XG7LobbyAPI.lobbyPlayerManager().getLobbyPlayerRepository());
+        return Arrays.asList(XG7Lobby.getAPI().lobbyManager().getLobbyLocationRepository(), XG7Lobby.getAPI().lobbyPlayerManager().getLobbyPlayerRepository());
     }
 
     @Override
     public List<Command> loadCommands() {
-        return Arrays.asList(new SetLobby(), new DeleteLobby(), new Lobbies(), new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(), new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(), new VanishCommand(), new BanCommand(), new BanIPCommand(), new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(), new MuteCommand(), new UnMuteCommand(), new KickCommand(), new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand(), new OpenFormCommand(), new ResetStatsCommand());
+        return Arrays.asList(
+                new SetLobby(), new DeleteLobby(), new Lobbies(),
+                new Lobby(), new ExecuteActionCommand(), new GamemodeCommand(),
+                new OpenInventoryCommand(), new FlyCommand(), new BuildCommand(),
+                new VanishCommand(), new BanCommand(), new BanIPCommand(),
+                new UnbanCommand(), new UnbanIPCommand(), new InfractionCommand(),
+                new MuteCommand(), new UnMuteCommand(), new KickCommand(),
+                new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand(),
+                new OpenFormCommand(), new ResetStatsCommand(), new HologramsCommand(hologramsManager)
+        );
     }
 
     @Override
@@ -244,7 +273,7 @@ public final class XG7Lobby extends Plugin {
                 new PVPBlockCommandsListener(), new CommandProcessListener(), new NLoginListener()
         ));
 
-        GlobalPVPManager pvpManager = XG7LobbyAPI.globalPVPManager();
+        GlobalPVPManager pvpManager = XG7Lobby.getAPI().globalPVPManager();
 
         if (pvpManager.isEnabled()) {
             listeners.addAll(pvpManager.getAllListenersHandlers());
@@ -309,7 +338,7 @@ public final class XG7Lobby extends Plugin {
         menus.add(new LobbiesMenu());
         menus.add(new InfractionsMenu());
 
-        if (XG7LobbyAPI.customInventoryManager() == null) {
+        if (XG7Lobby.getAPI().customInventoryManager() == null) {
             return menus;
         }
 
@@ -319,7 +348,7 @@ public final class XG7Lobby extends Plugin {
         configManager.registerAdapter(new LobbyGUITypeAdapter());
         configManager.registerAdapter(new LobbyHotbarTypeAdapter());
 
-        XG7LobbyAPI.customInventoryManager().loadInventories();
+        XG7Lobby.getAPI().customInventoryManager().loadInventories();
 
         return menus;
     }
@@ -327,7 +356,7 @@ public final class XG7Lobby extends Plugin {
     @Override
     public List<Form<?,?>> loadForms() {
 
-        if (XG7LobbyAPI.customFormsManager() == null) return Collections.emptyList();
+        if (XG7Lobby.getAPI().customFormsManager() == null) return Collections.emptyList();
 
         ConfigManager configManager = XG7Plugins.getAPI().configManager(this);
 
@@ -336,12 +365,25 @@ public final class XG7Lobby extends Plugin {
         configManager.registerAdapter(new LobbySimpleFormAdapter());
 
         try {
-            XG7LobbyAPI.customFormsManager().loadForms();
+            XG7Lobby.getAPI().customFormsManager().loadForms();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         return Collections.emptyList();
+    }
+
+    public List<Hologram> loadHolograms() {
+
+        if (XG7Lobby.getAPI().hologramsManager() != null) {
+            XG7Lobby.getAPI().hologramsManager().loadHolograms();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public static XG7LobbyAPI getAPI() {
+        return (XG7LobbyAPI) getInstance().getApi();
     }
 
     public static PluginKey keyOf(String id) {

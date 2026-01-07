@@ -1,71 +1,85 @@
 package com.xg7plugins.xg7lobby.plugin;
 
+import com.xg7plugins.api.API;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocationManager;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
+import com.xg7plugins.xg7lobby.holograms.HologramsManager;
 import com.xg7plugins.xg7lobby.menus.custom.forms.CustomFormsManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyGUI;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyHotbar;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class XG7LobbyAPI {
+@Getter
+public class XG7LobbyAPI implements API<XG7Lobby> {
 
-    public static LobbyPlayerManager lobbyPlayerManager() {
-        return ManagerRegistry.get(XG7Lobby.getInstance(), LobbyPlayerManager.class);
+    private final XG7Lobby plugin;
+
+    public XG7LobbyAPI(XG7Lobby plugin) {
+        this.plugin = plugin;
     }
 
-    public static LobbyLocationManager lobbyManager() {
-        return ManagerRegistry.get(XG7Lobby.getInstance(), LobbyLocationManager.class);
+    public LobbyPlayerManager lobbyPlayerManager() {
+        return plugin.getLobbyPlayerManager();
     }
 
-    public static CompletableFuture<LobbyPlayer> requestLobbyPlayer(UUID uuid) {
+    public LobbyLocationManager lobbyManager() {
+        return plugin.getLobbyManager();
+    }
+
+    public CompletableFuture<LobbyPlayer> requestLobbyPlayer(UUID uuid) {
         return lobbyPlayerManager().getPlayerAsync(uuid);
     }
 
-    public static LobbyPlayer getLobbyPlayer(UUID uuid) {
+    public LobbyPlayer getLobbyPlayer(UUID uuid) {
         return lobbyPlayerManager().getPlayer(uuid);
     }
 
-    public static CompletableFuture<LobbyLocation> requestLobbyLocation(String id) {
+    public CompletableFuture<LobbyLocation> requestLobbyLocation(String id) {
         return lobbyManager().getLobbyLocation(id);
     }
 
-    public static CompletableFuture<LobbyLocation> requestRandomLobbyLocation() {
+    public CompletableFuture<LobbyLocation> requestRandomLobbyLocation() {
         return lobbyManager().getRandomLobbyLocation();
     }
 
-    public static CompletableFuture<List<LobbyLocation>> requestAllLobbyLocations() {
+    public CompletableFuture<List<LobbyLocation>> requestAllLobbyLocations() {
         return lobbyManager().getAllLobbies();
     }
 
-    public static CustomInventoryManager customInventoryManager() {
-        return ManagerRegistry.get(XG7Lobby.getInstance(), CustomInventoryManager.class);
+    public CustomInventoryManager customInventoryManager() {
+        return plugin.getCustomInventoryManager();
     }
 
-    public static CustomFormsManager customFormsManager() {
-        return ManagerRegistry.get(XG7Lobby.getInstance(), CustomFormsManager.class);
+    public CustomFormsManager customFormsManager() {
+        return plugin.getCustomFormsManager();
     }
 
-    public static LobbyGUI getCustomGUI(String id) {
+    public LobbyGUI getCustomGUI(String id) {
         return customInventoryManager().getGUI(id);
     }
-    public static LobbyHotbar getCustomHotbar(String id) {
+    public LobbyHotbar getCustomHotbar(String id) {
         return customInventoryManager().getHotbar(id);
     }
 
-    public static GlobalPVPManager globalPVPManager() {
-        return ManagerRegistry.get(XG7Lobby.getInstance(), GlobalPVPManager.class);
+    public GlobalPVPManager globalPVPManager() {
+        return plugin.getGlobalPVPManager();
     }
 
-    public static boolean isPlayerInPVP(Player player) {
+    public HologramsManager hologramsManager() {
+        return plugin.getHologramsManager();
+    }
+
+    public boolean isPlayerInPVP(Player player) {
         return globalPVPManager().isInPVP(player);
     }
 

@@ -15,7 +15,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
@@ -30,7 +30,7 @@ import java.util.List;
 @CommandSetup(
         name = "mute",
         description = "Mutes a player for chat",
-        syntax = "/7lmute <player> <time> (reason)",
+        syntax = "/7lmute <player> <time|forever> (reason)",
         permission = "xg7lobby.moderation.mute",
         pluginClass = XG7Lobby.class,
         iconMaterial = XMaterial.IRON_DOOR
@@ -55,31 +55,29 @@ public class MuteCommand implements Command {
 
         String reason = "Muted by an admin";
 
-        if (args.len() > 2) reason = args.toString(2);
+        if (args.len() > 2) reason = args.join(2);
 
         ConfigSection moderationConfig = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("moderation");
 
-        LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
+        LobbyPlayer player = XG7Lobby.getAPI().getLobbyPlayer(target.getUniqueId());
 
         if (player.isMuted()) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.already-muted");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "already-muted");
         }
 
         if (player.getPlayer().hasPermission("xg7lobby.moderation.mute") && !moderationConfig.get("mute-admin", false)) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.mute-admin");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "mute-admin");
         }
 
-        LobbyPlayerManager playerManager = XG7LobbyAPI.lobbyPlayerManager();
+        LobbyPlayerManager playerManager = XG7Lobby.getAPI().lobbyPlayerManager();
 
         playerManager.mutePlayer(player, time, Text.format(reason).replaceAll(Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + "")));
 
-        XG7LobbyAPI.lobbyPlayerManager().updatePlayer(player);
+        XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(player);
 
         Infraction infraction = new Infraction(player.getPlayerUUID(), moderationConfig.get("mute-warning-level", 1), reason);
 
-        XG7LobbyAPI.lobbyPlayerManager().addInfraction(infraction);
+        XG7Lobby.getAPI().lobbyPlayerManager().addInfraction(infraction);
 
         Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.mute.on-mute-sender", Pair.of("reason", reason), Pair.of("time", (time.isZero() ? "forever" : Time.getRemainingTime(time).toMilliseconds()) + ""), Pair.of("target", target.getName()));
 

@@ -15,7 +15,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -133,9 +133,9 @@ public class Lobby implements Command {
         };
 
         if (id == null) {
-            XG7LobbyAPI.requestRandomLobbyLocation().thenAccept(teleportConsumer);
+            XG7Lobby.getAPI().requestRandomLobbyLocation().thenAccept(teleportConsumer);
         } else {
-            XG7LobbyAPI.requestLobbyLocation(id).thenAccept(teleportConsumer);
+            XG7Lobby.getAPI().requestLobbyLocation(id).thenAccept(teleportConsumer);
         }
 
         return CommandState.FINE;

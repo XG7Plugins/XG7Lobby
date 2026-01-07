@@ -181,7 +181,4 @@ items:
       - "[MESSAGE] &aBuild enabled!"
 
 
-row: ["games","profile","enablePVP","","enableFly","","enableBuild","hidePlayers","lobbies"]
-
-
-config-version: 2.0
+hotbar: ["games","profile","enablePVP","","enableFly","","enableBuild","hidePlayers","lobbies"]

@@ -30,9 +30,9 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
 
         List<String> actions = config.getList("actions", String.class).orElse(new ArrayList<>());
 
-        String id = path.split("\\.")[path.split("\\.").length - 1];
+        String configPath = config.getPath();
 
-        
+        String id = configPath.split("\\.")[configPath.split("\\.").length - 1];
 
         if (config.child("material-settings").exists()) {
             String type = config.child("material-settings").get("type");
@@ -54,8 +54,6 @@ public class LobbyItemTypeAdapter implements ConfigTypeAdapter<LobbyItem> {
                 .flags(itemFlags.toArray(new ItemFlag[0]))
                 .setNBTTag("lobby-item_id", id)
                 .setNBTTag("lobby-item_actions", actions);
-
-        
 
         for (String enchant : enchants) {
             Enchantment enchantment = Enchantment.getByName(enchant.split(", ")[0]);

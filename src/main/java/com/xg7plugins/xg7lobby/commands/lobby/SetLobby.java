@@ -3,7 +3,6 @@ package com.xg7plugins.xg7lobby.commands.lobby;
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.commands.node.CommandConfig;
-import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
@@ -13,7 +12,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.location.LobbyLocationManager;
 import org.bukkit.command.CommandSender;
@@ -67,7 +66,7 @@ public class SetLobby implements Command {
 
         LobbyLocation lobbyLocation = new LobbyLocation(id, location, XG7Plugins.getAPI().getServerInfo());
 
-        LobbyLocationManager lobbyManager = XG7LobbyAPI.lobbyManager();
+        LobbyLocationManager lobbyManager = XG7Lobby.getAPI().lobbyManager();
 
         try {
             String finalId = id;

@@ -83,6 +83,11 @@ public class LobbyPlayerManager {
 
     public void deleteInfraction(Infraction infraction) {
         infractionRepository.delete(infraction);
+
+        LobbyPlayer lobbyPlayer = getPlayer(infraction.getPlayerUUID());
+        lobbyPlayer.removeInfraction(infraction.getID());
+
+        updatePlayer(lobbyPlayer);
     }
 
     public CompletableFuture<Boolean> saveInfractionAsync(Infraction infraction) {

@@ -8,7 +8,6 @@ fly: ["7lfly", "7lf", "fly"]
 gamemode: ["gm", "7lgm"]
 build: ["7lbuild", "7lb", "build"]
 lockchat: ["7llockchat", "7llc", "lockchat"]
-infraction: ["infraction", "7linfraction", "punishment", "7lpunishment", "7lwarn", "7lw", "warn"]
 mute: ["7lmute", "7lm", "mute"]
 unmute: ["7lunmute", "7lum", "unmute"]
 kick: ["7lkick", "7lk", "kick"]
@@ -24,4 +23,33 @@ pvp: ["7lpvp", "pvp"]
 infractions: ["infractions", "7lwarns", "warns", "punishments"]
 resetstats: ["7lresetstats", "7lrs", "resetstats"]
 
-config-version: 1.0
+infraction: ["infraction", "7linfraction", "punishment", "7lpunishment", "7lwarn", "7lw", "warn"]
+
+infraction_add: []
+infraction_pardon: ["remove"]
+
+holograms: ["7lholograms", "7lh", "holograms", "hologram", "7lholo", "holo"]
+
+holograms_create: ["add"]
+holograms_delete: ["remove", "del", "rem"]
+holograms_teleport: ["tp"]
+holograms_actions: ["action"]
+holograms_lines: ["line", "text", "texts"]
+holograms_save: []
+
+holograms_lines_add: ["insert"]
+holograms_lines_remove: ["remove", "del", "rem"]
+holograms_lines_edit: ["set", "change"]
+holograms_lines_equip: ["equip", "setitem", "item"]
+holograms_lines_options: ["options", "option", "settings", "setting", "attributes", "attribute"]
+
+holograms_lines_options_list: ["list", "ls"]
+holograms_lines_options_set: ["add"]
+
+holograms_actions_add: ["add", "create"]
+holograms_actions_edit: ["edit", "set", "change"]
+holograms_actions_remove: ["remove", "delete", "del"]
+holograms_actions_list: ["list", "ls"]
+
+
+config-version: 2

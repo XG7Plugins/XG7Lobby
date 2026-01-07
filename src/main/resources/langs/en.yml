@@ -1,4 +1,27 @@
-formated-name: "English (US)"
+formatted-name: "English (US)"
+
+command-errors:
+
+  invalid-game-mode: "%prefix% &cInvalid gamemode. &aUse &b(0, s)&8, &b(1, c)&8, &b(2, a) &aor &b(3, sp)."
+
+  warn-admin: "%prefix% &cYou can't warn an admin."
+  invalid-infraction-level: "%prefix% &cInvalid infraction level. &eUse a level registered on config."
+
+  already-muted: "%prefix% &cThis player is already muted."
+  mute-admin: "%prefix% &cYou can't mute an admin."
+
+  kick-admin: "%prefix% &cYou can't kick an admin."
+
+  already-banned: "%prefix% &cThis player is already banned."
+  ban-admin: "%prefix% &cYou can't ban an admin."
+  not-banned: "%prefix% &cThis player is not banned."
+
+  hologram-not-found: "%prefix% &cHologram with id &e%id% &cnot found."
+
+  hologram-line-not-found: "%prefix% &cHologram line &e%index% &cnot found."
+  hologram-line-invalid-equipment-slot: "%prefix% &cThe equipment slot &e%slot% &cis invalid."
+
+  hologram-action-not-found: "%prefix% &cHologram action &e%index% &cnot found."
 
 commands:
 
@@ -20,12 +43,6 @@ commands:
     toggle-other-off: "%prefix% &cBuild mode disabled for &b%target%."
 
   infraction:
-    level-invalid: "%prefix% &cInvalid infraction level. &eUse a level registered on config."
-
-    warn-admin: "%prefix% &cYou can't warn an admin."
-
-    infraction-not-found: "%prefix% &cInfraction not found!"
-
     on-pardon: "%prefix% &aWarn with id %id% pardoned successfully."
 
     on-warn: "%prefix% &cYou have been warned by an admin. Reason: &e%reason%."
@@ -74,6 +91,26 @@ commands:
     on-reset: "%prefix% &aPlayer &b%target% &astats reset successfully."
     kills-reset: "%prefix% &aPlayer &b%target% &akills reset successfully."
     deaths-reset: "%prefix% &aPlayer &b%target% &adeaths reset successfully."
+
+  holograms:
+
+    created: "[TITLE] %prefix% &aHologram created successfully with id &e%id%&a."
+    deleted: "[TITLE] %prefix% &aHologram with id &e%id% &adeleted successfully."
+    teleported: "%prefix% &aTeleported to hologram with id &e%id% &asuccessfully."
+    saved: "[TITLE] %prefix% &aHologram saved successfully."
+
+    actions:
+      added: "%prefix% &aAction added successfully to hologram &e%id%&a."
+      removed: "%prefix% &aAction &e%index% &aremoved successfully from hologram &e%id%&a."
+      edited: "%prefix% &aAction &e%index% &aedited successfully from hologram &e%id%&a."
+      showing: "%prefix% &aShowing actions of hologram &e%id%&b:."
+
+    lines:
+      added: "%prefix% &aLine added successfully to hologram &e%id%&a."
+      removed: "%prefix% &aLine &e%index% &aremoved successfully from hologram &e%id%&a."
+      edited: "%prefix% &aLine &e%index% &aedited successfully from hologram &e%id%&a."
+      options-set: "%prefix% &aThe option &e%key% &aset to &e%value% &asuccessfully for hologram &e%id%&a."
+      equipped: "%prefix% &aHologram &e%id% &aequipped successfully."
 
 
 lobby:

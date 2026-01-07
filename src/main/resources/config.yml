@@ -138,6 +138,10 @@ custom-menus-enabled: true
 # Enables support for custom forms on Geyser
 custom-geyser-forms-enabled: true
 
+holograms-enabled: true
+
+npcs-enabled: true
+
 # Enables the built-in lobbies form
 lobbies-form-enabled: true
 

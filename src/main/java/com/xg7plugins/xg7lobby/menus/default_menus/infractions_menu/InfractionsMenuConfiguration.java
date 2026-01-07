@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.bukkit.OfflinePlayer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class InfractionsMenuConfiguration implements MenuConfigurations {
@@ -32,7 +33,7 @@ public class InfractionsMenuConfiguration implements MenuConfigurations {
 
     @Override
     public List<Pair<String,String>> getPlaceholders() {
-        return Arrays.asList(Pair.of("target", target.getName()));
+        return Collections.singletonList(Pair.of("target", target.getName()));
     }
 
     @Override

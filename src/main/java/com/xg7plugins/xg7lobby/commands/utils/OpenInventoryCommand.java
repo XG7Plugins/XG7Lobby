@@ -7,10 +7,9 @@ import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -43,19 +42,19 @@ public class OpenInventoryCommand implements Command {
 
         String id = args.get(0, String.class);
 
-        if (!XG7LobbyAPI.customInventoryManager().isMenu(id)) {
+        if (!XG7Lobby.getAPI().customInventoryManager().isMenu(id)) {
             Text.sendTextFromLang(player, XG7Lobby.getInstance(), "menu-does-not-exist");
             return CommandState.ERROR;
         }
 
-        XG7LobbyAPI.customInventoryManager().openMenu(id, player);
+        XG7Lobby.getAPI().customInventoryManager().openMenu(id, player);
 
         return CommandState.FINE;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, CommandArgs args) {
-        if (args.len() == 1) return new ArrayList<>(XG7LobbyAPI.customInventoryManager().getIds());
+        if (args.len() == 1) return new ArrayList<>(XG7Lobby.getAPI().customInventoryManager().getIds());
         return Collections.emptyList();
     }
 }

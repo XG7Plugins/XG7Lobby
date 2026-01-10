@@ -7,7 +7,7 @@ import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerLeavePVPEvent;
@@ -31,10 +31,10 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
         if (player.isOnline()) {
 
-            if (XG7LobbyAPI.customInventoryManager() != null) {
+            if (XG7Lobby.getAPI().customInventoryManager() != null) {
                 XG7Plugins.getAPI().menus().closeAllMenus(player);
 
-                XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id", "selector"), player);
+                XG7Lobby.getAPI().customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id", "selector"), player);
             }
 
             LobbyApplier.apply(player);
@@ -42,10 +42,10 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
             ActionsProcessor.process(config.getList("actions", String.class).orElse(Collections.emptyList()), player);
 
             if (pvpConfigs.get("hide-players-not-in-pvp", false)) {
-                Bukkit.getOnlinePlayers().stream().filter(XG7LobbyAPI.globalPVPManager()::isInPVP).forEach(p -> p.hidePlayer(player));
+                Bukkit.getOnlinePlayers().stream().filter(XG7Lobby.getAPI().globalPVPManager()::isInPVP).forEach(p -> p.hidePlayer(player));
             }
 
-            XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+            XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.fly();
                 XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
                 lobbyPlayer.applyHide();
@@ -65,10 +65,10 @@ public class LeavePVPHandler implements PVPHandler, LobbyListener {
 
     @Override
     public void onWorldLeave(Player player, World newWorld) {
-        XG7LobbyAPI.globalPVPManager().removePlayer(player);
+        XG7Lobby.getAPI().globalPVPManager().removePlayer(player);
     }
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        XG7LobbyAPI.globalPVPManager().removePlayer(event.getPlayer());
+        XG7Lobby.getAPI().globalPVPManager().removePlayer(event.getPlayer());
     }
 }

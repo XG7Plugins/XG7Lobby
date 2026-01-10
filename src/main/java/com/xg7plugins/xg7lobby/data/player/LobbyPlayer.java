@@ -11,7 +11,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -98,19 +98,20 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         if (player == null) return;
 
         if (buildEnabled) {
-            if (XG7LobbyAPI.customInventoryManager() != null) XG7Plugins.getAPI().menus().closeAllMenus(player);
+            if (XG7Lobby.getAPI().customInventoryManager() != null) XG7Plugins.getAPI().menus().closeAllMenus(player);
+            player.setGameMode(GameMode.CREATIVE);
             return;
         }
 
-        XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
-
+        XG7Lobby.getAPI().customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
+        player.setGameMode(GameMode.SURVIVAL);
     }
 
     public void applyHide() {
         Player player = this.getPlayer();
         if (player == null) return;
 
-        if (XG7LobbyAPI.globalPVPManager().isInPVP(player)) return;
+        if (XG7Lobby.getAPI().globalPVPManager().isInPVP(player)) return;
 
         List<Runnable> tasks = new ArrayList<>();
 
@@ -118,14 +119,14 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
                 .filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), p))
                 .filter(p -> !p.getUniqueId().equals(player.getUniqueId()))
                 .forEach(p -> {
-                    LobbyPlayer otherPlayer = XG7LobbyAPI.getLobbyPlayer(p.getUniqueId());
+                    LobbyPlayer otherPlayer = XG7Lobby.getAPI().getLobbyPlayer(p.getUniqueId());
 
                     tasks.add(() -> {
 
                         if (hidingPlayers) player.hidePlayer(p);
                         else player.showPlayer(p);
 
-                        if (XG7LobbyAPI.globalPVPManager().isInPVP(p)) return;
+                        if (XG7Lobby.getAPI().globalPVPManager().isInPVP(p)) return;
 
                         if (otherPlayer.isHidingPlayers()) p.hidePlayer(player);
                         else p.showPlayer(player);
@@ -143,6 +144,10 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
         this.infractions.add(infraction);
     }
 
+    public void removeInfraction(String infractionID) {
+        this.infractions.removeIf(infraction -> infraction.getID().equals(infractionID));
+    }
+
     public void applyInfractions() {
         applyInfractions(true);
     }
@@ -155,7 +160,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         Infraction newInfraction = infractions.get(infractions.size() - 1);
 
-        LobbyPlayerManager playerManager = XG7LobbyAPI.lobbyPlayerManager();
+        LobbyPlayerManager playerManager = XG7Lobby.getAPI().lobbyPlayerManager();
 
         ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
 

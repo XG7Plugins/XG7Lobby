@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.menus.custom.inventory.gui;
+package com.xg7plugins.xg7lobby.menus.custom.inventory.menus;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.config.file.ConfigFile;
@@ -13,7 +13,6 @@ import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
-import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
@@ -83,43 +82,20 @@ public class LobbyGUI extends Menu implements LobbyInventory {
         InventoryUpdater updater = holder.getInventoryUpdater();
 
         for (int i = 0; i < 9; i++) {
-            Item item  = updater.getItem(Slot.fromSlot(i));
+            Slot slot = Slot.fromSlot(i);
 
-            if (item.isAir()) {
-                if (!grid.containsKey(i)) continue;
+            if (!grid.containsKey(i)) continue;
 
-                String path = grid.get(i);
+            String path = grid.get(i);
 
-                LobbyItem lobbyItem = getItem(holder.getPlayer(), path);
+            LobbyItem lobbyItem = getItem(holder.getPlayer(), path);
 
-                if (lobbyItem == null) continue;
-
-                updater.addItem(lobbyItem.getItem().toInventoryItem(i));
-
+            if (lobbyItem == null) {
+                updater.setItem(slot, Item.air());
                 continue;
             }
 
-            int finalI = i;
-            item.getTag("lobby-item_id", String.class).ifPresent(id -> {
-                LobbyItem lobbyItem = this.items.get(id);
-
-                if (lobbyItem == null) {
-                    updater.setItem(Slot.fromSlot(finalI), Item.from(Material.AIR));
-                    return;
-                }
-
-                String path = grid.get(finalI);
-
-                LobbyItem originalItem = getItem(holder.getPlayer(), path);
-
-                if (originalItem == null) {
-                    updater.setItem(Slot.fromSlot(finalI), Item.from(Material.AIR));
-                    return;
-                }
-
-                updater.setItem(Slot.fromSlot(finalI), lobbyItem.getItem());
-            });
-
+            updater.setItem(slot, lobbyItem.getItem());
         }
 
     }
@@ -186,21 +162,6 @@ public class LobbyGUI extends Menu implements LobbyInventory {
         }).collect(Collectors.toList());
 
         ActionsProcessor.process(actions, event.getHolder().getPlayer());
-    }
-
-    private LobbyItem getItem(Player player, String path) {
-        LobbyItem lobbyItem = this.items.get(path);
-
-        if (lobbyItem == null) return null;
-
-        if (lobbyItem.getConditionLine() == null || lobbyItem.getConditionLine().isEmpty()) return lobbyItem;
-
-        if (!Text.format(lobbyItem.getConditionLine() + "RANDOLAS").textFor(player).getPlainText().isEmpty()) {
-            return lobbyItem;
-        }
-        if (lobbyItem.getOtherItemPath() == null) return null;
-
-        return getItem(player, lobbyItem.getOtherItemPath());
     }
 
 }

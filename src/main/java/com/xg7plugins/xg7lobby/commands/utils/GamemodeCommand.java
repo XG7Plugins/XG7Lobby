@@ -8,11 +8,10 @@ import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
@@ -67,8 +66,7 @@ public class GamemodeCommand implements Command {
         Mode mode = Mode.getMode(args.get(0, String.class));
 
         if (mode == null) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.game-mode.invalid-game-mode");
-            return CommandState.ERROR;
+            return CommandState.error(XG7Lobby.getInstance(), "invalid-game-mode");
         }
 
         if (isOther) {
@@ -85,7 +83,7 @@ public class GamemodeCommand implements Command {
         target.getPlayer().setGameMode(mode.getGameMode());
 
         if (mode == Mode.SURVIVAL || mode == Mode.ADVENTURE) {
-            XG7LobbyAPI.requestLobbyPlayer(target.getUniqueId()).thenAccept(LobbyPlayer::fly);
+            XG7Lobby.getAPI().requestLobbyPlayer(target.getUniqueId()).thenAccept(LobbyPlayer::fly);
         }
 
         OfflinePlayer finalTarget = target;

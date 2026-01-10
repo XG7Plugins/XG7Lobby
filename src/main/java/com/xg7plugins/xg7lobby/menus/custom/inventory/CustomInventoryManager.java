@@ -8,10 +8,11 @@ import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
+import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.FileUtil;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.hotbar.LobbyHotbar;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyGUI;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyHotbar;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -147,6 +148,8 @@ public class CustomInventoryManager {
         if (lobbyInventory instanceof LobbyHotbar) {
             PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(player.getUniqueId());
             if (playerMenu != null) playerMenu.getMenu().close(playerMenu);
+            XG7Plugins.getAPI().taskManager().scheduleSync(BukkitTask.of(() -> lobbyInventory.getMenu().open(player)), 20L);
+            return;
         }
 
         lobbyInventory.getMenu().open(player);

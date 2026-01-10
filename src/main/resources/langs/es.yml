@@ -1,4 +1,4 @@
-formated-name: "Español (ES)"
+formatted-name: "Español (ES)"
 
 commands:
 
@@ -520,3 +520,17 @@ help:
 help-in-chat.commands-title: "&7Comandos de &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 
 config-version: 5
+
+# Errors returned via CommandState.error(...) — put these under 'command-errors'
+command-errors:
+  npc-already-exists: "%prefix% &cYa existe un NPC con id &b%id%."
+  npc-not-exists: "%prefix% &cNPC con id &b%id% &cno existe."
+  npc-not-selected: "%prefix% &cNo has seleccionado un NPC."
+  npc-illegal-type: "%prefix% &cTipo de NPC inválido: &b%type%."
+  npc-invalid-action-index: "%prefix% &cÍndice de acción inválido: &b%index%."
+  npc-no-item-to-display: "%prefix% &cNo hay un objeto válido en la mano para mostrar."
+  npc-skin-url-invalid: "%prefix% &cURL de skin inválida."
+  npc-skin-uuid-invalid: "%prefix% &cUUID de skin inválida."
+  npc-skin-player-invalid: "%prefix% &cJugador o skin inválido."
+  hologram-line-not-found: "%prefix% &cLínea del holograma no encontrada. Índice: &b%index% &cpara NPC &b%id%."
+

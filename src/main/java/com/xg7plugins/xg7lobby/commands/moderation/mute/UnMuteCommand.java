@@ -12,7 +12,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -44,21 +44,20 @@ public class UnMuteCommand implements Command {
 
         OfflinePlayer target = args.get(0, OfflinePlayer.class);
 
-        LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
+        LobbyPlayer player = XG7Lobby.getAPI().getLobbyPlayer(target.getUniqueId());
 
         if (player == null) {
             return CommandState.PLAYER_NOT_FOUND;
         }
 
         if (!player.isMuted()) {
-            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.unmute.not-muted", Pair.of("target", target.getName()));
-            return CommandState.ERROR;
+            return CommandState.error(XG7Plugins.getInstance(), "not-muted");
         }
 
 
         player.setMuted(false);
         player.setUnmuteTime(Time.of(0));
-        XG7LobbyAPI.lobbyPlayerManager().updatePlayer(player);
+        XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(player);
 
         if (target.isOnline()) {
             Text.sendTextFromLang(target.getPlayer(), XG7Lobby.getInstance(), "commands.unmute.on-unmute");

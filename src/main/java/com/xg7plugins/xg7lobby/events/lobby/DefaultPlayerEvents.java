@@ -16,7 +16,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.reflection.ReflectionObject;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.events.LobbyApplier;
@@ -85,7 +85,7 @@ public class DefaultPlayerEvents implements Listener {
             return;
         }
         if (!(action.isRightClick() && action.isBlockInteract())) return;
-        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) return;
         handleItemEvents(event, "player-prohibitions.interact-with-blocks");
     }
 
@@ -99,7 +99,7 @@ public class DefaultPlayerEvents implements Listener {
             priority = EventPriority.HIGH
     )
     public void onDropItem(PlayerDropItemEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) return;
         handleItemEvents(event,"player-prohibitions.drop-items");
     }
 
@@ -113,7 +113,7 @@ public class DefaultPlayerEvents implements Listener {
             priority = EventPriority.HIGH
     )
     public void onPickupItem(PlayerPickupItemEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) return;
         handleItemEvents(event,"player-prohibitions.pickup-items");
     }
 
@@ -126,7 +126,7 @@ public class DefaultPlayerEvents implements Listener {
                 event.setCancelled(false);
                 return;
             }
-            LobbyPlayer lobbyPlayer = XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).join();
+            LobbyPlayer lobbyPlayer = XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).join();
             if (lobbyPlayer.isBuildEnabled())  {
                 event.setCancelled(false);
                 return;
@@ -151,7 +151,7 @@ public class DefaultPlayerEvents implements Listener {
     public void onTakeDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
-        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity())) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP((Player) event.getEntity())) return;
         event.setCancelled(true);
     }
 
@@ -175,15 +175,15 @@ public class DefaultPlayerEvents implements Listener {
 
         if (damager.hasPermission("xg7lobby.attack")) return;
 
-        if (XG7LobbyAPI.isPlayerInPVP(victim) && XG7LobbyAPI.isPlayerInPVP(damager)) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP(victim) && XG7Lobby.getAPI().isPlayerInPVP(damager)) return;
 
-        if (XG7LobbyAPI.isPlayerInPVP(damager) && !XG7LobbyAPI.isPlayerInPVP(victim)) {
+        if (XG7Lobby.getAPI().isPlayerInPVP(damager) && !XG7Lobby.getAPI().isPlayerInPVP(victim)) {
             event.setCancelled(true);
             Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-in-pvp");
             return;
         }
 
-        if (!XG7LobbyAPI.isPlayerInPVP(damager) && damager.hasPermission("xg7lobby.pvp")) {
+        if (!XG7Lobby.getAPI().isPlayerInPVP(damager) && damager.hasPermission("xg7lobby.pvp")) {
             event.setCancelled(true);
             Text.sendTextFromLang(damager, XG7Lobby.getInstance(), "pvp.on-attack-out-pvp");
             return;
@@ -214,7 +214,7 @@ public class DefaultPlayerEvents implements Listener {
     )
     public void onFoodChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
-        if (XG7LobbyAPI.isPlayerInPVP((Player) event.getEntity()) && ConfigFile.of("pvp", XG7Lobby.getInstance()).root().get("food-change", false)) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP((Player) event.getEntity()) && ConfigFile.of("pvp", XG7Lobby.getInstance()).root().get("food-change", false)) return;
         event.setCancelled(true);
     }
 
@@ -227,14 +227,16 @@ public class DefaultPlayerEvents implements Listener {
     )
     public void voidCheck(PlayerMoveEvent event) {
 
-        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) return;
 
         User user = PacketEvents.getAPI().getPlayerManager().getUser(event.getPlayer());
+
+        if (user == null) return;
 
         int layer = user.getClientVersion().isNewerThan(ClientVersion.V_1_17) && MinecraftServerVersion.isNewerOrEqual(ServerVersion.V_1_17_1) ? -66 : -2;
 
         if (event.getPlayer().getLocation().getY() < layer) {
-            LobbyLocation location = XG7LobbyAPI.requestRandomLobbyLocation().join();
+            LobbyLocation location = XG7Lobby.getAPI().requestRandomLobbyLocation().join();
             if (location == null || location.getLocation() == null) {
                 XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation())));
                 return;
@@ -254,7 +256,7 @@ public class DefaultPlayerEvents implements Listener {
     )
     public void onPortal(PlayerTeleportEvent event) {
         if (event.getTo() == null) return;
-        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) {
+        if (XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) {
             event.setCancelled(true);
             return;
         }
@@ -263,7 +265,7 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(isOnlyInWorld = true)
     public void onDeath(PlayerDeathEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP(event.getEntity()) && ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("drop-items", true)) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP(event.getEntity()) && ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("drop-items", true)) return;
         event.getDrops().clear();
     }
 
@@ -279,11 +281,11 @@ public class DefaultPlayerEvents implements Listener {
 
     @EventHandler(isOnlyInWorld = true)
     public void onRespawn(PlayerRespawnEvent event) {
-        if (XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        if (XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) return;
 
         Player player = event.getPlayer();
 
-        CompletableFuture<LobbyLocation> lobbyLocation = XG7LobbyAPI.requestRandomLobbyLocation();
+        CompletableFuture<LobbyLocation> lobbyLocation = XG7Lobby.getAPI().requestRandomLobbyLocation();
 
         lobbyLocation.thenAccept(lobby -> {
             if (lobby.getLocation() == null) {
@@ -293,13 +295,13 @@ public class DefaultPlayerEvents implements Listener {
             XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( () -> lobby.teleport(player)));
         });
 
-        XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
+        XG7Lobby.getAPI().customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), player);
 
         LobbyApplier.apply(player);
 
         player.setHealth(player.getMaxHealth());
 
-        XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+        XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.fly();
             XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of( lobbyPlayer::applyBuild));
             lobbyPlayer.applyHide();

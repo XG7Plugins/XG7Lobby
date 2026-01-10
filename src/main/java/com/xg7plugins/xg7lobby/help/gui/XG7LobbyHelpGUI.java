@@ -16,7 +16,7 @@ import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.item.impl.SkullItem;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class XG7LobbyHelpGUI extends Menu {
                 Item.from(XMaterial.COMPASS)
                         .name("lang:[help.menu.set-lobby-item.name]")
                         .lore("lang:[help.menu.set-lobby-item.lore.current-location]", "lang:[help.menu.set-lobby-item.lore.click]")
-                        .setBuildPlaceholders(Pair.of("location", XG7LobbyAPI.lobbyManager().getRandomLobbyLocation().toString()))
+                        .setBuildPlaceholders(Pair.of("location", XG7Lobby.getAPI().lobbyManager().getRandomLobbyLocation().toString()))
                         .toClickableInventoryItem(29, actionEvent -> { player.performCommand("xg7lobby setlobby"); BasicMenu.refresh(actionEvent.getHolder()); }),
 
                 Item.from(XMaterial.OAK_SIGN)

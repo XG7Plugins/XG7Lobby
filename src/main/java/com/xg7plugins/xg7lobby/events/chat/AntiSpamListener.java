@@ -9,7 +9,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.Infraction;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
@@ -74,9 +74,9 @@ public class AntiSpamListener implements Listener {
 
         if (antiSpamTask.getTolerance(player.getUniqueId()) >= spamTolerance) {
             event.setCancelled(true);
-            LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(player.getUniqueId());
+            LobbyPlayer lobbyPlayer = XG7Lobby.getAPI().getLobbyPlayer(player.getUniqueId());
 
-            LobbyPlayerManager lobbyPlayerManager = XG7LobbyAPI.lobbyPlayerManager();
+            LobbyPlayerManager lobbyPlayerManager = XG7Lobby.getAPI().lobbyPlayerManager();
 
             if (lobbyPlayer.isMuted()) return;
 

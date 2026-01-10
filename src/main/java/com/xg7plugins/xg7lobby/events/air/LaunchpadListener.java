@@ -7,7 +7,7 @@ import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -31,7 +31,7 @@ public class LaunchpadListener implements Listener {
                 .section("pvp")
                 .get("disable-launchpad", true);
 
-        if (disableLaunchpad && XG7LobbyAPI.isPlayerInPVP(player)) return;
+        if (disableLaunchpad && XG7Lobby.getAPI().isPlayerInPVP(player)) return;
 
         XMaterial topBlock = config.get("top-block", XMaterial.STONE_PRESSURE_PLATE);
         XMaterial bottomBlock = config.get("bottom-block", XMaterial.REDSTONE_BLOCK);

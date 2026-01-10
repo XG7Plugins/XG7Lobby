@@ -76,5 +76,6 @@ blocked-commands:
   - "/home"
   - "/back"
 
+
 #DO NOT CHANGE THIS!
-config-version: 2
+config-version: 3

@@ -8,7 +8,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.PlayableSound;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -32,7 +32,7 @@ public class MultiJumpingListener implements Listener {
 
         ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("multi-jumps");
 
-        LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(event.getPlayer().getUniqueId());
+        LobbyPlayer player = XG7Lobby.getAPI().getLobbyPlayer(event.getPlayer().getUniqueId());
 
         if (player == null) return;
         if (player.isFlying() || (jumpingPlayers.containsKey(player.getPlayerUUID()) && jumpingPlayers.get(player.getPlayerUUID()) == 0) || player.getPlayer().getGameMode() == GameMode.CREATIVE || player.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
@@ -63,7 +63,7 @@ public class MultiJumpingListener implements Listener {
                 .section("pvp")
                 .get("disable-multi-jumps", true);
 
-        if (disableMultiJumps && XG7LobbyAPI.isPlayerInPVP(event.getPlayer())) return;
+        if (disableMultiJumps && XG7Lobby.getAPI().isPlayerInPVP(event.getPlayer())) return;
 
         if (event.getPlayer().isOnGround()) {
             event.getPlayer().setAllowFlight(true);

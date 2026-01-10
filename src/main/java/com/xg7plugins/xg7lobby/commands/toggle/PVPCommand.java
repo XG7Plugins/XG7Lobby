@@ -13,12 +13,11 @@ import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.cooldowns.CooldownManager;
 
 import com.xg7plugins.config.utils.ConfigCheck;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -45,8 +44,8 @@ public class PVPCommand implements Command {
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         Player player = (Player) sender;
 
-        if (!XG7LobbyAPI.isPlayerInPVP(player)) {
-            XG7LobbyAPI.globalPVPManager().addPlayer(player);
+        if (!XG7Lobby.getAPI().isPlayerInPVP(player)) {
+            XG7Lobby.getAPI().globalPVPManager().addPlayer(player);
             return CommandState.FINE;
         }
 
@@ -71,8 +70,8 @@ public class PVPCommand implements Command {
                         Text.sendTextFromLang(player, XG7Lobby.getInstance(), "pvp.disable-cancelled");
                         return;
                     }
-                    XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(player);
-                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> XG7LobbyAPI.globalPVPManager().removePlayer(player)));
+                    XG7Lobby.getAPI().globalPVPManager().getCombatLogHandler().removeFromLog(player);
+                    XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(() -> XG7Lobby.getAPI().globalPVPManager().removePlayer(player)));
                 })
         );
 

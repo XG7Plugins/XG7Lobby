@@ -6,7 +6,7 @@ import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.pvp.DeathCause;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
@@ -39,22 +39,22 @@ public class KillPVPHandler implements PVPHandler {
 
         if (killer != null) {
             ActionsProcessor.process(config.get("killer-actions"), killer, Pair.of("victim", victim.getName()), Pair.of("killer", killer.getName()), Pair.of("cause", deathCause.name().toLowerCase()));
-            XG7LobbyAPI.requestLobbyPlayer(killer.getUniqueId()).thenAccept(lobbyPlayer -> {
+            XG7Lobby.getAPI().requestLobbyPlayer(killer.getUniqueId()).thenAccept(lobbyPlayer -> {
                 lobbyPlayer.setGlobalPVPKills(lobbyPlayer.getGlobalPVPKills() + 1);
                 lobbyPlayer.setGlobalPVPKillStreak(lobbyPlayer.getGlobalPVPKillStreak() + 1);
-                XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+                XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
             });
         }
-        XG7LobbyAPI.requestLobbyPlayer(victim.getUniqueId()).thenAccept(lobbyPlayer -> {
+        XG7Lobby.getAPI().requestLobbyPlayer(victim.getUniqueId()).thenAccept(lobbyPlayer -> {
             lobbyPlayer.setGlobalPVPDeaths(lobbyPlayer.getGlobalPVPDeaths() + 1);
             lobbyPlayer.setGlobalPVPKillStreak(0);
-            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+            XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
         });
 
-        List<Player> playersInPVP = XG7LobbyAPI.globalPVPManager().getAllPlayersInPVP();
+        List<Player> playersInPVP = XG7Lobby.getAPI().globalPVPManager().getAllPlayersInPVP();
 
-        if (killer != null) XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(killer);
-        XG7LobbyAPI.globalPVPManager().getCombatLogHandler().removeFromLog(victim);
+        if (killer != null) XG7Lobby.getAPI().globalPVPManager().getCombatLogHandler().removeFromLog(killer);
+        XG7Lobby.getAPI().globalPVPManager().getCombatLogHandler().removeFromLog(victim);
 
         playersInPVP.forEach(player -> {
             if (killer != null) {
@@ -72,11 +72,11 @@ public class KillPVPHandler implements PVPHandler {
     @EventHandler
     public void onKillInPVP(PlayerDeathEvent event) {
 
-        GlobalPVPManager globalPVPManager = XG7LobbyAPI.globalPVPManager();
+        GlobalPVPManager globalPVPManager = XG7Lobby.getAPI().globalPVPManager();
 
         Player victim = event.getEntity();
 
-        if (!XG7LobbyAPI.globalPVPManager().isInPVP(victim)) return;
+        if (!XG7Lobby.getAPI().globalPVPManager().isInPVP(victim)) return;
 
         UUID killerUUID = globalPVPManager.getCombatLogHandler().getDamagerOf(victim);
 

@@ -9,7 +9,6 @@ import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.command.CommandSender;
@@ -31,7 +30,7 @@ public class LockChatCommand implements Command {
 
     @CommandConfig
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
-        ConfigSection data = ConfigFile.of("data/data.yml", XG7Lobby.getInstance()).root();
+        ConfigSection data = ConfigFile.of("data/data", XG7Lobby.getInstance()).root();
 
         data.set("chat-locked", !data.get("chat-locked", false));
         data.getFile().save();

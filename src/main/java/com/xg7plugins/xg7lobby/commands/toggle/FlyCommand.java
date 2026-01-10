@@ -9,14 +9,13 @@ import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -72,14 +71,14 @@ public class FlyCommand implements Command {
 
         OfflinePlayer finalTarget = target;
 
-        LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
+        LobbyPlayer lobbyPlayer = XG7Lobby.getAPI().getLobbyPlayer(target.getUniqueId());
 
         boolean before = lobbyPlayer.isBuildEnabled();
 
         lobbyPlayer.setFlying(!lobbyPlayer.isFlying());
 
         try {
-            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+            XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
 
             if (finalTarget.isOnline()) {
                 XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::fly));
@@ -92,7 +91,7 @@ public class FlyCommand implements Command {
 
         } catch (Exception e) {
             lobbyPlayer.setFlying(before);
-            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+            XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
             throw new RuntimeException(e);
         }
 

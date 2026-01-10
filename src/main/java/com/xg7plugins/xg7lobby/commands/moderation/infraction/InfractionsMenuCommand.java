@@ -8,7 +8,6 @@ import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import org.bukkit.OfflinePlayer;

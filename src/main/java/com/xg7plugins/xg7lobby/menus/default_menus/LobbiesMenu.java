@@ -2,6 +2,7 @@ package com.xg7plugins.xg7lobby.menus.default_menus;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.modules.xg7menus.Slot;
+import com.xg7plugins.modules.xg7menus.item.InventoryItem;
 import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.ChangePageItem;
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.CloseInventoryItem;
@@ -9,7 +10,7 @@ import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.PagedMenu;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.location.LobbyLocation;
 import org.bukkit.entity.Player;
 
@@ -31,10 +32,10 @@ public class LobbiesMenu extends PagedMenu {
     }
 
     @Override
-    public List<Item> pagedItems(Player player) {
-        List<Item> pagedItems = new ArrayList<>();
+    public List<InventoryItem> pagedItems(Player player) {
+        List<InventoryItem> pagedItems = new ArrayList<>();
 
-        List<LobbyLocation> lobbies = XG7LobbyAPI.requestAllLobbyLocations().join();
+        List<LobbyLocation> lobbies = XG7Lobby.getAPI().requestAllLobbyLocations().join();
 
         lobbies.forEach(lobby -> {
             Item lobbyItem = Item.from(XMaterial.NETHER_STAR);
@@ -66,7 +67,7 @@ public class LobbiesMenu extends PagedMenu {
                     )
             );
 
-            pagedItems.add(lobbyItem.clickable(event -> {
+            pagedItems.add(lobbyItem.toClickableInventoryItem(-1, true, event -> {
                 Player p = event.getHolder().getPlayer();
 
                 if (p.hasPermission("xg7lobby.command.lobby.delete") && event.getMenuAction().isRightClick()) {
@@ -83,11 +84,11 @@ public class LobbiesMenu extends PagedMenu {
     }
 
     @Override
-    public List<Item> getItems(Player player) {
+    public List<InventoryItem> getItems(Player player) {
         return Arrays.asList(
-                ChangePageItem.previousPageItem().name("lang:[lobbies-menu.go-back]").slot(45),
-                CloseInventoryItem.get().name("lang:[lobbies-menu.close]").slot(49),
-                ChangePageItem.nextPageItem().name("lang:[lobbies-menu.go-next]").slot(53)
+                ChangePageItem.previousPageItem(Slot.fromSlot(45)).name("lang:[lobbies-menu.go-back]"),
+                CloseInventoryItem.get(Slot.fromSlot(49)).name("lang:[lobbies-menu.close]"),
+                ChangePageItem.nextPageItem(Slot.fromSlot(53)).name("lang:[lobbies-menu.go-next]")
         );
     }
 }

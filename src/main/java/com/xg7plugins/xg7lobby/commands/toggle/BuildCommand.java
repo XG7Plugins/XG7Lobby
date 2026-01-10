@@ -17,7 +17,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -82,14 +82,14 @@ public class BuildCommand implements Command {
 
         OfflinePlayer finalTarget = target;
 
-        LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
+        LobbyPlayer lobbyPlayer = XG7Lobby.getAPI().getLobbyPlayer(target.getUniqueId());
 
         boolean before = lobbyPlayer.isBuildEnabled();
 
         lobbyPlayer.setBuildEnabled(!lobbyPlayer.isBuildEnabled());
 
         try {
-            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+            XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
 
             XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
 
@@ -101,7 +101,7 @@ public class BuildCommand implements Command {
 
         } catch (Exception e) {
             lobbyPlayer.setBuildEnabled(before);
-            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+            XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
             throw new RuntimeException(e);
         }
 

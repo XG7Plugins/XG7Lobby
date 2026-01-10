@@ -7,6 +7,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.modules.xg7menus.Slot;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.editor.InventoryUpdater;
+import com.xg7plugins.modules.xg7menus.item.InventoryItem;
 import com.xg7plugins.utils.item.Item;
 
 import com.xg7plugins.modules.xg7menus.item.clickable.impl.ChangePageItem;
@@ -17,7 +18,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 
 import org.bukkit.OfflinePlayer;
@@ -45,7 +46,7 @@ public class InfractionsMenu extends Menu {
 
         ConfigSection config = ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root();
 
-        LobbyPlayer lobbyPlayer = XG7LobbyAPI.getLobbyPlayer(target.getUniqueId());
+        LobbyPlayer lobbyPlayer = XG7Lobby.getAPI().getLobbyPlayer(target.getUniqueId());
 
         return lobbyPlayer.getInfractions().stream().map(i -> {
             Map warnLevel = config.getList("infraction-levels", Map.class).orElse(Collections.emptyList()).stream()
@@ -62,7 +63,7 @@ public class InfractionsMenu extends Menu {
                             Pair.of("level", String.valueOf(i.getLevel())),
                             Pair.of("id", String.valueOf(i.getID()))
                     )
-                    .clickable(event -> {
+                    .toClickableInventoryItem(-1, true, event -> {
                         Player player = event.getHolder().getPlayer();
                         Text.format(" ").send(player);
 
@@ -74,11 +75,11 @@ public class InfractionsMenu extends Menu {
     }
 
     @Override
-    public List<Item> getItems(Player player) {
+    public List<InventoryItem> getItems(Player player) {
         return Arrays.asList(
-                ChangePageItem.previousPageItem().name("lang:[warn-menu.go-back]").slot(45),
-                CloseInventoryItem.get().name("lang:[warn-menu.close]").slot(49),
-                ChangePageItem.nextPageItem().name("lang:[warn-menu.go-next]").slot(53)
+                ChangePageItem.previousPageItem(Slot.fromSlot(45)).name("lang:[warn-menu.go-back]"),
+                CloseInventoryItem.get(Slot.fromSlot(49)).name("lang:[warn-menu.close]"),
+                ChangePageItem.nextPageItem(Slot.fromSlot(53)).name("lang:[warn-menu.go-next]")
         );
     }
 

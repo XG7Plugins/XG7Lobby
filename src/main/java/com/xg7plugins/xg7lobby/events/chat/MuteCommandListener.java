@@ -6,7 +6,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.time.Time;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.data.player.LobbyPlayer;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -19,14 +19,14 @@ public class MuteCommandListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent event) {
-        LobbyPlayer player = XG7LobbyAPI.getLobbyPlayer(event.getPlayer().getUniqueId());
+        LobbyPlayer player = XG7Lobby.getAPI().getLobbyPlayer(event.getPlayer().getUniqueId());
 
         if (!player.isMuted()) return;
 
         if (Time.now().isEqualOrAfter(player.getUnmuteTime()) && !player.getUnmuteTime().isZero()) {
             player.setMuted(false);
             player.setUnmuteTime(Time.of(0));
-            XG7LobbyAPI.lobbyPlayerManager().updatePlayer(player);
+            XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(player);
             return;
         }
 

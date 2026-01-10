@@ -8,11 +8,10 @@ import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
-import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
@@ -49,18 +48,18 @@ public class ResetStatsCommand implements Command {
             return CommandState.NOT_ONLINE;
         }
 
-        XG7LobbyAPI.requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+        XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
             switch (stats) {
                 case "DEATHS":
                     lobbyPlayer.setGlobalPVPDeaths(0);
-                    XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                     Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.reset-stats.deaths-reset", Pair.of("target", player.getName()));
                     return;
                 case "KILLS":
 
                     lobbyPlayer.setGlobalPVPKills(0);
                     lobbyPlayer.setGlobalPVPKillStreak(0);
-                    XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                     Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.reset-stats.kills-reset", Pair.of("target", player.getName()));
                     return;
 
@@ -69,7 +68,7 @@ public class ResetStatsCommand implements Command {
                     lobbyPlayer.setGlobalPVPDeaths(0);
                     lobbyPlayer.setGlobalPVPKills(0);
                     lobbyPlayer.setGlobalPVPKillStreak(0);
-                    XG7LobbyAPI.lobbyPlayerManager().updatePlayer(lobbyPlayer);
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                     Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.reset-stats.on-reset", Pair.of("target", player.getName()));
                     return;
 

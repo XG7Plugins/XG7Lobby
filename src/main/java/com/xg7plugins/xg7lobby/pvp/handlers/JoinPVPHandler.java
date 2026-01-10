@@ -7,7 +7,7 @@ import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
+
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerJoinPVPEvent;
@@ -34,16 +34,16 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
         player.setGameMode(GameMode.SURVIVAL);
         LobbyApplier.reset(player);
 
-        if (XG7LobbyAPI.customInventoryManager() != null) {
+        if (XG7Lobby.getAPI().customInventoryManager() != null) {
             XG7Plugins.getAPI().menus().closeAllMenus(player);
 
-            XG7LobbyAPI.customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id","pvp"), player);
+            XG7Lobby.getAPI().customInventoryManager().openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-pvp-selector-id","pvp"), player);
         }
 
         if (config.get("heal")) player.setHealth(player.getMaxHealth());
 
         if (config.get("teleport-to-pvp-lobby", false)) {
-            XG7LobbyAPI.requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> l.teleport(player));
+            XG7Lobby.getAPI().requestLobbyLocation(pvpConfigs.get("pvp-lobby")).thenAccept(l -> l.teleport(player));
         }
 
         hidePlayers(player);
@@ -71,13 +71,13 @@ public class JoinPVPHandler implements PVPHandler, LobbyListener {
     private void hidePlayers(Player player) {
         if (!pvpConfigs.get("hide-players-not-in-pvp", false)) return;
 
-        boolean isInPvP = XG7LobbyAPI.isPlayerInPVP(player);
+        boolean isInPvP = XG7Lobby.getAPI().isPlayerInPVP(player);
 
         for (Player other : Bukkit.getOnlinePlayers()) {
 
             if (player.equals(other)) continue;
 
-            boolean otherInPvP = XG7LobbyAPI.isPlayerInPVP(other);
+            boolean otherInPvP = XG7Lobby.getAPI().isPlayerInPVP(other);
 
             if (isInPvP && !otherInPvP) {
                 player.hidePlayer(other);

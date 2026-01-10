@@ -41,7 +41,7 @@ public class WorldCyclesTask extends TimerTask {
 
             boolean dayLightCycle = config.get("day-cycle", false);
 
-            if (MinecraftServerVersion.isOlderThan(ServerVersion.V_1_13)) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, dayLightCycle);
+            if (MinecraftServerVersion.isNewerOrEqual(ServerVersion.V_1_13)) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, dayLightCycle);
             else world.setGameRuleValue("doDaylightCycle", dayLightCycle + "");
 
             if (!dayLightCycle) {
@@ -50,7 +50,7 @@ public class WorldCyclesTask extends TimerTask {
 
             boolean weatherCycle = config.get("weather-cycle", false);
 
-            if (MinecraftServerVersion.isOlderThan(ServerVersion.V_1_13)) world.setGameRule(GameRule.DO_WEATHER_CYCLE, weatherCycle);
+            if (MinecraftServerVersion.isNewerOrEqual(ServerVersion.V_1_13)) world.setGameRule(GameRule.DO_WEATHER_CYCLE, weatherCycle);
             else world.setGameRuleValue("doWeatherCycle", String.valueOf(weatherCycle));
 
             if (!weatherCycle) world.setStorm(config.get("storm", false));

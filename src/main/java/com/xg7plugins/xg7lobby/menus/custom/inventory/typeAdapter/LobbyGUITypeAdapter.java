@@ -7,7 +7,7 @@ import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.modules.xg7menus.menus.MenuAction;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
-import com.xg7plugins.xg7lobby.menus.custom.inventory.gui.LobbyGUI;
+import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyGUI;
 
 import java.util.*;
 

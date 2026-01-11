@@ -90,6 +90,7 @@ debug:
   scores: false
   actions: false
   pvp: false
+  queue: false
 
 ##################################################################
 #                              SQL                               #
@@ -140,6 +141,8 @@ custom-geyser-forms-enabled: true
 
 holograms-enabled: true
 npcs-enabled: true
+
+entity-interaction-cooldown: 3s
 
 queue-system:
   enabled: true

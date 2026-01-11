@@ -4,6 +4,9 @@ import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
 import com.github.retrooper.packetevents.util.Vector3f;
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.modules.xg7npcs.event.NPCClickEvent;
 import com.xg7plugins.modules.xg7npcs.npc.NPC;
 import com.xg7plugins.modules.xg7npcs.npc.impl.DisplayNPC;
@@ -15,6 +18,7 @@ import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.reflection.ReflectionClass;
 import com.xg7plugins.utils.skin.Skin;
+import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import com.xg7plugins.xg7lobby.holograms.data.LobbyHologram;
@@ -49,11 +53,27 @@ public class LobbyNPC {
         Boolean glow = (Boolean) options.getOrDefault("glow", false);
 
         Consumer<NPCClickEvent> clickEventConsumer = (npcClickEvent) -> {
-
             Player player = npcClickEvent.getPlayer();
+
+            CooldownManager manager = XG7Plugins.getAPI().cooldowns();
+
+            if (manager.containsPlayer("entity-interaction", player)) {
+                Text.sendTextFromLang(
+                        player,
+                        XG7Lobby.getInstance(),
+                        "npc-interaction-cooldown",
+                        Pair.of("time", manager.getReamingTime("entity-interaction", player) + "")
+                );
+                return;
+            }
 
             ActionsProcessor.process(clickActions, player, Pair.of("click_action", npcClickEvent.getClickAction().name()));
 
+            manager.addCooldown(
+                    player,
+                    "entity-interaction",
+                    ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().getTimeInMilliseconds("entity-interaction-cooldown")
+            );
             //If You need to check the click action:
             //Usage: [MESSAGE] ?EQUALS: %click_action% = RIGHT_CLICK? Your message here
         };

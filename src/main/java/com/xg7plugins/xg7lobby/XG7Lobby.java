@@ -83,6 +83,9 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
+import com.xg7plugins.xg7lobby.queue.QueueListener;
+import com.xg7plugins.xg7lobby.queue.QueueManager;
+import com.xg7plugins.xg7lobby.queue.QueueTask;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.*;
 import lombok.Getter;
@@ -112,7 +115,7 @@ import java.util.List;
         mainCommandName = "xg7lobby",
         mainCommandAliases = {"7l", "xg7l"},
         configs = {"ads", "custom_commands", "events", "pvp", "data/data"},
-        reloadCauses = {"scores", "menus", "forms", "holograms", "npcs"},
+        reloadCauses = {"scores", "menus", "forms", "holograms", "npcs", "queues"},
         collaborators = {
                 @Collaborator(uuid = "45766b7f-9789-40e1-bd0b-46fa0d032bde", name = "&aDaviXG7", role = "&bCreator of all plugin"),
                 @Collaborator(uuid = "f12b8505-8b77-4046-9d86-8b5303690096", name = "&aSadnessSad", role = "&bBeta tester"),
@@ -133,6 +136,7 @@ public final class XG7Lobby extends Plugin {
     private CustomFormsManager customFormsManager;
     private HologramsManager hologramsManager;
     private NPCsManager npcsManager;
+    private QueueManager queueManager;
 
     /**
      * Constructor for the Plugin class.
@@ -173,6 +177,10 @@ public final class XG7Lobby extends Plugin {
         if (config.get("npcs-enabled", false)) {
             this.npcsManager = new NPCsManager(this);
         }
+        if (config.getFile().section("queue-system").get("enabled", false)) {
+            this.queueManager = new QueueManager();
+            queueManager.init();
+        }
 
         debug.info("load", "Loading scores...");
         lobbyScoreManager.loadScores();
@@ -194,15 +202,14 @@ public final class XG7Lobby extends Plugin {
         }
         if (cause.equals("menus")) {
             debug.info("load", "Reloading menus...");
-            CustomInventoryManager inventoryManager = XG7Lobby.getAPI().customInventoryManager();
 
-            if (inventoryManager != null) {
-                inventoryManager.reloadInventories();
+            if (customInventoryManager != null) {
+                customInventoryManager.reloadInventories();
 
                 Bukkit.getOnlinePlayers().stream().filter(p -> XG7Plugins.getAPI().isInAnEnabledWorld(this, p))
                         .forEach(p -> {
                             XG7Plugins.getAPI().menus().closeAllMenus(p);
-                            inventoryManager.openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), p);
+                            customInventoryManager.openMenu(ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("main-selector-id"), p);
                         });
             }
 
@@ -210,10 +217,9 @@ public final class XG7Lobby extends Plugin {
         }
 
         if (cause.equals("holograms")) {
-            if (XG7Lobby.getAPI().hologramsManager() != null) {
+            if (hologramsManager != null) {
                 debug.info("load", "Reloading holograms...");
 
-                HologramsManager hologramsManager = XG7Lobby.getAPI().hologramsManager();
                 hologramsManager.unregisterAllHolograms();
                 hologramsManager.loadHolograms();
 
@@ -221,17 +227,35 @@ public final class XG7Lobby extends Plugin {
             }
         }
 
+        if (cause.equals("npcs")) {
+            if (npcsManager != null) {
+                debug.info("load", "Reloading npcs...");
+
+                npcsManager.unregisterAllNPCs();
+                npcsManager.loadNPCs();
+
+                debug.info("load", "NPCs reloaded.");
+            }
+        }
+
         if (cause.equals("forms")) {
 
             if (!XG7Plugins.getAPI().isGeyserFormsEnabled()) return;
-            if (XG7Lobby.getAPI().customFormsManager() == null) return;
+            if (customFormsManager == null) return;
 
             debug.info("load", "Reloading forms...");
 
-            CustomFormsManager formsManager = XG7Lobby.getAPI().customFormsManager();
-            if (formsManager != null) formsManager.reloadForms();
+            if (customFormsManager != null) customFormsManager.reloadForms();
 
             debug.info("load", "Forms reloaded.");
+        }
+
+        if (cause.equals("queues")) {
+
+            if (queueManager != null) {
+                queueManager.clear();
+                queueManager.init();
+            }
         }
 
     }
@@ -266,7 +290,7 @@ public final class XG7Lobby extends Plugin {
                 new MuteCommand(), new UnMuteCommand(), new KickCommand(),
                 new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand(),
                 new OpenFormCommand(), new ResetStatsCommand(), new HologramsCommand(hologramsManager),
-                new NPCsCommand(npcsManager)
+                new NPCsCommand(npcsManager), new QueueCommand()
         );
     }
 
@@ -278,7 +302,8 @@ public final class XG7Lobby extends Plugin {
                 new LobbyCommandListener(), new LaunchpadListener(), new MultiJumpingListener(),
                 new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(),
                 new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(),
-                new PVPBlockCommandsListener(), new CommandProcessListener(), new NLoginListener()
+                new PVPBlockCommandsListener(), new CommandProcessListener(), new NLoginListener(),
+                new QueueListener()
         ));
 
         GlobalPVPManager pvpManager = XG7Lobby.getAPI().globalPVPManager();
@@ -304,10 +329,13 @@ public final class XG7Lobby extends Plugin {
 
         if (ConfigFile.of("ads", this).root().get("enabled")) tasks.add(new AutoBroadcastTask());
 
-        ConfigSection config = ConfigFile.mainConfigOf(this).section("anti-spam");
+        ConfigSection config = ConfigFile.mainConfigOf(this).root();
 
+        if (config.child("anti-spam").get("enabled", false)
+                && config.child("anti-spam").get("spam-tolerance", 0) > 0)
+            tasks.add(new AntiSpamTask());
 
-        if (config.get("enabled", false) && config.get("spam-tolerance", 0) > 0) tasks.add(new AntiSpamTask());
+        if (config.child("queue-system").get("enabled", false)) tasks.add(new QueueTask(queueManager));
 
         return tasks;
     }

@@ -29,12 +29,10 @@ import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyHotbar;
+import com.xg7plugins.xg7lobby.queue.QueueManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.GameMode;
+import org.bukkit.*;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -42,6 +40,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 
@@ -611,7 +610,31 @@ public enum ActionType {
                                 })
                         );
                     }
-    );
+    ),
+    QUEUE(
+            "[QUEUE] queueId, [ACTION] ..content",
+            "Put a player into a queue",
+            "CHORUS_FRUIT",
+            true,
+            (player, args) -> {
+
+                if (args.length < 2) {
+                    throw new ActionException("QUEUE", "Incorrectly amount of args: " + args.length + ". The right way to use is [QUEUE] queue_id, [ACTION] ..content.");
+                }
+
+                QueueManager queueManager = XG7Lobby.getAPI().queuesManager();
+
+                String queueId = args[0].toLowerCase();
+                if (!queueManager.exists(queueId)) {
+                    throw new ActionException("QUEUE", "Queue does not exist: " + queueId);
+                }
+
+                String action = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+
+                queueManager.addToQueue(queueId, player, ActionsProcessor.getActionOf(action, Collections.emptyList()));
+            }
+    )
+    ;
 
     private final String usage;
     private final String description;

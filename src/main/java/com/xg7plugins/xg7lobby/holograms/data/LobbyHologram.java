@@ -1,8 +1,12 @@
 package com.xg7plugins.xg7lobby.holograms.data;
 
+import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.config.file.ConfigFile;
+import com.xg7plugins.cooldowns.CooldownManager;
 import com.xg7plugins.modules.xg7holograms.hologram.Hologram;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.location.Location;
+import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
 import lombok.Data;
@@ -29,10 +33,27 @@ public class LobbyHologram {
                 lines.stream().map(LobbyHologramLine::toHologramLine).collect(Collectors.toList()),
                 location,
                 (hologramClickEvent) -> {
-
                     Player player = hologramClickEvent.getPlayer();
 
+                    CooldownManager manager = XG7Plugins.getAPI().cooldowns();
+
+                    if (manager.containsPlayer("entity-interaction", player)) {
+                        Text.sendTextFromLang(
+                                player,
+                                XG7Lobby.getInstance(),
+                                "hologram-interaction-cooldown",
+                                Pair.of("time", manager.getReamingTime("entity-interaction", player) + "")
+                        );
+                        return;
+                    }
+
                     ActionsProcessor.process(clickActions, player, Pair.of("click_action", hologramClickEvent.getAction().name()));
+
+                    manager.addCooldown(
+                            player,
+                            "entity-interaction",
+                            ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().getTimeInMilliseconds("entity-interaction-cooldown")
+                    );
 
                     //If You need to check the click action:
                     //Usage: [MESSAGE] ?EQUALS: %click_action% = RIGHT_CLICK? Your message here

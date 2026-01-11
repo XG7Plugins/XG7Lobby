@@ -13,6 +13,7 @@ import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyHotbar;
 import com.xg7plugins.xg7lobby.npcs.NPCsManager;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
+import com.xg7plugins.xg7lobby.queue.QueueManager;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -82,6 +83,10 @@ public class XG7LobbyAPI implements API<XG7Lobby> {
 
     public NPCsManager npcsManager() {
         return plugin.getNpcsManager();
+    }
+
+    public QueueManager queuesManager() {
+        return plugin.getQueueManager();
     }
 
     public boolean isPlayerInPVP(Player player) {

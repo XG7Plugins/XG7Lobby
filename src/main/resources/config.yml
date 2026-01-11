@@ -139,8 +139,12 @@ custom-menus-enabled: true
 custom-geyser-forms-enabled: true
 
 holograms-enabled: true
-
 npcs-enabled: true
+
+queue-system:
+  enabled: true
+  delay: 3s
+  queues: [ "teleport" ]
 
 # Enables the built-in lobbies form
 lobbies-form-enabled: true

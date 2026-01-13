@@ -35,7 +35,7 @@ public class MultiJumpingListener implements Listener {
         LobbyPlayer player = XG7Lobby.getAPI().getLobbyPlayer(event.getPlayer().getUniqueId());
 
         if (player == null) return;
-        if (player.isFlying() || (jumpingPlayers.containsKey(player.getPlayerUUID()) && jumpingPlayers.get(player.getPlayerUUID()) == 0) || player.getPlayer().getGameMode() == GameMode.CREATIVE || player.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
+        if (player.getLobbySettings().isFlying() || (jumpingPlayers.containsKey(player.getPlayerUUID()) && jumpingPlayers.get(player.getPlayerUUID()) == 0) || player.getPlayer().getGameMode() == GameMode.CREATIVE || player.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
 
         event.setCancelled(true);
 

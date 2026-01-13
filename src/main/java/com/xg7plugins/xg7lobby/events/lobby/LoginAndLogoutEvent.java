@@ -144,7 +144,7 @@ public class  LoginAndLogoutEvent implements LobbyListener {
         if (quitConfig.get("run-actions-when-change-world", true))
             ActionsProcessor.process(quitConfig.getList("actions", String.class).orElse(Collections.emptyList()), player);
 
-        System.out.println("Closing menus for " + player.getName() + " on world leave.");
+
         if (XG7Lobby.getAPI().customInventoryManager() != null)
             XG7Plugins.getAPI().menus().closeAllMenus(player);
 

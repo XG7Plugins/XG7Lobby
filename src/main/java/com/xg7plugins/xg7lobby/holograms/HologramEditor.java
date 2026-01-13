@@ -75,6 +75,10 @@ public class HologramEditor {
     public EditError setOption(int lineIndex, String optionKey, Object optionValue) {
         if (lobbyHologram == null) return EditError.HOLOGRAM_NOT_SELECTED;
 
+        if (lineIndex < 0 || lineIndex >= lobbyHologram.getLines().size()) {
+            return EditError.INVALID_LINE_INDEX;
+        }
+
         LobbyHologramLine line = lobbyHologram.getLines().get(lineIndex);
         line.getOptions().put(optionKey, optionValue);
 

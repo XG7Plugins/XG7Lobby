@@ -93,7 +93,7 @@ public class HologramsCommand implements Command {
             syntax = "/holograms select <id>",
             description = "Selects a hologram for editing",
             permission = "xg7lobby.command.holograms.select",
-            iconMaterial = XMaterial.DIAMOND,
+            iconMaterial = XMaterial.GOLD_INGOT,
             isPlayerOnly = true
     )
     public CommandState select(CommandSender sender, CommandArgs args) {
@@ -238,7 +238,7 @@ public class HologramsCommand implements Command {
             syntax = "/holograms lines options <lineIndex> <optionKey> <optionValue>",
             description = "Sets options for a hologram line",
             permission = "xg7lobby.command.holograms.lines.options",
-            iconMaterial = XMaterial.CLOCK,
+            iconMaterial = XMaterial.COMMAND_BLOCK,
             depth = 2
     )
     public CommandState lineOptions(CommandSender sender, CommandArgs args) {

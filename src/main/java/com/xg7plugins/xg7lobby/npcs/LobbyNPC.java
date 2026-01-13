@@ -51,6 +51,7 @@ public class LobbyNPC {
 
         Boolean lookAtPlayer = (Boolean) options.getOrDefault("look_at_player", false);
         Boolean glow = (Boolean) options.getOrDefault("glow", false);
+        Boolean mirror = (Boolean) options.getOrDefault("render_players_skin", false);
 
         Consumer<NPCClickEvent> clickEventConsumer = (npcClickEvent) -> {
             Player player = npcClickEvent.getPlayer();
@@ -97,11 +98,11 @@ public class LobbyNPC {
 
             case PLAYER:
 
-                System.out.println("TO NPC PLAYER ");
+
                 return new PlayerNPC(
                         XG7Lobby.getInstance(),
                         "xg7lobby_npc-" + id,
-                        skin,
+                        mirror ? new Skin(null, null) : skin,
                         hologram.toHologram(),
                         location,
                         equipment,
@@ -119,7 +120,7 @@ public class LobbyNPC {
                 float rotationY = options.get("rotationY") != null ? ((Number) options.get("rotationY")).floatValue() : 0.0f;
                 EntityDisplayOptions.Billboard billboard = options.get("billboard") != null ? EntityDisplayOptions.Billboard.valueOf(options.get("billboard").toString().toUpperCase()) : EntityDisplayOptions.Billboard.FIXED;
 
-                System.out.println("SCALE: " + scale);
+
 
                 return new DisplayNPC(
                         XG7Lobby.getInstance(),

@@ -41,17 +41,15 @@ import com.xg7plugins.xg7lobby.commands.moderation.mute.MuteCommand;
 import com.xg7plugins.xg7lobby.commands.moderation.mute.UnMuteCommand;
 import com.xg7plugins.xg7lobby.commands.toggle.*;
 import com.xg7plugins.xg7lobby.commands.utils.*;
+import com.xg7plugins.xg7lobby.events.chat.*;
 import com.xg7plugins.xg7lobby.holograms.HologramsManager;
+import com.xg7plugins.xg7lobby.menus.default_menus.SettingsMenu;
 import com.xg7plugins.xg7lobby.npcs.NPCsManager;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyAPI;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyPlaceholderExpansion;
 import com.xg7plugins.xg7lobby.events.air.LaunchpadListener;
 import com.xg7plugins.xg7lobby.events.air.MultiJumpingListener;
-import com.xg7plugins.xg7lobby.events.chat.AntiSpamListener;
-import com.xg7plugins.xg7lobby.events.chat.AntiSwearingListener;
-import com.xg7plugins.xg7lobby.events.chat.LockChatCommandListener;
 import com.xg7plugins.xg7lobby.events.command.*;
-import com.xg7plugins.xg7lobby.events.chat.MuteCommandListener;
 import com.xg7plugins.xg7lobby.events.command.blocker.CommandAntiTabListener;
 import com.xg7plugins.xg7lobby.events.command.blocker.CommandProcessListener;
 import com.xg7plugins.xg7lobby.events.lobby.DefaultPlayerEvents;
@@ -60,9 +58,7 @@ import com.xg7plugins.xg7lobby.events.lobby.LoginAndLogoutEvent;
 import com.xg7plugins.xg7lobby.events.lobby.MOTDListener;
 import com.xg7plugins.xg7lobby.events.lobby.NLoginListener;
 import com.xg7plugins.xg7lobby.help.chat.AboutPage;
-import com.xg7plugins.xg7lobby.help.chat.CustomCommandPage;
 import com.xg7plugins.xg7lobby.help.chat.Index;
-import com.xg7plugins.xg7lobby.help.chat.MenusGuidePage;
 import com.xg7plugins.xg7lobby.help.form.CollaboratorsForm;
 import com.xg7plugins.xg7lobby.help.form.XG7LobbyHelpForm;
 import com.xg7plugins.xg7lobby.help.gui.ActionsMenu;
@@ -83,9 +79,9 @@ import com.xg7plugins.xg7lobby.data.player.LobbyPlayerManager;
 import com.xg7plugins.xg7lobby.menus.default_menus.infractions_menu.InfractionsMenu;
 import com.xg7plugins.xg7lobby.plugin.XG7LobbyLoader;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
-import com.xg7plugins.xg7lobby.queue.QueueListener;
+import com.xg7plugins.xg7lobby.events.lobby.QueueListener;
 import com.xg7plugins.xg7lobby.queue.QueueManager;
-import com.xg7plugins.xg7lobby.queue.QueueTask;
+import com.xg7plugins.xg7lobby.tasks.QueueTask;
 import com.xg7plugins.xg7lobby.scores.LobbyScoreManager;
 import com.xg7plugins.xg7lobby.tasks.*;
 import lombok.Getter;
@@ -290,7 +286,8 @@ public final class XG7Lobby extends Plugin {
                 new MuteCommand(), new UnMuteCommand(), new KickCommand(),
                 new InfractionsMenuCommand(), new LockChatCommand(), new PVPCommand(),
                 new OpenFormCommand(), new ResetStatsCommand(), new HologramsCommand(hologramsManager),
-                new NPCsCommand(npcsManager), new QueueCommand()
+                new NPCsCommand(npcsManager), new QueueCommand(queueManager), new ChatToggleCommand(),
+                new SettingsCommand()
         );
     }
 
@@ -303,7 +300,7 @@ public final class XG7Lobby extends Plugin {
                 new MOTDListener(), new MuteCommandListener(), new AntiSpamListener(),
                 new AntiSwearingListener(), new LockChatCommandListener(), new BlockCommandsListener(),
                 new PVPBlockCommandsListener(), new CommandProcessListener(), new NLoginListener(),
-                new QueueListener()
+                new QueueListener(queueManager)
         ));
 
         GlobalPVPManager pvpManager = XG7Lobby.getAPI().globalPVPManager();
@@ -317,7 +314,9 @@ public final class XG7Lobby extends Plugin {
 
     @Override
     public List<PacketListener> loadPacketEvents() {
-        return Collections.singletonList(new CommandAntiTabListener());
+        return Arrays.asList(
+                new CommandAntiTabListener(), new HideChatListener()
+        );
     }
 
     @Override
@@ -355,8 +354,6 @@ public final class XG7Lobby extends Plugin {
         }
 
         HelpChat helpInChat = new HelpChat(this, new Index());
-        helpInChat.registerPage(new MenusGuidePage());
-        helpInChat.registerPage(new CustomCommandPage());
         helpInChat.registerPage(new AboutPage());
 
         return new HelpMessenger(this, helpCommandGUI, helpCommandForm, helpInChat);
@@ -373,6 +370,7 @@ public final class XG7Lobby extends Plugin {
         List<BasicMenu> menus = new ArrayList<>();
         menus.add(new LobbiesMenu());
         menus.add(new InfractionsMenu());
+        menus.add(new SettingsMenu());
 
         if (XG7Lobby.getAPI().customInventoryManager() == null) {
             return menus;

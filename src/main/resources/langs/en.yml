@@ -154,6 +154,7 @@ commands:
     skin-set: "%prefix% &aSkin set successfully for NPC &e%id%&a."
     option-set: "%prefix% &aThe option &e%key% &aset to &e%value% &asuccessfully for NPC &e%id%&a."
     equipped: "%prefix% &aNPC &e%id% &aequipped successfully."
+    skin-mirror-set: "%prefix% &aNPC &e%id% &awill now render the Player's skin."
 
     actions:
       added: "%prefix% &aAction added successfully to NPC &e%id%&a."
@@ -222,13 +223,16 @@ chat:
 
   swear: "%prefix% &cYou can't swear in the chat."
   muted: "%prefix% &cYou are muted. You can't send messages for &b@DAYS_HOURS_MINUTES_SECONDS:%time%@&c."
-
+  hiding: "%prefix% &cYou are hiding your chat messages. Use &9/&lchat &cto show them again."
 
   same-message: "%prefix% &cYou can't send the same message twice."
   message-cooldown: "%prefix% &cYou can't send messages for another &b@SECONDS:%time%@"
   send-much-messages: "%prefix% &cYou are sending messages too fast. Please slow down."
 
   prohibited-command: "%prefix% &cCommand not found."
+
+  hidden: "%prefix% &aYou have hidden your chat messages."
+  shown: "%prefix% &aYou have shown your chat messages."
 
 menu-does-not-exist: "%prefix% &cThis menu doesn't exist."
 form-does-not-exist: "%prefix% &cThis form doesn't exist."
@@ -331,6 +335,44 @@ lobbies-menu:
   go-next: "&aNext page"
   close: "&cClose"
 
+queue:
+  on-add: "&aYou are now queued for &b%id%<br>&7Type &6/queue leave &7to leave the queue"
+  position: "&7You are now in position &f%pos% &7of &f%max%"
+  removed: "&cYou left the queue"
+
+settings-menu:
+
+    title: "&b&lSettings"
+
+    toggle-chat-messages-item:
+      name: "&bChat Messages"
+      lore:
+        enabled: "&7Status&b: &aEnabled"
+        disabled: "&7Status&b: &cDisabled"
+        click: "&7Click to toggle chat messages"
+
+    toggle-visibility-item:
+      name: "&bPlayer Visibility"
+      lore:
+        enabled: "&7Status&b: &aVisible"
+        disabled: "&7Status&b: &cHidden"
+        click: "&7Click to toggle player visibility"
+
+    toggle-build-item:
+      name: "&bBuild Mode"
+      lore:
+        enabled: "&7Status&b: &aEnabled"
+        disabled: "&7Status&b: &cDisabled"
+        click: "&7Click to toggle build mode"
+
+    toggle-fly-item:
+      name: "&bFly Mode"
+      lore:
+        enabled: "&7Status&b: &aEnabled"
+        disabled: "&7Status&b: &cDisabled"
+        click: "&7Click to toggle fly mode"
+
+    close-item: "&cClose"
 
 help:
 
@@ -391,183 +433,27 @@ help:
         lore:
           description: "&7Description&b: &r%description%"
           usage: "&7Usage&b: &r%usage%"
-  about:
-    - "&0About &9XG7Lobby"
-    - ""
-    - "&8Version: &a%version%&r"
-    - "&8Website: &a&n%website%&r"
-    - "&8GitHub: &a&n%github%&r"
-    - "&8Discord: &a&n%discord%&r"
-    - ""
-    - "&8This plugin was made for"
-    - "&8lobby management."
-    - "&8It goal is to give"
-    - "&8fun and security"
-    - "&8to the players"
-    - "&8in lobby worlds."
-    - ""
-    - "&8&oDeveloped by DaviXG7"
 
-  menus-guide:
-    - "&9Menus Guide"
-    - ""
-    - "&7There are 3 types:"
-    - "&81 - Hotbar"
-    - "&82 - GUI"
-    - "&83 - Forms"
-    - ""
-    - "&61 - Hotbar Menus"
-    - "&7Items in inventory"
-    - "&7run actions on click."
-    - ""
-    - "&62 - GUI Menus"
-    - "&7Custom chest menus"
-    - "&7with clickable items."
-    - ""
-    - "&63 - Form Menus"
-    - "&7Floodgate forms only"
-    - "&7work for Bedrock."
-    - "&7See: geysermc.org/wiki/floodgate/"
-    - ""
-    - "&6Creating Menus"
-    - "&71 - Go to folder:"
-    - "&bXG7Lobby/menus/"
-    - "&7Create .yml file"
-    - " "
-    - "&72 - Base Setup"
-    - "&7Every menu needs:"
-    - "&1- id: menu id"
-    - " "
-    - "&6GUI Structure"
-    - "&1- title: GUI Title"
-    - "&1- rows: lines of 9 slots"
-    - ""
-    - "&1- items: GUI items"
-    - "&1- fill-material: "
-    - "&1    background items"
-    - "&1- grid: item map"
-    - " "
-    - "&1Hotbar Structure"
-    - "&1- cooldown-to-use:"
-    - "&1    Time delay per use"
-    - "&1- disable-cooldown:"
-    - "&1    Disables delay"
-    - " "
-    - "&1- items: hotbar list"
-    - "&1- row: hotbar row"
-    - " "
-    - "&6Item Structure"
-    - "&7Inside 'items':"
-    - "&1items:"
-    - "&1  my-item:"
-    - "&1    material: Material type"
-    - "&1    name: Display name"
-    - "&1    lore: Description"
-    - "&1    amount: Quantity"
-    - "&1    enchants: Enchantments"
-    - "&1    actions: Click actions"
-    - "&1    conditional: Add condition"
-    - "&1    if-false: Fallback item"
-    - ""
-    - "&6Form Structure"
-    - "&73 Form types:"
-    - "&81 - Simple"
-    - "&82 - Modal"
-    - "&83 - Custom"
-    - ""
-    - "&7Use 'type' field:"
-    - "&1- type: form type"
-    - ""
-    - "&61 - Simple Form"
-    - "&1- title: form name"
-    - "&1- content: message"
-    - "&1- buttons: list"
-    - "&1- on-close: close actions"
-    - "&1- on-error: error actions"
-    - ""
-    - "&6Buttons"
-    - "&1- icon: image"
-    - "&1- text: label"
-    - "&1- actions: ac of the button"
-    - ""
-    - "&12 - Modal Form"
-    - "&1- title: form name"
-    - "&1- content: text"
-    - "&1- first-button:"
-    - "&1- second-button:"
-    - "&1- on-click-first-button:"
-    - "&1- on-click-second-button:"
-    - "&1- on-error:"
-    - ""
-    - "&63 - Custom Form"
-    - "&1- title: form name"
-    - "&1- on-close: close"
-    - "&1- on-submit: done"
-    - "&1- on-error: error"
-    - ""
-    - "&1- components:"
-    - "&7Each has a type:"
-    - "&11 - Slider"
-    - "&12 - Input"
-    - "&13 - Toggle"
-    - "&14 - Options"
-    - ""
-    - "&6Slider:"
-    - "&1- title: text"
-    - "&1- min/max-value"
-    - "&1- start/increment-value"
-    - ""
-    - "&6Input:"
-    - "&1- title: text"
-    - "&1- placeholder: hint"
-    - "&1- default-text:"
-    - ""
-    - "&6Toggle:"
-    - "&1- text: label"
-    - "&1- default-enabled"
-    - ""
-    - "&6Options:"
-    - "&1- title: text"
-    - "&1- options: choices"
-    - ""
-    - "&aTips:"
-    - "&6/openform <id>"
-    - "&6/openinv <id>"
-    - "&7to test menus"
-    - ""
-    - "&7Use actions:"
-    - "&6[OPEN_FORM]"
-    - "&6[OPEN_INV]"
-    - ""
-    - "&6Test step by step!"
-    - ""
-    - "&8&oMade by &bDaviXG7"
-
-  custom-commands-guide:
-    - "&9Custom Commands Guide"
-    - ""
-    - "&7Learn how to create custom commands"
-    - ""
-    - "&6Important Note:"
-    - "&7Cannot use arguments like:"
-    - "&1- test arg1/arg3 arg2"
-    - ""
-    - "&6Configuration Location:"
-    - "&7Navigate to:"
-    - "&1- custom-commands section"
-    - ""
-    - "&6Command Creation Steps:"
-    - "&7Create a new command section with:"
-    - ""
-    - "&1- description: Command explanation"
-    - ""
-    - "&1- aliases: Alternative command names"
-    - ""
-    - "&1- permission: Required access level"
-    - ""
-    - "&1- actions: Command execution list"
-    - ""
-    - "&7&oTips: Keep commands clear and simple"
+  about: |
+    &0About &9XG7Lobby<br>
+    <br>
+    &8Version: &a%version%&r<br>
+    &8Website: &a&n%website%&r<br>
+    &8GitHub: &a&n%github%&r<br>
+    &8Discord: &a&n%discord%&r
+    <br>
+    &cFor more information, visit our website<br>
+    or watch our tutorials videos on YouTube!
+    <endp>
+    &8This plugin was made for<br>
+    &8lobby management.<br>
+    &8It goal is to give<br>
+    &8fun and security<br>
+    &8to the players<br>
+    &8in lobby worlds.
+    <endp>
+    &8&oDeveloped by DaviXG7
+  
 
   form:
 
@@ -577,12 +463,11 @@ help:
     content:
       - "&7Welcome to the &6XG7Lobby's &7help!"
       - "&eXG7Lobby is a plugin that aims to facilitate the lobby management."
+      - "&eSee docs and tutorials on &bhttps://xg7plugins.com&r&e!"
       - "&bSee the options below for more information."
 
     about: "&aAbout <rainbow>XG7Lobby</rainbow>"
     commands: "&aCommands"
-    menus-guide: "&aMenus Guide"
-    custom-commands-guide: "&aCustom Commands Guide"
     collaborators: "&aCollaborators"
 
     collaborators-title: "Collaborators of XG7Lobby:"
@@ -601,8 +486,6 @@ help:
 
     lang: "&aLanguages&f: &1click here to change profile lang"
     commands: "&aCommands&f: &1click here to see the commands"
-    menus-guide: "&aMenus Guide&f: &1click here to see the menus guide"
-    custom-commands-guide: "&aCustom Commands Guide&f: &1click here to see the custom commands guide"
 
 help-in-chat.commands-title: "&7Commands of &6XG7Lobby &8(&7%page%&8/&7%max_page%&8)"
 

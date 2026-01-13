@@ -23,6 +23,18 @@ items:
     actions:
       - "[CLOSE_MENU] "
 
+  settings:
+    material: COMPARATOR
+    name: "&aSettings"
+    lore:
+      - "&7Click to open your settings!"
+    amount: 1
+    enchants:
+      - "DURABILITY, 1"
+    actions:
+      - "[CLOSE_MENU] "
+      - "[PLAYER_COMMAND] xg7lobbysettings"
+
   tpLobby:
 
     material: ENDER_PEARL
@@ -83,8 +95,8 @@ items:
 
 
 grid:
-  - ["","","",       "","",           "","",     "",""]
-  - ["","","",       "","icon",       "","",     "",""]
-  - ["","","",       "","",           "","",     "",""]
-  - ["","","tpLobby","","hidePlayers","","langs","",""]
-  - ["","","",       "","",           "","",     "",""]
+  - ["","",        "","",      "",    "",           "","",     ""]
+  - ["","",        "","",      "icon","",           "","",     ""]
+  - ["","",        "","",       "",   "",           "","",     ""]
+  - ["","settings","","tpLobby","",   "hidePlayers","","langs",""]
+  - ["","",        "","",       "",    "",          "","",     ""]

@@ -31,12 +31,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     @Column(name = "unmute_time")
     private Time unmuteTime;
 
-    @Column(name = "hiding_players")
-    private boolean hidingPlayers;
-    @Column(name = "build_enabled")
-    private boolean buildEnabled;
-    @Column(name = "fly_enabled")
-    private boolean flying;
+    private LobbySettings lobbySettings;
 
     @Column(name = "global_pvp_kills")
     private int globalPVPKills;
@@ -49,6 +44,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     public LobbyPlayer(UUID playerUUID) {
         this.playerUUID = playerUUID;
         unmuteTime = Time.of(0);
+        this.lobbySettings = new LobbySettings();
     }
 
     private LobbyPlayer() {
@@ -81,14 +77,14 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         if (!XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player)) return;
 
-        player.setAllowFlight(flying || (
+        player.setAllowFlight(lobbySettings.isFlying() || (
                         (
                                 ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("multi-jumps").get("enabled", true)
                                 && player.hasPermission("xg7lobby.multi-jumps"))
                                 || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR
                 )
         );
-        if (player.getAllowFlight()) player.setFlying(flying);
+        if (player.getAllowFlight()) player.setFlying(lobbySettings.isFlying());
 
     }
 
@@ -97,7 +93,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
         if (player == null) return;
 
-        if (buildEnabled) {
+        if (lobbySettings.isBuildEnabled()) {
             if (XG7Lobby.getAPI().customInventoryManager() != null) XG7Plugins.getAPI().menus().closeAllMenus(player);
             player.setGameMode(GameMode.CREATIVE);
             return;
@@ -123,12 +119,12 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
 
                     tasks.add(() -> {
 
-                        if (hidingPlayers) player.hidePlayer(p);
+                        if (lobbySettings.isHidingPlayers()) player.hidePlayer(p);
                         else player.showPlayer(p);
 
                         if (XG7Lobby.getAPI().globalPVPManager().isInPVP(p)) return;
 
-                        if (otherPlayer.isHidingPlayers()) p.hidePlayer(player);
+                        if (otherPlayer.getLobbySettings().isHidingPlayers()) p.hidePlayer(player);
                         else p.showPlayer(player);
                     });
                 });
@@ -137,7 +133,7 @@ public class LobbyPlayer implements Entity<UUID, LobbyPlayer> {
     }
 
     public boolean isBuildEnabled() {
-        return buildEnabled && ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("build-system-enabled", true);
+        return lobbySettings.isBuildEnabled() && ConfigFile.mainConfigOf(XG7Lobby.getInstance()).root().get("build-system-enabled", true);
     }
 
     public void addInfraction(Infraction infraction) {

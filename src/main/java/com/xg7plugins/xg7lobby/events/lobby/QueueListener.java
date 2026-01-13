@@ -1,9 +1,10 @@
-package com.xg7plugins.xg7lobby.queue;
+package com.xg7plugins.xg7lobby.events.lobby;
 
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.events.Listener;
 import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.xg7lobby.XG7Lobby;
+import com.xg7plugins.xg7lobby.queue.QueueManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -14,7 +15,7 @@ public class QueueListener implements Listener {
 
     @Override
     public boolean isEnabled() {
-        return ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("queue").get("enabled");
+        return ConfigFile.mainConfigOf(XG7Lobby.getInstance()).section("queue-system").get("enabled");
     }
 
     @EventHandler

@@ -1,7 +1,6 @@
 package com.xg7plugins.xg7lobby.plugin;
 
 import com.xg7plugins.XG7Plugins;
-import com.xg7plugins.boot.Plugin;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +14,9 @@ public class XG7LobbyLoader extends JavaPlugin {
 
     @Override
     public void onLoad() {
+
+        CoreChecker.check(this);
+
         corePlugin = XG7Plugins.getInstance();
         plugin = new XG7Lobby(this);
         load(plugin);
@@ -30,15 +32,15 @@ public class XG7LobbyLoader extends JavaPlugin {
         disable(plugin);
     }
 
-    public void load(Plugin plugin) {
+    public void load(Object plugin) {
         corePlugin.loadPlugin(plugin);
     }
 
-    public void enable(Plugin plugin) {
+    public void enable(Object plugin) {
         corePlugin.enablePlugin(plugin);
     }
 
-    public void disable(Plugin plugin) {
+    public void disable(Object plugin) {
         corePlugin.disablePlugin(plugin);
     }
 

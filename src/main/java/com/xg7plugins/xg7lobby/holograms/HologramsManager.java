@@ -43,11 +43,6 @@ public class HologramsManager {
 
         List<LobbyHologram> lobbyHolograms = new ArrayList<>(holograms.values());
 
-        System.out.println("Saving holograms: ");
-        holograms.forEach((key, value) ->
-                System.out.println(key + ": " + value)
-        );
-
         return jsonManager.saveJson(plugin, "data/holograms.json", lobbyHolograms);
 
     }

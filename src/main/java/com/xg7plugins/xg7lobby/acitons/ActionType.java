@@ -499,7 +499,7 @@ public enum ActionType {
             false,
             (player, args) -> {
                 XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-                    lobbyPlayer.setHidingPlayers(true);
+                    lobbyPlayer.getLobbySettings().setHidingPlayers(true);
                     lobbyPlayer.applyHide();
                     XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
@@ -511,7 +511,7 @@ public enum ActionType {
             false,
             (player, args) -> {
                 XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-                    lobbyPlayer.setHidingPlayers(false);
+                    lobbyPlayer.getLobbySettings().setHidingPlayers(false);
                     lobbyPlayer.applyHide();
                     XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
@@ -523,7 +523,7 @@ public enum ActionType {
             false,
             (player, args) -> {
                 XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-                    lobbyPlayer.setFlying(true);
+                    lobbyPlayer.getLobbySettings().setFlying(true);
                     lobbyPlayer.fly();
                     XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
@@ -536,7 +536,7 @@ public enum ActionType {
             false,
             (player, args) -> {
                 XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-                    lobbyPlayer.setFlying(false);
+                    lobbyPlayer.getLobbySettings().setFlying(false);
                     lobbyPlayer.fly();
                     XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
@@ -549,7 +549,7 @@ public enum ActionType {
             false,
             (player, args) -> {
                 XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-                    lobbyPlayer.setBuildEnabled(true);
+                    lobbyPlayer.getLobbySettings().setBuildEnabled(true);
                     XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                     XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
                 });
@@ -562,9 +562,33 @@ public enum ActionType {
             false,
             (player, args) -> {
                 XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
-                    lobbyPlayer.setBuildEnabled(false);
+                    lobbyPlayer.getLobbySettings().setBuildEnabled(false);
                     XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                     XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::applyBuild));
+                });
+            }
+    ),
+    CHAT_ON(
+            "[CHAT_ON] ",
+            "Enables the chat of the player",
+            "BOOK",
+            false,
+            (player, args) -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.getLobbySettings().setHidingChat(false);
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
+                });
+            }
+    ),
+    CHAT_OFF(
+            "[CHAT_OFF] ",
+            "Disables the chat of the player",
+            "BOOK",
+            false,
+            (player, args) -> {
+                XG7Lobby.getAPI().requestLobbyPlayer(player.getUniqueId()).thenAccept(lobbyPlayer -> {
+                    lobbyPlayer.getLobbySettings().setHidingChat(true);
+                    XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
                 });
             }
     ),
@@ -614,7 +638,7 @@ public enum ActionType {
     QUEUE(
             "[QUEUE] queueId, [ACTION] ..content",
             "Put a player into a queue",
-            "CHORUS_FRUIT",
+            "IRON_HORSE_ARMOR",
             true,
             (player, args) -> {
 

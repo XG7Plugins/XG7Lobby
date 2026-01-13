@@ -23,7 +23,10 @@ public class LockChatCommandListener implements Listener {
 
             Text.sendTextFromLang(event.getPlayer(), XG7Lobby.getInstance(), "chat.locked");
             event.setCancelled(true);
-
+        }
+        if (XG7Lobby.getAPI().getLobbyPlayer(event.getPlayer().getUniqueId()).getLobbySettings().isHidingChat()) {
+            Text.sendTextFromLang(event.getPlayer(), XG7Lobby.getInstance(), "chat.hiding");
+            event.setCancelled(true);
         }
     }
 }

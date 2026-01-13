@@ -1,5 +1,6 @@
 package com.xg7plugins.xg7lobby.commands.utils;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.xg7plugins.commands.node.CommandConfig;
 import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.setup.CommandSetup;
@@ -20,10 +21,10 @@ import java.util.Collections;
 @CommandSetup(
         name = "queue",
         description = "Manages a player from a queue",
-        syntax = "/queue <queueID|add|remove> [action|player] [queueID] [action...]",
+        syntax = "/queue <queueID|leave||add|remove> [action|player] [queueID] [action...]",
         permission = "xg7lobby.command.queue",
         pluginClass = XG7Lobby.class,
-        iconMaterial = XMaterial.CHORUS_FRUIT,
+        iconMaterial = XMaterial.IRON_HORSE_ARMOR,
         isEnabled = @ConfigCheck(
                 configName = "config",
                 path = "queue-system.enabled"
@@ -58,7 +59,7 @@ public class QueueCommand implements Command {
             description = "Adds a player to a queue",
             syntax = "/queue add <player> <queueId> <action...>",
             permission = "xg7lobby.command.queue.add",
-            iconMaterial = com.cryptomorin.xseries.XMaterial.GREEN_WOOL
+            iconMaterial = XMaterial.GREEN_WOOL
     )
     public CommandState onAdd(CommandSender sender, CommandArgs args) {
         if (args.len() < 3) return CommandState.SYNTAX_ERROR;
@@ -84,7 +85,7 @@ public class QueueCommand implements Command {
             description = "Removes a player from a queue",
             syntax = "/queue remove <player> (queueId)",
             permission = "xg7lobby.command.queue.remove",
-            iconMaterial = com.cryptomorin.xseries.XMaterial.RED_WOOL
+            iconMaterial = XMaterial.RED_WOOL
     )
     public CommandState onRemove(CommandSender sender, CommandArgs args) {
         if (args.len() < 1 || args.len() > 3) return CommandState.SYNTAX_ERROR;
@@ -101,6 +102,20 @@ public class QueueCommand implements Command {
         if (id == null) queueManager.removeFromAllQueues(offlinePlayer.getPlayer());
         else queueManager.removeFromQueue(id, offlinePlayer.getPlayer());
 
+        return CommandState.FINE;
+    }
+
+    @CommandConfig(
+            name = "leave",
+            description = "Removes a player from all queues",
+            syntax = "/queue leave",
+            permission = "xg7lobby.command.queue.leave",
+            iconMaterial = XMaterial.OAK_DOOR,
+            isPlayerOnly = true
+    )
+    public CommandState onLeave(CommandSender sender, CommandArgs args) {
+        Player player = (Player) sender;
+        queueManager.removeFromAllQueues(player);
         return CommandState.FINE;
     }
 }

@@ -44,15 +44,17 @@ public class XG7LobbyPlaceholderExpansion extends PlaceholderExpansion {
             case "player_warns":
                 return lobbyPlayer.getInfractions().size() + "";
             case "player_is_hiding_players":
-                return lobbyPlayer.isHidingPlayers() + "";
+                return lobbyPlayer.getLobbySettings().isHidingPlayers() + "";
             case "player_is_muted":
                 return lobbyPlayer.isMuted() + "";
             case "player_time_for_unmute":
                 return lobbyPlayer.getUnmuteTime().formatDate("dd/MM/yyyy HH:mm:ss");
             case "player_is_build_enabled":
                 return lobbyPlayer.isBuildEnabled() + "";
+            case "player_is_chat_enabled":
+                return (!lobbyPlayer.getLobbySettings().isHidingChat()) + "";
             case "player_is_flying":
-                return lobbyPlayer.isFlying() + "";
+                return lobbyPlayer.getLobbySettings().isFlying() + "";
             case "player_is_in_pvp":
                 return XG7Lobby.getAPI().globalPVPManager().isInPVP(player) + "";
             case "players_in_global_pvp":

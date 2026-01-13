@@ -86,7 +86,7 @@ public class BuildCommand implements Command {
 
         boolean before = lobbyPlayer.isBuildEnabled();
 
-        lobbyPlayer.setBuildEnabled(!lobbyPlayer.isBuildEnabled());
+        lobbyPlayer.getLobbySettings().setBuildEnabled(!lobbyPlayer.isBuildEnabled());
 
         try {
             XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
@@ -100,7 +100,7 @@ public class BuildCommand implements Command {
             if (playerMenu != null) BasicMenu.refresh(playerMenu);
 
         } catch (Exception e) {
-            lobbyPlayer.setBuildEnabled(before);
+            lobbyPlayer.getLobbySettings().setBuildEnabled(before);
             XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
             throw new RuntimeException(e);
         }

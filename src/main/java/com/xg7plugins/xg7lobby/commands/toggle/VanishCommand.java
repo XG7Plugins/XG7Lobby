@@ -42,14 +42,14 @@ public class VanishCommand implements Command {
     public CommandState onCommand(CommandSender sender, CommandArgs args) {
         LobbyPlayer lobbyPlayer = XG7Lobby.getAPI().getLobbyPlayer(((Player) sender).getUniqueId());
 
-        boolean before = lobbyPlayer.isHidingPlayers();
+        boolean before = lobbyPlayer.getLobbySettings().isHidingPlayers();
 
-        lobbyPlayer.setHidingPlayers(!lobbyPlayer.isHidingPlayers());
+        lobbyPlayer.getLobbySettings().setHidingPlayers(!lobbyPlayer.getLobbySettings().isHidingPlayers());
 
         try {
             XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
         } catch (Exception ex) {
-            lobbyPlayer.setHidingPlayers(before);
+            lobbyPlayer.getLobbySettings().setHidingPlayers(before);
             XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
             throw new RuntimeException(ex);
         }
@@ -58,7 +58,7 @@ public class VanishCommand implements Command {
         if (playerMenu != null) BasicMenu.refresh(playerMenu);
 
         lobbyPlayer.applyHide();
-        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), lobbyPlayer.isHidingPlayers() ? "hide-players.hide" : "hide-players.show");
+        Text.sendTextFromLang(sender, XG7Lobby.getInstance(), lobbyPlayer.getLobbySettings().isHidingPlayers() ? "hide-players.hide" : "hide-players.show");
 
         return CommandState.FINE;
     }

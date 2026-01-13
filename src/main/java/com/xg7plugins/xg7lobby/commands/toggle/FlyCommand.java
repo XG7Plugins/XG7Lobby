@@ -75,22 +75,22 @@ public class FlyCommand implements Command {
 
         boolean before = lobbyPlayer.isBuildEnabled();
 
-        lobbyPlayer.setFlying(!lobbyPlayer.isFlying());
+        lobbyPlayer.getLobbySettings().setFlying(!lobbyPlayer.getLobbySettings().isFlying());
 
         try {
             XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
 
             if (finalTarget.isOnline()) {
                 XG7Plugins.getAPI().taskManager().runSync(BukkitTask.of(lobbyPlayer::fly));
-                Text.sendTextFromLang(lobbyPlayer.getPlayer(), XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-on" : "toggle-off"));
+                Text.sendTextFromLang(lobbyPlayer.getPlayer(), XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.getLobbySettings().isFlying() ? "toggle-on" : "toggle-off"));
             }
-            if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.isFlying() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
+            if (finalIsOther) Text.sendTextFromLang(sender, XG7Lobby.getInstance(), "commands.fly." + (lobbyPlayer.getLobbySettings().isFlying() ? "toggle-other-on" : "toggle-other-off"), Pair.of("target", lobbyPlayer.getPlayer().getDisplayName()));
 
             PlayerMenuHolder playerMenu = XG7Menus.getPlayerMenuHolder(lobbyPlayer.getPlayerUUID());
             if (playerMenu != null) BasicMenu.refresh(playerMenu);
 
         } catch (Exception e) {
-            lobbyPlayer.setFlying(before);
+            lobbyPlayer.getLobbySettings().setFlying(before);
             XG7Lobby.getAPI().lobbyPlayerManager().updatePlayer(lobbyPlayer);
             throw new RuntimeException(e);
         }

@@ -96,7 +96,7 @@ public class NPCsCommand implements Command {
             description = "Select an existing NPC",
             syntax = "/npcs select <id>",
             permission = "xg7lobby.command.npcs.select",
-            iconMaterial = XMaterial.DIAMOND
+            iconMaterial = XMaterial.GOLD_INGOT
     )
     public CommandState select(CommandSender sender, CommandArgs args) {
         if (args.len() != 1) {
@@ -264,6 +264,25 @@ public class NPCsCommand implements Command {
     }
 
     @CommandConfig(
+            name = "mirror",
+            parent = "skin",
+            description = "Set the skin to be a mirror of the player who is viewing the selected NPC.",
+            syntax = "/npcs skin mirror (true|false)",
+            permission = "xg7lobby.command.npcs.skin.mirror",
+            iconMaterial = XMaterial.MAP,
+            isPlayerOnly = true,
+            depth = 2
+    )
+    public CommandState skinMirror(CommandSender sender, CommandArgs args) {
+
+        boolean mirror = !editor.getLobbyNPC().getOptions().getOrDefault("render_players_skin", false).equals(true);
+
+        if (args.len() == 1) mirror = args.get(0, Boolean.class);
+
+        return edit(sender, editor.setOption("render_players_skin", mirror), "commands.npcs.skin-mirror-set", npcsManager::respawnNPC);
+    }
+
+    @CommandConfig(
             name = "reset",
             parent = "skin",
             description = "Reset skin for the selected NPC",
@@ -294,7 +313,7 @@ public class NPCsCommand implements Command {
         String optionKey = args.get(0, String.class);
         Object optionValue = parseValue(args.get(1, String.class));
 
-        return edit(sender, editor.setOption(optionKey, optionValue), "commands.npcs.option-set", npcsManager::respawnNPC);
+        return editOption(sender, editor.setOption(optionKey, optionValue), -1, "commands.npcs.option-set", optionKey, optionValue.toString());
     }
 
     @CommandConfig(
@@ -340,7 +359,7 @@ public class NPCsCommand implements Command {
             description = "Set a value option to the NPC's name hologram",
             syntax = "/npcs name options <line index> <option> <value>",
             permission = "xg7lobby.command.npcs.name.options",
-            iconMaterial = XMaterial.ANVIL,
+            iconMaterial = XMaterial.COMMAND_BLOCK,
             isPlayerOnly = true,
             depth = 2
     )
@@ -354,7 +373,7 @@ public class NPCsCommand implements Command {
         String optionKey = args.get(1, String.class);
         Object optionValue = parseValue(args.get(2, String.class));
 
-        return editHologramLine(sender, editor.getHologramEditor().setOption(lineIndex, optionKey, optionValue), lineIndex,"commands.holograms.lines.options-set", npcsManager::respawnNPC);
+        return editOption(sender, editor.getHologramEditor().setOption(lineIndex, optionKey, optionValue), lineIndex, "commands.holograms.lines.options-set", optionKey, optionValue.toString());
     }
 
     @CommandConfig(
@@ -570,6 +589,25 @@ public class NPCsCommand implements Command {
 
     }
 
+    public CommandState editOption(CommandSender sender, Enum<?> error, int lineIndex, String messagePath, String optionKey, String optionValue) {
+
+        if (error.name().equals("NONE")) {
+            Text.sendTextFromLang(sender, XG7Lobby.getInstance(), messagePath,
+                    Pair.of("id", editor.getLobbyNPC().getId()),
+                    Pair.of("option", optionKey),
+                    Pair.of("value", optionValue)
+            );
+            npcsManager.respawnNPC(editor.getLobbyNPC().getId());
+            return CommandState.FINE;
+        }
+
+        if (error.name().equals("INVALID_LINE_INDEX")) {
+            return CommandState.error(XG7Lobby.getInstance(), "hologram-line-not-found", Pair.of("id", editor.getLobbyNPC().getId()), Pair.of("index", String.valueOf(lineIndex + 1)));
+        }
+
+        return CommandState.error(XG7Lobby.getInstance(), "npc-not-selected");
+    }
+
     public CommandState edit(CommandSender sender, NPCEditor.EditError error, String messagePath, Consumer<String> successCallback) {
        return edit(sender, error, "", -1, messagePath, successCallback);
     }
@@ -683,6 +721,9 @@ public class NPCsCommand implements Command {
                         break;
                     case "uuid":
                         if (args.len() == 3) return XG7Plugins.getAPI().getAllPlayerUUIDs().stream().map(UUID::toString).collect(Collectors.toList());
+                        break;
+                    case "mirror":
+                        if (args.len() == 3) return Arrays.asList("true", "false");
                         break;
                 }
             case "actions":

@@ -14,7 +14,9 @@ import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.Menu;
 import com.xg7plugins.utils.Pair;
+import com.xg7plugins.utils.item.impl.BookItem;
 import com.xg7plugins.utils.item.impl.SkullItem;
+import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 
 import org.bukkit.entity.Player;
@@ -61,39 +63,29 @@ public class XG7LobbyHelpGUI extends Menu {
                 Item.from(XMaterial.matchXMaterial("COMMAND_BLOCK").orElse(XMaterial.ENDER_PEARL))
                         .name("lang:[help.menu.commands-item.name]")
                         .lore("lang:[help.menu.commands-item.lore]")
-                        .toClickableInventoryItem(28,actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("commands").open(player)),
+                        .toClickableInventoryItem(30,actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("commands").open(player)),
 
                 Item.from(XMaterial.COMPASS)
                         .name("lang:[help.menu.set-lobby-item.name]")
                         .lore("lang:[help.menu.set-lobby-item.lore.current-location]", "lang:[help.menu.set-lobby-item.lore.click]")
                         .setBuildPlaceholders(Pair.of("location", XG7Lobby.getAPI().lobbyManager().getRandomLobbyLocation().toString()))
-                        .toClickableInventoryItem(29, actionEvent -> { player.performCommand("xg7lobby setlobby"); BasicMenu.refresh(actionEvent.getHolder()); }),
+                        .toClickableInventoryItem(31, actionEvent -> { player.performCommand("xg7lobby setlobby"); BasicMenu.refresh(actionEvent.getHolder()); }),
 
                 Item.from(XMaterial.OAK_SIGN)
                         .name("lang:[help.menu.actions-item.name]")
                         .lore("lang:[help.menu.actions-item.lore]")
-                        .toClickableInventoryItem(30, actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("actions").open(player)),
+                        .toClickableInventoryItem(32, actionEvent -> XG7Lobby.getInstance().getHelpMessenger().getGui().getMenu("actions").open(player)),
 
                 OpenBookClickableItem.get(
-                        Slot.fromSlot(32),
-                        Item.from(XMaterial.BOOK).name("lang:[help.menu.menus-guide-item.name]").lore("lang:[help.menu.menus-guide-item.lore]"),
-                        player,
-                        lang.get("help.menus-guide")
-                ),
-
-
-                OpenBookClickableItem.get(
-                        Slot.fromSlot(33),
+                        Slot.fromSlot(40),
                         Item.from(XMaterial.WRITABLE_BOOK).name("lang:[help.menu.about-item.name]").lore("lang:[help.menu.about-item.lore]"),
                         player,
-                        lang.get("help.about")
-                ),
-
-                OpenBookClickableItem.get(
-                        Slot.fromSlot(34),
-                        Item.from(XMaterial.BLAZE_ROD).name("lang:[help.menu.custom-commands-guide-item.name]").lore("lang:[help.menu.custom-commands-guide-item.lore]"),
-                        player,
-                        lang.get("help.custom-commands-guide")
+                        BookItem.convertTextToBookPages(Text.format((String) lang.get("help.about"))
+                                .replace("discord", "discord.gg/jfrn8w92kF")
+                                .replace("github", "github.com/DaviXG7")
+                                .replace("website", "xg7plugins.com")
+                                .replace("version", XG7Plugins.getInstance().getVersion())
+                        )
                 ),
 
                 CloseInventoryItem.get(Slot.fromSlot(45)),

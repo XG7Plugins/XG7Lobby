@@ -22,6 +22,19 @@ execute: ["7lexecute", "7le", "execute"]
 pvp: ["7lpvp", "pvp"]
 infractions: ["infractions", "7lwarns", "warns", "punishments"]
 resetstats: ["7lresetstats", "7lrs", "resetstats"]
+settings: ["7lsettings", "7ls", "settings"]
+
+#Chat command
+chat: ["7lchat", "7lc", "chat"]
+
+chat_tell: ["tell", "msg", "message"]
+
+#Queue command
+queue: [ "queue", "7lqueue" ]
+
+queue_add: []
+queue_remove: []
+queue_leave: []
 
 #Infraction command
 infraction: ["infraction", "7linfraction", "punishment", "7lpunishment", "7lwarn", "7lw", "warn"]
@@ -75,6 +88,7 @@ npcs_skin_url: []
 npcs_skin_player: []
 npcs_skin_uuid: []
 npcs_skin_reset: []
+npcs_skin_mirror: []
 
 npcs_name_addline: ["add", "insert"]
 npcs_name_removeline: ["delete", "remove", "del", "rem"]

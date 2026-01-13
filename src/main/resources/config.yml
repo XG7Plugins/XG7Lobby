@@ -146,7 +146,8 @@ entity-interaction-cooldown: 3s
 
 queue-system:
   enabled: true
-  delay: 3s
+  delay: 5s
+  one-queue-per-player: true
   queues: [ "teleport" ]
 
 # Enables the built-in lobbies form

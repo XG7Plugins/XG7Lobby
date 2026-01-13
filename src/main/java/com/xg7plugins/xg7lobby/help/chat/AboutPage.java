@@ -2,18 +2,15 @@ package com.xg7plugins.xg7lobby.help.chat;
 
 import com.xg7plugins.XG7Plugins;
 
-import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.help.chat.HelpChatPage;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.utils.text.component.ClickEvent;
 import com.xg7plugins.utils.text.component.TextComponentBuilder;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AboutPage implements HelpChatPage {
 
@@ -24,25 +21,18 @@ public class AboutPage implements HelpChatPage {
 
         components.add(Text.format("&m-&9&m-&6&m------------------&e*&6&m------------------&9&m-&f&m-"));
 
-        if (sender instanceof Player) {
-            ConfigSection lang = XG7Plugins.getAPI().langManager().getLangByPlayer(XG7Lobby.getInstance(), (Player) sender).getSecond().getLangConfiguration();
-
-            String about = lang.getList("help.about", String.class).orElse(new ArrayList<>()).stream().collect(Collectors.joining("\n"));
-
-            components.add(
-                    Text.detectLangs(sender, XG7Plugins.getInstance(),about)
-                    .replace("discord", "discord.gg/jfrn8w92kF")
-                    .replace("github", "github.com/DaviXG7")
-                    .replace("website", "xg7plugins.com")
-                    .replace("version", XG7Plugins.getInstance().getJavaPlugin().getDescription().getVersion())
-            );
-        } else {
-            components.add(Text.format("Unable to access about text in console"));
-        }
+        components.add(Text.fromLang(sender, XG7Lobby.getInstance(), "help.about")
+                .replace("discord", "discord.gg/jfrn8w92kF")
+                .replace("github", "github.com/DaviXG7")
+                .replace("website", "xg7plugins.com")
+                .replace("version", XG7Plugins.getInstance().getVersion())
+                .replaceLiteral("<endp>", "<br>")
+        );
 
         components.add(Text.format(" "));
+
         components.add(
-                TextComponentBuilder.of("lang:[help.chat.back]")
+                TextComponentBuilder.of(Text.fromLang(sender, XG7Lobby.getInstance(), "help.chat.back").getText())
                         .clickEvent(ClickEvent.of(ClickEvent.Action.SUGGEST_COMMAND, "/xg7lobby help"))
                         .build()
         );

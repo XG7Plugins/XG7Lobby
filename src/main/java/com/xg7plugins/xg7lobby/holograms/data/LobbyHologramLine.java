@@ -61,8 +61,8 @@ public class LobbyHologramLine {
                 int amount = options.get("amount") != null ? (Integer) options.get("amount") : 1;
                 LinkedTreeMap<String, Number> enchantments = options.get("enchantments") != null ? (LinkedTreeMap<String, Number>) options.get("enchantments") : new LinkedTreeMap<>();
 
-                System.out.println("CONTENT: " + content);
-                System.out.println(Item.from(content).getItemStack());
+
+
 
                 return new ItemLine(
                         Item.from(content)
@@ -84,7 +84,7 @@ public class LobbyHologramLine {
 
             case ENTITY:
 
-                System.out.println("CONTENT: " + content);
+
 
                 return new EntityLine(
                         getPacketEventsEntityType(content),

@@ -40,6 +40,9 @@ permissions:
       xg7lobby.command.resetstats: true
       xg7lobby.command.vanish: true
       xg7lobby.command.help: true
+      xg7lobby.command.clearchat: true
+      xg7lobby.command.npcs: true
+      xg7lobby.command.holograms: true
 
   xg7lobby.command.lobby.*:
     description: Permission to use all lobby commands.
@@ -53,6 +56,46 @@ permissions:
       xg7lobby.command.lobby.bypass-cooldown: true
       xg7lobby.command.lobby.see-lobbies: true
 
+
+  xg7lobby.command.clearchat:
+    description: Allows clearing the chat via the custom clearchat command.
+    default: false
+
+  xg7lobby.command.fly:
+    description: Allows using fly command/menu.
+    default: false
+
+  xg7lobby.command.fly-other:
+    description: Allows toggling fly for other players.
+    default: op
+
+  xg7lobby.queue.priority:
+    description: Grants priority in lobby queues.
+    default: false
+
+  xg7lobby.multi-jumps:
+    description: Allows using multi-jumps when enabled in config.
+    default: false
+
+  xg7lobby.command_block_bypass:
+    description: Bypass command blocking (anti-tab/blocked commands).
+    default: op
+
+  xg7lobby.command.build-other:
+    description: Allows toggling build for other players.
+    default: op
+
+  xg7lobby.command.lockchat:
+    description: Allows locking chat via commands.
+    default: op
+
+  xg7lobby.command.gamemode:
+    description: Allows changing gamemode.
+    default: false
+
+  xg7lobby.command.gamemode-others:
+    description: Allows changing other players' gamemode.
+    default: op
 
   xg7lobby.moderation.*:
     description: Permission to use all moderation commands.
@@ -81,3 +124,92 @@ permissions:
       xg7lobby.chat.swear: true
       xg7lobby.chat.ignore-lock: true
       xg7lobby.chat.spam: true
+
+  xg7lobby.command.queue:
+    description: Permission to manage queues
+    default: op
+    children:
+      xg7lobby.command.queue.add: true
+      xg7lobby.command.queue.remove: true
+      xg7lobby.command.queue.leave: true
+
+  xg7lobby.command.settings:
+    description: Allows using settings command
+    default: false
+
+  xg7lobby.command.resetstats:
+    description: Allows resetting player stats
+    default: op
+
+  xg7lobby.command.open:
+    description: Allows opening custom menus/forms
+    default: false
+
+  xg7lobby.command.execute:
+    description: Allows executing configured actions via commands
+    default: op
+
+  xg7lobby.command.chat:
+    description: Allows toggling chat visibility
+    default: false
+
+  xg7lobby.command.chat.tell:
+    description: Allows sending messages via /chat tell when chat hidden
+    default: false
+
+  xg7lobby.command.npcs:
+    description: Manage NPCs
+    default: op
+    children:
+      xg7lobby.command.npcs.create: true
+      xg7lobby.command.npcs.select: true
+      xg7lobby.command.npcs.delete: true
+      xg7lobby.command.npcs.tp: true
+      xg7lobby.command.npcs.glow: true
+      xg7lobby.command.npcs.type: true
+      xg7lobby.command.npcs.skin: true
+      xg7lobby.command.npcs.skin.url: true
+      xg7lobby.command.npcs.skin.uuid: true
+      xg7lobby.command.npcs.skin.player: true
+      xg7lobby.command.npcs.skin.mirror: true
+      xg7lobby.command.npcs.skin.reset: true
+      xg7lobby.command.npcs.options: true
+      xg7lobby.command.npcs.name: true
+      xg7lobby.command.npcs.name.addline: true
+      xg7lobby.command.npcs.name.removeline: true
+      xg7lobby.command.npcs.name.editline: true
+      xg7lobby.command.npcs.name.options: true
+
+  xg7lobby.command.holograms:
+    description: Manage holograms
+    default: op
+    children:
+      xg7lobby.command.holograms.create: true
+      xg7lobby.command.holograms.delete: true
+      xg7lobby.command.holograms.teleport: true
+      xg7lobby.command.holograms.actions: true
+      xg7lobby.command.holograms.lines: true
+      xg7lobby.command.holograms.select: true
+      xg7lobby.command.holograms.save: true
+
+  xg7lobby.command.holograms.lines:
+    description: Hologram lines management
+    default: op
+    children:
+      xg7lobby.command.holograms.lines.add: true
+      xg7lobby.command.holograms.lines.remove: true
+      xg7lobby.command.holograms.lines.edit: true
+      xg7lobby.command.holograms.lines.equip: true
+      xg7lobby.command.holograms.lines.options: true
+      xg7lobby.command.holograms.lines.options.list: true
+      xg7lobby.command.holograms.lines.options.set: true
+
+  xg7lobby.command.holograms.actions:
+    description: Hologram actions management
+    default: op
+    children:
+        xg7lobby.command.holograms.actions.add: true
+        xg7lobby.command.holograms.actions.edit: true
+        xg7lobby.command.holograms.actions.remove: true
+        xg7lobby.command.holograms.actions.list: true
+

@@ -4,8 +4,8 @@ import com.xg7plugins.XG7Plugins;
 
 import com.xg7plugins.help.chat.HelpChatPage;
 import com.xg7plugins.utils.text.Text;
-import com.xg7plugins.utils.text.component.ClickEvent;
-import com.xg7plugins.utils.text.component.TextComponentBuilder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import org.bukkit.command.CommandSender;
 
@@ -32,10 +32,9 @@ public class AboutPage implements HelpChatPage {
         components.add(Text.format(" "));
 
         components.add(
-                TextComponentBuilder.of(Text.fromLang(sender, XG7Lobby.getInstance(), "help.chat.back").getText())
-                        .clickEvent(ClickEvent.of(ClickEvent.Action.SUGGEST_COMMAND, "/xg7lobby help"))
-                        .build()
-        );
+                Text.format(Component.text(Text.fromLang(sender, XG7Lobby.getInstance(), "help.chat.back").getText())
+                        .clickEvent(ClickEvent.suggestCommand( "/xg7lobby help"))
+        ));
         components.add(Text.format("&m-&9&m-&6&m------------------&e*&6&m------------------&9&m-&f&m-"));
 
 

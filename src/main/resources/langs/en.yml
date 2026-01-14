@@ -301,7 +301,7 @@ scoreboard:
   players-in-pvp: "&7Players in pvp&b: &a%xg7lobby_players_in_global_pvp%"
 
 warn-menu:
-  title: "&c&lWarns of %target%"
+  title: "[CENTER:INV] &c&lWarns of %target%"
 
   warn-item:
     name: "&cWarn %id%"
@@ -377,7 +377,7 @@ settings-menu:
 help:
 
   menu:
-    title: "&rHelp of <rainbow>XG7Lobby</rainbow>"
+    title: "[CENTER:INV] &rHelp of <rainbow>XG7Lobby</rainbow>"
 
     close-item: "&cClose"
     go-back-item: "&cBack"

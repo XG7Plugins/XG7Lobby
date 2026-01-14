@@ -3,11 +3,13 @@ package com.xg7plugins.xg7lobby.npcs;
 import com.google.gson.reflect.TypeToken;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.data.json.JsonManager;
+import com.xg7plugins.modules.xg7npcs.living.LivingNPC;
 import com.xg7plugins.modules.xg7npcs.npc.NPC;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,6 +90,10 @@ public class NPCsManager {
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player))
                 .forEach(npc::spawn);
+    }
+
+    public LivingNPC getSpawnedNPC(String id, Player player) {
+        return XG7Plugins.getAPI().npcs().getLivingNPC(player.getUniqueId(), "xg7lobby_npc-" + id);
     }
 
 }

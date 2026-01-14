@@ -6,29 +6,37 @@ import com.cryptomorin.xseries.XSound;
 import com.cryptomorin.xseries.particles.XParticle;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.xg7plugins.XG7Plugins;
+import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.cooldowns.CooldownManager;
+import com.xg7plugins.modules.xg7holograms.hologram.LivingHologram;
 import com.xg7plugins.modules.xg7menus.XG7Menus;
 import com.xg7plugins.modules.xg7menus.menus.BasicMenu;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.BasicMenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.MenuHolder;
 import com.xg7plugins.modules.xg7menus.menus.menuholders.PlayerMenuHolder;
+import com.xg7plugins.modules.xg7npcs.living.LivingNPC;
 import com.xg7plugins.server.MinecraftServerVersion;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.Parser;
+import com.xg7plugins.utils.Variables;
 import com.xg7plugins.utils.item.Item;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 
+import com.xg7plugins.xg7lobby.commands.entities.HologramsCommand;
+import com.xg7plugins.xg7lobby.holograms.HologramsManager;
+import com.xg7plugins.xg7lobby.holograms.data.LobbyHologramLine;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.CustomInventoryManager;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyInventory;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.LobbyItem;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyGUI;
 import com.xg7plugins.xg7lobby.menus.custom.inventory.menus.LobbyHotbar;
+import com.xg7plugins.xg7lobby.npcs.NPCsManager;
 import com.xg7plugins.xg7lobby.queue.QueueManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +49,8 @@ import org.bukkit.potion.PotionEffect;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 
@@ -657,8 +667,124 @@ public enum ActionType {
 
                 queueManager.addToQueue(queueId, player, ActionsProcessor.getActionOf(action, Collections.emptyList()));
             }
-    )
-    ;
+    ),
+    CHANGE_LINE(
+            "[CHANGE_LINE] hologramId, lineIndex, new content...",
+            "Changes a hologram line",
+            "ARMOR_STAND",
+            true,
+            ((player, args) -> {
+                if (args.length < 3) {
+                    throw new ActionException("CHANGE_LINE", "Incorrectly amount of args: " + args.length + ". The right way to use is [CHANGE_LINE] hologramId, lineIndex, new content...");
+                }
+
+                String hologramID = args[0];
+                int lineIndex = (Integer) Parser.INTEGER.convert(args[1]) - 1;
+
+
+
+                HologramsManager manager = XG7Lobby.getAPI().hologramsManager();
+
+                if (!manager.existsHologram(hologramID)) {
+                    throw new ActionException("CHANGE_LINE", "Hologram doesn't exists!");
+                }
+
+                LivingHologram livingHologram = manager.getSpawnedHologram(hologramID, player);
+
+                if (livingHologram == null) return;
+
+                CommandArgs contentArgs = new CommandArgs(Arrays.copyOfRange(args, 2, args.length));
+
+                Pair<LobbyHologramLine.Type, String> content = HologramsCommand.parseLineContent(contentArgs, 0);
+
+                LobbyHologramLine lobbyHologramLine = new LobbyHologramLine(content.getSecond());
+                lobbyHologramLine.setType(lobbyHologramLine.getType());
+
+
+
+                livingHologram.modifyLine(lineIndex, lobbyHologramLine.toHologramLine());
+
+            })
+    ),
+    CHANGE_NAME(
+            "[CHANGE_NAME] npcID, lineIndex, new content...",
+            "Changes a npc name line",
+            "PLAYER_HEAD",
+            true,
+            ((player, args) -> {
+                if (args.length < 3) {
+                    throw new ActionException("CHANGE_NAME", "Incorrectly amount of args: " + args.length + ". The right way to use is [CHANGE_NAME] npcID, lineIndex, new content...");
+                }
+
+                String npcID = args[0];
+                int lineIndex = (Integer) Parser.INTEGER.convert(args[1]) - 1;
+
+                NPCsManager manager = XG7Lobby.getAPI().npcsManager();
+
+                if (!manager.existsNPC(npcID)) {
+                    throw new ActionException("CHANGE_NAME", "NPC doesn't exists!");
+                }
+
+                LivingNPC livingNPC = manager.getSpawnedNPC(npcID, player);
+
+                if (livingNPC == null) return;
+                CommandArgs contentArgs = new CommandArgs(Arrays.copyOfRange(args, 2, args.length));
+
+                LivingHologram livingHologram = livingNPC.getSpawnedHologram();
+
+                Pair<LobbyHologramLine.Type, String> content = HologramsCommand.parseLineContent(contentArgs, 0);
+                LobbyHologramLine lobbyHologramLine = new LobbyHologramLine(content.getSecond());
+                lobbyHologramLine.setType(lobbyHologramLine.getType());
+                livingHologram.modifyLine(lineIndex, lobbyHologramLine.toHologramLine());
+
+            })
+    ),
+    STORE_GLOBAL_VALUE(
+            "[STORE_GLOBAL_VALUE] key, value",
+            "Stores a value in the global variable list",
+            "WRITABLE_BOOK",
+            true,
+            (player, args) -> {
+                if (args.length < 2) {
+                    throw new ActionException("STORE_GLOBAL_VALUE", "Incorrectly amount of args: " + args.length + ". The right way to use is [STORE_GLOBAL_VALUE] key, value.");
+                }
+
+                String key = args[0];
+                String value = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+
+                Variables.setGlobal(key, value);
+            }
+    ),
+    STORE_VALUE(
+            "[STORE_VALUE] key, value",
+            "Stores a value in the player's variable list",
+            "WRITABLE_BOOK",
+            true,
+            (player, args) -> {
+                if (args.length < 2) {
+                    throw new ActionException("STORE_VALUE", "Incorrectly amount of args: " + args.length + ". The right way to use is [STORE_VALUE] key, value.");
+                }
+
+                String key = args[0];
+                String value = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+
+                Variables.setPlayer(player.getUniqueId(), key, value);
+            }
+    ),
+    CLEAR_GLOBAL_VALUES(
+            "[CLEAR_GLOBAL_VALUES] ",
+            "Clears all the global stored variables",
+            "BOOK_AND_QUILL",
+            false,
+            (player, args) -> Variables.clearGlobal()
+    ),
+    CLEAR_VALUES(
+            "[CLEAR_VALUES] ",
+            "Clears all the player's stored variables",
+            "BOOK_AND_QUILL",
+            false,
+            (player, args) -> Variables.clearPlayer(player.getUniqueId())
+    );
 
     private final String usage;
     private final String description;

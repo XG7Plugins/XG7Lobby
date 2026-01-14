@@ -401,7 +401,7 @@ public class HologramsCommand implements Command {
     }
 
 
-    private Pair<LobbyHologramLine.Type, String> parseLineContent(CommandArgs args, int startIndex) {
+    public static Pair<LobbyHologramLine.Type, String> parseLineContent(CommandArgs args, int startIndex) {
         String typeString = args.get(startIndex, String.class);
         LobbyHologramLine.Type type = LobbyHologramLine.Type.fromString(typeString.replace("#", ""));
 
@@ -436,7 +436,7 @@ public class HologramsCommand implements Command {
             return Command.super.onTabComplete(sender, args);
         }
 
-        CommandNode root = XG7Lobby.getInstance().getCommandManager().getRootCommandNode("holograms");
+        CommandNode root = XG7Lobby.getInstance().getCommandManager().getRootCommandNode("xg7lobbyholograms");
         CommandNode cmd1 = root.getChild(args.get(0, String.class));
 
         if (cmd1 == null) {

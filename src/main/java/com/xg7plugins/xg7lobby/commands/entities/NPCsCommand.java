@@ -345,7 +345,7 @@ public class NPCsCommand implements Command {
 
         Pair<LobbyHologramLine.Type, String> lineData;
         try {
-            lineData = parseLineContent(args, 0);
+            lineData = HologramsCommand.parseLineContent(args, 0);
         } catch (Exception e) {
             return CommandState.SYNTAX_ERROR;
         }
@@ -415,7 +415,7 @@ public class NPCsCommand implements Command {
 
         Pair<LobbyHologramLine.Type, String> lineData;
         try {
-            lineData = parseLineContent(args, 1);
+            lineData = HologramsCommand.parseLineContent(args, 1);
         } catch (Exception e) {
             return CommandState.SYNTAX_ERROR;
         }
@@ -634,18 +634,6 @@ public class NPCsCommand implements Command {
         return CommandState.FINE;
     }
 
-    private Pair<LobbyHologramLine.Type, String> parseLineContent(CommandArgs args, int startIndex) {
-        String typeString = args.get(startIndex, String.class);
-        LobbyHologramLine.Type type = LobbyHologramLine.Type.fromString(typeString.replace("#", ""));
-
-        boolean hasTypePrefix = typeString.startsWith("#");
-        String content = (!hasTypePrefix || type == LobbyHologramLine.Type.INVISIBLE)
-                ? args.join(startIndex)
-                : args.join(startIndex + 1);
-
-        return Pair.of(type, content);
-    }
-
     private static Object parseValue(String value) {
         if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
             return Boolean.parseBoolean(value);
@@ -670,7 +658,7 @@ public class NPCsCommand implements Command {
         }
 
 
-        CommandNode root = XG7Lobby.getInstance().getCommandManager().getRootCommandNode("npcs");
+        CommandNode root = XG7Lobby.getInstance().getCommandManager().getRootCommandNode("xg7lobbynpcs");
         CommandNode cmd1 = root.getChild(args.get(0, String.class));
 
         if (cmd1 == null) {

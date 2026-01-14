@@ -4,11 +4,13 @@ import com.google.gson.reflect.TypeToken;
 import com.xg7plugins.XG7Plugins;
 import com.xg7plugins.data.json.JsonManager;
 import com.xg7plugins.modules.xg7holograms.hologram.Hologram;
+import com.xg7plugins.modules.xg7holograms.hologram.LivingHologram;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 import com.xg7plugins.xg7lobby.holograms.data.LobbyHologram;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,6 +91,10 @@ public class HologramsManager {
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> XG7Plugins.getAPI().isInAnEnabledWorld(XG7Lobby.getInstance(), player))
                 .forEach(hologram::spawn);
+    }
+
+    public LivingHologram getSpawnedHologram(String id, Player player) {
+        return XG7Plugins.getAPI().holograms().getLivingHologram(player.getUniqueId(), "xg7lobby_hologram-" + id);
     }
 
 

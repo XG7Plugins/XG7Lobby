@@ -162,8 +162,8 @@ commands:
       edited: "%prefix% &aAcción &e%index% &aeditada con éxito del NPC &e%id%&a."
       showing: "%prefix% &aMostrando acciones del NPC &e%id%&b:."
 
-hologram-interaction-cooldown: "%[ACTION] %prefix% &cNo puedes interactuar con el holograma por otros &b@SECONDS:%time%@"
-npc-interaction-cooldown: "%[ACTION] %prefix% &cNo puedes interactuar con el NPC por otros &b@SECONDS:%time%@"
+hologram-interaction-cooldown: "[ACTION] %prefix% &cNo puedes interactuar con el holograma por otros &b@SECONDS:%time%@"
+npc-interaction-cooldown: "[ACTION] %prefix% &cNo puedes interactuar con el NPC por otros &b@SECONDS:%time%@"
 
 lobby:
 

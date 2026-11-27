@@ -16,7 +16,7 @@ import com.xg7plugins.utils.skin.Skin;
 import com.xg7plugins.utils.skin.SkinRequest;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.ActionType;
+import com.xg7plugins.xg7lobby.actions.ActionType;
 import com.xg7plugins.xg7lobby.holograms.HologramEditor;
 import com.xg7plugins.xg7lobby.holograms.data.LobbyHologram;
 import com.xg7plugins.xg7lobby.holograms.data.LobbyHologramLine;

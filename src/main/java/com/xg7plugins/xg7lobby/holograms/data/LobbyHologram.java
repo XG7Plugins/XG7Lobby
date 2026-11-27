@@ -8,9 +8,8 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.location.Location;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import lombok.Data;
-import lombok.ToString;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

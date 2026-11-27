@@ -5,7 +5,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.Action;
+import com.xg7plugins.xg7lobby.actions.Action;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

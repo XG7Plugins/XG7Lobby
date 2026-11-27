@@ -8,8 +8,8 @@ import com.xg7plugins.modules.xg7menus.item.clickable.impl.CloseInventoryItem;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.MenuConfigurations;
 import com.xg7plugins.modules.xg7menus.menus.interfaces.gui.menusimpl.PagedMenu;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.Action;
-import com.xg7plugins.xg7lobby.acitons.ActionType;
+import com.xg7plugins.xg7lobby.actions.Action;
+import com.xg7plugins.xg7lobby.actions.ActionType;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;

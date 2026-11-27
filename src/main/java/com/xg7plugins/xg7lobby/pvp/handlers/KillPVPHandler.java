@@ -7,7 +7,7 @@ import com.xg7plugins.utils.Pair;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import com.xg7plugins.xg7lobby.pvp.DeathCause;
 import com.xg7plugins.xg7lobby.pvp.GlobalPVPManager;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerKillInPVPEvent;

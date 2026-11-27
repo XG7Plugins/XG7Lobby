@@ -9,7 +9,7 @@ import com.xg7plugins.commands.utils.CommandState;
 import com.xg7plugins.config.utils.ConfigCheck;
 import com.xg7plugins.utils.Pair;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import com.xg7plugins.xg7lobby.queue.QueueManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.OfflinePlayer;

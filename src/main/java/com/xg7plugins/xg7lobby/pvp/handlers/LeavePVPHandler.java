@@ -8,7 +8,7 @@ import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.utils.text.Text;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import com.xg7plugins.xg7lobby.events.LobbyListener;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerLeavePVPEvent;
 import com.xg7plugins.xg7lobby.events.LobbyApplier;

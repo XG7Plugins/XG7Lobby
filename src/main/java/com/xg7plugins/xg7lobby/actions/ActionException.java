@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.acitons;
+package com.xg7plugins.xg7lobby.actions;
 
 public class ActionException extends RuntimeException {
   public ActionException(String action, String message) {

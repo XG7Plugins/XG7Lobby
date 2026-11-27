@@ -1,7 +1,6 @@
 package com.xg7plugins.xg7lobby.queue;
 
-import com.xg7plugins.xg7lobby.acitons.Action;
-import lombok.Data;
+import com.xg7plugins.xg7lobby.actions.Action;
 import lombok.Getter;
 
 import java.util.UUID;

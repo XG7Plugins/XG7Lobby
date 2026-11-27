@@ -7,7 +7,7 @@ import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.tasks.TaskState;
 import com.xg7plugins.tasks.tasks.TimerTask;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import org.bukkit.Bukkit;
 
 import java.util.Collections;

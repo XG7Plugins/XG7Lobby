@@ -8,8 +8,8 @@ import com.xg7plugins.commands.setup.Command;
 import com.xg7plugins.commands.utils.CommandArgs;
 import com.xg7plugins.commands.setup.CommandSetup;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.ActionType;
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionType;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

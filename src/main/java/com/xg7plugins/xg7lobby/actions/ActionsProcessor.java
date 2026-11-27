@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.acitons;
+package com.xg7plugins.xg7lobby.actions;
 
 import com.xg7plugins.utils.Debug;
 import com.xg7plugins.utils.Pair;

@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.acitons;
+package com.xg7plugins.xg7lobby.actions;
 
 import com.cryptomorin.xseries.XEntityType;
 import com.cryptomorin.xseries.XPotion;
@@ -49,8 +49,6 @@ import org.bukkit.potion.PotionEffect;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 

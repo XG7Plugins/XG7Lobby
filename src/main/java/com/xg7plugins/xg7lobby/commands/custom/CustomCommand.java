@@ -3,7 +3,7 @@ package com.xg7plugins.xg7lobby.commands.custom;
 import com.xg7plugins.config.file.ConfigFile;
 import com.xg7plugins.config.file.ConfigSection;
 import com.xg7plugins.xg7lobby.XG7Lobby;
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

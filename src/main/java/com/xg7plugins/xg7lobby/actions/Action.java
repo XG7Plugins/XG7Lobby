@@ -1,4 +1,4 @@
-package com.xg7plugins.xg7lobby.acitons;
+package com.xg7plugins.xg7lobby.actions;
 
 import com.xg7plugins.modules.xg7menus.item.InventoryItem;
 import com.xg7plugins.utils.Pair;

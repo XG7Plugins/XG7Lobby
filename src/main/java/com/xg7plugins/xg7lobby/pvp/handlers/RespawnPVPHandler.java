@@ -9,7 +9,7 @@ import com.xg7plugins.events.bukkitevents.EventHandler;
 import com.xg7plugins.tasks.tasks.BukkitTask;
 import com.xg7plugins.xg7lobby.XG7Lobby;
 
-import com.xg7plugins.xg7lobby.acitons.ActionsProcessor;
+import com.xg7plugins.xg7lobby.actions.ActionsProcessor;
 import com.xg7plugins.xg7lobby.pvp.event.PlayerRespawnInPVPEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
